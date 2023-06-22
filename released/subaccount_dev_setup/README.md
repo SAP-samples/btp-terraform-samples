@@ -13,3 +13,5 @@ The setup comprises the following resources:
 - Creation of an SAP BTP subaccount according to the naming convention defined in the variables.tf file
 - Creation of a Cloud Foundry environment within the subaccount in according to the naming convention defined in the variables.tf file
 - Creation of entitlement for the "Alert Notification" service in the subaccount
+
+You can adapt the rules defined in the [variables.tf](variables.tf) file to your needs. In case you want to apply the rules, simply change the values for the variables in the [terraform.tfvars](terraform.tfvars) file.

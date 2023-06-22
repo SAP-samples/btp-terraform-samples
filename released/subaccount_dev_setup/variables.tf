@@ -1,11 +1,10 @@
 ###
 # Customer account setup
 ###
-
 variable "name" {
   type        = string
   description = "The account name."
-  default     = "yourcompany-department001"
+  default     = "dept-XYZ"
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.name))

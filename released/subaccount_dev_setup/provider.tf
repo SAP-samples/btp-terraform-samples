@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "btp" {
-  globalaccount = "yourglobalaccount"
-  username      = "your@email.com"
-  password      = "********"
+  globalaccount = "ticrossa"
+  # username      = "your@email.com"
+  # password      = "********"
 }
