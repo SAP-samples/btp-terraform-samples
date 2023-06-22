@@ -5,20 +5,12 @@
 ## Description
 <!-- Please include SEO-friendly description -->
 This repository provides you with samples on how to best use the **Terraform provider for SAP BTP** for various use cases.
-=======
-# SAP-samples/repository-template
-
-This default template for SAP Samples repositories includes files for README, LICENSE, and .reuse/dep5. All repositories on github.com/SAP-samples will be created based on this template.
 
 ## Containing Files
 
 The [released](released) folder has several examples containing the respective explanation as well as the Terraform files.
 
 You will find the detailed information about the [provider](https://registry.terraform.io/browse/providers) in the official [documentation](https://registry.terraform.io/browse/providers) in the [Terraform registry](https://registry.terraform.io/).
-
-2. The .reuse/dep5 file:
-The [Reuse Tool](https://reuse.software/) must be used for your samples project. You can find the .reuse/dep5 in the project initial. Please replace the parts inside the single angle quotation marks < > by the specific information for your repository.
-
 
 ## Support, Feedback, Contributing
 <!-- Please include descriptive title -->
