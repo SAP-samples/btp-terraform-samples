@@ -10,6 +10,6 @@ As with every customer scenario the usage of naming conventions for the resource
 
 The setup comprises the following resources:
 
-- Creation of one subaccount in accordance to naming convention
-- Creation of a Cloud Foundry environment within the subaccount in accordance to naming convention
-- Creation of entitlement for "Alert Notification" service in the subaccount
+- Creation of an SAP BTP subaccount according to the naming convention defined in the variables.tf file
+- Creation of a Cloud Foundry environment within the subaccount in according to the naming convention defined in the variables.tf file
+- Creation of entitlement for the "Alert Notification" service in the subaccount
