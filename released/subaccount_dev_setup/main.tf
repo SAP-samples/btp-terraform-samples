@@ -13,7 +13,7 @@ locals {
 resource "btp_subaccount" "project" {
   name      = local.project_subaccount_name
   subdomain = local.project_subaccount_domain
-  region    = ${lower(var.region)}
+  region    = lower(var.region)
 }
 
 ###
