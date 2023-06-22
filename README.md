@@ -5,15 +5,12 @@
 
 ## Description
 <!-- Please include SEO-friendly description -->
-This repository provides you with best practices on how best to use the **Terraform provider for SAP BTP** for various use cases.
+This repository provides you with samples on how to best use the **Terraform provider for SAP BTP** for various use cases.
 
 The [released](released) folder has several examples containing the respective explanation as well as the Terraform files.
 
 You will find the detailed information about the [provider](https://registry.terraform.io/browse/providers) in the official [documentation](https://registry.terraform.io/browse/providers) in the [Terraform registry](https://registry.terraform.io/).
 
-## Developing & Contributing to the Provider
-
-The [developer documentation](DEVELOPER.md) file is a basic outline on how to build and develop the provider.
 
 ## Support, Feedback, Contributing
 
@@ -31,4 +28,4 @@ Members, contributors, and leaders pledge to make participation in our community
 
 ## Licensing
 
-Copyright 2023 SAP SE or an SAP affiliate company and `terraform-provider-btp` contributors. See our [LICENSE](LICENSE) for copyright and license information. Detailed information, including third-party components and their licensing/copyright information, is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/terraform-provider-btp).
+Copyright 2023 SAP SE or an SAP affiliate company and `btp-terraform-samples` contributors. See our [LICENSE](LICENSE) for copyright and license information. Detailed information, including third-party components and their licensing/copyright information, is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP-samples/btp-terraform-samples).

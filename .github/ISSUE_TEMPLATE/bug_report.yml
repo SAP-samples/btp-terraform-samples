@@ -18,7 +18,6 @@ body:
       options:
         - bug report
         - documentation issue
-        - regression (a behavior that used to work and stopped in a new version)
     validations:
       required: true
   - type: textarea
