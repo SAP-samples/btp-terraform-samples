@@ -11,8 +11,6 @@ The [released](released) folder has several examples containing the respective e
 
 You will find the detailed information about the [provider](https://registry.terraform.io/browse/providers) in the official [documentation](https://registry.terraform.io/browse/providers) in the [Terraform registry](https://registry.terraform.io/).
 
-You find usage examples in the [examples folder](./examples/) of this repository.  
-
 ## Developing & Contributing to the Provider
 
 The [developer documentation](DEVELOPER.md) file is a basic outline on how to build and develop the provider.
