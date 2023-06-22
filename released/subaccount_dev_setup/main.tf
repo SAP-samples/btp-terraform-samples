@@ -13,14 +13,14 @@ locals {
 resource "btp_subaccount" "project" {
   name      = local.project_subaccount_name
   subdomain = local.project_subaccount_domain
-  region    = ${lower(var.region)
+  region    = lower(var.region)
 }
 
 ###
 # Creation of Cloud Foundry environment
 ###
 module "cloudfoundry_environment" {
-  source = "git::https://github.tools.sap/BTP-Terraform/terraform-provider-btp-modules.git//tf_modules_btp/environment/cloud-foundry/envinstance?ref=main"
+  source = "./modules/envinstance-cloudfoundry/"
 
   subaccount_id         = btp_subaccount.project.id
   instance_name         = local.project_subaccount_cf_org
