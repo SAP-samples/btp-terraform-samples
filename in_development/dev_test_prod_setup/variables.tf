@@ -12,6 +12,21 @@ variable "department_name" {
   }
 }
 
+###
+# Costcenter
+###
+variable "costcenter" {
+  type        = string
+  description = "The costcenter of an org unit or department."
+  default     = "0123456789"
+
+  validation {
+    condition     = can(regex("^[0-9]{10}", var.costcenter))
+    error_message = "Validation of costcenter failed! Only numbers are allowed and costcenter must have 10 digits."
+  }
+
+}
+
 variable "org_name" {
   type        = string
   description = "Defines to which organisation the project account shall belong to."
@@ -57,13 +72,13 @@ variable "project" {
 
   default = {
     dev-setup = {
-      stage  = "DEV",
+      stage  = "DEV"
     },
     tst-setup = {
-      stage  = "TST",
+      stage  = "TST"
     },
     prd-setup = {
-      stage  = "PRD",
+      stage  = "PRD"
     }
   }
 }

@@ -12,14 +12,12 @@ This will be done by creating a directory for each landscape and creating a sub 
 
 The setup comprises the following resources:
 
-- Creation of a directory per landscape defined in the `*.tfvars` files
-- Creation of an SAP BTP subaccount according to the naming convention defined in the variables.tf file and the variables defined in the `*.tfvars` files
-- Assignment of each sub account to the respective landscape folder
+- Creation of an SAP BTP subaccount according to the naming convention defined in the variables.tf file and the variables defined in the `terraform.tfvars` file
 - Creation of a Cloud Foundry environment within each subaccount in according to the naming convention defined in the variables.tf file
 - Creation of entitlement for the "Alert Notification" service in each subaccount
 
-You can adapt the rules defined in the [variables.tf](variables.tf) file to your needs. 
-In case you want to apply the rules, simply change the values for the variables in the `*.tfvars` files.
+You can adapt the rules defined in the [variables.tf](variables.tf) file to your needs.
+In case you want to apply the rules, simply change the values for the variables in the `terraform.tfvars` file.
 
 ## Run this sample
 
@@ -29,7 +27,5 @@ Execute by following these steps:
 `
 terraform init -upgrade
 terraform plan
-terraform apply -auto-approve -var stage="DEV"
-terraform apply -auto-approve -var stage="TST"
-terraform apply -auto-approve -var stage="PRD"
+terraform apply -auto-approve
 `
