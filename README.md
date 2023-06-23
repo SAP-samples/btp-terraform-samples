@@ -1,19 +1,20 @@
-# [Samples for the 'Terraform provider for SAP BTP']
-<!--- Register repository https://api.reuse.software/register, then add REUSE badge:
+# Samples for the 'Terraform provider for SAP BTP'
+
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/REPO-NAME)](https://api.reuse.software/info/github.com/SAP-samples/REPO-NAME)
 
 ## Description
-<!-- Please include SEO-friendly description -->
+
 This repository provides you with samples on how to best use the **Terraform provider for SAP BTP** for various use cases.
 
-## Containing Files
+## Content
 
 The [released](released) folder has several examples containing the respective explanation as well as the Terraform files.
 
 You will find the detailed information about the [provider](https://registry.terraform.io/browse/providers) in the official [documentation](https://registry.terraform.io/browse/providers) in the [Terraform registry](https://registry.terraform.io/).
 
+> **Note**: The application of the Terraform configurations we provide in this repository can create cost on your side depending on the sample and the contained resources. Please be aware of that and destroy the resources if no longer needed to avoid unnecessary cost on your side.
+
 ## Support, Feedback, Contributing
-<!-- Please include descriptive title -->
 
 ❓ - If you have a *question* you can ask it here in [GitHub Discussions](https://github.com/SAP-samples/btp-terraform-samples/discussions/) or in the [SAP Community](https://answers.sap.com/questions/ask.html).
 
