@@ -1,4 +1,5 @@
-output "subaccount_id" {
+/*
+output "subaccount_ids" {
   value       = btp_subaccount.project.id
   description = "The ID of the project subaccount."
 }
@@ -17,3 +18,4 @@ output "cloudfoundry_org_id" {
   value       = module.cloudfoundry_environment.org_id
   description = "The ID of the cloudfoundry org connected to the project account."
 }
+*/

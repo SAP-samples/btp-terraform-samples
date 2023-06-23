@@ -56,7 +56,6 @@ variable "project" {
   type        = map(any)
 
   default = {
-    department_name = "Department name"
     dev-setup = {
       stage  = "DEV",
     },
@@ -68,7 +67,7 @@ variable "project" {
     }
   }
 }
-
+/*
 validation {
   condition = length([
     for o in var.project : true
@@ -76,3 +75,4 @@ validation {
   ]) == length(var.rules)
     error_message = "Select a valid stage for the project account."
 }
+*/
