@@ -1,14 +1,14 @@
 ###
 # Customer account setup
 ###
-variable "name" {
+variable "department_name" {
   type        = string
-  description = "The account name."
-  default     = "dept-XYZ"
+  description = "The department name."
+  default     = "XYZ"
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.name))
-    error_message = "Provide a valid project account name."
+    condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.department_name))
+    error_message = "Provide a valid department department name."
   }
 }
 
@@ -29,7 +29,7 @@ variable "org_name" {
     error_message = "Please select a valid org name for the project account."
   }
 }
-
+/*
 variable "stage" {
   type        = string
   description = "The stage/tier the account will be used for."
@@ -40,7 +40,7 @@ variable "stage" {
     error_message = "Select a valid stage for the project account."
   }
 }
-
+*/
 
 ###
 # BTP ACCOUNT
@@ -51,3 +51,28 @@ variable "region" {
   default     = "us10"
 }
 
+variable "project" {
+  description = "Map of landscape for a project."
+  type        = map(any)
+
+  default = {
+    department_name = "Department name"
+    dev-setup = {
+      stage  = "DEV",
+    },
+    tst-setup = {
+      stage  = "TST",
+    },
+    prd-setup = {
+      stage  = "PRD",
+    }
+  }
+}
+
+validation {
+  condition = length([
+    for o in var.project : true
+    if contains(["DEV", "TST", "PRD"], o.dev-setup.stage)
+  ]) == length(var.rules)
+    error_message = "Select a valid stage for the project account."
+}

@@ -8,30 +8,14 @@ locals {
 }
 
 ###
-# Creation of subaccount
+# Creation of directory for DEV
 ###
-resource "btp_subaccount" "project" {
-  name      = local.project_subaccount_name
-  subdomain = local.project_subaccount_domain
-  region    = lower(var.region)
-}
-
-###
-# Creation of Cloud Foundry environment
-###
-module "cloudfoundry_environment" {
-  source = "./modules/envinstance-cloudfoundry/"
-
-  subaccount_id         = btp_subaccount.project.id
-  instance_name         = local.project_subaccount_cf_org
-  cloudfoundry_org_name = local.project_subaccount_cf_org
-}
-
-###
-# Entitlement of subaccount for Alert Notification service - plan "free"
-###
-resource "btp_subaccount_entitlement" "alert_notification_free" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "alert-notification"
-  plan_name     = "free"
+resource "btp_directory" "landscapes" {
+  dynamic "setting" {
+    for_each = var.project
+    content {
+      name        = lower(replace("${var.org_name}-${var.department_name}-${var.stage}", " ", "-"))
+      description = "Parent directory for all ${var.stage} landscapes"
+    }
+  }
 }

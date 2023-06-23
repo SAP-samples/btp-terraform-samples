@@ -29,7 +29,7 @@ Execute by following these steps:
 `
 terraform init -upgrade
 terraform plan
-terraform apply -auto-approve -var_file="abc-b2b-us10-dev.tfvars"
-terraform apply -auto-approve -var_file="abc-b2b-us10-tst.tfvars"
-terraform apply -auto-approve -var_file="abc-b2b-us10-prd.tfvars"
+terraform apply -auto-approve -var stage="DEV"
+terraform apply -auto-approve -var stage="TST"
+terraform apply -auto-approve -var stage="PRD"
 `
