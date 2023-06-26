@@ -40,6 +40,8 @@ variable "org_name" {
       ["PLATFORMDEV", "INTIT"],
       // Financial Services
       ["FSIT"],
+      // EAB customer group
+      ["EAB"],
     ), var.org_name)
     error_message = "Please select a valid org name for the project account."
   }

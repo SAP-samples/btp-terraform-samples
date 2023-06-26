@@ -1,13 +1,13 @@
-/*
+
 ###
 # Creation of landscape directories
 ###
-resource "btp_directory" "landscapes" {
+resource "btp_directory" "dir_landscapes" {
   for_each = var.project
     name        = upper(replace("${each.value.stage}", " ", "-"))
     description = "Parent directory for all ${each.value.stage} landscapes"
 }
-*/
+
 
 ###
 # Creation of subaccounts
@@ -15,10 +15,10 @@ resource "btp_directory" "landscapes" {
 resource "btp_subaccount" "all" {
 
   for_each = var.project
-    name      = "${each.value.stage} - ${var.org_name}: ${var.department_name}"
-    subdomain = lower(replace("${each.value.stage}-${var.org_name}-${var.department_name}", " ", "-"))
+    name      = "${each.value.stage} - ${var.org_name}: ${var.department_name} ${var.project_name}"
+    subdomain = lower(replace("${each.value.stage}-${var.org_name}-${var.department_name}-${var.project_name}", " ", "-"))
     region    = lower(var.region)
-    #labels    = [{"costcenter": ["${var.costcenter}"]} ]
+    labels    = {"costcenter": ["${var.costcenter}"], "stage": ["${each.value.stage}"], "org_name": ["${var.org_name}"], , "department_name": ["${var.department_name}"], "project_name": ["${var.project_name}"]}
 
 }
 

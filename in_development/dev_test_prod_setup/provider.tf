@@ -12,4 +12,6 @@ terraform {
 # via the Terraform provider for SAP BTP
 provider "btp" {
   globalaccount = "ticrossa"
+  #cli_server_url = "https://cpcli.cf.sap.hana.ondemand.com"
+  #globalaccount  = "my-orbit"
 }
