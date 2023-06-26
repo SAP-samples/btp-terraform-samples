@@ -54,18 +54,7 @@ variable "org_name" {
     error_message = "Please select a valid org name for the project account."
   }
 }
-/*
-variable "stage" {
-  type        = string
-  description = "The stage/tier the account will be used for."
-  default     = "DEV"
 
-  validation {
-    condition     = contains(["DEV", "TST", "PRD"], var.stage)
-    error_message = "Select a valid stage for the project account."
-  }
-}
-*/
 
 ###
 # BTP ACCOUNT
@@ -92,12 +81,3 @@ variable "project" {
     }
   }
 }
-/*
-validation {
-  condition = length([
-    for o in var.project : true
-    if contains(["DEV", "TST", "PRD"], o.dev-setup.stage)
-  ]) == length(var.rules)
-    error_message = "Select a valid stage for the project account."
-}
-*/

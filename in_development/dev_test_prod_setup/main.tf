@@ -18,7 +18,7 @@ resource "btp_subaccount" "all" {
     name      = "${each.value.stage} - ${var.org_name}: ${var.department_name} (${var.project_name})"
     subdomain = lower(replace("${each.value.stage}-${var.org_name}-${var.department_name}-${var.project_name}", " ", "-"))
     region    = lower(var.region)
-    #labels    = {"costcenter": ["${var.costcenter}"]}
+    labels    = {"costcenter": ["${var.costcenter}"]}
 }
 
 ###
