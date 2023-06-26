@@ -1,4 +1,4 @@
-
+/*
 ###
 # Creation of landscape directories
 ###
@@ -7,7 +7,7 @@ resource "btp_directory" "dir_landscapes" {
     name        = upper(replace("${each.value.stage}", " ", "-"))
     description = "Parent directory for all ${each.value.stage} landscapes"
 }
-
+*/
 
 ###
 # Creation of subaccounts
@@ -15,11 +15,10 @@ resource "btp_directory" "dir_landscapes" {
 resource "btp_subaccount" "all" {
 
   for_each = var.project
-    name      = "${each.value.stage} - ${var.org_name}: ${var.department_name} ${var.project_name}"
+    name      = "${each.value.stage} - ${var.org_name}: ${var.department_name} (${var.project_name})"
     subdomain = lower(replace("${each.value.stage}-${var.org_name}-${var.department_name}-${var.project_name}", " ", "-"))
     region    = lower(var.region)
-    labels    = {"costcenter": ["${var.costcenter}"], "stage": ["${each.value.stage}"], "org_name": ["${var.org_name}"], , "department_name": ["${var.department_name}"], "project_name": ["${var.project_name}"]}
-
+    #labels    = {"costcenter": ["${var.costcenter}"]}
 }
 
 ###
@@ -40,10 +39,7 @@ module "cloudfoundry_environment" {
 ###
 resource "btp_subaccount_entitlement" "all_entitlements" {
 
-  subaccount_id = btp_subaccount.subaccount.id
-
-  for_each = var.entitlements
-    service_name  = each.value.service_name
-    plan_name     = each.value.plan_name
+  for_each = btp_subaccount.all
+    subaccount_id         = each.value.id
 }
 */

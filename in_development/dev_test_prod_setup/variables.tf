@@ -21,11 +21,19 @@ variable "costcenter" {
   default     = "0123456789"
 
   validation {
-    condition     = can(regex("^[0-9]{10}", var.costcenter))
+    condition     = can(regex("[0-9]{10}", var.costcenter))
     error_message = "Validation of costcenter failed! Only numbers are allowed and costcenter must have 10 digits."
   }
 
 }
+
+
+variable "project_name" {
+  type        = string
+  description = "Defines the project name used by the org unit (defined in variable 'org_name')."
+  default     = "prj_8472"
+}
+
 
 variable "org_name" {
   type        = string

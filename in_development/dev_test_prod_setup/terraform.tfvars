@@ -3,7 +3,7 @@
 # If you comment out the variables, the default values are taken defined in the variables.tf file
 org_name = "EAB"
 department_name = "Cut edge"
-project_name = "AI1"
+project_name = "prj_8472"
 costcenter = "0815471100"
-#region = "eu12"
-region = "us10"
+region = "eu12"
+#region = "us10"
