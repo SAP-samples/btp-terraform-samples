@@ -34,7 +34,7 @@ module "cloudfoundry_environment" {
     cloudfoundry_org_name = replace(lower(replace("${each.value.name}", "/\\W|_|\\s/" , "_")), "__", "_")
 }
 
-
+/*
 ###
 # Add entitlements to each subaccount
 ###
@@ -46,4 +46,4 @@ resource "btp_subaccount_entitlement" "all_entitlements" {
     service_name  = each.value.service_name
     plan_name     = each.value.plan_name
 }
-
+*/
