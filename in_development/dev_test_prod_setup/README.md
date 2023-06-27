@@ -2,7 +2,7 @@
 
 ## Overview
 
-This use case is based on the one defined in the [subaccount_dev_setup](./../../released/subaccount_dev_setup) use case.
+This use case is based on the one defined in the [subaccount_dev_setup](../../released/subaccount_dev_setup) use case.
 
 In addition the sample shows how to create a dev, test, production landscape for that use case.
 
