@@ -20,7 +20,7 @@ resource "btp_subaccount" "project" {
 # Creation of Cloud Foundry environment
 ###
 module "cloudfoundry_environment" {
-  source = "./modules/envinstance-cloudfoundry/"
+  source = "../modules/envinstance-cloudfoundry/"
 
   subaccount_id         = btp_subaccount.project.id
   instance_name         = local.project_subaccount_cf_org
