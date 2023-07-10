@@ -1,0 +1,32 @@
+{
+	"name": "Terraform provider for SAP BTP - Development (with env file)",
+	"image": "mcr.microsoft.com/devcontainers/base:debian",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/terraform:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"HashiCorp.terraform"
+			]
+		},
+		"codespaces": {}
+	},
+	"hostRequirements": {
+		"memory": "4gb"
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	"remoteUser": "vscode",
+	// This devcontainer expects a file named .devcontainer/devcontainer.env to exist.
+	// you should place the following environment variables in that file:
+	// - BTP_USERNAME
+	// - BTP_PASSWORD
+	"runArgs": [
+		"--env-file",
+		".devcontainer/devcontainer.env"
+	]
+}

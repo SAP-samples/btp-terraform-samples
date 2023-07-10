@@ -1,3 +1,8 @@
+# Terraform specific local files
 .terraform*
 terraform.tfstate*
 *.log
+
+
+# Any kind of invironment variables
+*.env
