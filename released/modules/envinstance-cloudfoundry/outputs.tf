@@ -3,6 +3,11 @@ output "id" {
   description = "The technical ID of the Cloud Foundry environment instance."
 }
 
+output "org_name" {
+  value       = btp_subaccount_environment_instance.cloudfoundry.name
+  description = "The org name of the Cloud Foundry environment instance."
+}
+
 output "org_id" {
   value       = btp_subaccount_environment_instance.cloudfoundry.platform_id 
   description = "The technical ID of the Cloud Foundry environment instance."
