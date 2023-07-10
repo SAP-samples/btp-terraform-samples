@@ -2,7 +2,7 @@
 #    team            = "DBS.PC.ERP.DT.SAP-TIFM@test.com"
 
 ###
-# Possible values for entering the business unit of Deutsche Bahn
+# Possible values for entering the business unit
 ###
 variable "unit" {
   type        = string
@@ -16,21 +16,7 @@ variable "unit" {
 }
 
 ###
-# Possible values for entering the business unit of Deutsche Bahn
-###
-variable "product_group" {
-  type        = string
-  description = "Defines the product group of the sub account."
-  default     = "IAM"
-
-  validation {
-    condition = can(regex("^[a-zA-Z0-9_]", var.product_group))
-    error_message = "Please select a valid org name for the project account."
-  }
-}
-
-###
-# Possible values for entering the short name business unit of Deutsche Bahn
+# Possible values for entering the short name business unit
 ###
 variable "unit_shortname" {
   type        = string
@@ -52,7 +38,7 @@ variable "architect" {
   description = "Defines the email address of the architect for the subaccount"
 
   validation {
-    condition     = can(regex("(@deutschebahn.com|@test.com)$", var.architect))    
+    condition     = can(regex("(@yourorg.com|@test.com)$", var.architect))    
     error_message = "Please enter a valid email address for the architect of the subaccount."
   }
 }
@@ -101,7 +87,7 @@ variable "owner" {
   default     = "jane.doe@test.com"
 
   validation {
-    condition     = can(regex("(@apple.com|@test.com)$", var.owner))
+    condition     = can(regex("(@yourorg.com|@test.com)$", var.owner))
     error_message = "Please enter a valid email address for the owner of the sub account."
   }
 }
@@ -115,7 +101,7 @@ variable "team" {
   default     = "sap.team@test.com"
 
   validation {
-    condition     = can(regex("(@apple.com|@test.com)$", var.team))    
+    condition     = can(regex("(@yourorg.com|@test.com)$", var.team))    
     error_message = "Please enter a valid email address for the team of the sub account."
   }
 }
