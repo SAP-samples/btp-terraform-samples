@@ -1,5 +1,5 @@
 {
-	"name": "Terraform provider for SAP BTP - Development (with env file)",
+	"name": "Terraform provider for SAP BTP - with env file",
 	"image": "mcr.microsoft.com/devcontainers/base:debian",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
