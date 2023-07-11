@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node node_modules/@sap/approuter/approuter.js"
   },
-  "author": "christian.volk@sap.com",
   "license": "Apache-2.0",
   "dependencies": {
     "@sap/approuter": "^14.1.2"

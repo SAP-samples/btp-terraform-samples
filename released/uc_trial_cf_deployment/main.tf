@@ -13,7 +13,7 @@ data "cloudfoundry_domain" "cfapps" {
 }
 
 resource "random_id" "suffix" {
-  byte_length=1
+  byte_length=4
 }
 
 resource "cloudfoundry_route" "helloterraform" {
@@ -31,11 +31,11 @@ resource "cloudfoundry_service_instance" "helloterraform_xsuaa" {
   space        = data.cloudfoundry_space.dev.id
   service_plan = data.cloudfoundry_service.xsuaa.service_plans["application"]
   json_params = jsonencode({
-    xsappname   = "helloterraform-123"
+    xsappname   = "helloterraform-${random_id.suffix.hex}"
     tenant-mode = "shared"
     scopes = [
       {
-        name        = "helloterraform-123.Display"
+        name        = "helloterraform-${random_id.suffix.hex}.Display"
         description = "Display"
       },
     ]
@@ -44,7 +44,7 @@ resource "cloudfoundry_service_instance" "helloterraform_xsuaa" {
         name        = "Viewer"
         description = ""
         scope-references = [
-          "helloterraform-123.Display"
+          "helloterraform-${random_id.suffix.hex}.Display"
         ]
       }
     ]
