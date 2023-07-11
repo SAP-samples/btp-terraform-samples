@@ -13,7 +13,7 @@ data "cloudfoundry_domain" "cfapps" {
 }
 
 resource "random_id" "suffix" {
-  byte_length=4
+  byte_length = 4
 }
 
 resource "cloudfoundry_route" "helloterraform" {
@@ -56,7 +56,7 @@ resource "cloudfoundry_app" "helloterraform" {
   name      = "helloterraform"
   buildpack = "nodejs_buildpack"
   memory    = 512
-  path      = zipper_file.helloterraform.output_path
+  path      = data.archive_file.helloterraform.output_path
 
   routes {
     route = cloudfoundry_route.helloterraform.id
@@ -67,8 +67,8 @@ resource "cloudfoundry_app" "helloterraform" {
   }
 }
 
-resource "zipper_file" "helloterraform" {
-  type        = "local"
-  source      = "./assets/helloterraformapp"
+data "archive_file" "helloterraform" {
+  type        = "zip"
+  source_dir  = "./assets/helloterraformapp"
   output_path = "./assets/helloterraform.zip"
 }

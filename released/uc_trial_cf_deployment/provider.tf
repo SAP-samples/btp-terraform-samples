@@ -8,10 +8,6 @@ terraform {
       source  = "cloudfoundry-community/cloudfoundry"
       version = "0.50.8"
     }
-    zipper = {
-      source  = "ArthurHlt/zipper"
-      version = "0.14.0"
-    }
   }
 }
 
@@ -23,5 +19,3 @@ provider "btp" {
 provider "cloudfoundry" {
   api_url = module.trialaccount.cloudfoundry.api_endpoint
 }
-
-provider "zipper" {}
