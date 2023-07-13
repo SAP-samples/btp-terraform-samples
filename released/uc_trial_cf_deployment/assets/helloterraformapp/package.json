@@ -1,0 +1,13 @@
+{
+  "name": "helloterraformapp",
+  "version": "1.0.0",
+  "description": "Yet another hello world app.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node node_modules/@sap/approuter/approuter.js"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@sap/approuter": "^14.1.2"
+  }
+}
