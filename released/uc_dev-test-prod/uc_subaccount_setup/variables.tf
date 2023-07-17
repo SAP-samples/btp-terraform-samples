@@ -53,7 +53,7 @@ variable "custom_idp" {
 
   validation {
     condition = can(regex("^[a-z-]", var.custom_idp))
-    error_message = "Please enter a valid email address for the architect of the subaccount."
+    error_message = "Please enter a valid entry for the custom-idp of the subaccount."
   }
 }
 
@@ -74,7 +74,7 @@ variable "costcenter" {
 
   validation {
     condition = can(regex("^[0-9]{10}$", var.costcenter))
-    error_message = "Please enter a valid costcenter for the architect."
+    error_message = "Please enter a valid costcenter for the business unit."
   }
 }
 
