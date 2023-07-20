@@ -1,5 +1,5 @@
 locals{
-  landscapes       = ["DEV"]
+  landscapes       = ["DEV", "TST", "PRD"]
   unit             = "Test"
   unit_shortname   = "tst"
   architect        = "jane.doe@test.com"
