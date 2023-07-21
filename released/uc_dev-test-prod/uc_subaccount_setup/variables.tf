@@ -1,6 +1,3 @@
-#    owner           = "jane.doe@test.com"
-#    team            = "DBS.PC.ERP.DT.SAP-TIFM@test.com"
-
 ###
 # Possible values for entering the business unit
 ###
