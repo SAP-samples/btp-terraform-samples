@@ -13,10 +13,10 @@ resource "btp_directory" "parent" {
 module "project_setup" {
 
   for_each = toset("${var.landscapes}")
-    source    = "./uc_subaccount_setup/"
+    source              = "./uc_subaccount_setup/"
 
-    stage     = each.value
-    region    = "${var.region}"
+    stage               = each.value
+    region              = "${var.region}"
 
     unit                = "${var.unit}"
     unit_shortname      = "${var.unit_shortname}"
@@ -27,4 +27,5 @@ module "project_setup" {
     custom_idp          = "${var.custom_idp}"
     emergency_admins    = "${var.emergency_admins}"
     parent_directory_id = btp_directory.parent.id
+
 }

@@ -2,7 +2,6 @@
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain where the sub account shall be created."
-  default     = "us10"
 }
 
 variable "cli_server_url" {
