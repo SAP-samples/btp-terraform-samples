@@ -4,9 +4,11 @@
 # Your global account subdomain
 globalaccount   = "terraformdemocanary"
 # region
-region          = "eu12"
-# can be commented out to use the default btp CLI server URL
-cli_server_url  = "https://cpcli.cf.sap.hana.ondemand.com"
+region          = "us10"
+
+# Usage within sap canary landscape
+# region          = "eu12"
+# cli_server_url  = "https://cpcli.cf.sap.hana.ondemand.com"
 
 #################################
 # Project specific configuration
