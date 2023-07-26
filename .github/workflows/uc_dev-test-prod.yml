@@ -1,0 +1,65 @@
+name: Run use case - Setup dev/test/prod landscape
+
+on:
+  workflow_dispatch:
+
+    inputs:
+          UNIT:
+            description: "Your Business unit"
+            required: true
+            type: choice
+            options:
+              - Research
+              - Purchase
+              - Test
+            default: "Research"
+          GLOBALACCOUNT:
+            description: "Your Global account subdomain"
+            required: true
+          REGION:
+            description: "Region for the sub account"
+            default: "us10"
+            required: true
+          IDP_TENANT:
+            description: "Your IDP tenant"
+            default: "xxxxxxx.accounts.ondemand.com"
+            required: true
+
+env:
+  # Source repo with code
+  GITHUB_SAMPLES_REPO: https://github.com/SAP-samples/btp-terraform-samples
+  # Folder in source repo containing the Terraform scripts
+  GITHUB_SAMPLES_FOLDER: released/uc_dev-test-prod
+  # folder created by GitHub automatically within Docker container)!
+  FOLDER_REPO: /__w/
+  # Folder name within container for cloned GitHub repo
+  FOLDER_CLONED_CODE: code
+  # Credentials used by the Terraform script
+  BTP_USERNAME: ${{ secrets.BTP_USERNAME }}
+  BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+  CF_USER: ${{ secrets.BTP_USERNAME }}
+  CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+
+jobs:
+  setup_infrastructure:
+    name: Run Terraform script
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get code from External repo
+      run: |
+        git clone ${{ env.GITHUB_SAMPLES_REPO }} ${{ env.FOLDER_CLONED_CODE }}
+        cd ${{ env.FOLDER_CLONED_CODE }}/
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+    - name: Terraform Init
+      id: init
+      working-directory:  "${{ env.FOLDER_CLONED_CODE }}/${{env.GITHUB_SAMPLES_FOLDER}}"
+      shell: bash
+      run: terraform init
+    - name: Terraform Apply
+      id: terraform_apply
+      working-directory:  "${{ env.FOLDER_CLONED_CODE }}/${{env.GITHUB_SAMPLES_FOLDER}}"
+      shell: bash
+      run: terraform apply -var='custom_idp=${{github.event.inputs.IDP_TENANT}}' -var='globalaccount=${{github.event.inputs.GLOBALACCOUNT}}' -var='region=${{github.event.inputs.REGION}}' -var='unit=${{github.event.inputs.UNIT}}' -auto-approve
