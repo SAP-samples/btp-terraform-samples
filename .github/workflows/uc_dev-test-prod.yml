@@ -1,4 +1,4 @@
-name: Run use case - Setup dev/test/prod landscape
+name: UC - Setup dev/test/prod landscape
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ on:
             required: true
           IDP_TENANT:
             description: "Your IDP tenant"
-            default: "xxxxxxx.accounts.ondemand.com"
+            default: "alv7kqzip.accounts.ondemand.com"
             required: true
 
 env:
@@ -45,21 +45,13 @@ jobs:
     name: Run Terraform script
     runs-on: ubuntu-latest
     steps:
-    - name: Get code from External repo
+    - name: Set up Git repository
+      uses: actions/checkout@v3
+    - name: Terraform Run
+      id: init
+      shell: bash
       run: |
         git clone ${{ env.GITHUB_SAMPLES_REPO }} ${{ env.FOLDER_CLONED_CODE }}
-        cd ${{ env.FOLDER_CLONED_CODE }}/
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_wrapper: false
-    - name: Terraform Init
-      id: init
-      working-directory:  "${{ env.FOLDER_CLONED_CODE }}/${{env.GITHUB_SAMPLES_FOLDER}}"
-      shell: bash
-      run: terraform init
-    - name: Terraform Apply
-      id: terraform_apply
-      working-directory:  "${{ env.FOLDER_CLONED_CODE }}/${{env.GITHUB_SAMPLES_FOLDER}}"
-      shell: bash
-      run: terraform apply -var='custom_idp=${{github.event.inputs.IDP_TENANT}}' -var='globalaccount=${{github.event.inputs.GLOBALACCOUNT}}' -var='region=${{github.event.inputs.REGION}}' -var='unit=${{github.event.inputs.UNIT}}' -auto-approve
+        cd  "${{ env.FOLDER_CLONED_CODE }}/${{env.GITHUB_SAMPLES_FOLDER}}"
+        terraform init
+        terraform apply -var='custom_idp=${{github.event.inputs.IDP_TENANT}}' -var='globalaccount=${{github.event.inputs.GLOBALACCOUNT}}' -var='region=${{github.event.inputs.REGION}}' -var='unit=${{github.event.inputs.UNIT}}' -auto-approve
