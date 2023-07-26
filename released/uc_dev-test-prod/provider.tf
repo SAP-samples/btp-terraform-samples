@@ -2,9 +2,7 @@ terraform {
   required_providers {
     btp = {
       source  = "SAP/btp"
-      # at least 0.2.0 is needed as the script requires capabilities that
-      # are not available in previous releases
-      version = "0.2.0-beta1"
+      version = "0.2.0-beta2"
     }
   }
 }

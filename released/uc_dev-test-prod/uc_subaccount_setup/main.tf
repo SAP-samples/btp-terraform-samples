@@ -20,10 +20,8 @@ resource "btp_subaccount" "project" {
                 "owner": ["${var.owner}"], 
                 "team": ["${var.team}"]
               }
-  # Will be available in v0.2.0
-  #used_for_production = "true"
+  used_for_production = "true"
 
-  # Will be available in version after v0.1.0 or use local build of TF provider for SAP BTP (run `make install` in root folder of TF provider)
   parent_id = "${var.parent_directory_id}"
 }
 
