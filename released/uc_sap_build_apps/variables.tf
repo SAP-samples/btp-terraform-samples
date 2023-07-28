@@ -32,3 +32,9 @@ variable "emergency_admins" {
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
+
+variable "cf_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to each subaccount as emergency administrators."
+  default     = ["rui.nogueira@sap.com"]
+}

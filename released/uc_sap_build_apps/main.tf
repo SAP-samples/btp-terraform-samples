@@ -2,8 +2,8 @@
 # Setup of names in accordance to naming convention
 ###############################################################################################
 locals {
-  project_subaccount_name   = "My SAP Build Apps"
-  project_subaccount_domain = "build-apps-202307281"
+  project_subaccount_name   = "My SAP Build Apps 2"
+  project_subaccount_domain = "buildapps202307281"
   project_subaccount_cf_org = local.project_subaccount_domain
   project_subaccount_cf_space = "development"
 }
@@ -35,7 +35,6 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
   subaccount_id     = btp_subaccount.project.id
   identity_provider = var.custom_idp
 }
-
 ###############################################################################################
 # Setup Cloudfoundry environment
 ###############################################################################################
@@ -46,15 +45,17 @@ module "cloudfoundry_environment" {
   instance_name         = local.project_subaccount_cf_org
   cloudfoundry_org_name = local.project_subaccount_cf_org
 }
+
 # Create Cloud Foundry space and assign users
 module "cloudfoundry_space" {
   source              = "../modules/cloudfoundry-space/"
   cf_org_id           = module.cloudfoundry_environment.org_id
-  name                = local.project_subaccount_cf_space
-  cf_space_managers   = var.emergency_admins
-  cf_space_developers = var.emergency_admins
-  cf_space_auditors   = var.emergency_admins
+  name                = "development"
+  cf_space_managers   = var.cf_admins
+  cf_space_developers = var.cf_admins
+  cf_space_auditors   = var.cf_admins
 }
+
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Apps
@@ -72,10 +73,10 @@ module "sap-build-apps_standard" {
     subaccount_domain         = btp_subaccount.project.subdomain
     region                    = var.region
     custom_idp                = var.custom_idp
-    users_BuildAppsAdmin      = var.emergency_admins
-    users_BuildAppsDeveloper  = var.emergency_admins
-    users_RegistryAdmin       = var.emergency_admins
-    users_RegistryDeveloper   = var.emergency_admins
+    users_BuildAppsAdmin      = var.cf_admins
+    users_BuildAppsDeveloper  = var.cf_admins
+    users_RegistryAdmin       = var.cf_admins
+    users_RegistryDeveloper   = var.cf_admins
     depends_on                = [btp_subaccount_entitlement.sap_build_apps]
 }
 
@@ -109,13 +110,14 @@ module "setup_cf_service_destination" {
             URL = "https://${local.project_subaccount_domain}.cr1.${var.region}.apps.build.cloud.sap/"
             ProxyType = "Internet"
             Authentication = "NoAuthentication"
-#            HTML5.ForwardAuthToken' = true
+            "HTML5.ForwardAuthToken" = true
           }
         ]
       }
     }
   })
 }
+
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Workzone, standard edition
