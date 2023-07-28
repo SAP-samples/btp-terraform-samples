@@ -32,30 +32,3 @@ variable "emergency_admins" {
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
-
-variable "entitlements" {
-  description = "List of entitlements for a BTP subaccount"
-    type = list(object({
-      name = string
-      plan = string
-      type = string
-  }))
-
-  default = [
-    {
-      name = "destination"
-      plan = "lite"
-      type = "service"
-    },
-    {
-      name = "SAPLaunchpad"
-      plan = "standard"
-      type = "subscription"
-    },
-    {
-      name = "sap-build-apps"
-      plan = "standard"
-      type = "subscription"
-    }
-  ]
-}

@@ -2,9 +2,10 @@
 # Setup of names in accordance to naming convention
 ###############################################################################################
 locals {
-  project_subaccount_name   = "My SAP Build Apps 2"
-  project_subaccount_domain = "build-apps-20230728"
+  project_subaccount_name   = "My SAP Build Apps"
+  project_subaccount_domain = "build-apps-202307281"
   project_subaccount_cf_org = local.project_subaccount_domain
+  project_subaccount_cf_space = "development"
 }
 
 ###############################################################################################
@@ -36,23 +37,23 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 }
 
 ###############################################################################################
-# Creation of Cloud Foundry environment
+# Setup Cloudfoundry environment
 ###############################################################################################
+# Creation of Cloud Foundry environment
 module "cloudfoundry_environment" {
-  source = "github.com/SAP-samples/btp-terraform-samples/released/modules/envinstance-cloudfoundry/"
+  source                = "../modules/envinstance-cloudfoundry/"
   subaccount_id         = btp_subaccount.project.id
   instance_name         = local.project_subaccount_cf_org
   cloudfoundry_org_name = local.project_subaccount_cf_org
 }
-
-###############################################################################################
-# Prepare and setup service: destination
-###############################################################################################
-# Entitle subaccount for usage of service destination
-resource "btp_subaccount_entitlement" "destination" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "destination"
-  plan_name     = "lite"
+# Create Cloud Foundry space and assign users
+module "cloudfoundry_space" {
+  source              = "../modules/cloudfoundry-space/"
+  cf_org_id           = module.cloudfoundry_environment.org_id
+  name                = local.project_subaccount_cf_space
+  cf_space_managers   = var.emergency_admins
+  cf_space_developers = var.emergency_admins
+  cf_space_auditors   = var.emergency_admins
 }
 
 ###############################################################################################
@@ -76,6 +77,44 @@ module "sap-build-apps_standard" {
     users_RegistryAdmin       = var.emergency_admins
     users_RegistryDeveloper   = var.emergency_admins
     depends_on                = [btp_subaccount_entitlement.sap_build_apps]
+}
+
+
+###############################################################################################
+# Prepare and setup service: destination
+###############################################################################################
+# Entitle subaccount for usage of service destination
+resource "btp_subaccount_entitlement" "destination" {
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "destination"
+  plan_name     = "lite"
+}
+
+module "setup_cf_service_destination" {
+  depends_on = [module.sap-build-apps_standard, btp_subaccount_entitlement.destination]
+  source              = "../modules/cloudfoundry-service-instance/"
+  cf_space_id         = module.cloudfoundry_space.id
+  service_name        = "destination"
+  plan_name           = "lite"
+  parameters = jsonencode({
+    HTML5Runtime_enabled = true
+    init_data = {
+      subaccount = {
+        existing_destinations_policy = "update"
+        destinations = [
+          {
+            Name = "SAP-Build-Apps-Runtime"
+            Type = "HTTP"
+            Description = "Endpoint to SAP Build Apps runtime"
+            URL = "https://${local.project_subaccount_domain}.cr1.${var.region}.apps.build.cloud.sap/"
+            ProxyType = "Internet"
+            Authentication = "NoAuthentication"
+#            HTML5.ForwardAuthToken' = true
+          }
+        ]
+      }
+    }
+  })
 }
 
 ###############################################################################################
