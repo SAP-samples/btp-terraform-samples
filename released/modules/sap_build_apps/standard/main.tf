@@ -5,24 +5,17 @@ resource "btp_subaccount_subscription" "sap-build-apps_standard" {
   plan_name     = "standard"
 }
 
-# Get all roles in the subaccount
-data "btp_subaccount_roles" "all" {
+module "read_roles" {
+  source = "../read_roles"
   subaccount_id = var.subaccount_id
   depends_on    = [btp_subaccount_subscription.sap-build-apps_standard]
 }
 
-# Select those roles needed for the creation of the Role Collections
-# for SAP Build Apps
-locals {
-  role_details_sap_build_tools = {
-    for name, role in data.btp_subaccount_roles.all.values : name => role 
-    if contains(toset(var.for_sap_build_apps_roles_to_create), role.name)
-  }
-}
-
 # Create the role collections and assign them to the respective role
 resource "btp_subaccount_role_collection" "sap-build-apps_standard" {
-  for_each = local.role_details_sap_build_tools
+
+  for_each = module.read_roles.sap_build_apps_role_list
+
       subaccount_id = var.subaccount_id
       name          = each.value.name
       description   = "Role collection ${each.value.name} for SAP Build Apps"
