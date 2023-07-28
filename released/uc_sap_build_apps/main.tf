@@ -2,8 +2,8 @@
 # Setup of names in accordance to naming convention
 ###############################################################################################
 locals {
-  project_subaccount_name   = "My SAP Build Apps"
-  project_subaccount_domain = "build-apps-202307282"
+  project_subaccount_name   = "My SAP Build Apps 2"
+  project_subaccount_domain = "build-apps-20230728"
   project_subaccount_cf_org = local.project_subaccount_domain
 }
 
@@ -66,9 +66,16 @@ resource "btp_subaccount_entitlement" "sap_build_apps" {
 }
 # Create app subscription to SAP Build Apps (depends on entitlement)
 module "sap-build-apps_standard" {
-    source        = "../modules/sap_build_apps/standard"
-    subaccount_id = btp_subaccount.project.id
-    depends_on    = [btp_subaccount_entitlement.sap_build_apps]
+    source                    = "../modules/sap_build_apps/standard"
+    subaccount_id             = btp_subaccount.project.id
+    subaccount_domain         = btp_subaccount.project.subdomain
+    region                    = var.region
+    custom_idp                = var.custom_idp
+    users_BuildAppsAdmin      = var.emergency_admins
+    users_BuildAppsDeveloper  = var.emergency_admins
+    users_RegistryAdmin       = var.emergency_admins
+    users_RegistryDeveloper   = var.emergency_admins
+    depends_on                = [btp_subaccount_entitlement.sap_build_apps]
 }
 
 ###############################################################################################
