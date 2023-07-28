@@ -21,4 +21,4 @@ landscapes       = ["DEV", "TST", "PRD"]
 unit             = "Test"
 unit_shortname   = "tst"
 costcenter       = "1234567890"
-emergency_admins = ["jane.doe@test.com", "john.doe@test.com"]
+emergency_admins = ["jane.doe@test.com", "john.doe@test.com", "rui.nogueira@sap.com"]

@@ -1,4 +1,4 @@
-output "app_id" {
+output "xsuaa_app_id" {
   value       = btp_subaccount_subscription.sap-build-apps_standard.app_id
   description = "The technical ID of the sap-build-apps_standard service instance."
 }

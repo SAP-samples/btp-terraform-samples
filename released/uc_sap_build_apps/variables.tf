@@ -43,8 +43,13 @@ variable "entitlements" {
 
   default = [
     {
+      name = "destination"
+      plan = "lite"
+      type = "service"
+    },
+    {
       name = "SAPLaunchpad"
-      plan = "free"
+      plan = "standard"
       type = "subscription"
     },
     {
