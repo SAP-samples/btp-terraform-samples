@@ -85,3 +85,9 @@ variable "users_RegistryDeveloper" {
   description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
+
+variable "api_endpoint"{
+  type        = string
+  description = "The CF API endpoint URL"
+  default     = "https://api.cf.us10.hana.ondemand.com"
+}

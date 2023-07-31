@@ -51,6 +51,8 @@ module "cloudfoundry_environment" {
 module "cloudfoundry_space" {
   source              = "../modules/cloudfoundry-space/"
   cf_org_id           = module.cloudfoundry_environment.org_id
+  api_url             = module.cloudfoundry_environment.api_endpoint
+  region              = var.region
   name                = var.subaccount_cf_space
   cf_space_managers   = var.cf_space_managers
   cf_space_developers = var.cf_space_developers

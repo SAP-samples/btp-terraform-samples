@@ -3,7 +3,7 @@
 #################################
 # Your global account subdomain
 globalaccount   = "ticrossa"
-region          = "eu10"
+region          = "us10"
 custom_idp      = "alv7kqzip.accounts.ondemand.com"
 
 ####################################
@@ -18,7 +18,7 @@ custom_idp      = "alv7kqzip.accounts.ondemand.com"
 # Project specific configuration
 #################################
 # Account setup
-subaccount_name             = "My SAP Build Apps2"
+subaccount_name             = "My SAP Build Apps5"
 subaccount_cf_space         = "development"
 # User
 emergency_admins            = ["jane.doe@test.com", "john.doe@test.com"]

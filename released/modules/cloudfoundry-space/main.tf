@@ -3,7 +3,7 @@
 ###
 resource "cloudfoundry_space" "space" {
   name = var.name
-  org = var.cf_org_id
+  org  = var.cf_org_id
 }
 
 ###
