@@ -1,18 +1,17 @@
 ###############################################################################################
-# Setup of names in accordance to naming convention
+# Setup subaccount domain and the CF org (to ensure uniqueness in BTP global account)
 ###############################################################################################
 locals {
-  project_subaccount_name   = "My SAP Build Apps"
-  project_subaccount_domain = "buildapps20230731"
-  project_subaccount_cf_org = local.project_subaccount_domain
-  project_subaccount_cf_space = "development"
+  random_uuid = uuid()
+  project_subaccount_domain = "buildapps${local.random_uuid}"
+  project_subaccount_cf_org = replace("${local.project_subaccount_domain}", "-", "_")
 }
 
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
-  name      = local.project_subaccount_name
+  name      = var.subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
   usage = "USED_FOR_PRODUCTION"
@@ -105,7 +104,7 @@ module "setup_cf_service_destination" {
             Name = "SAP-Build-Apps-Runtime"
             Type = "HTTP"
             Description = "Endpoint to SAP Build Apps runtime"
-            URL = "https://${local.project_subaccount_domain}.cr1.${var.region}.apps.build.cloud.sap/"
+            URL = "https://${var.subaccount_domain}.cr1.${var.region}.apps.build.cloud.sap/"
             ProxyType = "Internet"
             Authentication = "NoAuthentication"
             "HTML5.ForwardAuthToken" = true

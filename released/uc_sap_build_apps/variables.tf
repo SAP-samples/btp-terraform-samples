@@ -1,7 +1,18 @@
-
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain where the sub account shall be created."
+}
+
+variable "subaccount_name" {
+  type        = string
+  description = "The subaccount name."
+  default     = "My SAP Build Apps subaccount."
+}
+
+variable "subaccount_cf_space" {
+  type        = string
+  description = "The subaccount domain."
+  default     = "development"
 }
 
 variable "cli_server_url" {
