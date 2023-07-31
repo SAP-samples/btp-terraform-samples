@@ -72,7 +72,6 @@ module "sap-build-apps_standard" {
     subaccount_id             = btp_subaccount.project.id
     subaccount_domain         = btp_subaccount.project.subdomain
     region                    = var.region
-    custom_idp                = var.custom_idp
     custom_idp_origin         = btp_subaccount_trust_configuration.fully_customized.origin
 
     users_BuildAppsAdmin      = var.users_BuildAppsAdmin

@@ -34,7 +34,7 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsAdmin"
       subaccount_id = var.subaccount_id
       role_collection_name = "BuildAppsAdmin"
       user_name            = each.value
-      origin               = var.custom_idp
+      origin               = var.custom_idp_origin
 }
 
 ###############################################################################################
@@ -60,7 +60,7 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsDevelo
       subaccount_id = var.subaccount_id
       role_collection_name = "BuildAppsDeveloper"
       user_name            = each.value
-      origin               = var.custom_idp
+      origin               = var.custom_idp_origin
 }
 
 ###############################################################################################
@@ -86,7 +86,7 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryAdmin" 
       subaccount_id = var.subaccount_id
       role_collection_name = "RegistryAdmin"
       user_name            = each.value
-      origin               = var.custom_idp
+      origin               = var.custom_idp_origin
 }
 
 ###############################################################################################

@@ -9,16 +9,16 @@ custom_idp      = "alv7kqzip.accounts.ondemand.com"
 ####################################
 # Usage within sap canary landscape
 ####################################
-#globalaccount   = "terraformdemocanary"
-#region          = "eu12"
-#cli_server_url  = "https://cpcli.cf.sap.hana.ondemand.com"
-#custom_idp      = "terraformint.accounts400.ondemand.com"
+globalaccount   = "terraformdemocanary"
+region          = "eu12"
+cli_server_url  = "https://cpcli.cf.sap.hana.ondemand.com"
+custom_idp      = "terraformint.accounts400.ondemand.com"
 
 #################################
 # Project specific configuration
 #################################
 # Account setup
-subaccount_name             = "My SAP Build Apps 2"
+subaccount_name             = "My SAP Build Apps"
 subaccount_cf_space         = "development"
 # User
 emergency_admins            = ["jane.doe@test.com", "john.doe@test.com"]

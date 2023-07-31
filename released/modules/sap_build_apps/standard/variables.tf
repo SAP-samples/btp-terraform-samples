@@ -23,23 +23,11 @@ variable "users_RegistryDeveloper"{
   description = "Users to get role of RegistryDeveloper"
 }
 
-variable "custom_idp" {
-  type        = string
-  description = "Defines the custom IDP to be used for the role collection"
-  default = "terraformint"
-
-  validation {
-    condition = can(regex("^[a-z-]", var.custom_idp))
-    error_message = "Please enter a valid entry for the custom-idp for the role collection."
-  }
-}
-
 variable "custom_idp_origin" {
   type        = string
-  description = "Defines the custom IDP origin"
+  description = "Defines the custom IDP origin for the role collection"
   default = "sap.custom"
 }
-
 
 variable "subaccount_domain" {
   type = string
