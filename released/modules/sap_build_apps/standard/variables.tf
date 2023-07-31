@@ -34,6 +34,13 @@ variable "custom_idp" {
   }
 }
 
+variable "custom_idp_origin" {
+  type        = string
+  description = "Defines the custom IDP origin"
+  default = "sap.custom"
+}
+
+
 variable "subaccount_domain" {
   type = string
   description = "The subaccount domain."

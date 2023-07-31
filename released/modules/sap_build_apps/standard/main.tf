@@ -37,7 +37,6 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsAdmin"
       origin               = var.custom_idp
 }
 
-
 ###############################################################################################
 # Setup for role collection BuildAppsDeveloper
 ###############################################################################################
@@ -113,5 +112,5 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryDevelop
       subaccount_id = var.subaccount_id
       role_collection_name = "RegistryDeveloper"
       user_name            = each.value
-      origin               = var.custom_idp
+      origin               = var.custom_idp_origin
 }

@@ -4,7 +4,7 @@
 locals {
   random_uuid = uuid()
   project_subaccount_domain = "buildapps${local.random_uuid}"
-  project_subaccount_cf_org = replace("${local.project_subaccount_domain}", "-", "_")
+  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""),0,32)
 }
 
 ###############################################################################################
@@ -34,6 +34,8 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
   subaccount_id     = btp_subaccount.project.id
   identity_provider = var.custom_idp
 }
+
+/*
 ###############################################################################################
 # Setup Cloudfoundry environment
 ###############################################################################################
@@ -44,7 +46,6 @@ module "cloudfoundry_environment" {
   instance_name         = local.project_subaccount_cf_org
   cloudfoundry_org_name = local.project_subaccount_cf_org
 }
-
 # Create Cloud Foundry space and assign users
 module "cloudfoundry_space" {
   source              = "../modules/cloudfoundry-space/"
@@ -54,6 +55,7 @@ module "cloudfoundry_space" {
   cf_space_developers = var.cf_space_developers
   cf_space_auditors   = var.cf_space_auditors
 }
+*/
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Apps
@@ -71,13 +73,14 @@ module "sap-build-apps_standard" {
     subaccount_domain         = btp_subaccount.project.subdomain
     region                    = var.region
     custom_idp                = var.custom_idp
+    custom_idp_origin         = btp_subaccount_trust_configuration.fully_customized.origin
+
     users_BuildAppsAdmin      = var.users_BuildAppsAdmin
     users_BuildAppsDeveloper  = var.users_BuildAppsDeveloper
     users_RegistryAdmin       = var.users_RegistryAdmin
     users_RegistryDeveloper   = var.users_RegistryDeveloper
     depends_on                = [btp_subaccount_entitlement.sap_build_apps]
 }
-
 ###############################################################################################
 # Prepare and setup service: destination
 ###############################################################################################
@@ -87,7 +90,7 @@ resource "btp_subaccount_entitlement" "destination" {
   service_name  = "destination"
   plan_name     = "lite"
 }
-
+/*
 module "setup_cf_service_destination" {
   depends_on = [module.sap-build-apps_standard, btp_subaccount_entitlement.destination]
   source              = "../modules/cloudfoundry-service-instance/"
@@ -104,7 +107,7 @@ module "setup_cf_service_destination" {
             Name = "SAP-Build-Apps-Runtime"
             Type = "HTTP"
             Description = "Endpoint to SAP Build Apps runtime"
-            URL = "https://${var.subaccount_domain}.cr1.${var.region}.apps.build.cloud.sap/"
+            URL = "https://${local.project_subaccount_cf_org}.cr1.${var.region}.apps.build.cloud.sap/"
             ProxyType = "Internet"
             Authentication = "NoAuthentication"
             "HTML5.ForwardAuthToken" = true
@@ -114,6 +117,7 @@ module "setup_cf_service_destination" {
     }
   })
 }
+*/
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Workzone, standard edition
