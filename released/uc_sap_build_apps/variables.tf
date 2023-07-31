@@ -33,8 +33,44 @@ variable "emergency_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "cf_admins" {
+variable "cf_space_managers" {
   type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as emergency administrators."
-  default     = ["rui.nogueira@sap.com"]
+  description = "Defines the colleagues who are Cloudfoundry space managers"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cf_space_developers" {
+  type        = list(string)
+  description = "Defines the colleagues who are Cloudfoundry space developers"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cf_space_auditors" {
+  type        = list(string)
+  description = "Defines the colleagues who are Cloudfoundry space auditors"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "users_BuildAppsAdmin" {
+  type        = list(string)
+  description = "Defines the colleagues who have the role of 'BuildAppsAdmin' in SAP Build Apps."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "users_BuildAppsDeveloper" {
+  type        = list(string)
+  description = "Defines the colleagues who have the role of 'BuildAppsDeveloper' in SAP Build Apps."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "users_RegistryAdmin" {
+  type        = list(string)
+  description = "Defines the colleagues who have the role of 'RegistryAdmin' in SAP Build Apps."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "users_RegistryDeveloper" {
+  type        = list(string)
+  description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }

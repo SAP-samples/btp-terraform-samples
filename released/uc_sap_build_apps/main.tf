@@ -2,8 +2,8 @@
 # Setup of names in accordance to naming convention
 ###############################################################################################
 locals {
-  project_subaccount_name   = "My SAP Build Apps 2"
-  project_subaccount_domain = "buildapps202307281"
+  project_subaccount_name   = "My SAP Build Apps"
+  project_subaccount_domain = "buildapps20230731"
   project_subaccount_cf_org = local.project_subaccount_domain
   project_subaccount_cf_space = "development"
 }
@@ -51,11 +51,10 @@ module "cloudfoundry_space" {
   source              = "../modules/cloudfoundry-space/"
   cf_org_id           = module.cloudfoundry_environment.org_id
   name                = "development"
-  cf_space_managers   = var.cf_admins
-  cf_space_developers = var.cf_admins
-  cf_space_auditors   = var.cf_admins
+  cf_space_managers   = var.cf_space_managers
+  cf_space_developers = var.cf_space_developers
+  cf_space_auditors   = var.cf_space_auditors
 }
-
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Apps
@@ -73,13 +72,12 @@ module "sap-build-apps_standard" {
     subaccount_domain         = btp_subaccount.project.subdomain
     region                    = var.region
     custom_idp                = var.custom_idp
-    users_BuildAppsAdmin      = var.cf_admins
-    users_BuildAppsDeveloper  = var.cf_admins
-    users_RegistryAdmin       = var.cf_admins
-    users_RegistryDeveloper   = var.cf_admins
+    users_BuildAppsAdmin      = var.users_BuildAppsAdmin
+    users_BuildAppsDeveloper  = var.users_BuildAppsDeveloper
+    users_RegistryAdmin       = var.users_RegistryAdmin
+    users_RegistryDeveloper   = var.users_RegistryDeveloper
     depends_on                = [btp_subaccount_entitlement.sap_build_apps]
 }
-
 
 ###############################################################################################
 # Prepare and setup service: destination
@@ -117,7 +115,6 @@ module "setup_cf_service_destination" {
     }
   })
 }
-
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Workzone, standard edition
