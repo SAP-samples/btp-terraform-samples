@@ -35,7 +35,7 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
   identity_provider = var.custom_idp
 }
 
-/*
+
 ###############################################################################################
 # Setup Cloudfoundry environment
 ###############################################################################################
@@ -46,16 +46,17 @@ module "cloudfoundry_environment" {
   instance_name         = local.project_subaccount_cf_org
   cloudfoundry_org_name = local.project_subaccount_cf_org
 }
+
 # Create Cloud Foundry space and assign users
 module "cloudfoundry_space" {
   source              = "../modules/cloudfoundry-space/"
   cf_org_id           = module.cloudfoundry_environment.org_id
-  name                = "development"
+  name                = var.subaccount_cf_space
   cf_space_managers   = var.cf_space_managers
   cf_space_developers = var.cf_space_developers
   cf_space_auditors   = var.cf_space_auditors
 }
-*/
+
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Apps
