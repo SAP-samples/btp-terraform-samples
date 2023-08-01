@@ -18,7 +18,7 @@ custom_idp      = "alv7kqzip.accounts.ondemand.com"
 # Project specific configuration
 #################################
 # Account setup
-subaccount_name             = "My SAP Build Apps"
+subaccount_name             = "My SAP Build Apps2"
 # User
 emergency_admins            = ["jane.doe@test.com", "john.doe@test.com"]
 users_BuildAppsAdmin        = ["rui.nogueira@sap.com"]

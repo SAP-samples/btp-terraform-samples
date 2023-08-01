@@ -9,12 +9,6 @@ variable "subaccount_name" {
   default     = "My SAP Build Apps subaccount."
 }
 
-variable "subaccount_cf_space" {
-  type        = string
-  description = "The subaccount domain."
-  default     = "development"
-}
-
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
@@ -38,33 +32,9 @@ variable "region" {
   default     = "us10"
 }
 
-variable "cf_region" {
-  type        = string
-  description = "The region where the sub account shall be created in."
-  default     = "us10"
-}
-
 variable "emergency_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_managers" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space managers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_developers" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_auditors" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space auditors"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 

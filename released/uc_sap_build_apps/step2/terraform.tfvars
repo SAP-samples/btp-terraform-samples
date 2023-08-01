@@ -4,9 +4,9 @@
 
 # Enter values from outputs of step1
 region                      = "us10"
-cf_org_id                   = "71468ea2-d3a9-41a9-8dab-f502912483e5"
+cf_org_id                   = "9bed21f0-fbea-4086-a0cd-0583e65ed2c9"
 api_endpoint                = "https://api.cf.us10.hana.ondemand.com"
-subaccount_cf_org           = "buildapps9875f21c429cbd627754845"
+subaccount_cf_org           = "buildapps1c84b06839160322bf3001f"
 
 # Name of the Cloudfoundry space
 subaccount_cf_space         = "development"
