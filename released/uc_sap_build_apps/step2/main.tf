@@ -1,7 +1,7 @@
 # Create Cloud Foundry space and assign users
 module "cloudfoundry_space" {
-  source              = "../modules/cloudfoundry-space/"
-  cf_org_id           = var.cf_org_id
+  source              = "../../modules/cloudfoundry-space/"
+  cf_org_id              = var.cf_org_id
   name                = var.subaccount_cf_space
   cf_space_managers   = var.cf_space_managers
   cf_space_developers = var.cf_space_developers
@@ -9,7 +9,7 @@ module "cloudfoundry_space" {
 }
 
 module "setup_cf_service_destination" {
-  source              = "../modules/cloudfoundry-service-instance/"
+  source              = "../../modules/cloudfoundry-service-instance/"
   cf_space_id         = module.cloudfoundry_space.id
   service_name        = "destination"
   plan_name           = "lite"

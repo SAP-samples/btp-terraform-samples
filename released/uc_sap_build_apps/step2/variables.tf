@@ -1,11 +1,21 @@
-variable "org_id" {
+variable "cf_org_id" {
   type        = string
   description = "The org ID od the Cloudfoundry environment instance."
+}
+
+variable "region" {
+  type        = string
+  description = "The region of the subacccount."
 }
 
 variable "api_endpoint" {
   type        = string
   description = "The org ID od the Cloudfoundry environment instance."
+}
+
+variable "subaccount_cf_space" {
+  type        = string
+  description = "The subaccount CF space name"
 }
 
 variable "subaccount_cf_org" {
