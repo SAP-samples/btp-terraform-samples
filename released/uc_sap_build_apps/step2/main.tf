@@ -9,6 +9,7 @@ module "cloudfoundry_space" {
 }
 
 module "setup_cf_service_destination" {
+  depends_on          = [module.cloudfoundry_space]
   source              = "../../modules/cloudfoundry-service-instance/"
   cf_space_id         = module.cloudfoundry_space.id
   service_name        = "destination"
