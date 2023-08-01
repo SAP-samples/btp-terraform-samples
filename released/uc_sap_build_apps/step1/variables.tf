@@ -38,6 +38,12 @@ variable "region" {
   default     = "us10"
 }
 
+variable "cf_region" {
+  type        = string
+  description = "The region where the sub account shall be created in."
+  default     = "us10"
+}
+
 variable "emergency_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
@@ -84,10 +90,4 @@ variable "users_RegistryDeveloper" {
   type        = list(string)
   description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "api_endpoint"{
-  type        = string
-  description = "The CF API endpoint URL"
-  default     = "https://api.cf.us10.hana.ondemand.com"
 }

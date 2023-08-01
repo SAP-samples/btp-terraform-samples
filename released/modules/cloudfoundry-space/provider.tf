@@ -6,8 +6,3 @@ terraform {
     }
   }
 }
-
-// Configuration is described in https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs
-provider "cloudfoundry" {
-  api_url  = "https://api.cf.${var.region}.hana.ondemand.com"
-}

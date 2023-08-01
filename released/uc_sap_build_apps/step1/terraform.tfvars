@@ -18,14 +18,10 @@ custom_idp      = "alv7kqzip.accounts.ondemand.com"
 # Project specific configuration
 #################################
 # Account setup
-subaccount_name             = "My SAP Build Apps5"
-subaccount_cf_space         = "development"
+subaccount_name             = "My SAP Build Apps3"
 # User
 emergency_admins            = ["jane.doe@test.com", "john.doe@test.com"]
 users_BuildAppsAdmin        = ["rui.nogueira@sap.com"]
 users_BuildAppsDeveloper    = ["rui.nogueira@sap.com"]
 users_RegistryAdmin         = ["rui.nogueira@sap.com"]
 users_RegistryDeveloper     = ["rui.nogueira@sap.com"]
-cf_space_managers           = ["rui.nogueira@sap.com"]
-cf_space_developers         = ["rui.nogueira@sap.com"]
-cf_space_auditors           = ["rui.nogueira@sap.com"]

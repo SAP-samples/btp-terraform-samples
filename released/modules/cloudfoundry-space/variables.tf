@@ -9,18 +9,6 @@ variable "name" {
   default     = "dev"
 }
 
-variable "region" {
-  type        = string
-  description = "The BTP region for the Cloudfoundry instance"
-  default     = "eu10"
-}
-
-variable "api_url" {
-  type        = string
-  description = "The CF API URL"
-  default     = "https://api.cf.us10.hana.ondemand.com"
-}
-
 variable "cf_space_managers"{
   type = list(string)
   description = "The list of Cloud Foundry space managers."
