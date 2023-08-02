@@ -2,9 +2,9 @@
 # Provider configuration
 #################################
 # Your global account subdomain
-globalaccount   = "ticrossa"
+globalaccount   = "youraccount"
 region          = "us10"
-custom_idp      = "alv7kqzip.accounts.ondemand.com"
+custom_idp      = "abcdef123.accounts.ondemand.com"
 
 ####################################
 # Usage within sap canary landscape
@@ -21,7 +21,7 @@ custom_idp      = "alv7kqzip.accounts.ondemand.com"
 subaccount_name             = "My SAP Build Apps2"
 # User
 emergency_admins            = ["jane.doe@test.com", "john.doe@test.com"]
-users_BuildAppsAdmin        = ["rui.nogueira@sap.com"]
-users_BuildAppsDeveloper    = ["rui.nogueira@sap.com"]
-users_RegistryAdmin         = ["rui.nogueira@sap.com"]
-users_RegistryDeveloper     = ["rui.nogueira@sap.com"]
+users_BuildAppsAdmin        = ["jane.doe@test.com", "john.doe@test.com"]
+users_BuildAppsDeveloper    = ["jane.doe@test.com", "john.doe@test.com"]
+users_RegistryAdmin         = ["jane.doe@test.com", "john.doe@test.com"]
+users_RegistryDeveloper     = ["jane.doe@test.com", "john.doe@test.com"]
