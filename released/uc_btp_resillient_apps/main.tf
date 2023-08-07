@@ -20,7 +20,7 @@ resource "btp_subaccount" "project" {
 # Creation of Cloud Foundry environment
 ######################################################################
 module "cloudfoundry_environment" {
-  source = "../../modules/envinstance-cloudfoundry/"
+  source = "../modules/envinstance-cloudfoundry/"
   subaccount_id         = btp_subaccount.project.id
   instance_name         = local.project_subaccount_cf_org
   plan_name             = "standard"
@@ -28,10 +28,23 @@ module "cloudfoundry_environment" {
 }
 
 ######################################################################
+# Creation of Cloud Foundry space
+######################################################################
+module "cloudfoundry_space" {
+  source              = "../modules/cloudfoundry-space/"
+  cf_org_id           = module.cloudfoundry_environment.org_id
+  name                = var.subaccount_cf_space
+  cf_space_managers   = var.cf_space_managers
+  cf_space_developers = var.cf_space_developers
+  cf_space_auditors   = var.cf_space_auditors
+}
+
+
+######################################################################
 # Entitle and create app subscriptions
 ######################################################################
 module "app_subscription" {
-  source        = "../modules/app-subscription/"
+  source        = "./modules/app-subscription/"
   subaccount_id = btp_subaccount.project.id
 
   for_each   = {
@@ -43,14 +56,18 @@ module "app_subscription" {
 }
 
 ######################################################################
-# Entitle services
+# Entitle and create service instances
 ######################################################################
-resource "btp_subaccount_entitlement" "services" {
+module "service_instances" {
+  source        = "./modules/cf-service-setup/"
+  subaccount_id = btp_subaccount.project.id
+  cf_org_id     = module.cloudfoundry_environment.org_id
+
   for_each   = {
     for index, entitlement in var.entitlements:
     index => entitlement if contains(["service"], entitlement.type)
  }
-    subaccount_id = btp_subaccount.project.id
-    service_name  = each.value.service_name
-    plan_name     = each.value.plan_name
+    name        = each.value.service_name
+    plan        = each.value.plan_name
+    parameters  = each.value.parameters
 }

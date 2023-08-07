@@ -4,6 +4,7 @@
 # Your global account subdomain
 globalaccount   = "ticrossa"
 region          = "us10"
+cf_region       = "us10"
 # Usage within canary landscape
 #globalaccount   = "terraformdemocanary"
 #region          = "eu12"

@@ -4,6 +4,7 @@
 # Your global account subdomain
 globalaccount   = "ticrossa"
 region          = "us10"
+cf_api_endpoint = "https://api.cf.us10.hana.ondemand.com/"
 # Usage within canary landscape
 #globalaccount   = "terraformdemocanary"
 #region          = "eu12"
