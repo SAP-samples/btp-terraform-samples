@@ -3,7 +3,7 @@
 ###
 locals {
   random_uuid = uuid()  
-  project_subaccount_domain = "ucresilientapps${local.random_uuid}"
+  project_subaccount_domain = "teched23-tf-sap-ms-${local.random_uuid}"
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""),0,32)
 }
 
