@@ -3,7 +3,7 @@ variable "name" {
   description = "The globalaccount subdomain."
 }
 
-variable "cf_org_id"{
+variable "cf_space_id"{
     type = string
 }
 

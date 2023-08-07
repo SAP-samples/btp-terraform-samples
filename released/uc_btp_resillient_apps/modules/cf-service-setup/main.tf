@@ -12,7 +12,7 @@ resource "btp_subaccount_entitlement" "name" {
 ######################################################################
 module "create_cf_service_instance"{
   source        = "../../../modules/cloudfoundry-service-instance/"
-  cf_space_id   = var.cf_org_id
+  cf_space_id   = var.cf_space_id
   service_name  = var.name
   plan_name     = var.plan
   parameters    = var.parameters

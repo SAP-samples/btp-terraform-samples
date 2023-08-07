@@ -19,12 +19,20 @@ variable "region" {
   description = "The region where the project account shall be created in."
   default     = "us10"
 }
-# Cloudfoundry API endpoint URL
-variable "cf_api_endpoint" {
+# Cloudfoundry environment label
+variable "cf_environment_label" {
   type        = string
-  description = "The Cloudfoundry API endpoint URL"
-  default     = "https://api.cf.us10.hana.ondemand.com/"
+  description = "The Cloudfoundry environment label"
+  default     = "cf-us10"
 }
+
+# Cloudfoundry space name
+variable "cf_space_name" {
+  type        = string
+  description = "The Cloudfoundry space name"
+  default     = "development"
+}
+
 # CLI server
 variable "cli_server_url" {
   type        = string
@@ -41,13 +49,13 @@ variable "cf_space_managers" {
 variable "cf_space_developers" {
   type        = list(string)
   description = "Defines the colleagues who are Cloudfoundry space developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  default     = ["jane.doe@test.com", "john.doe@test.com", "rui.nogueira@sap.com"]
 }
 
 variable "cf_space_auditors" {
   type        = list(string)
   description = "Defines the colleagues who are Cloudfoundry space auditors"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  default     = ["jane.doe@test.com", "john.doe@test.com", "rui.nogueira@sap.com"]
 }
 
 ###
@@ -76,7 +84,7 @@ type = list(object({
                 type         = "service"
                 parameters   = null
                 environment = "cloudfoundry"
-              },
+              },/*
               {
                 service_name = "html5-apps-repo"
                 plan_name    = "app-host",
@@ -111,7 +119,7 @@ type = list(object({
                 type         = "service"
                 parameters   = null
                 environment = "cloudfoundry"
-              },/*
+              },
               {
                 service_name = "hana"
                 plan_name    = "hdi-shared",
@@ -125,7 +133,7 @@ type = list(object({
                 type         = "service"
                 parameters   = null
                 environment = "cloudfoundry"
-              },  */
+              },
               {
                 service_name = "autoscaler"
                 plan_name    = "standard",
@@ -160,6 +168,6 @@ type = list(object({
                 type         = "app"
                 parameters   = null
                 environment  = null
-              }
+              }*/
       ]
 }

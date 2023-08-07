@@ -33,7 +33,7 @@ module "cloudfoundry_environment" {
 module "cloudfoundry_space" {
   source              = "../modules/cloudfoundry-space/"
   cf_org_id           = module.cloudfoundry_environment.org_id
-  name                = var.subaccount_cf_space
+  name                = var.cf_space_name
   cf_space_managers   = var.cf_space_managers
   cf_space_developers = var.cf_space_developers
   cf_space_auditors   = var.cf_space_auditors
@@ -61,7 +61,7 @@ module "app_subscription" {
 module "service_instances" {
   source        = "./modules/cf-service-setup/"
   subaccount_id = btp_subaccount.project.id
-  cf_org_id     = module.cloudfoundry_environment.org_id
+  cf_space_id   = module.cloudfoundry_space.id
 
   for_each   = {
     for index, entitlement in var.entitlements:
