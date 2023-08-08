@@ -40,7 +40,7 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 ###############################################################################################
 # Creation of Cloud Foundry environment
 module "cloudfoundry_environment" {
-  source                = "../../modules/envinstance-cloudfoundry/"
+  source                = "../modules/envinstance-cloudfoundry/"
   subaccount_id         = btp_subaccount.project.id
   instance_name         = local.project_subaccount_cf_org
   cloudfoundry_org_name = local.project_subaccount_cf_org
@@ -57,7 +57,7 @@ resource "btp_subaccount_entitlement" "sap_build_apps" {
 }
 # Create app subscription to SAP Build Apps (depends on entitlement)
 module "sap-build-apps_standard" {
-    source                    = "../../modules/sap_build_apps/standard"
+    source                    = "../modules/sap_build_apps/standard"
     subaccount_id             = btp_subaccount.project.id
     subaccount_domain         = btp_subaccount.project.subdomain
     region                    = var.region
@@ -103,4 +103,43 @@ resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
     role_collection_name = "Launchpad_Admin"
     user_name            = each.value  
     depends_on           = [btp_subaccount_subscription.build_workzone]
+}
+
+
+# Create Cloud Foundry space and assign users
+module "cloudfoundry_space" {
+  source              = "../modules/cloudfoundry-space/"
+  cf_org_id           = module.cloudfoundry_environment.org_id
+
+  name                = var.subaccount_cf_space
+  cf_space_managers   = var.cf_space_managers
+  cf_space_developers = var.cf_space_developers
+  cf_space_auditors   = var.cf_space_auditors
+}
+
+module "setup_cf_service_destination" {
+  depends_on          = [module.cloudfoundry_space]
+  source              = "../modules/cloudfoundry-service-instance/"
+  cf_space_id         = module.cloudfoundry_space.id
+  service_name        = "destination"
+  plan_name           = "lite"
+  parameters = jsonencode({
+    HTML5Runtime_enabled = true
+    init_data = {
+      subaccount = {
+        existing_destinations_policy = "update"
+        destinations = [
+          {
+            Name = "SAP-Build-Apps-Runtime"
+            Type = "HTTP"
+            Description = "Endpoint to SAP Build Apps runtime"
+            URL = "https://${module.cloudfoundry_environment.org_name}.cr1.${var.region}.apps.build.cloud.sap/"
+            ProxyType = "Internet"
+            Authentication = "NoAuthentication"
+            "HTML5.ForwardAuthToken" = true
+          }
+        ]
+      }
+    }
+  })
 }
