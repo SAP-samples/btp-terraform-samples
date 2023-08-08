@@ -117,7 +117,41 @@ module "create_cf_service_instance_04"{
   cf_space_id   = module.cloudfoundry_space.id
   service_name  = "enterprise-messaging"
   plan_name     = "default"
-  parameters    = jsonencode({"emname": "temp","namespace": null,"version": null,"resources": null, "options": null, "rules": null, "xs-security": null})
+  parameters    = jsonencode(
+     {
+        "emname": "tfe",
+        "namespace": "tfe/bpem/em",
+        "version": "1.1.0",
+        "resources": {
+          "units": "10"
+        },
+        "options": {
+          "management": true,
+          "messagingrest": true,
+          "messaging": true
+        },
+        "rules": {
+          "queueRules": {
+            "publishFilter": [
+              "${namespace}/*"
+            ],
+            "subscribeFilter": [
+              "${namespace}/*"
+            ]
+          },
+          "topicRules": {
+            "publishFilter": [
+              "${namespace}/*"
+            ],
+            "subscribeFilter": [
+              "${namespace}/*"
+            ]
+          }
+        }
+
+
+
+  )
 }
 # application-logs
 module "create_cf_service_instance_05"{
