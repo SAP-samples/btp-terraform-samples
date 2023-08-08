@@ -7,13 +7,3 @@ output "org_id" {
   value       = module.cloudfoundry_environment.org_id
   description = "The Cloudfoundry org ID."
 }
-
-output "api_endpoint" {
-  value       = module.cloudfoundry_environment.api_endpoint
-  description = "The url of the Cloudfoundry API endpoint."
-}
-
-output "cloudfoundry_space" {
-  value       = module.cloudfoundry_space
-  description = "The Cloudfoundry org ID."
-}
