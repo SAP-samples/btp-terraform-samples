@@ -59,8 +59,11 @@ module "cloudfoundry_space" {
   cf_space_auditors   = var.cf_space_auditors
 }
 
+######################################################################
+# Add "sleep" resource for generic purposes
+######################################################################
 resource "time_sleep" "wait_a_few_seconds" {
-  create_duration = "10s"
+  create_duration = "30s"
 }
 
 ######################################################################
@@ -80,64 +83,99 @@ resource "btp_subaccount_entitlement" "name" {
 ######################################################################
 # Create service instances
 ######################################################################
-module "create_cf_service_instance"{
-  depends_on    = [btp_subaccount_entitlement.name]
+# connectivitiy
+module "create_cf_service_instance_01"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
   source        = "../modules/cloudfoundry-service-instance/"
-
-  for_each   = {
-    for index, entitlement in var.entitlements:
-    index => entitlement if contains(["service"], entitlement.type)
-  }
-    cf_space_id   = module.cloudfoundry_space.id
-    service_name  = each.value.service_name
-    plan_name     = each.value.plan_name
-    parameters    = each.value.parameters
-}
-
-/*
-######################################################################
-# Entitle and create service instances
-######################################################################
-module "service_instances" {
-
-  source        = "./modules/cf-service-setup/"
-  subaccount_id = btp_subaccount.project.id
   cf_space_id   = module.cloudfoundry_space.id
-
-  for_each   = {
-    for index, entitlement in var.entitlements:
-    index => entitlement if contains(["service"], entitlement.type)
- }
-    name        = each.value.service_name
-    plan        = each.value.plan_name
-    parameters  = each.value.parameters
+  service_name  = "connectivity"
+  plan_name     = "lite"
+  parameters    = null
 }
-*/
-/*
+# destination
+module "create_cf_service_instance_02"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
+  source        = "../modules/cloudfoundry-service-instance/"
+  cf_space_id   = module.cloudfoundry_space.id
+  service_name  = "destination"
+  plan_name     = "lite"
+  parameters    = null
+}
+# html5-apps-repo
+module "create_cf_service_instance_03"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
+  source        = "../modules/cloudfoundry-service-instance/"
+  cf_space_id   = module.cloudfoundry_space.id
+  service_name  = "html5-apps-repo"
+  plan_name     = "app-host"
+  parameters    = null
+}
+# enterprise-messaging
+module "create_cf_service_instance_04"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
+  source        = "../modules/cloudfoundry-service-instance/"
+  cf_space_id   = module.cloudfoundry_space.id
+  service_name  = "enterprise-messaging"
+  plan_name     = "default"
+  parameters    = jsonencode({"emname": "temp","namespace": null,"version": null,"resources": null, "options": null, "rules": null, "xs-security": null})
+}
+# application-logs
+module "create_cf_service_instance_05"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
+  source        = "../modules/cloudfoundry-service-instance/"
+  cf_space_id   = module.cloudfoundry_space.id
+  service_name  = "application-logs"
+  plan_name     = "lite"
+  parameters    = null
+}
+# xsuaa
+module "create_cf_service_instance_06"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
+  source        = "../modules/cloudfoundry-service-instance/"
+  cf_space_id   = module.cloudfoundry_space.id
+  service_name  = "xsuaa"
+  plan_name     = "application"
+  parameters    = null
+}
+# hana-cloud
+module "create_cf_service_instance_hana_cloud"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
+  source        = "../modules/cloudfoundry-service-instance/"
+  cf_space_id   = module.cloudfoundry_space.id
+  service_name  = "hana-cloud"
+  plan_name     = "hana"
+  parameters    = jsonencode({"data": {"memory": 30,"edition": "cloud","systempassword": "Abcd1234", "whitelistIPs": ["0.0.0.0/0"]}})
+}
+# hana
+module "create_cf_service_instance_08"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, module.create_cf_service_instance_hana_cloud, time_sleep.wait_a_few_seconds]
+  source        = "../modules/cloudfoundry-service-instance/"
+  cf_space_id   = module.cloudfoundry_space.id
+  service_name  = "hana"
+  plan_name     = "hdi-shared"
+  parameters    = null
+}
+# autoscaler
+module "create_cf_service_instance_09"{
+  depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
+  source        = "../modules/cloudfoundry-service-instance/"
+  cf_space_id   = module.cloudfoundry_space.id
+  service_name  = "autoscaler"
+  plan_name     = "standard"
+  parameters    = null
+}
 
 ######################################################################
 # Create app subscriptions
 ######################################################################
-resource "btp_subaccount_subscription" "sapappstudio" {
-  subaccount_id = var.subaccount_id
-  app_name      = var.name
-  plan_name     = var.plan
-  depends_on    = [btp_subaccount_entitlement.name]
-}
-
-
-######################################################################
-# Entitle and create app subscriptions
-######################################################################
-module "app_subscription" {
-  source        = "./modules/app-subscription/"
+resource "btp_subaccount_subscription" "app" {
   subaccount_id = btp_subaccount.project.id
-
   for_each   = {
     for index, entitlement in var.entitlements:
     index => entitlement if contains(["app"], entitlement.type)
- }
-    name     = each.value.service_name
-    plan     = each.value.plan_name
+  }
+
+  app_name      = each.value.service_name
+  plan_name     = each.value.plan_name
+  depends_on    = [btp_subaccount_entitlement.name]
 }
-*/

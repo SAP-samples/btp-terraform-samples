@@ -13,9 +13,9 @@ cf_space_name        = "development"
 #region          = "eu12"
 #cli_server_url  = "https://cpcli.cf.sap.hana.ondemand.com"
 
-subaccount_admins           = ["rui.nogueira@sap.com", "jane.doe@test.com", "john.doe@test.com"]
-subaccount_service_admins   = ["rui.nogueira@sap.com", "jane.doe@test.com", "john.doe@test.com"]
+subaccount_admins           = ["rui.nogueira@sap.com", "christian.volk@sap.com"]
+subaccount_service_admins   = ["rui.nogueira@sap.com", "christian.volk@sap.com"]
 
-cf_space_managers           = ["rui.nogueira@sap.com"]
-cf_space_developers         = ["rui.nogueira@sap.com"]
-cf_space_auditors           = ["rui.nogueira@sap.com"]
+cf_space_managers           = ["rui.nogueira@sap.com", "christian.volk@sap.com"]
+cf_space_developers         = ["rui.nogueira@sap.com", "christian.volk@sap.com"]
+cf_space_auditors           = ["rui.nogueira@sap.com", "christian.volk@sap.com"]

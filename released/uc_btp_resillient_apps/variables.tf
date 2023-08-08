@@ -33,6 +33,13 @@ variable "cf_space_name" {
   default     = "development"
 }
 
+# hana password
+variable "hana_cloud_system_password" {
+  type        = string
+  description = "The system password for the hana_cloud service instance."
+  default     = "Abcd1234"
+}
+
 # CLI server
 variable "cli_server_url" {
   type        = string
@@ -77,9 +84,7 @@ variable "entitlements" {
 type = list(object({
     service_name = string
     plan_name    = string
-    parameters   = string
     type         = string
-    environment  = string
   }))
   description = "The list of entitlements that shall be added to the subaccount."
   default = [
@@ -87,99 +92,71 @@ type = list(object({
                 service_name = "connectivity"
                 plan_name    = "lite",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
               },
               {
                 service_name = "destination"
                 plan_name    = "lite",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
-              },/*
+              },
               {
                 service_name = "html5-apps-repo"
                 plan_name    = "app-host",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
               },
               {
                 service_name = "sapappstudio"
                 plan_name    = "standard-edition",
                 type         = "app"
-                parameters   = null
-                environment = "btp"
               },
               {
                 service_name = "enterprise-messaging"
                 plan_name    = "default",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
               },
               {
                 service_name = "application-logs"
                 plan_name    = "lite",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
               },
               {
                 service_name = "xsuaa"
                 plan_name    = "application",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
               },
               {
                 service_name = "hana"
                 plan_name    = "hdi-shared",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
               },
               {
                 service_name = "hana-cloud"
                 plan_name    = "hana",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
               },
               {
                 service_name = "autoscaler"
                 plan_name    = "standard",
                 type         = "service"
-                parameters   = null
-                environment = "cloudfoundry"
               },  
               {
                 service_name = "enterprise-messaging-hub"
                 plan_name    = "standard",
                 type         = "app"
-                parameters   = null
-                environment  = null
               },  
               {
                 service_name = "SAPLaunchpad"
                 plan_name    = "standard",
                 type         = "app"
-                parameters   = null
-                environment  = null
               },  
               {
                 service_name = "cicd-app"
                 plan_name    = "default",
                 type         = "app"
-                parameters   = null
-                environment  = null
               },  
               {
                 service_name = "alm-ts"
                 plan_name    = "standard",
                 type         = "app"
-                parameters   = null
-                environment  = null
-              }*/
+              }
       ]
 }
