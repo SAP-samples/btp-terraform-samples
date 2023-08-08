@@ -131,22 +131,7 @@ module "create_cf_service_instance_04"{
           "messaging": true
         },
         "rules": {
-          "queueRules": {
-            "publishFilter": [
-              "${namespace}/*"
-            ],
-            "subscribeFilter": [
-              "${namespace}/*"
-            ]
-          },
-          "topicRules": {
-            "publishFilter": [
-              "${namespace}/*"
-            ],
-            "subscribeFilter": [
-              "${namespace}/*"
-            ]
-          }
+          
         }
      }
   )
