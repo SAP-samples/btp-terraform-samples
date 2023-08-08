@@ -40,22 +40,34 @@ variable "cli_server_url" {
   default     = "https://cpcli.cf.eu10.hana.ondemand.com"
 }
 
+variable "subaccount_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "subaccount_service_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
 variable "cf_space_managers" {
   type        = list(string)
   description = "Defines the colleagues who are Cloudfoundry space managers"
-  default     = ["jane.doe@test.com", "john.doe@test.com", "rui.nogueira@sap.com"]
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_space_developers" {
   type        = list(string)
   description = "Defines the colleagues who are Cloudfoundry space developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com", "rui.nogueira@sap.com"]
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_space_auditors" {
   type        = list(string)
   description = "Defines the colleagues who are Cloudfoundry space auditors"
-  default     = ["jane.doe@test.com", "john.doe@test.com", "rui.nogueira@sap.com"]
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 ###
