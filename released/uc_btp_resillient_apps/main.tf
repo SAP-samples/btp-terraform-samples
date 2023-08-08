@@ -148,9 +148,7 @@ module "create_cf_service_instance_04"{
             ]
           }
         }
-
-
-
+     }
   )
 }
 # application-logs
