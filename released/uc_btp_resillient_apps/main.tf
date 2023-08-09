@@ -81,7 +81,7 @@ resource "btp_subaccount_entitlement" "name" {
 }
 
 ######################################################################
-# Create service instances
+# Create service instances (and service keys when needed)
 ######################################################################
 # connectivitiy
 module "create_cf_service_instance_01"{
@@ -136,7 +136,6 @@ module "create_cf_service_instance_ems"{
      }
   )
 }
-
 # Create service key for Cloudfoundry service instance of enterprise-messaging
 resource "cloudfoundry_service_key" "key_enterprise-messaging" {
   name = "key_enterprise-messaging"
