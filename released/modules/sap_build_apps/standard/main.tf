@@ -117,13 +117,14 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryDevelop
 ###############################################################################################
 # Create destination for Visual Cloud Functions
 ###############################################################################################
-# Get destnation service plan
+# Get plan for destination service
 data "btp_subaccount_service_plan" "by_name" {
   subaccount_id = var.subaccount_id
   name          = "lite"
   offering_name = "destination"
 } 
-# Get subaccount
+
+# Get subaccount data
 data "btp_subaccount" "subaccount" {
   id = var.subaccount_id
 }
@@ -131,7 +132,6 @@ data "btp_subaccount" "subaccount" {
 # Create the destination
 resource "btp_subaccount_service_instance" "vcf_destination" {
   subaccount_id  = var.subaccount_id
-  # The service plan ID can be looked up via the data source btp_subaccount_service_plan
   serviceplan_id =  data.btp_subaccount_service_plan.by_name.id
   name           = "SAP-Build-Apps-Runtime"
   parameters = jsonencode({
