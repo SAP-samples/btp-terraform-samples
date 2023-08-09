@@ -111,7 +111,7 @@ module "create_cf_service_instance_03"{
   parameters    = null
 }
 # enterprise-messaging
-module "create_cf_service_instance_04"{
+module "create_cf_service_instance_ems"{
   depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
   source        = "../modules/cloudfoundry-service-instance/"
   cf_space_id   = module.cloudfoundry_space.id
@@ -136,6 +136,13 @@ module "create_cf_service_instance_04"{
      }
   )
 }
+
+# Create service key for Cloudfoundry service instance of enterprise-messaging
+resource "cloudfoundry_service_key" "key_enterprise-messaging" {
+  name = "key_enterprise-messaging"
+  service_instance = module.create_cf_service_instance_ems.id
+}
+
 # application-logs
 module "create_cf_service_instance_05"{
   depends_on    = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
