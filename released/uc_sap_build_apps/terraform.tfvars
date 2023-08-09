@@ -2,17 +2,17 @@
 # Provider configuration
 #################################
 # Your global account subdomain
-globalaccount   = "ticrossa"
+globalaccount   = "youraccount"
 region          = "us10"
-custom_idp      = "abcdefghijk.accounts.ondemand.com"
+custom_idp      = "abcdef123.accounts.ondemand.com"
 
 ####################################
 # Usage within sap canary landscape
 ####################################
-#globalaccount   = "terraformdemocanary"
-#region          = "eu12"
-#cli_server_url  = "https://cpcli.cf.sap.hana.ondemand.com"
-#custom_idp      = "terraformint.accounts400.ondemand.com"
+# globalaccount   = "terraformdemocanary"
+# region          = "eu12"
+# cli_server_url  = "https://cpcli.cf.sap.hana.ondemand.com"
+# custom_idp      = "terraformint.accounts400.ondemand.com"
 
 #################################
 # Project specific configuration
