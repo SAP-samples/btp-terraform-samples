@@ -116,30 +116,3 @@ module "cloudfoundry_space" {
   cf_space_developers = var.cf_space_developers
   cf_space_auditors   = var.cf_space_auditors
 }
-
-module "setup_cf_service_destination" {
-  depends_on          = [module.cloudfoundry_space]
-  source              = "../modules/cloudfoundry-service-instance/"
-  cf_space_id         = module.cloudfoundry_space.id
-  service_name        = "destination"
-  plan_name           = "lite"
-  parameters = jsonencode({
-    HTML5Runtime_enabled = true
-    init_data = {
-      subaccount = {
-        existing_destinations_policy = "update"
-        destinations = [
-          {
-            Name = "SAP-Build-Apps-Runtime"
-            Type = "HTTP"
-            Description = "Endpoint to SAP Build Apps runtime"
-            URL = "https://${module.cloudfoundry_environment.org_name}.cr1.${var.region}.apps.build.cloud.sap/"
-            ProxyType = "Internet"
-            Authentication = "NoAuthentication"
-            "HTML5.ForwardAuthToken" = true
-          }
-        ]
-      }
-    }
-  })
-}
