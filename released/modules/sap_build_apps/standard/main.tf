@@ -114,3 +114,43 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryDevelop
       user_name            = each.value
       origin               = var.custom_idp_origin
 }
+###############################################################################################
+# Create destination for Visual Cloud Functions
+###############################################################################################
+# Get plan for destination service
+data "btp_subaccount_service_plan" "by_name" {
+  subaccount_id = var.subaccount_id
+  name          = "lite"
+  offering_name = "destination"
+} 
+
+# Get subaccount data
+data "btp_subaccount" "subaccount" {
+  id = var.subaccount_id
+}
+
+# Create the destination
+resource "btp_subaccount_service_instance" "vcf_destination" {
+  subaccount_id  = var.subaccount_id
+  serviceplan_id =  data.btp_subaccount_service_plan.by_name.id
+  name           = "SAP-Build-Apps-Runtime"
+  parameters = jsonencode({
+    HTML5Runtime_enabled = true
+    init_data = {
+      subaccount = {
+        existing_destinations_policy = "update"
+        destinations = [
+          {
+            Name = "SAP-Build-Apps-Runtime"
+            Type = "HTTP"
+            Description = "Endpoint to SAP Build Apps runtime"
+            URL = "https://${data.btp_subaccount.subaccount.subdomain}.cr1.${data.btp_subaccount.subaccount.region}.apps.build.cloud.sap/"
+            ProxyType = "Internet"
+            Authentication = "NoAuthentication"
+            "HTML5.ForwardAuthToken" = true
+          }
+        ]
+      }
+    }
+  })
+}
