@@ -8,17 +8,7 @@ output "subaccount_name" {
   description = "The name of the project subaccount."
 }
 
-output "cf_org_id" {
-  value       = module.cloudfoundry_environment.org_id
-  description = "The org ID of the Cloudfoundry environment instance."
-}
-
-output "subaccount_cf_org" {
-  value       = local.project_subaccount_cf_org
-  description = "The subaccaount CF org."
-}
-
-output "region" {
-  value       = var.region
-  description = "The region of the subaccount"
+output "sap_build_apps_subscription_url" {
+  value = module.sap-build-apps_standard.sap_build_apps_subscription_url
+  description = "Subscription URL of SAP Build Apps"
 }

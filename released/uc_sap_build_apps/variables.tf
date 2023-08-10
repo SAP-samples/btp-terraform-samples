@@ -15,17 +15,6 @@ variable "cli_server_url" {
   default     = "https://cpcli.cf.eu10.hana.ondemand.com"
 }
 
-# Cloudfoundry environment label
-variable "cf_environment_label" {
-  type        = string
-  description = "The Cloudfoundry environment label"
-  default     = "cf-us10"
-}
-variable "subaccount_cf_space" {
-  type        = string
-  description = "The subaccount CF space name"
-}
-
 variable "custom_idp" {
   type        = string
   description = "Defines the custom IDP to be used for the subaccount"
@@ -72,23 +61,3 @@ variable "users_RegistryDeveloper" {
   description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
-
-
-variable "cf_space_managers" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space managers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_developers" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_auditors" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space auditors"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-

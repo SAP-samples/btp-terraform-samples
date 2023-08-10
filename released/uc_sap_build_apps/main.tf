@@ -36,17 +36,6 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 }
 
 ###############################################################################################
-# Setup Cloudfoundry environment
-###############################################################################################
-# Creation of Cloud Foundry environment
-module "cloudfoundry_environment" {
-  source                = "../modules/envinstance-cloudfoundry/"
-  subaccount_id         = btp_subaccount.project.id
-  instance_name         = local.project_subaccount_cf_org
-  cloudfoundry_org_name = local.project_subaccount_cf_org
-}
-
-###############################################################################################
 # Prepare and setup app: SAP Build Apps
 ###############################################################################################
 # Entitle subaccount for usage of app  destination SAP Build Workzone, standard edition
@@ -103,16 +92,4 @@ resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
     role_collection_name = "Launchpad_Admin"
     user_name            = each.value  
     depends_on           = [btp_subaccount_subscription.build_workzone]
-}
-
-
-# Create Cloud Foundry space and assign users
-module "cloudfoundry_space" {
-  source              = "../modules/cloudfoundry-space/"
-  cf_org_id           = module.cloudfoundry_environment.org_id
-
-  name                = var.subaccount_cf_space
-  cf_space_managers   = var.cf_space_managers
-  cf_space_developers = var.cf_space_developers
-  cf_space_auditors   = var.cf_space_auditors
 }
