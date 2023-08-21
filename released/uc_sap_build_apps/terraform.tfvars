@@ -4,7 +4,7 @@
 # Your global account subdomain
 globalaccount   = "youraccount"
 region          = "us10"
-custom_idp      = "abcdef123.accounts.ondemand.com"
+custom_idp      = "abcde1234.accounts.ondemand.com"
 
 ####################################
 # Usage within sap canary landscape
@@ -18,16 +18,9 @@ custom_idp      = "abcdef123.accounts.ondemand.com"
 # Project specific configuration
 #################################
 # Account setup
-subaccount_name             = "My SAP Build Apps 2"
-# Name of the Cloudfoundry space
-subaccount_cf_space         = "development"
+subaccount_name             = "My SAP Build Apps"
 # User
 emergency_admins            = ["jane.doe@test.com", "john.doe@test.com"]
-
-cf_space_managers           = ["jane.doe@test.com", "john.doe@test.com"]
-cf_space_developers         = ["jane.doe@test.com", "john.doe@test.com"]
-cf_space_auditors           = ["jane.doe@test.com", "john.doe@test.com"]
-
 users_BuildAppsAdmin        = ["jane.doe@test.com", "john.doe@test.com"]
 users_BuildAppsDeveloper    = ["jane.doe@test.com", "john.doe@test.com"]
 users_RegistryAdmin         = ["jane.doe@test.com", "john.doe@test.com"]

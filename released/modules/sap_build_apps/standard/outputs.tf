@@ -13,8 +13,7 @@ output "last_modified" {
   description = "The last time the resource was updated (ISO 8601 format)."
 }
 
-output "url_sap_build_apps" {
-  # value       = btp_subaccount_subscription.sap-build-apps_standard.url
-  value = "https://${var.subaccount_domain}.cr1.${var.region}.apps.build.cloud.sap/"
-  description = "The url for the SAP Build Apps destination."
+output "sap_build_apps_subscription_url" {
+  value       = btp_subaccount_subscription.sap-build-apps_standard.subscription_url
+  description = "All details of SAP Build Apps"
 }
