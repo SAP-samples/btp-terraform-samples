@@ -15,7 +15,7 @@ The setup comprises the following resources:
 - Creation of a Cloud Foundry space
 - Creation of entitlements for "XSUAA" (plan "apiaccess"), "Taskcenter" (plan "standard") and "Destination" (plan "light") in the subaccount
 - Assignment of the following role colections to the users defined in the `users.tfvars` file:
-   
+
   - Subaccount Administrator
   - Subaccount Service Administrator
   - SpaceManager
@@ -28,7 +28,7 @@ To deploy the resources you must:
 
 1. Configure the providers in the `provider.tf` file
 2. Initialize your workspace:
-   
+
    ```bash
    terraform init
    ```
@@ -36,13 +36,13 @@ To deploy the resources you must:
 3. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
-   terraform plan -var-file="users.tfvars 
+   terraform plan -var-file="users.tfvars" 
    ```
 
 4. Apply your configuration to provision the resources:
 
    ```bash
-   terraform apply -var-file="users.tfvars
+   terraform apply -var-file="users.tfvars"
    ```
 
 ## When finished
@@ -50,5 +50,5 @@ To deploy the resources you must:
 You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
 
 ```bash
-terraform destroy -var-file="users.tfvars
+terraform destroy -var-file="users.tfvars"
 ```
