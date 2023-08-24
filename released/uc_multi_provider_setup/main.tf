@@ -12,7 +12,7 @@ resource "btp_subaccount" "subaccount" {
 ###
 resource "btp_subaccount_entitlement" "entitlement-taskcenter" {
   subaccount_id = btp_subaccount.subaccount.id
-  for_each = var.entitlements
+  for_each      = var.entitlements
   service_name  = each.value.service_name
   plan_name     = each.value.plan_name
 }

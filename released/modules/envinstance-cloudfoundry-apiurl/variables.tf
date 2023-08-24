@@ -1,6 +1,6 @@
 variable "environment_label" {
   description = "The expected landscape (environment_label) of the cloudfoundry environment."
-  type = string
+  type        = string
 
   validation {
     condition     = can(regexall("^cf-[a-z]{2,3}[0-9]{2}(-[0-9]{1,4})$", var.environment_label))

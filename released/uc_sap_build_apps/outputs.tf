@@ -9,6 +9,6 @@ output "subaccount_name" {
 }
 
 output "sap_build_apps_subscription_url" {
-  value = module.sap-build-apps_standard.sap_build_apps_subscription_url
+  value       = module.sap-build-apps_standard.sap_build_apps_subscription_url
   description = "Subscription URL of SAP Build Apps"
 }
