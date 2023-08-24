@@ -9,20 +9,20 @@ variable "name" {
   default     = "dev"
 }
 
-variable "cf_space_managers"{
-  type = list(string)
+variable "cf_space_managers" {
+  type        = list(string)
   description = "The list of Cloud Foundry space managers."
-  default = []
+  default     = []
 }
 
-variable "cf_space_developers"{
-  type = list(string)
+variable "cf_space_developers" {
+  type        = list(string)
   description = "The list of Cloud Foundry space developers."
-  default = []
+  default     = []
 }
 
-variable "cf_space_auditors"{
-  type = list(string)
+variable "cf_space_auditors" {
+  type        = list(string)
   description = "The list of Cloud Foundry space auditors."
-  default = []
+  default     = []
 }
