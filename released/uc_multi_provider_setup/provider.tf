@@ -3,7 +3,7 @@ terraform {
   required_providers {
     btp = {
       source  = "sap/btp"
-      version = "0.2.0-beta2"
+      version = "0.3.0-beta1"
     }
     cloudfoundry = {
       source  = "cloudfoundry-community/cloudfoundry"
@@ -18,5 +18,5 @@ provider "btp" {
 
 // Configuration is described in https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs
 provider "cloudfoundry" {
-  api_url  = "https://api.cf.us10.hana.ondemand.com"
+  api_url = "https://api.cf.us10.hana.ondemand.com"
 }

@@ -9,7 +9,7 @@ output "org_name" {
 }
 
 output "org_id" {
-  value       = btp_subaccount_environment_instance.cloudfoundry.platform_id 
+  value       = btp_subaccount_environment_instance.cloudfoundry.platform_id
   description = "The technical ID of the Cloud Foundry environment instance."
 }
 

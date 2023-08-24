@@ -2,9 +2,9 @@
 # Provider configuration
 #################################
 # Your global account subdomain
-globalaccount   = "ticrossa"
-region          = "us10"
-custom_idp      = "alv7kqzip.accounts.ondemand.com"
+globalaccount = "ticrossa"
+region        = "us10"
+custom_idp    = "alv7kqzip.accounts.ondemand.com"
 
 ####################################
 # Usage within sap canary landscape
