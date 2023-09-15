@@ -23,7 +23,7 @@ variable "subacount_subdomain" {
 # Entitlements
 ###
 variable "entitlements" {
-type = map(object({
+  type = map(object({
     service_name = string
     plan_name    = string
   }))
@@ -41,7 +41,7 @@ type = map(object({
       service_name = "destination"
       plan_name    = "lite"
     }
-  }  
+  }
 }
 
 ###
@@ -78,11 +78,11 @@ variable "cloudfoundry_space_auditors" {
 }
 
 variable "subaccount_admins" {
-  type = set(string)
+  type        = set(string)
   description = "The list of users that shall be subaccount admins."
 }
 
 variable "subaccount_service_admins" {
-  type = set(string)
+  type        = set(string)
   description = "The list of users that shall be subaccount admins."
 }

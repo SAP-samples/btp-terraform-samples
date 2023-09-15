@@ -3,12 +3,12 @@ terraform {
   required_providers {
     btp = {
       source  = "SAP/btp"
-      version = "0.2.0-beta2"
+      version = "0.4.0-beta1"
     }
   }
 }
 
 provider "btp" {
-  globalaccount = var.globalaccount
+  globalaccount  = var.globalaccount
   cli_server_url = var.cli_server_url
 }

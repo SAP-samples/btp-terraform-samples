@@ -4,7 +4,7 @@ output "xsuaa_app_id" {
 }
 
 output "state" {
-  value = btp_subaccount_subscription.sap-build-apps_standard.state
+  value       = btp_subaccount_subscription.sap-build-apps_standard.state
   description = "State ofthe sap-build-apps_standard instance."
 }
 

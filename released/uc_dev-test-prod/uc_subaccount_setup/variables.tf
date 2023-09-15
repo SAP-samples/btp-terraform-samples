@@ -7,7 +7,7 @@ variable "unit" {
   default     = "Research"
 
   validation {
-    condition = contains(concat(["Research", "Test", "Sales", "Purchase", "Production"]), var.unit)
+    condition     = contains(concat(["Research", "Test", "Sales", "Purchase", "Production"]), var.unit)
     error_message = "Please select a valid org name for the project account."
   }
 }
@@ -22,7 +22,7 @@ variable "unit_shortname" {
 
 
   validation {
-    condition = can(regex("^[a-zA-Z0-9_]", var.unit_shortname))
+    condition     = can(regex("^[a-zA-Z0-9_]", var.unit_shortname))
     error_message = "Please enter a valid short name for the 'unit' the subaccount is assigned to."
   }
 }
@@ -35,7 +35,7 @@ variable "architect" {
   description = "Defines the email address of the architect for the subaccount"
 
   validation {
-    condition     = can(regex("(@yourorg.com|@test.com)$", var.architect))    
+    condition     = can(regex("(@yourorg.com|@test.com)$", var.architect))
     error_message = "Please enter a valid email address for the architect of the subaccount."
   }
 }
@@ -46,10 +46,10 @@ variable "architect" {
 variable "custom_idp" {
   type        = string
   description = "Defines the custom IDP to be used for the subaccount"
-  default = "terraformint"
+  default     = "terraformint"
 
   validation {
-    condition = can(regex("^[a-z-]", var.custom_idp))
+    condition     = can(regex("^[a-z-]", var.custom_idp))
     error_message = "Please enter a valid entry for the custom-idp of the subaccount."
   }
 }
@@ -70,7 +70,7 @@ variable "costcenter" {
   description = "Defines the costcenter for the subaccount"
 
   validation {
-    condition = can(regex("^[0-9]{10}$", var.costcenter))
+    condition     = can(regex("^[0-9]{10}$", var.costcenter))
     error_message = "Please enter a valid costcenter for the business unit."
   }
 }
@@ -98,7 +98,7 @@ variable "team" {
   default     = "sap.team@test.com"
 
   validation {
-    condition     = can(regex("(@yourorg.com|@test.com)$", var.team))    
+    condition     = can(regex("(@yourorg.com|@test.com)$", var.team))
     error_message = "Please enter a valid email address for the team of the sub account."
   }
 }
@@ -136,41 +136,41 @@ variable "emergency_admins" {
 ###
 variable "entitlements" {
   description = "List of entitlements for a BTP subaccount"
-    type = list(object({
-      group = string
-      type  = string
-      name = string
-      plan = string
-      amount = number
+  type = list(object({
+    group  = string
+    type   = string
+    name   = string
+    plan   = string
+    amount = number
   }))
 
   default = [
     {
-      group = "Audit + Application Log"
-      type  = "service"
-      name = "auditlog-viewer"
-      plan = "free"
+      group  = "Audit + Application Log"
+      type   = "service"
+      name   = "auditlog-viewer"
+      plan   = "free"
       amount = null
     },
     {
-      group = "Alert"
-      type  = "service"
-      name = "alert-notification"
-      plan = "standard"
+      group  = "Alert"
+      type   = "service"
+      name   = "alert-notification"
+      plan   = "standard"
       amount = null
     },
     {
-      group = "SAP HANA Cloud"
-      type  = "service"
-      name = "hana-cloud"
-      plan = "hana"
+      group  = "SAP HANA Cloud"
+      type   = "service"
+      name   = "hana-cloud"
+      plan   = "hana"
       amount = null
     },
     {
-      group = "SAP HANA Cloud"
-      type  = "service"
-      name = "hana"
-      plan = "hdi-shared"
+      group  = "SAP HANA Cloud"
+      type   = "service"
+      name   = "hana"
+      plan   = "hdi-shared"
       amount = null
     }
   ]

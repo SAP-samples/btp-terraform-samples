@@ -3,11 +3,11 @@ terraform {
   required_providers {
     btp = {
       source  = "sap/btp"
-      version = "0.2.0-beta2"
+      version = "0.4.0-beta1"
     }
     cloudfoundry = {
       source  = "cloudfoundry-community/cloudfoundry"
-      version = "0.50.8"
+      version = "0.51.3"
     }
   }
 }
@@ -15,13 +15,13 @@ terraform {
 # Please checkout documentation on how best to authenticate against SAP BTP
 # via the Terraform provider for SAP BTP
 provider "btp" {
-  globalaccount = var.globalaccount
+  globalaccount  = var.globalaccount
   cli_server_url = var.cli_server_url
 }
 
 # Get the Cloudfoundry API endpoint
 module "cloudfoundry_api" {
-  source = "../modules/envinstance-cloudfoundry-apiurl"
+  source            = "../modules/envinstance-cloudfoundry-apiurl"
   environment_label = var.cf_environment_label
 }
 

@@ -14,25 +14,25 @@ resource "btp_subaccount" "project" {
   name      = local.project_subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
-  labels    = { 
-                "architect": ["${var.architect}"]
-                "costcenter": ["${var.costcenter}"], 
-                "owner": ["${var.owner}"], 
-                "team": ["${var.team}"]
-              }
+  labels = {
+    "architect" : ["${var.architect}"]
+    "costcenter" : ["${var.costcenter}"],
+    "owner" : ["${var.owner}"],
+    "team" : ["${var.team}"]
+  }
   usage = "USED_FOR_PRODUCTION"
 
-  parent_id = "${var.parent_directory_id}"
+  parent_id = var.parent_directory_id
 }
 
 ###
 # Assignment of emergency admins to the sub account as sub account administrators
 ###
 resource "btp_subaccount_role_collection_assignment" "subaccount_users" {
-  for_each = toset("${var.emergency_admins}")
-    subaccount_id        = btp_subaccount.project.id
-    role_collection_name = "Subaccount Administrator"
-    user_name     = each.value
+  for_each             = toset("${var.emergency_admins}")
+  subaccount_id        = btp_subaccount.project.id
+  role_collection_name = "Subaccount Administrator"
+  user_name            = each.value
 }
 
 resource "btp_subaccount_trust_configuration" "fully_customized" {
@@ -53,8 +53,8 @@ module "cloudfoundry_environment" {
 
 resource "btp_subaccount_entitlement" "entitlements" {
 
-  for_each   = {
-    for index, entitlement in var.entitlements:
+  for_each = {
+    for index, entitlement in var.entitlements :
     index => entitlement
   }
 
