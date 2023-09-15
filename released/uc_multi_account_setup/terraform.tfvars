@@ -35,23 +35,23 @@ subaccounts = {
     role_collection_assignments = [
       {
         role_collection_name = "Subaccount Viewer"
-        users                = ["johne.doe@test.com"]
+        users                = ["john.doe@test.com"]
       },
       {
         role_collection_name = "Launchpad_Admin"
-        users                = ["johne.doe@test.com"]
+        users                = ["john.doe@test.com"]
       },
     ]
     cf_environment_instance = {
-      org_managers         = ["johne.doe@test.com"]
-      org_billing_managers = ["johne.doe@test.com"]
-      org_auditors         = ["johne.doe@test.com"]
+      org_managers         = ["john.doe@test.com"]
+      org_billing_managers = ["john.doe@test.com"]
+      org_auditors         = ["john.doe@test.com"]
       spaces = [
         {
           space_name       = "dev"
-          space_managers   = ["johne.doe@test.com"]
-          space_developers = ["johne.doe@test.com"]
-          space_auditors   = ["johne.doe@test.com"]
+          space_managers   = ["john.doe@test.com"]
+          space_developers = ["john.doe@test.com"]
+          space_auditors   = ["john.doe@test.com"]
         }
       ]
     }
@@ -78,23 +78,23 @@ subaccounts = {
     role_collection_assignments = [
       {
         role_collection_name = "Subaccount Administrator"
-        users                = ["johne.doe@test.com"]
+        users                = ["john.doe@test.com"]
       },
       {
         role_collection_name = "Launchpad_Admin"
-        users                = ["johne.doe@test.com"]
+        users                = ["john.doe@test.com"]
       },
     ]
     cf_environment_instance = {
-      org_managers         = ["johne.doe@test.com"]
-      org_billing_managers = ["johne.doe@test.com"]
-      org_auditors         = ["johne.doe@test.com"]
+      org_managers         = ["john.doe@test.com"]
+      org_billing_managers = ["john.doe@test.com"]
+      org_auditors         = ["john.doe@test.com"]
       spaces = [
         {
           space_name       = "test"
-          space_managers   = ["johne.doe@test.com"]
-          space_developers = ["johne.doe@test.com"]
-          space_auditors   = ["johne.doe@test.com"]
+          space_managers   = ["john.doe@test.com"]
+          space_developers = ["john.doe@test.com"]
+          space_auditors   = ["john.doe@test.com"]
         }
       ]
     }
@@ -120,23 +120,23 @@ subaccounts = {
     role_collection_assignments = [
       {
         role_collection_name = "Subaccount Administrator"
-        users                = ["johne.doe@test.com"]
+        users                = ["john.doe@test.com"]
       },
       {
         role_collection_name = "Launchpad_Admin"
-        users                = ["johne.doe@test.com"]
+        users                = ["john.doe@test.com"]
       },
     ]
     cf_environment_instance = {
-      org_managers         = ["johne.doe@test.com"]
-      org_billing_managers = ["johne.doe@test.com"]
-      org_auditors         = ["johne.doe@test.com"]
+      org_managers         = ["john.doe@test.com"]
+      org_billing_managers = ["john.doe@test.com"]
+      org_auditors         = ["john.doe@test.com"]
       spaces = [
         {
           space_name       = "prod"
-          space_managers   = ["johne.doe@test.com"]
-          space_developers = ["johne.doe@test.com"]
-          space_auditors   = ["johne.doe@test.com"]
+          space_managers   = ["john.doe@test.com"]
+          space_developers = ["john.doe@test.com"]
+          space_auditors   = ["john.doe@test.com"]
         }
       ]
     }
