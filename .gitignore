@@ -2,6 +2,7 @@
 .terraform*
 terraform.tfstate*
 *.log
+secret.auto.tfvars
 
 
 # Any kind of invironment variables
