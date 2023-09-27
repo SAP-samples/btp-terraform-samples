@@ -43,6 +43,7 @@ resource "btp_subaccount_entitlement" "sap_build_apps" {
   subaccount_id = btp_subaccount.project.id
   service_name  = "sap-build-apps"
   plan_name     = "standard"
+  amount        = 1
 }
 # Create app subscription to SAP Build Apps (depends on entitlement)
 module "sap-build-apps_standard" {
