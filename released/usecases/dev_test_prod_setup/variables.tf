@@ -1,4 +1,3 @@
-
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain where the sub account shall be created."
@@ -69,6 +68,7 @@ variable "emergency_admins" {
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
+
 variable "username" {
   description = "BTP username"
   type        = string

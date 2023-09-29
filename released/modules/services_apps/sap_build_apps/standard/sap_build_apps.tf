@@ -1,6 +1,6 @@
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Define the required providers for this module
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 terraform {
   required_providers {
     btp = {
@@ -10,22 +10,26 @@ terraform {
   }
 }
 
+# ------------------------------------------------------------------------------------------------------
 # Create a subscription to the SAP Build Apps
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_subscription" "sap-build-apps_standard" {
   subaccount_id = var.subaccount_id
   app_name      = "sap-appgyver-ee"
   plan_name     = "standard"
 }
 
+# ------------------------------------------------------------------------------------------------------
 # Get all roles in the subaccount
+# ------------------------------------------------------------------------------------------------------
 data "btp_subaccount_roles" "all" {
   subaccount_id = var.subaccount_id
   depends_on    = [btp_subaccount_subscription.sap-build-apps_standard]
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Setup for role collection BuildAppsAdmin
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create the role collection
 resource "btp_subaccount_role_collection" "build_apps_BuildAppsAdmin" {
   subaccount_id = var.subaccount_id
@@ -39,7 +43,10 @@ resource "btp_subaccount_role_collection" "build_apps_BuildAppsAdmin" {
     } if contains(["BuildAppsAdmin"], role.name)
   ]
 }
+
+# ------------------------------------------------------------------------------------------------------
 # Assign users to the role collection
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsAdmin" {
   depends_on           = [btp_subaccount_role_collection.build_apps_BuildAppsAdmin]
   for_each             = toset(var.users_BuildAppsAdmin)
@@ -49,9 +56,9 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsAdmin"
   origin               = var.custom_idp_origin
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Setup for role collection BuildAppsDeveloper
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create the role collection
 resource "btp_subaccount_role_collection" "build_apps_BuildAppsDeveloper" {
   subaccount_id = var.subaccount_id
@@ -65,7 +72,10 @@ resource "btp_subaccount_role_collection" "build_apps_BuildAppsDeveloper" {
     } if contains(["BuildAppsDeveloper"], role.name)
   ]
 }
+
+# ------------------------------------------------------------------------------------------------------
 # Assign users to the role collection
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsDeveloper" {
   depends_on           = [btp_subaccount_role_collection.build_apps_BuildAppsDeveloper]
   for_each             = toset(var.users_BuildAppsDeveloper)
@@ -75,9 +85,9 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsDevelo
   origin               = var.custom_idp_origin
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Setup for role collection RegistryAdmin
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create the role collection
 resource "btp_subaccount_role_collection" "build_apps_RegistryAdmin" {
   subaccount_id = var.subaccount_id
@@ -101,9 +111,9 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryAdmin" 
   origin               = var.custom_idp_origin
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Setup for role collection RegistryDeveloper
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create the role collection
 resource "btp_subaccount_role_collection" "build_apps_RegistryDeveloper" {
   subaccount_id = var.subaccount_id
@@ -126,9 +136,9 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryDevelop
   user_name            = each.value
   origin               = var.custom_idp_origin
 }
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create destination for Visual Cloud Functions
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Get plan for destination service
 data "btp_subaccount_service_plan" "by_name" {
   subaccount_id = var.subaccount_id
@@ -136,12 +146,16 @@ data "btp_subaccount_service_plan" "by_name" {
   offering_name = "destination"
 }
 
+# ------------------------------------------------------------------------------------------------------
 # Get subaccount data
+# ------------------------------------------------------------------------------------------------------
 data "btp_subaccount" "subaccount" {
   id = var.subaccount_id
 }
 
+# ------------------------------------------------------------------------------------------------------
 # Create the destination
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_service_instance" "vcf_destination" {
   subaccount_id  = var.subaccount_id
   serviceplan_id = data.btp_subaccount_service_plan.by_name.id

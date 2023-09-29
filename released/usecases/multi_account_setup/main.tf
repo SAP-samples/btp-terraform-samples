@@ -8,17 +8,17 @@ locals {
   multiple_subaccounts = length(tomap(var.subaccounts)) > 1
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Create a directory if there are multiple subaccounts configured
-###
+# ------------------------------------------------------------------------------------------------------
 resource "btp_directory" "directory" {
   count = local.multiple_subaccounts ? 1 : 0
   name  = var.project_name
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Call module for creating subaccount
-###
+# ------------------------------------------------------------------------------------------------------
 module "subaccount_setup" {
   for_each             = tomap(var.subaccounts)
   source               = "./modules/subaccount_setup"
@@ -44,4 +44,3 @@ module "subaccount_setup" {
   cf_org_auditors         = each.value.cf_environment_instance != null ? each.value.cf_environment_instance.org_auditors : []
   cf_spaces               = each.value.cf_environment_instance != null ? each.value.cf_environment_instance.spaces : []
 }
-

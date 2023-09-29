@@ -1,6 +1,6 @@
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Define the required providers for this module
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 terraform {
   required_providers {
     btp = {
@@ -14,16 +14,16 @@ terraform {
   }
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Fetch all available environments for the subaccount
-###
+# ------------------------------------------------------------------------------------------------------
 data "btp_subaccount_environments" "all" {
   subaccount_id = var.subaccount_id
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Take the landscape label from the first CF environment if no environment label is provided
-###
+# ------------------------------------------------------------------------------------------------------
 resource "null_resource" "cache_target_environment" {
   triggers = {
     label = length(var.environment_label) > 0 ? var.environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
@@ -34,9 +34,9 @@ resource "null_resource" "cache_target_environment" {
   }
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
-###
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_environment_instance" "cf" {
   subaccount_id    = var.subaccount_id
   name             = var.instance_name
@@ -50,9 +50,9 @@ resource "btp_subaccount_environment_instance" "cf" {
   })
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry org users
-###
+# ------------------------------------------------------------------------------------------------------
 resource "cloudfoundry_org_users" "org_users" {
   org              = btp_subaccount_environment_instance.cf.platform_id
   managers         = var.cf_org_managers
