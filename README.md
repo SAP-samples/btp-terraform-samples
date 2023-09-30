@@ -8,9 +8,9 @@ This repository provides you with samples on how to best use the **Terraform pro
 
 ## Content
 
-You will find the detailed information about the [provider](https://registry.terraform.io/browse/providers) in the official [documentation](https://registry.terraform.io/browse/providers) in the [Terraform registry](https://registry.terraform.io/).
+You will find the detailed information about the [provider](https://registry.terraform.io/providers/SAP/btp/latest) in the official [documentation](https://registry.terraform.io/providers/SAP/btp/latest/docs) in the [Terraform registry](https://registry.terraform.io/).
 
-> **Note**: The application of the Terraform configurations we provide in this repository can create cost on your side depending on the sample and the contained resources. Please be aware of that and destroy the resources if no longer needed to avoid unnecessary cost on your side.
+> **Note**: The application of the Terraform configurations we provide in this repository can create cost on your side depending on the sample and the contained resources. Please be aware of that and destroy the resources if no longer needed to avoid unnecessary costs on your side.
 
 ## Support, Feedback, Contributing
 
