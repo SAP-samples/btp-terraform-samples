@@ -1,16 +1,19 @@
-#################################
-# Project specific configuration
-#################################
+# ------------------------------------------------------------------------------------------------------
+# Provider configuration
+# ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "ticoo"
+globalaccount        = "youraccount"
 region               = "us10"
-subaccount_name      = "UC - Events to Business Actions"
+subaccount_name      = "Discovery Center mission - build Events-to-Business actions"
 cf_environment_label = "cf-us10"
 cf_space_name        = "dev"
 
-subaccount_admins         = ["shanthakumar.krishnaswamy@sap.com"]
-subaccount_service_admins = ["m.palavalli@sap.com","shanthakumar.krishnaswamy@sap.com"]
+# ------------------------------------------------------------------------------------------------------
+# Project specific configuration (please adapt!)
+# ------------------------------------------------------------------------------------------------------
+subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
+subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
 
-cf_space_managers   = ["m.palavalli@sap.com", "shanthakumar.krishnaswamy@sap.com"]
-cf_space_developers = ["m.palavalli@sap.com"]
-cf_space_auditors   = ["m.palavalli@sap.com"]
+cf_space_managers   = ["jane.doe@test.com", "john.doe@test.com"]
+cf_space_developers = ["jane.doe@test.com", "john.doe@test.com"]
+cf_space_auditors   = ["jane.doe@test.com", "john.doe@test.com"]
