@@ -3,7 +3,7 @@ terraform {
   required_providers {
     btp = {
       source  = "sap/btp"
-      version = "0.4.0-beta1"
+      version = "0.5.0-beta1"
     }
     cloudfoundry = {
       source  = "cloudfoundry-community/cloudfoundry"
@@ -21,7 +21,7 @@ provider "btp" {
 
 # Get the Cloudfoundry API endpoint
 module "cloudfoundry_api" {
-  source            = "../modules/envinstance-cloudfoundry-apiurl"
+  source            = "../../modules/environment/cloudfoundry/envinstance-cf"
   environment_label = var.cf_environment_label
 }
 
