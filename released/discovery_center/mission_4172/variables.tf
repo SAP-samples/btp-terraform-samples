@@ -77,6 +77,24 @@ variable "cf_space_auditors" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
+variable "cf_org_auditors" {
+  type        = list(string)
+  description = "Defines the colleagues who are Cloudfoundry org auditors"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cf_org_managers" {
+  type        = list(string)
+  description = "Defines the colleagues who are Cloudfoundry org auditors"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cf_org_billing_managers" {
+  type        = list(string)
+  description = "Defines the colleagues who are Cloudfoundry org auditors"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
 ###
 # Entitlements
 ###
@@ -139,4 +157,18 @@ variable "entitlements" {
       type         = "service"
     }
   ]
+}
+
+
+variable "username" {
+  description = "BTP username"
+  type        = string
+  sensitive   = false
+
+}
+
+variable "password" {
+  description = "BTP user password"
+  type        = string
+  sensitive   = true
 }

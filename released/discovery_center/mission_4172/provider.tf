@@ -17,15 +17,15 @@ terraform {
 provider "btp" {
   globalaccount  = var.globalaccount
   cli_server_url = var.cli_server_url
-}
-
-# Get the Cloudfoundry API endpoint
-module "cloudfoundry_api" {
-  source            = "../../modules/environment/cloudfoundry/envinstance-cf"
-  environment_label = var.cf_environment_label
+  username = var.username
+  password = var.password
 }
 
 // Configuration is described in https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs
 provider "cloudfoundry" {
-  api_url = module.cloudfoundry_api.api_url
+  api_url  = "https://api.cf.${var.region}.hana.ondemand.com"
+  user = var.username
+  password = var.password
 }
+
+

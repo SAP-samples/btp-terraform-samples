@@ -1,9 +1,11 @@
 ###############################################################################################
 # Setup of names in accordance to naming convention
 ###############################################################################################
+resource "random_uuid" "uuid" {}
+
 locals {
-  random_uuid               = uuid()
-  project_subaccount_domain = "teched23-tf-e2b-actions-${local.random_uuid}"
+  random_uuid               = random_uuid.uuid.result
+  project_subaccount_domain = lower(replace("mission-4172-${local.random_uuid}", "_", "-"))
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
 
@@ -40,19 +42,22 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 # Creation of Cloud Foundry environment
 ######################################################################
 module "cloudfoundry_environment" {
-  source                = "../modules/envinstance-cloudfoundry/"
-  subaccount_id         = btp_subaccount.project.id
-  instance_name         = local.project_subaccount_cf_org
-  plan_name             = "standard"
-  cloudfoundry_org_name = local.project_subaccount_cf_org
+  source                    = "../../modules/environment/cloudfoundry/envinstance_cf"
+  subaccount_id             = btp_subaccount.project.id
+  instance_name             = local.project_subaccount_cf_org
+  plan_name                 = "standard"
+  cf_org_name               = local.project_subaccount_cf_org
+  cf_org_auditors           = var.cf_org_auditors
+  cf_org_managers           = var.cf_org_managers
+  cf_org_billing_managers   = var.cf_org_billing_managers
 }
 
 ######################################################################
 # Creation of Cloud Foundry space
 ######################################################################
 module "cloudfoundry_space" {
-  source              = "../modules/cloudfoundry-space/"
-  cf_org_id           = module.cloudfoundry_environment.org_id
+  source              = "../../modules/environment/cloudfoundry/space_cf"
+  cf_org_id           = module.cloudfoundry_environment.cf_org_id
   name                = var.cf_space_name
   cf_space_managers   = var.cf_space_managers
   cf_space_developers = var.cf_space_developers
@@ -70,7 +75,7 @@ resource "time_sleep" "wait_a_few_seconds" {
 # Entitlement of all services and apps
 ######################################################################
 resource "btp_subaccount_entitlement" "name" {
-  depends_on = [time_sleep.wait_a_few_seconds]
+  depends_on = [ module.cloudfoundry_space, time_sleep.wait_a_few_seconds]
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement
@@ -83,25 +88,23 @@ resource "btp_subaccount_entitlement" "name" {
 ######################################################################
 # Create service instances (and service keys when needed)
 ######################################################################
-# hana-cloud
-module "create_cf_service_instance_hana_cloud" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "hana-cloud"
-  plan_name    = "hana"
-  parameters   = jsonencode({ "data" : { "memory" : 30, "edition" : "cloud", "systempassword" : "Abcd1234", "whitelistIPs" : ["0.0.0.0/0"] } })
+
+# hana plan id
+data "btp_subaccount_service_plan" "hana_plan" {
+  subaccount_id = btp_subaccount.project.id
+  name          = "hana"
+  offering_name = "hana-cloud"
+  depends_on = [ btp_subaccount_entitlement.name]
 }
 
-# privatelink -> Azure details are needed
-# module "create_cf_service_instance_01" {
-#   depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-#   source       = "../modules/cloudfoundry-service-instance/"
-#   cf_space_id  = module.cloudfoundry_space.id
-#   service_name = "privatelink"
-#   plan_name    = "standard"
-#   parameters   = null
-# }
+# hana-cloud
+resource "btp_subaccount_service_instance" "hana_instance" {
+  depends_on   = [module.cloudfoundry_space, data.btp_subaccount_service_plan.hana_plan]
+  name = "hana_cloud_instance"
+  serviceplan_id = data.btp_subaccount_service_plan.hana_plan.id
+  subaccount_id = btp_subaccount.project.id
+  parameters   = jsonencode({ "data" : { "memory" : 32, "edition" : "cloud", "systempassword" : "Abcd1234", "whitelistIPs" : ["0.0.0.0/0"] } })
+}
 
 ######################################################################
 # Create app subscriptions
