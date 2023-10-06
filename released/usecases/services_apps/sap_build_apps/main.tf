@@ -47,6 +47,7 @@ resource "btp_subaccount_entitlement" "sap_build_apps" {
 }
 # Create app subscription to SAP Build Apps (depends on entitlement)
 module "sap-build-apps_standard" {
+
   source            = "../../../modules/services_apps/sap_build_apps/standard"
   subaccount_id     = btp_subaccount.project.id
   subaccount_domain = btp_subaccount.project.subdomain
@@ -57,7 +58,7 @@ module "sap-build-apps_standard" {
   users_BuildAppsDeveloper = var.users_BuildAppsDeveloper
   users_RegistryAdmin      = var.users_RegistryAdmin
   users_RegistryDeveloper  = var.users_RegistryDeveloper
-  depends_on               = [btp_subaccount_entitlement.sap_build_apps]
+  depends_on               = [btp_subaccount_entitlement.sap_build_apps, btp_subaccount_trust_configuration.fully_customized]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -83,7 +84,7 @@ resource "btp_subaccount_subscription" "build_workzone" {
   subaccount_id = btp_subaccount.project.id
   app_name      = "SAPLaunchpad"
   plan_name     = "standard"
-  depends_on    = [btp_subaccount_entitlement.build_workzone]
+  depends_on    = [btp_subaccount_entitlement.build_workzone, btp_subaccount_trust_configuration.fully_customized]
 }
 # Assign users to Role Collection: Launchpad_Admin
 resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
