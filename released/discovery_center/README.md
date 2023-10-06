@@ -49,8 +49,6 @@ To deploy the resources you must:
    terraform apply -var-file="sample.tfvars"
    ```
 
-6. You have to replace the local variable - "project_subaccount_domain" in  "main.tf" with generated Subdomain ID if you want to perform any updates to the subaccount.
-
 ## In the end
 
 You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
