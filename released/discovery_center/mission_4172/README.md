@@ -1,9 +1,58 @@
-# Use case: Dynamically react to changing business events in your supply chain
+# Discovery Center Mission: Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS (4172)
 
-This script is based on the [GitHub repository for the use case of Build Events-to-Business Actions Scenarios with SAP BTP and Microsoft Azure/AWS](https://github.com/SAP-samples/btp-events-to-business-actions-framework/tree/main). This is expected to work with SAP Cloud Connector and not for the Private Link. 
+## Overview
 
-It uses the [Terraform provider for SAP BTP](https://registry.terraform.io/providers/SAP/btp/latest/docs) to setup the necessary BTP infrastructure for that use case.
+This sample shows how to create a landscape for the Discovery Center Mission "Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS"
 
-Set environment variables for BTP, CF User Name and Password - "BTP_USERNAME", "BTP_PASSWORD", "CF_USER", "CF_PASSWORD" in terminal before executing terraform scripts
-eg: export CF_USER="john.doe@test.com"    
+## Content of setup
 
+The setup comprises the following resources:
+
+- Creation of the SAP BTP subaccount
+- Entitlements of services
+- Subscriptions to applications
+- Role collection assignments to users
+- Creation of CF environments
+- Management of users and roles on org and space level
+
+## Deploying the resources
+
+To deploy the resources you must:
+
+1. Create a file `secret.auto.tfvars` and maintain the credentials for the BTP and CF provider
+
+   ```hcl
+   username = "<Email address of your BTP user>"
+   password = "<Password of your BTP user>"
+   ```
+
+2. Change the variables in the `samples.tfvars` file to meet your requirements
+
+   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
+
+
+3. Initialize your workspace:
+
+   ```bash
+   terraform init
+   ```
+
+4. You can check what Terraform plans to apply based on your configuration:
+
+   ```bash
+   terraform plan -var-file="sample.tfvars"
+   ```
+
+5. Apply your configuration to provision the resources:
+
+   ```bash
+   terraform apply -var-file="sample.tfvars"
+   ```
+
+## In the end
+
+You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
+
+```bash
+terraform destroy
+```
