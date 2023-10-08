@@ -16,8 +16,11 @@ jobs:
   setup_infrastructure:
     name: Run Terraform script
     runs-on: ubuntu-latest
-    env: 
-        BTP_USE_CASE_FOLDER: /released/usecases/services_apps/sap_build_apps
+    outputs:
+      repo_name:  ${{ steps.get_repo_name.outputs.repo_name }}    
+    env:
+      BASE_FOLDER: /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})
+      BTP_USE_CASE_FOLDER: /released/usecases/services_apps/sap_build_apps
     steps:
     - name: Set up Git repository
       uses: actions/checkout@v4
@@ -27,7 +30,7 @@ jobs:
         terraform_wrapper: false
     - name: Terraform Init
       id: init
-      working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
+      working-directory: ${{ env.BASE_FOLDER }}${{ env.BTP_USE_CASE_FOLDER }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       shell: bash
