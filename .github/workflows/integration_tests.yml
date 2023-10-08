@@ -4,14 +4,12 @@ on:
   workflow_dispatch:
 
 env:
-  # folder created by GitHub automatically within Docker container)!
-  FOLDER_REPO: /__w/
   # Credentials used by the Terraform script
   BTP_USERNAME: ${{ secrets.BTP_USERNAME }}
   BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
   CF_USER: ${{ secrets.BTP_USERNAME }}
   CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
-
+  
 jobs:
   setup_infrastructure:
     name: Run Terraform script
@@ -19,7 +17,6 @@ jobs:
     outputs:
       repo_name:  ${{ steps.get_repo_name.outputs.repo_name }}    
     env:
-      BASE_FOLDER: /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})
       BTP_USE_CASE_FOLDER: /released/usecases/services_apps/sap_build_apps
     steps:
     - name: Set up Git repository
@@ -28,9 +25,14 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
+      - name: "Get repo folder in container"
+        working-directory: /home/user
+        shell: bash
+        run: |
+          echo "REPO_NAME=/__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})" >> $GITHUB_ENV
     - name: Terraform Init
       id: init
-      working-directory: ${{ env.BASE_FOLDER }}${{ env.BTP_USE_CASE_FOLDER }}
+      working-directory: "${{ env.REPO_NAME }}${{ env.BTP_USE_CASE_FOLDER }}"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       shell: bash
