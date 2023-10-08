@@ -35,7 +35,7 @@ jobs:
         echo "Run terraform init in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
         terraform init
     - name: Terraform Apply
-      id: init
+      id: apply
       working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +44,7 @@ jobs:
         echo "Run terraform apply in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
         terraform apply -auto-approve
     - name: Terraform Destroy
-      id: init
+      id: destroy
       working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
