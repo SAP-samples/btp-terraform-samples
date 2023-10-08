@@ -25,11 +25,11 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
-      - name: "Get repo folder in container"
-        working-directory: /home/user
-        shell: bash
-        run: |
-          echo "REPO_NAME=/__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})" >> $GITHUB_ENV
+    - name: "Get repo folder in container"
+      working-directory: /home/user
+      shell: bash
+      run: |
+        echo "REPO_NAME=/__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})" >> $GITHUB_ENV
     - name: Terraform Init
       id: init
       working-directory: "${{ env.REPO_NAME }}${{ env.BTP_USE_CASE_FOLDER }}"
