@@ -24,7 +24,6 @@ jobs:
       with:
         terraform_wrapper: false
     - name: "Get repo folder in container"
-      working-directory: /home/user
       shell: bash
       run: |
         echo "REPO_NAME=/__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})" >> $GITHUB_ENV
