@@ -14,8 +14,6 @@ jobs:
   setup_infrastructure:
     name: Run Terraform script
     runs-on: ubuntu-latest
-    outputs:
-      repo_name:  ${{ steps.get_repo_name.outputs.repo_name }}    
     env:
       BTP_USE_CASE_FOLDER: /released/usecases/services_apps/sap_build_apps
     steps:
