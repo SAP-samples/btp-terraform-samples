@@ -36,7 +36,7 @@ jobs:
       id: terraform_init
       shell: bash
       run: |
-        terraform -chdir=${{ matrix.folder }} plan -no-color
+        terraform -chdir=${{ matrix.folder }} init -no-color
     #- name: Terraform Apply
     #  id: terraform_apply
     #  shell: bash
