@@ -1,4 +1,4 @@
-name: Integration tests - released
+name: Integration Tests - Released
 
 on:
   workflow_dispatch:
@@ -9,43 +9,42 @@ env:
   BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
   CF_USER: ${{ secrets.BTP_USERNAME }}
   CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
-  
+
+
 jobs:
   setup_infrastructure:
     name: Run Terraform script
     runs-on: ubuntu-latest
+
     env:
       BTP_USE_CASE_FOLDER: ./released/usecases/services_apps/sap_build_apps
+
+    strategy:
+      matrix:
+        folder: ['released/usecases/services_apps/sap_build_apps']  
+        
     steps:
     - name: Set up Git repository
+      id: checkout_repo
       uses: actions/checkout@v4
     - name: Setup Terraform
+      id : setup_terraform
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
     - name: Terraform Init
-      id: init
+      id: terraform_init
       shell: bash
       run: |
-        cd ${{ env.BTP_USE_CASE_FOLDER }}
-        ls -la 
-        terraform init
+        terraform -chdir=${{ matrix.folder }} plan -no-color
     #- name: Terraform Apply
-    #  id: apply
-    #  working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  id: terraform_apply
     #  shell: bash
     #  run: |
-    #    echo "Run terraform apply in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
-    #    terraform apply -auto-approve
+    #    terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color
     #- name: Terraform Destroy
-    #  id: destroy
-    #  working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  id: terraform_destroy
     #  shell: bash
     #  run: |
-    #    echo "Run terraform destroy in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
-    #    terraform destroy -auto-approve
+    #    terraform -chdir=${{ matrix.folder }} destroy -auto-approve -no-color
       
