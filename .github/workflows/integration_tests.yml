@@ -26,12 +26,12 @@ jobs:
     - name: "Get repo folder in container"
       shell: bash
       run: |
-        echo "REPO_NAME=/__w/$(basename ${{ github.repository }})/" >> $GITHUB_ENV
+        echo "REPO_NAME=/__w/$(basename ${{ github.repository }})" >> $GITHUB_ENV
     - name: Terraform Init
       id: init
       shell: bash
       run: |
-        cd ${{ env.REPO_NAME }}/${{ env.BTP_USE_CASE_FOLDER }}
+        cd ${{ env.REPO_NAME }}${{ env.BTP_USE_CASE_FOLDER }}
         ls -la 
         terraform init
     #- name: Terraform Apply
