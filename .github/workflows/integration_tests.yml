@@ -29,31 +29,27 @@ jobs:
         echo "REPO_NAME=/__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})" >> $GITHUB_ENV
     - name: Terraform Init
       id: init
-      working-directory: ${{ env.REPO_NAME }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       shell: bash
       run: |
-        echo "Run terraform init in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
-        ls -l
-        cd ${{ env.BTP_USE_CASE_FOLDER }}
+        cd ${{ env.REPO_NAME }}/${{ env.BTP_USE_CASE_FOLDER }}
+        ls -la 
         terraform init
-    - name: Terraform Apply
-      id: apply
-      working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      shell: bash
-      run: |
-        echo "Run terraform apply in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
-        terraform apply -auto-approve
-    - name: Terraform Destroy
-      id: destroy
-      working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      shell: bash
-      run: |
-        echo "Run terraform destroy in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
-        terraform destroy -auto-approve
+    #- name: Terraform Apply
+    #  id: apply
+    #  working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  shell: bash
+    #  run: |
+    #    echo "Run terraform apply in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
+    #    terraform apply -auto-approve
+    #- name: Terraform Destroy
+    #  id: destroy
+    #  working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  shell: bash
+    #  run: |
+    #    echo "Run terraform destroy in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
+    #    terraform destroy -auto-approve
       
