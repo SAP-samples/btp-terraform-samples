@@ -61,3 +61,16 @@ variable "users_RegistryDeveloper" {
   description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
+
+variable "username" {
+  description = "BTP username"
+  type        = string
+  sensitive   = true
+
+}
+
+variable "password" {
+  description = "BTP user password"
+  type        = string
+  sensitive   = true
+}
