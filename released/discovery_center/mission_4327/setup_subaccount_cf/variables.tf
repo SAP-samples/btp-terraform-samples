@@ -31,13 +31,6 @@ variable "cf_space_name" {
   default     = "dev"
 }
 
-# hana password
-variable "hana_cloud_system_password" {
-  type        = string
-  description = "The system password for the hana_cloud service instance."
-  default     = "Abcd1234"
-}
-
 # CLI server
 variable "cli_server_url" {
   type        = string
