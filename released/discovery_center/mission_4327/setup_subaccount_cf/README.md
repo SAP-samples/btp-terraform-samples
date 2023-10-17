@@ -40,7 +40,7 @@ Follow these steps to use the script:
 5. **Install Terraform Plugins**: Open a terminal and navigate to the directory containing your Terraform configuration files. Run the following command to initialize and upgrade Terraform plugins:
 
     ```shell
-    terraform init -upgrade
+    terraform init
     ```
 
 6. **Review Changes**: Generate an execution plan to review the changes that will be made to your SAP BTP account. Run:
