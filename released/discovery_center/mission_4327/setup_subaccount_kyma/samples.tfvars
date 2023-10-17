@@ -2,14 +2,14 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "sa0176014160"
+globalaccount        = "youraccount"
 region               = "ap11"
-subaccount_name      = "terraform-kyma"
-btp_user = "prajin.ollekkatt.prakasan@sap.com"
+subaccount_name      = "subaccountname"
+btp_user = "jane.doe@test.com"
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
-subaccount_admins         = ["prajin.ollekkatt.prakasan@sap.com", "shankari.g.r@sap.com"]
+subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
 #------------------------------------------------------------------------------------------------------
 # Entitlements plan update
 #------------------------------------------------------------------------------------------------------
