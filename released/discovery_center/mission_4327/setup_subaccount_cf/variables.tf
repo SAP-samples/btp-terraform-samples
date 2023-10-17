@@ -5,7 +5,6 @@
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain."
-  default     = "yourglobalaccount"
 }
 # subaccount
 variable "subaccount_name" {
