@@ -10,7 +10,6 @@ variable "globalaccount" {
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "UC - Events to Business Actions"
 }
 # Region
 variable "region" {
