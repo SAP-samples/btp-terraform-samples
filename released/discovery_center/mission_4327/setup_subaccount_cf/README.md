@@ -53,19 +53,19 @@ Linux, macOS:
   export CF_USER="<your email address>"
   export CF_PASSWORD="<your password>"
 ```
-7. **Install Terraform Plugins**: Open a terminal and navigate to the directory containing your Terraform configuration files. Run the following command to initialize and upgrade Terraform plugins:
+6. **Install Terraform Plugins**: Open a terminal and navigate to the directory containing your Terraform configuration files. Run the following command to initialize and upgrade Terraform plugins:
 
     ```shell
     terraform init
     ```
 
-8. **Review Changes**: Generate an execution plan to review the changes that will be made to your SAP BTP account. Run:
+7. **Review Changes**: Generate an execution plan to review the changes that will be made to your SAP BTP account. Run:
 
     ```shell
     terraform plan
     ```
 
-9. **Apply Configuration**: Apply the Terraform configuration to create the SAP BTP subaccount and entitlements. Run:
+8. **Apply Configuration**: Apply the Terraform configuration to create the SAP BTP subaccount and entitlements. Run:
 
     ```shell
     terraform apply
@@ -73,7 +73,7 @@ Linux, macOS:
 
     Confirm the changes by typing "yes."
 
-10. **Cleanup**: After your session or project is complete, you can delete the SAP BTP subaccount and associated resources to avoid charges:
+9. **Cleanup**: After your session or project is complete, you can delete the SAP BTP subaccount and associated resources to avoid charges:
 
     ```shell
     terraform destroy
@@ -81,6 +81,6 @@ Linux, macOS:
 
     Confirm the resource destruction by typing "yes."
 
-11. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
+10. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
 
 Please exercise caution when using this script, especially in production environments, and ensure you understand the resources that will be created or modified.
