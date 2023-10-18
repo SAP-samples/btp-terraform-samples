@@ -1,23 +1,11 @@
 ###############################################################################################
-# Setup of names in accordance to naming convention
-###############################################################################################
-resource "random_uuid" "uuid" {}
-
-locals {
-  random_uuid               = random_uuid.uuid.result
-  project_subaccount_domain = lower(replace("mission-4172-${local.random_uuid}", "_", "-"))
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
-}
-
-###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
-  region    = lower(var.region)
+  subdomain = var.subaccount_name
+  region    = var.region
 }
-
 ###############################################################################################
 # Assignment of users as sub account administrators
 ###############################################################################################
