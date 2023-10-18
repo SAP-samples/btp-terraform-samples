@@ -38,6 +38,7 @@ To deploy the resources you must:
 4. Create a file named `terraform.tfvars` and copy `samples.tfvars` content to `terraform.tfvars`. Update the variables to meet your requirements (By default free-tier plans are used, if you want to use it for production update in the `terraform.tfvars` accordingly)
 Follow these steps to use the script:
 5. Set `BTP_USERNAME`,`BTP_PASSWORD`,`CF_USER` and `CF_PASSWORD` as ENV variables.
+   
 Windows PowerShell:
 ```Powershell
   $env:BTP_USERNAME="<your email address>"
