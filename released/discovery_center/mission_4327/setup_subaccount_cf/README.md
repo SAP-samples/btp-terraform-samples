@@ -38,20 +38,18 @@ To deploy the resources you must:
 4. Create a file named `terraform.tfvars` and copy `samples.tfvars` content to `terraform.tfvars`. Update the variables to meet your requirements (By default free-tier plans are used, if you want to use it for production update in the `terraform.tfvars` accordingly)
 Follow these steps to use the script:
 5. Set `BTP_USERNAME`,`BTP_PASSWORD`,`CF_USER` and `CF_PASSWORD` as ENV variables.
-   For Windows
-   ```
+```Powershell
   $env:BTP_USERNAME="<your email address>"
   $env:BTP_PASSWORD="<your password>"
   $env:CF_USER="<your email address>"
   $env:CF_PASSWORD="<your password>"
-  ```
-  For mac OS
-  ```
+```
+```mac OS
   export BTP_USERNAME="<your email address>"
   export BTP_PASSWORD="<your password>"
   export CF_USER="<your email address>"
   export CF_PASSWORD="<your password>"
-  ```
+```
 7. **Install Terraform Plugins**: Open a terminal and navigate to the directory containing your Terraform configuration files. Run the following command to initialize and upgrade Terraform plugins:
 
     ```shell
