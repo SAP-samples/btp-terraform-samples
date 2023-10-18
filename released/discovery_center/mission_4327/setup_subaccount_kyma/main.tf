@@ -1,10 +1,18 @@
 ###############################################################################################
+# Setup of names in accordance to naming convention
+###############################################################################################
+locals {
+  random_uuid               = uuid()
+  project_subaccount_domain = "btp-developers-guide${local.random_uuid}"
+  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
+}
+###############################################################################################
 # create a subaccount in eu12 region
 ##############################################################################################
 resource "btp_subaccount" "project" {
   name      = var.subaccount_name
-  subdomain = var.subaccount_name
-  region    = var.region
+  subdomain = local.project_subaccount_domain
+  region    = lower(var.region)
 }
 #########################################
 # Add entitlement for Kymaruntime
@@ -19,13 +27,13 @@ data "btp_whoami" "me" {}
 resource "btp_subaccount_environment_instance" "kymaruntime" {
   subaccount_id = "${btp_subaccount.project.id}"
 
-  name             = "test-cluster"
+  name             = var.kyma_cluster_name
   environment_type = "kyma"
   service_name     = "kymaruntime"
   plan_name        = "aws"
 
   parameters = jsonencode(merge({
-    name           = "test-cluster"
+    name           = var.kyma_cluster_name
     administrators = toset(concat(tolist(var.administrators), [data.btp_whoami.me.email]))
     }, var.oidc == null ? null : {
     issuerURL      = var.oidc.issuer_url
@@ -51,13 +59,6 @@ resource "local_sensitive_file" "kubeconfig" {
   filename = ".{btp_subaccount.project.id}-$test-cluster.kubeconfig"
   content  = data.http.kubeconfig.response_body
 }
-######################################################################
-# Add "sleep" resource for generic purposes
-######################################################################
-resource "time_sleep" "wait_a_few_seconds" {
-  create_duration = "30s"
-}
-
 ######################################################################
 # Add entitlement for BAS, Subscribe BAS and add roles
 ######################################################################
