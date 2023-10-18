@@ -6,6 +6,7 @@ globalaccount        = "youraccount"
 region               = "us10"
 subaccount_name      = "Discovery Center mission - build Events-to-Business actions"
 cf_space_name        = "dev"
+custom_idp           = "abcde1234.accounts.ondemand.com"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
@@ -20,3 +21,10 @@ cf_space_auditors   = ["jane.doe@test.com", "john.doe@test.com"]
 cf_org_auditors   = ["jane.doe@test.com", "john.doe@test.com"]
 cf_org_managers   = ["jane.doe@test.com", "john.doe@test.com"]
 cf_org_billing_managers   = ["jane.doe@test.com", "john.doe@test.com"]
+
+advanced_event_mesh_admin = "jane.doe@test.com"
+
+appstudio_developers = ["jane.doe@test.com", "john.doe@test.com"]
+appstudio_admin = ["jane.doe@test.com", "john.doe@test.com"]
+cloudconnector_admin = ["jane.doe@test.com", "john.doe@test.com"]
+conn_dest_admin = ["jane.doe@test.com", "john.doe@test.com"]

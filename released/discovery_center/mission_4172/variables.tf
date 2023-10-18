@@ -95,6 +95,36 @@ variable "cf_org_billing_managers" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
+variable "advanced_event_mesh_admin" {
+  type        = string
+  description = "Defines the colleagues who are Cloudfoundry org auditors"
+  default     = "jane.doe@test.com"
+}
+
+variable "appstudio_developers" {
+  type        = list(string)
+  description = "Business Application Studio Developer"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "appstudio_admin" {
+  type        = list(string)
+  description = "Business Application Studio Administrator"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cloudconnector_admin" {
+  type        = list(string)
+  description = "Cloud Connector Administrator"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "conn_dest_admin" {
+  type        = list(string)
+  description = "Connectivity and Destination Administrator"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
 ###
 # Entitlements
 ###
@@ -127,21 +157,6 @@ variable "entitlements" {
       type         = "app"
     },
     {
-      service_name = "enterprise-messaging"
-      plan_name    = "default",
-      type         = "service"
-    },
-    {
-      service_name = "enterprise-messaging-hub"
-      plan_name    = "standard",
-      type         = "app"
-    },
-    {
-      service_name = "privatelink"
-      plan_name    = "standard",
-      type         = "service"
-    },
-    {
       service_name = "xsuaa"
       plan_name    = "application",
       type         = "service"
@@ -159,6 +174,9 @@ variable "entitlements" {
   ]
 }
 
+# variable "advanced_event_mesh" {
+#   service_name = "integration-suite-advanced-event-mesh"
+# }
 
 variable "username" {
   description = "BTP username"
@@ -172,3 +190,15 @@ variable "password" {
   type        = string
   sensitive   = true
 }
+
+variable "custom_idp" {
+  type        = string
+  description = "Defines the custom IDP to be used for the subaccount"
+  default     = "terraformint"
+
+  validation {
+    condition     = can(regex("^[a-z-]", var.custom_idp))
+    error_message = "Please enter a valid entry for the custom-idp of the subaccount."
+  }
+}
+
