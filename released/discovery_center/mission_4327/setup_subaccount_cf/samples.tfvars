@@ -2,28 +2,28 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "youraccount"
-region               = "ap11"
-subaccount_name      = "subaccount name"
-btp_user = "jane.doe@test.com"
+globalaccount        = "<Global Account ID>"
+region               = "<BTP Landscape region e.g ap11>"
+subaccount_name      = "<Sub Account Name>"
+btp_user = "<Your Email Address>"
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
-subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
-subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
+subaccount_admins         = ["user1-email", "user2-email"]
+subaccount_service_admins = ["user1-email", "user2-email"]
 
-cf_space_managers   = ["jane.doe@test.com", "john.doe@test.com"]
-cf_space_developers = ["jane.doe@test.com", "john.doe@test.com"]
-cf_space_auditors   = ["jane.doe@test.com", "john.doe@test.com"]
+cf_space_managers   = ["user1-email", "user2-email"]
+cf_space_developers = ["user1-email", "user2-email"]
+cf_space_auditors   = ["user1-email", "user2-email"]
 
-cf_org_auditors   = ["jane.doe@test.com", "john.doe@test.com"]
-cf_org_managers   = ["jane.doe@test.com", "john.doe@test.com"]
-cf_org_billing_managers   = ["jane.doe@test.com", "john.doe@test.com"]
+cf_org_auditors   = ["user1-email", "user2-email"]
+cf_org_managers   = ["user1-email", "user2-email"]
+cf_org_billing_managers   = ["user1-email", "user2-email"]
 
 #------------------------------------------------------------------------------------------------------
 # Entitlements plan update
 #------------------------------------------------------------------------------------------------------
 
-bas_plan_name = "standard-edition"
-build_workzone_plan_name = "standard"
-hana-cloud_plan_name = "hana"
+bas_plan_name = "free-tier"
+build_workzone_plan_name = "free-tier"
+hana-cloud_plan_name = "free"
