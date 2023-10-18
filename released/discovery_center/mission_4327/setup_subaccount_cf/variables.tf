@@ -149,17 +149,6 @@ variable "entitlements" {
     }
   ]
 }
-variable "username" {
-  description = "BTP username"
-  type        = string
-}
-
-variable "password" {
-  description = "BTP user password"
-  type        = string
-  sensitive   = true
-}
-
 variable "btp_user" {
 description = "BTP user email"
 type = string
