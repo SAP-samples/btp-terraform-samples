@@ -35,24 +35,23 @@ To deploy the resources you must:
 1. Clone repository `git clone https://github.com/SAP-samples/btp-terraform-samples.git`
 2. Navigate to `released/discovery_center/mission_4327/setup_subaccount_kyma`
 3. You will be seeing these files named `main.tf`,`provider.tf`,`samples.tfvars`,`variables.tf`.
-4. Change the variables in the samples.tfvars file to meet your requirements
-Follow these steps to use the script:
+4. Create a file named terraform.tfvars and copy samples.tfvars content to terraform.tfvars. Update the variables to meet your requirements (By default free-tier plans are used, if you want to use it for production update in the terraform.tfvars accordingly) Follow these steps to use the script:
 5. **Install Terraform Plugins**: Open a terminal and navigate to the directory containing your Terraform configuration files. Run the following command to initialize and upgrade Terraform plugins:
 
     ```shell
-    terraform init -upgrade
+    terraform init
     ```
 
 6. **Review Changes**: Generate an execution plan to review the changes that will be made to your SAP BTP account. Run:
 
     ```shell
-    terraform plan -var-file="sample.tfvars"
+    terraform plan
     ```
 
 7. **Apply Configuration**: Apply the Terraform configuration to create the SAP BTP subaccount and entitlements. Run:
 
     ```shell
-    terraform apply -var-file="sample.tfvars"
+    terraform apply
     ```
 
     Confirm the changes by typing "yes."
@@ -60,7 +59,7 @@ Follow these steps to use the script:
 8. **Cleanup**: After your session or project is complete, you can delete the SAP BTP subaccount and associated resources to avoid charges:
 
     ```shell
-    terraform destroy -var-file="sample.tfvars"
+    terraform destroy
     ```
 
     Confirm the resource destruction by typing "yes."
