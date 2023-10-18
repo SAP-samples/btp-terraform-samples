@@ -37,19 +37,34 @@ To deploy the resources you must:
 3. You will be seeing these files named `main.tf`,`provider.tf`,`samples.tfvars`,`variables.tf`.
 4. Create a file named `terraform.tfvars` and copy `samples.tfvars` content to `terraform.tfvars`. Update the variables to meet your requirements (By default free-tier plans are used, if you want to use it for production update in the `terraform.tfvars` accordingly)
 Follow these steps to use the script:
-5. **Install Terraform Plugins**: Open a terminal and navigate to the directory containing your Terraform configuration files. Run the following command to initialize and upgrade Terraform plugins:
+5. Set `BTP_USERNAME`,`BTP_PASSWORD`,`CF_USER` and `CF_PASSWORD` as ENV variables.
+   For Windows
+   ```
+  $env:BTP_USERNAME="<your email address>"
+  $env:BTP_PASSWORD="<your password>"
+  $env:CF_USER="<your email address>"
+  $env:CF_PASSWORD="<your password>"
+  ```
+  For mac OS
+  ```
+  export BTP_USERNAME="<your email address>"
+  export BTP_PASSWORD="<your password>"
+  export CF_USER="<your email address>"
+  export CF_PASSWORD="<your password>"
+  ```
+7. **Install Terraform Plugins**: Open a terminal and navigate to the directory containing your Terraform configuration files. Run the following command to initialize and upgrade Terraform plugins:
 
     ```shell
     terraform init
     ```
 
-6. **Review Changes**: Generate an execution plan to review the changes that will be made to your SAP BTP account. Run:
+8. **Review Changes**: Generate an execution plan to review the changes that will be made to your SAP BTP account. Run:
 
     ```shell
     terraform plan
     ```
 
-7. **Apply Configuration**: Apply the Terraform configuration to create the SAP BTP subaccount and entitlements. Run:
+9. **Apply Configuration**: Apply the Terraform configuration to create the SAP BTP subaccount and entitlements. Run:
 
     ```shell
     terraform apply
@@ -57,7 +72,7 @@ Follow these steps to use the script:
 
     Confirm the changes by typing "yes."
 
-8. **Cleanup**: After your session or project is complete, you can delete the SAP BTP subaccount and associated resources to avoid charges:
+10. **Cleanup**: After your session or project is complete, you can delete the SAP BTP subaccount and associated resources to avoid charges:
 
     ```shell
     terraform destroy
@@ -65,6 +80,6 @@ Follow these steps to use the script:
 
     Confirm the resource destruction by typing "yes."
 
-9. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
+11. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
 
 Please exercise caution when using this script, especially in production environments, and ensure you understand the resources that will be created or modified.
