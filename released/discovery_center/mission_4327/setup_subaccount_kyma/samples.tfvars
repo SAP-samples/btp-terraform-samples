@@ -7,6 +7,7 @@ region               = "<BTP Landscape region e.g ap11>"
 subaccount_name      = "<Sub Account Name>"
 btp_user = "<Your Email Address>"
 kyma_cluster_name = "<your kyma cluster name e.g my-kyma-cluster>"
+kyma_plan_name = "<planname for the kymaruntime e.g aws>"
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
