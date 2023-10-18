@@ -20,7 +20,7 @@ resource "btp_subaccount" "project" {
 resource "btp_subaccount_entitlement" "kymaruntime" {
   subaccount_id = "${btp_subaccount.project.id}"
   service_name = "kymaruntime"
-  plan_name    = "aws"
+  plan_name    = var.kyma_plan_name
   amount       = 1
 }
 data "btp_whoami" "me" {}
