@@ -23,6 +23,12 @@ variable "kyma_cluster_name" {
   description = "The name for the kyma cluster"
   default     = "my-kyma-cluster"
 }
+# kymaruntime plan
+variable "kyma_plan_name" {
+  type        = string
+  description = "The name for the kyma cluster"
+  default     = "aws"
+}
 # CLI server
 variable "cli_server_url" {
   type        = string
