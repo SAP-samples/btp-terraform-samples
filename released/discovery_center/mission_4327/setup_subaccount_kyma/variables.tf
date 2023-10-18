@@ -5,13 +5,11 @@
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain."
-  default     = "yourglobalaccount"
 }
 # subaccount
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "UC - Events to Business Actions"
 }
 # Region
 variable "region" {
@@ -19,7 +17,12 @@ variable "region" {
   description = "The region where the project account shall be created in."
   default     = "us10"
 }
-
+# Kyma cluster name
+variable "kyma_cluster_name" {
+  type        = string
+  description = "The name for the kyma cluster"
+  default     = "my-kyma-cluster"
+}
 # CLI server
 variable "cli_server_url" {
   type        = string
@@ -35,7 +38,6 @@ variable "subaccount_admins" {
 variable "username" {
   description = "BTP username"
   type        = string
-  sensitive   = false
 }
 
 variable "password" {
