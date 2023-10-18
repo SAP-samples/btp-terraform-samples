@@ -1,10 +1,18 @@
 ###############################################################################################
+# Setup of names in accordance to naming convention
+###############################################################################################
+locals {
+  random_uuid               = uuid()
+  project_subaccount_domain = "btp-developers-guide${local.random_uuid}"
+  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
+}
+###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
   name      = var.subaccount_name
-  subdomain = var.subaccount_name
-  region    = var.region
+  subdomain = local.project_subaccount_domain
+  region    = lower(var.region)
 }
 ###############################################################################################
 # Assignment of users as sub account administrators
