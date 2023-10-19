@@ -83,3 +83,8 @@ Linux, macOS:
 10. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
 
 Please exercise caution when using this script, especially in production environments, and ensure you understand the resources that will be created or modified.
+
+## Known issues
+
+[Issues with Terraform CLI version 1.6.x - No resource type found](https://github.com/SAP/terraform-provider-btp/discussions/477)
+If you are using Terraform CLI in version 1.6.x, please downgrade to version 1.5.7 of the Terraform CLI.
