@@ -52,17 +52,17 @@ module "cloudfoundry_environment" {
   cf_org_billing_managers   = var.cf_org_billing_managers
 }
 
-######################################################################
-# Creation of Cloud Foundry space
-######################################################################
-module "cloudfoundry_space" {
-  source              = "../../modules/environment/cloudfoundry/space_cf"
-  cf_org_id           = module.cloudfoundry_environment.cf_org_id
-  name                = var.cf_space_name
-  cf_space_managers   = var.cf_space_managers
-  cf_space_developers = var.cf_space_developers
-  cf_space_auditors   = var.cf_space_auditors
-}
+# ######################################################################
+# # Creation of Cloud Foundry space
+# ######################################################################
+# module "cloudfoundry_space" {
+#   source              = "../../modules/environment/cloudfoundry/space_cf"
+#   cf_org_id           = module.cloudfoundry_environment.cf_org_id
+#   name                = var.cf_space_name
+#   cf_space_managers   = var.cf_space_managers
+#   cf_space_developers = var.cf_space_developers
+#   cf_space_auditors   = var.cf_space_auditors
+# }
 
 ######################################################################
 # Add "sleep" resource for generic purposes
@@ -75,7 +75,7 @@ resource "time_sleep" "wait_a_few_seconds" {
 # Entitlement of all services and apps
 ######################################################################
 resource "btp_subaccount_entitlement" "name" {
-  depends_on = [ module.cloudfoundry_space, time_sleep.wait_a_few_seconds]
+  depends_on = [ time_sleep.wait_a_few_seconds]
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement
@@ -98,7 +98,7 @@ data "btp_subaccount_service_plan" "hana_plan" {
 
 # hana-cloud
 resource "btp_subaccount_service_instance" "hana_instance" {
-  depends_on   = [module.cloudfoundry_space, data.btp_subaccount_service_plan.hana_plan]
+  depends_on   = [data.btp_subaccount_service_plan.hana_plan]
   name = "hana_cloud_instance"
   serviceplan_id = data.btp_subaccount_service_plan.hana_plan.id
   subaccount_id = btp_subaccount.project.id
