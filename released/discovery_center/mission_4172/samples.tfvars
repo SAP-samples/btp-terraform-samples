@@ -17,6 +17,6 @@ subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
 advanced_event_mesh_admin = "jane.doe@test.com"
 
 appstudio_developers = ["jane.doe@test.com", "john.doe@test.com"]
-appstudio_admin = ["jane.doe@test.com", "john.doe@test.com"]
+appstudio_admin      = ["jane.doe@test.com", "john.doe@test.com"]
 cloudconnector_admin = ["jane.doe@test.com", "john.doe@test.com"]
-conn_dest_admin = ["jane.doe@test.com", "john.doe@test.com"]
+conn_dest_admin      = ["jane.doe@test.com", "john.doe@test.com"]

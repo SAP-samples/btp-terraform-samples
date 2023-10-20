@@ -2,10 +2,10 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "yoursubdomain"
-region               = "us10"
-subaccount_name      = "DC Mission 4033 - Create simple, connected digital experiences with API-based integration 2"
-custom_idp           = "youridp.accounts.ondemand.com"
+globalaccount   = "yoursubdomain"
+region          = "us10"
+subaccount_name = "DC Mission 4033 - Create simple, connected digital experiences with API-based integration 2"
+custom_idp      = "youridp.accounts.ondemand.com"
 
 kyma_instance = {
   name            = "my-kyma-environment"
@@ -24,12 +24,12 @@ kyma_instance = {
 subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
 subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
 
-conn_dest_admin = ["jane.doe@test.com", "john.doe@test.com"]
-int_provisioner = ["jane.doe@test.com", "john.doe@test.com"]
-users_BuildAppsAdmin = ["jane.doe@test.com", "john.doe@test.com"]
-users_RegistryAdmin = ["jane.doe@test.com", "john.doe@test.com"]
-users_BuildAppsDeveloper = ["jane.doe@test.com", "john.doe@test.com"]
-users_RegistryDeveloper = ["jane.doe@test.com", "john.doe@test.com"]
-ProcessAutomationAdmin = ["jane.doe@test.com", "john.doe@test.com"]
-ProcessAutomationDeveloper = ["jane.doe@test.com", "john.doe@test.com"]
+conn_dest_admin              = ["jane.doe@test.com", "john.doe@test.com"]
+int_provisioner              = ["jane.doe@test.com", "john.doe@test.com"]
+users_BuildAppsAdmin         = ["jane.doe@test.com", "john.doe@test.com"]
+users_RegistryAdmin          = ["jane.doe@test.com", "john.doe@test.com"]
+users_BuildAppsDeveloper     = ["jane.doe@test.com", "john.doe@test.com"]
+users_RegistryDeveloper      = ["jane.doe@test.com", "john.doe@test.com"]
+ProcessAutomationAdmin       = ["jane.doe@test.com", "john.doe@test.com"]
+ProcessAutomationDeveloper   = ["jane.doe@test.com", "john.doe@test.com"]
 ProcessAutomationParticipant = ["jane.doe@test.com", "john.doe@test.com"]

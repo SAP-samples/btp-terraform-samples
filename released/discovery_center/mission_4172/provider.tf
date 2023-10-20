@@ -12,7 +12,7 @@ terraform {
 provider "btp" {
   globalaccount  = var.globalaccount
   cli_server_url = var.cli_server_url
-  username = var.username
-  password = var.password
+  username       = var.username
+  password       = var.password
 }
 
