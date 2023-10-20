@@ -2,7 +2,7 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "yoursubaccount"
+globalaccount        = "yoursubdomain"
 region               = "us10"
 subaccount_name      = "DC Mission 4033 - Create simple, connected digital experiences with API-based integration 2"
 custom_idp           = "youridp.accounts.ondemand.com"

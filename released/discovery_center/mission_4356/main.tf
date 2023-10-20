@@ -41,41 +41,23 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 ######################################################################
 # Creation of Cloud Foundry environment
 ######################################################################
-module "cloudfoundry_environment" {
-  source                    = "../../modules/environment/cloudfoundry/envinstance_cf"
-  subaccount_id             = btp_subaccount.project.id
-  instance_name             = local.project_subaccount_cf_org
-  plan_name                 = "standard"
-  cf_org_name               = local.project_subaccount_cf_org
-  cf_org_auditors           = var.cf_org_auditors
-  cf_org_managers           = var.cf_org_managers
-  cf_org_billing_managers   = var.cf_org_billing_managers
-}
-
-# ######################################################################
-# # Creation of Cloud Foundry space
-# ######################################################################
-# module "cloudfoundry_space" {
-#   source              = "../../modules/environment/cloudfoundry/space_cf"
-#   cf_org_id           = module.cloudfoundry_environment.cf_org_id
-#   name                = var.cf_space_name
-#   cf_space_managers   = var.cf_space_managers
-#   cf_space_developers = var.cf_space_developers
-#   cf_space_auditors   = var.cf_space_auditors
-# }
-
-######################################################################
-# Add "sleep" resource for generic purposes
-######################################################################
-resource "time_sleep" "wait_a_few_seconds" {
-  create_duration = "30s"
+resource "btp_subaccount_environment_instance" "cf" {
+  subaccount_id    = btp_subaccount.project.id
+  name             = local.project_subaccount_cf_org
+  environment_type = "cloudfoundry"
+  service_name     = "cloudfoundry"
+  plan_name        = "standard"
+  landscape_label = var.cf_environment_label
+  parameters = jsonencode({
+    instance_name = local.project_subaccount_cf_org
+  })
 }
 
 ######################################################################
 # Entitlement of all services
 ######################################################################
 resource "btp_subaccount_entitlement" "name" {
-  depends_on = [ module.cloudfoundry_environment, time_sleep.wait_a_few_seconds]
+  depends_on = [btp_subaccount.project]
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement
@@ -88,9 +70,9 @@ resource "btp_subaccount_entitlement" "name" {
 ######################################################################
 # Create app subscriptions
 ######################################################################
-data"btp_subaccount_subscriptions" "all"{
+data "btp_subaccount_subscriptions" "all" {
   subaccount_id = btp_subaccount.project.id
-  depends_on = [ btp_subaccount_entitlement.name ]
+  depends_on    = [btp_subaccount_entitlement.name]
 }
 
 resource "btp_subaccount_subscription" "app" {
@@ -99,9 +81,9 @@ resource "btp_subaccount_subscription" "app" {
     for index, entitlement in var.entitlements :
     index => entitlement if contains(["app"], entitlement.type)
   }
-  app_name   = [
-    for subscription in data.btp_subaccount_subscriptions.all.values: 
-    subscription 
+  app_name = [
+    for subscription in data.btp_subaccount_subscriptions.all.values :
+    subscription
     if subscription.commercial_app_name == each.value.service_name
   ][0].app_name
   plan_name  = each.value.plan_name

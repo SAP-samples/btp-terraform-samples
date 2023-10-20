@@ -2,7 +2,7 @@
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission "Discovery Center mission - Deliver Connected Experiences with a single view of Material Availability"
+This sample shows how to create a landscape for the Discovery Center Mission - [Deliver Connected Experiences with a single view of Material Availability](https://discovery-center.cloud.sap/missiondetail/4356/)
 
 ## Content of setup
 

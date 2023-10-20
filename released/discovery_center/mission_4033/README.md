@@ -2,7 +2,7 @@
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission "Discovery Center mission - Create simple, connected digital experiences with API-based integration"
+This sample shows how to create a landscape for the Discovery Center Mission - [Create simple, connected digital experiences with API-based integration](https://discovery-center.cloud.sap/missiondetail/4033/)
 
 ## Content of setup
 

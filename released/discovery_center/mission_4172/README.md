@@ -2,7 +2,7 @@
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission "Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS"
+This sample shows how to create a landscape for the Discovery Center Mission - [Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS](https://discovery-center.cloud.sap/missiondetail/4172/)
 
 ## Content of setup
 
