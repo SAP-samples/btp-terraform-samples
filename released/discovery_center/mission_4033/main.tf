@@ -44,7 +44,6 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 resource "btp_subaccount_trust_configuration" "fully_customized" {
   subaccount_id     = btp_subaccount.project.id
   identity_provider = var.custom_idp
-  depends_on        = [btp_subaccount.project]
 }
 
 
@@ -94,7 +93,6 @@ resource "btp_subaccount_environment_instance" "kyma" {
 # Entitlement of all services
 ######################################################################
 resource "btp_subaccount_entitlement" "name" {
-  depends_on = [btp_subaccount.project]
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement

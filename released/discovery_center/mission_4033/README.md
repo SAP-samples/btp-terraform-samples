@@ -1,4 +1,4 @@
-# Discovery Center Mission: Discovery Center mission - Create simple, connected digital experiences with API-based integration
+# Discovery Center mission - Create simple, connected digital experiences with API-based integration
 
 ## Overview
 

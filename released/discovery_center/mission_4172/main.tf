@@ -57,7 +57,6 @@ resource "btp_subaccount_environment_instance" "cf" {
 # Entitlement of all services and apps
 ######################################################################
 resource "btp_subaccount_entitlement" "name" {
-  depends_on = [btp_subaccount.project]
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement
@@ -93,7 +92,6 @@ resource "btp_subaccount_service_instance" "hana_instance" {
 resource "btp_subaccount_trust_configuration" "fully_customized" {
   subaccount_id     = btp_subaccount.project.id
   identity_provider = var.custom_idp
-  depends_on        = [btp_subaccount.project]
 }
 
 ######################################################################

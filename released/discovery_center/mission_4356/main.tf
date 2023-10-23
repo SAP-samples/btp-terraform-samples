@@ -57,7 +57,6 @@ resource "btp_subaccount_environment_instance" "cf" {
 # Entitlement of all services
 ######################################################################
 resource "btp_subaccount_entitlement" "name" {
-  depends_on = [btp_subaccount.project]
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement
