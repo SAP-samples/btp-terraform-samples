@@ -21,18 +21,22 @@ resource "btp_subaccount_entitlement" "entitlement-taskcenter" {
 # Create Cloud Foundry environment
 ###
 module "cloudfoundry_environment" {
-  source                = "../modules/envinstance-cloudfoundry/"
-  subaccount_id         = btp_subaccount.subaccount.id
-  instance_name         = var.cloudfoundry_org_name
-  cloudfoundry_org_name = var.cloudfoundry_org_name
+  source = "../../modules/environment/cloudfoundry/envinstance_cf"
+
+  subaccount_id           = btp_subaccount.subaccount.id
+  instance_name           = var.cloudfoundry_org_name
+  cf_org_name             = var.cloudfoundry_org_name
+  cf_org_managers         = []
+  cf_org_billing_managers = []
+  cf_org_auditors         = []
 }
 
 ###
 # Create Cloud Foundry space and assign users
 ###
 module "cloudfoundry_space" {
-  source              = "../modules/cloudfoundry-space/"
-  cf_org_id           = module.cloudfoundry_environment.org_id
+  source              = "../../modules/environment/cloudfoundry/space_cf"
+  cf_org_id           = module.cloudfoundry_environment.cf_org_id
   name                = var.cloudfoundry_space_name
   cf_space_managers   = var.cloudfoundry_space_managers
   cf_space_developers = var.cloudfoundry_space_developers
@@ -47,9 +51,6 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-administrators"
   role_collection_name = "Subaccount Administrator"
   for_each             = var.subaccount_admins
   user_name            = each.value
-  depends_on = [
-    btp_subaccount.subaccount
-  ]
 }
 
 resource "btp_subaccount_role_collection_assignment" "subaccount-service-administrators" {
@@ -57,7 +58,4 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-adminis
   role_collection_name = "Subaccount Service Administrator"
   for_each             = var.subaccount_service_admins
   user_name            = each.value
-  depends_on = [
-    btp_subaccount.subaccount
-  ]
 }
