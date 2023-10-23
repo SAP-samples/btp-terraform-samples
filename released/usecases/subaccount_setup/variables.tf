@@ -7,7 +7,7 @@ variable "subaccount_name" {
   default     = "dept-XYZ"
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.name))
+    condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.subaccount_name))
     error_message = "Provide a valid project account name."
   }
 }
@@ -25,7 +25,7 @@ variable "cf_org_name" {
       ["PLATFORMDEV", "INTIT"],
       // Financial Services
       ["FSIT"],
-    ), var.org_name)
+    ), var.cf_org_name)
     error_message = "Please select a valid org name for the project account."
   }
 }
