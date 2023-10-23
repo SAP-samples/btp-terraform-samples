@@ -1,18 +1,18 @@
 ###
 # Customer account setup
 ###
-variable "name" {
+variable "subaccount_name" {
   type        = string
-  description = "The account name."
+  description = "The subaccount name."
   default     = "dept-XYZ"
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.name))
+    condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.subaccount_name))
     error_message = "Provide a valid project account name."
   }
 }
 
-variable "org_name" {
+variable "cf_org_name" {
   type        = string
   description = "Defines to which organisation the project account shall belong to."
   default     = "B2C"
@@ -25,7 +25,7 @@ variable "org_name" {
       ["PLATFORMDEV", "INTIT"],
       // Financial Services
       ["FSIT"],
-    ), var.org_name)
+    ), var.cf_org_name)
     error_message = "Please select a valid org name for the project account."
   }
 }
@@ -50,4 +50,3 @@ variable "region" {
   description = "The region where the project account shall be created in."
   default     = "us10"
 }
-

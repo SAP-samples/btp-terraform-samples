@@ -14,7 +14,7 @@ The setup comprises the following resources:
 - Creation of a Cloud Foundry environment within the subaccount in according to the naming convention defined in the `variables.tf` file
 - Creation of an entitlement for the "Alert Notification" service in the subaccount
 
-You can adapt the rules defined in the [variables.tf](variables.tf) file to your needs. In case you want to apply the rules, simply change the values for the variables in the a `terraform.tfvars` file.
+You can adapt the rules defined in the [variables.tf](variables.tf) file to your needs. In case you want to apply the rules, simply change the values for the variables in a `terraform.tfvars` file.
 
 ## Deploying the resources
 
