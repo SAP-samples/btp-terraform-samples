@@ -1,9 +1,9 @@
 ###
 # Customer account setup
 ###
-variable "name" {
+variable "subaccount_name" {
   type        = string
-  description = "The account name."
+  description = "The subaccount name."
   default     = "dept-XYZ"
 
   validation {
@@ -12,7 +12,7 @@ variable "name" {
   }
 }
 
-variable "org_name" {
+variable "cf_org_name" {
   type        = string
   description = "Defines to which organisation the project account shall belong to."
   default     = "B2C"
@@ -50,4 +50,3 @@ variable "region" {
   description = "The region where the project account shall be created in."
   default     = "us10"
 }
-
