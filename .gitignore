@@ -7,3 +7,4 @@ terraform.tfvars
 
 # Any kind of invironment variables
 *.env
+.vscode/settings.json
