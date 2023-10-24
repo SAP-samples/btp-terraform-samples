@@ -13,10 +13,10 @@ terraform {
 }
 
 provider "btp" {
-  globalaccount = "ourglobalaccount_subdomain_id"
+  globalaccount = "<YOUR GLOBALACCOUNT SUBDOMAIN>"
 }
 
 // Configuration is described in https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs
 provider "cloudfoundry" {
-  api_url = "https://api.cf.us10.hana.ondemand.com"
+  api_url = "https://api.cf.${var.region}.hana.ondemand.com"
 }

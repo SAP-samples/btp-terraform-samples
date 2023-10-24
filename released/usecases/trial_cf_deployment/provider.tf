@@ -13,7 +13,7 @@ terraform {
 
 # Configure the BTP Provider
 provider "btp" {
-  globalaccount = "4605efebtrial-ga"
+  globalaccount = "<SUBDOMAIN OF YOUR GLOBAL ACCOUNT>"
 }
 
 provider "cloudfoundry" {

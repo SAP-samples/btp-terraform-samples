@@ -1,6 +1,6 @@
 # looks up the id of the pre-created trial account
 module "trialaccount" {
-  source = "./modules/trialaccount"
+  source = "./modules/btp_trial_data"
 }
 
 data "cloudfoundry_space" "dev" {

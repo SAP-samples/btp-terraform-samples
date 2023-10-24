@@ -1,8 +1,8 @@
-# Discovery Center Mission: Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS (4172)
+# Discovery Center Mission: Discovery Center mission - Deliver Connected Experiences with a single view of Material Availability
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission - [Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS](https://discovery-center.cloud.sap/missiondetail/4172/)
+This sample shows how to create a landscape for the Discovery Center Mission - [Deliver Connected Experiences with a single view of Material Availability](https://discovery-center.cloud.sap/missiondetail/4356/)
 
 ## Content of setup
 

@@ -1,8 +1,8 @@
-# Discovery Center Mission: Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS (4172)
+# Discovery Center mission - Create simple, connected digital experiences with API-based integration
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission - [Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS](https://discovery-center.cloud.sap/missiondetail/4172/)
+This sample shows how to create a landscape for the Discovery Center Mission - [Create simple, connected digital experiences with API-based integration](https://discovery-center.cloud.sap/missiondetail/4033/)
 
 ## Content of setup
 
@@ -12,8 +12,7 @@ The setup comprises the following resources:
 - Entitlements of services
 - Subscriptions to applications
 - Role collection assignments to users
-- Creation of CF environments
-- Management of users and roles on org and space level
+- Creation of Kyma Environment
 
 ## Deploying the resources
 
