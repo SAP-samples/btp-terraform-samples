@@ -37,4 +37,8 @@ This will build the devcontainer and open the repository in a container. You can
 
 You can also use GitHub Codespaces to execute the samples. You can find more details on how to use GitHub Codespaces [here](https://docs.github.com/en/codespaces/developing-in-codespaces/creating-a-codespace). Here you can only use the *default* configuration of the devcontainer as described above as the environment files are excluded from git and therefore not available in GitHub Codespaces.
 
+You can also directly start the Codespace via this button:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=656281656&machine=basicLinux32gb&devcontainer_path=.devcontainer%2Fdevcontainer.json&location=WestEurope)
+
 > **Note**: There might be costs arising on your side when using GitHub Codespaces. For more details see the official documentation on [billing](https://docs.github.com/billing/managing-billing-for-github-codespaces/about-billing-for-github-codespaces) of GitHub Codespaces.
