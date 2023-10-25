@@ -87,7 +87,7 @@ resource "time_sleep" "wait_a_few_seconds" {
 # Create service instances (and service keys when needed)
 ######################################################################
 # connectivitiy
-module "create_cf_service_instance_01" {
+module "create_cf_service_instance_connectivity" {
   depends_on            = [time_sleep.wait_a_few_seconds]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
@@ -98,7 +98,7 @@ module "create_cf_service_instance_01" {
 }
 
 # destination
-module "create_cf_service_instance_02" {
+module "create_cf_service_instance_destination" {
   depends_on            = [time_sleep.wait_a_few_seconds]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
@@ -109,7 +109,7 @@ module "create_cf_service_instance_02" {
 }
 
 # html5-apps-repo
-module "create_cf_service_instance_03" {
+module "create_cf_service_instance_html5_repo" {
   depends_on            = [time_sleep.wait_a_few_seconds]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
@@ -153,7 +153,7 @@ resource "cloudfoundry_service_key" "key_enterprise-messaging" {
 }
 
 # application-logs
-module "create_cf_service_instance_05" {
+module "create_cf_service_instance_applog" {
   depends_on            = [time_sleep.wait_a_few_seconds]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
@@ -164,7 +164,7 @@ module "create_cf_service_instance_05" {
 }
 
 # xsuaa
-module "create_cf_service_instance_06" {
+module "create_cf_service_instance_xsuaa" {
   depends_on            = [time_sleep.wait_a_few_seconds]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
@@ -187,7 +187,7 @@ module "create_cf_service_instance_hana_cloud" {
 
 
 # hana
-module "create_cf_service_instance_08" {
+module "create_cf_service_instance_hdishared" {
   depends_on            = [time_sleep.wait_a_few_seconds, module.create_cf_service_instance_hana_cloud]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
@@ -198,7 +198,7 @@ module "create_cf_service_instance_08" {
 }
 
 # autoscaler
-module "create_cf_service_instance_09" {
+module "create_cf_service_instance_autoscaler" {
   depends_on            = [time_sleep.wait_a_few_seconds]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
