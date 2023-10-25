@@ -3,7 +3,7 @@
 ###############################################################################################
 locals {
   random_uuid               = uuid()
-  project_subaccount_domain = "teched23-tf-sap-ms-${local.random_uuid}"
+  project_subaccount_domain = "resillientapp-tf-sap-ms-${local.random_uuid}"
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
 
@@ -40,18 +40,21 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 # Creation of Cloud Foundry environment
 ######################################################################
 module "cloudfoundry_environment" {
-  source                = "../modules/envinstance-cloudfoundry/"
-  subaccount_id         = btp_subaccount.project.id
-  instance_name         = local.project_subaccount_cf_org
-  plan_name             = "standard"
-  cloudfoundry_org_name = local.project_subaccount_cf_org
+  source                  = "../../modules/environment/cloudfoundry/envinstance_cf"
+  subaccount_id           = btp_subaccount.project.id
+  instance_name           = local.project_subaccount_cf_org
+  plan_name               = "standard"
+  cf_org_name             = local.project_subaccount_cf_org
+  cf_org_auditors         = []
+  cf_org_billing_managers = []
+  cf_org_managers         = []
 }
 
 ######################################################################
 # Creation of Cloud Foundry space
 ######################################################################
 module "cloudfoundry_space" {
-  source              = "../modules/cloudfoundry-space/"
+  source              = "../../modules/environment/cloudfoundry/space_cf"
   cf_org_id           = module.cloudfoundry_environment.org_id
   name                = var.cf_space_name
   cf_space_managers   = var.cf_space_managers
@@ -60,17 +63,9 @@ module "cloudfoundry_space" {
 }
 
 ######################################################################
-# Add "sleep" resource for generic purposes
-######################################################################
-resource "time_sleep" "wait_a_few_seconds" {
-  create_duration = "30s"
-}
-
-######################################################################
 # Entitlement of all services and apps
 ######################################################################
 resource "btp_subaccount_entitlement" "name" {
-  depends_on = [time_sleep.wait_a_few_seconds]
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement
@@ -81,42 +76,57 @@ resource "btp_subaccount_entitlement" "name" {
 }
 
 ######################################################################
+# Add "sleep" resource for generic purposes
+######################################################################
+resource "time_sleep" "wait_a_few_seconds" {
+  depends_on      = [btp_subaccount_entitlement.name]
+  create_duration = "30s"
+}
+
+######################################################################
 # Create service instances (and service keys when needed)
 ######################################################################
 # connectivitiy
 module "create_cf_service_instance_01" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "connectivity"
-  plan_name    = "lite"
-  parameters   = null
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "connectivity"
+  service_instance_name = "resapp-connectivity"
+  plan_name             = "lite"
+  parameters            = null
 }
+
 # destination
 module "create_cf_service_instance_02" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "destination"
-  plan_name    = "lite"
-  parameters   = null
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "destination"
+  service_instance_name = "resapp-destination"
+  plan_name             = "lite"
+  parameters            = null
 }
+
 # html5-apps-repo
 module "create_cf_service_instance_03" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "html5-apps-repo"
-  plan_name    = "app-host"
-  parameters   = null
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "html5-apps-repo"
+  service_instance_name = "resapp-html5-apps-repo"
+  plan_name             = "app-host"
+  parameters            = null
 }
+
 # enterprise-messaging
 module "create_cf_service_instance_ems" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "enterprise-messaging"
-  plan_name    = "default"
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "enterprise-messaging"
+  service_instance_name = "resapp-enterprise-messaging"
+  plan_name             = "default"
   parameters = jsonencode(
     {
       "emname" : "tfe",
@@ -144,48 +154,58 @@ resource "cloudfoundry_service_key" "key_enterprise-messaging" {
 
 # application-logs
 module "create_cf_service_instance_05" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "application-logs"
-  plan_name    = "lite"
-  parameters   = null
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "application-logs"
+  service_instance_name = "resapp-application-logs"
+  plan_name             = "lite"
+  parameters            = null
 }
+
 # xsuaa
 module "create_cf_service_instance_06" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "xsuaa"
-  plan_name    = "application"
-  parameters   = null
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "xsuaa"
+  service_instance_name = "resapp-xsuaa"
+  plan_name             = "application"
+  parameters            = null
 }
+
 # hana-cloud
 module "create_cf_service_instance_hana_cloud" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "hana-cloud"
-  plan_name    = "hana"
-  parameters   = jsonencode({ "data" : { "memory" : 30, "edition" : "cloud", "systempassword" : "Abcd1234", "whitelistIPs" : ["0.0.0.0/0"] } })
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "hana-cloud"
+  service_instance_name = "resapp-hana-cloud"
+  plan_name             = "hana"
+  parameters            = jsonencode({ "data" : { "memory" : 30, "edition" : "cloud", "systempassword" : "Abcd1234", "whitelistIPs" : ["0.0.0.0/0"] } })
 }
+
+
 # hana
 module "create_cf_service_instance_08" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, module.create_cf_service_instance_hana_cloud, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "hana"
-  plan_name    = "hdi-shared"
-  parameters   = null
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "hana"
+  service_instance_name = "resapp-hana"
+  plan_name             = "hdi-shared"
+  parameters            = null
 }
+
 # autoscaler
 module "create_cf_service_instance_09" {
-  depends_on   = [module.cloudfoundry_space, btp_subaccount_entitlement.name, time_sleep.wait_a_few_seconds]
-  source       = "../modules/cloudfoundry-service-instance/"
-  cf_space_id  = module.cloudfoundry_space.id
-  service_name = "autoscaler"
-  plan_name    = "standard"
-  parameters   = null
+  depends_on            = [time_sleep.wait_a_few_seconds]
+  source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
+  cf_space_id           = module.cloudfoundry_space.id
+  service_name          = "autoscaler"
+  service_instance_name = "resapp-autoscaler"
+  plan_name             = "standard"
+  parameters            = null
 }
 
 ######################################################################

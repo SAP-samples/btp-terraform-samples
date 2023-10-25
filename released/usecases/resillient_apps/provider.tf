@@ -7,7 +7,7 @@ terraform {
     }
     cloudfoundry = {
       source  = "cloudfoundry-community/cloudfoundry"
-      version = "0.51.3"
+      version = "~>0.51.3"
     }
   }
 }
@@ -16,7 +16,6 @@ terraform {
 # via the Terraform provider for SAP BTP
 provider "btp" {
   globalaccount  = var.globalaccount
-  cli_server_url = var.cli_server_url
 }
 
 # Get the Cloudfoundry API endpoint
