@@ -55,7 +55,7 @@ module "cloudfoundry_environment" {
 ######################################################################
 module "cloudfoundry_space" {
   source              = "../../modules/environment/cloudfoundry/space_cf"
-  cf_org_id           = module.cloudfoundry_environment.org_id
+  cf_org_id           = module.cloudfoundry_environment.cf_org_id
   name                = var.cf_space_name
   cf_space_managers   = var.cf_space_managers
   cf_space_developers = var.cf_space_developers
@@ -188,7 +188,7 @@ module "create_cf_service_instance_hana_cloud" {
 
 # hana
 module "create_cf_service_instance_08" {
-  depends_on            = [time_sleep.wait_a_few_seconds]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.create_cf_service_instance_hana_cloud]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
   service_name          = "hana"

@@ -4,6 +4,6 @@ output "subaccount_id" {
 }
 
 output "org_id" {
-  value       = module.cloudfoundry_environment.org_id
+  value       = module.cloudfoundry_environment.cf_org_id
   description = "The Cloudfoundry org ID."
 }

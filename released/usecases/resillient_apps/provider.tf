@@ -20,7 +20,7 @@ provider "btp" {
 
 # Get the Cloudfoundry API endpoint
 module "cloudfoundry_api" {
-  source            = "../modules/envinstance-cloudfoundry-apiurl"
+  source            = "../../modules/environment/cloudfoundry/apiurl_cf"
   environment_label = var.cf_environment_label
 }
 
