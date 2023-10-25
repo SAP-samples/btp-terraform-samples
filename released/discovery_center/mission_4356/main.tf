@@ -54,7 +54,7 @@ resource "btp_subaccount_environment_instance" "cf" {
 }
 
 ######################################################################
-# Entitlement of all services and apps
+# Entitlement of all services
 ######################################################################
 resource "btp_subaccount_entitlement" "name" {
   for_each = {
@@ -64,34 +64,6 @@ resource "btp_subaccount_entitlement" "name" {
   subaccount_id = btp_subaccount.project.id
   service_name  = each.value.service_name
   plan_name     = each.value.plan_name
-}
-
-######################################################################
-# Create service instances (and service keys when needed)
-######################################################################
-# hana plan id
-data "btp_subaccount_service_plan" "hana_plan" {
-  subaccount_id = btp_subaccount.project.id
-  name          = "hana"
-  offering_name = "hana-cloud"
-  depends_on    = [btp_subaccount_entitlement.name]
-}
-
-# hana-cloud
-resource "btp_subaccount_service_instance" "hana_instance" {
-  depends_on     = [data.btp_subaccount_service_plan.hana_plan]
-  name           = "hana_cloud_instance"
-  serviceplan_id = data.btp_subaccount_service_plan.hana_plan.id
-  subaccount_id  = btp_subaccount.project.id
-  parameters     = jsonencode({ "data" : { "memory" : 32, "edition" : "cloud", "systempassword" : "Abcd1234", "whitelistIPs" : ["0.0.0.0/0"] } })
-}
-
-######################################################################
-# Assign custom IDP to sub account
-######################################################################
-resource "btp_subaccount_trust_configuration" "fully_customized" {
-  subaccount_id     = btp_subaccount.project.id
-  identity_provider = var.custom_idp
 }
 
 ######################################################################
@@ -114,12 +86,13 @@ resource "btp_subaccount_subscription" "app" {
     if subscription.commercial_app_name == each.value.service_name
   ][0].app_name
   plan_name  = each.value.plan_name
-  depends_on = [data.btp_subaccount_subscriptions.all, btp_subaccount_trust_configuration.fully_customized]
+  depends_on = [data.btp_subaccount_subscriptions.all]
 }
 
 ######################################################################
-# Role Collections
+# Assign Role Collection
 ######################################################################
+
 resource "btp_subaccount_role_collection_assignment" "bas_dev" {
   depends_on           = [btp_subaccount_subscription.app]
   for_each             = toset(var.appstudio_developers)
@@ -152,22 +125,10 @@ resource "btp_subaccount_role_collection_assignment" "conn_dest_admn" {
   user_name            = each.value
 }
 
-######################################################################
-# Advanced Event Mesh
-######################################################################
-resource "btp_subaccount_entitlement" "aem" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "integration-suite-advanced-event-mesh"
-  plan_name     = "default"
+resource "btp_subaccount_role_collection_assignment" "int_prov" {
+  depends_on           = [btp_subaccount_subscription.app]
+  for_each             = toset(var.int_provisioner)
+  subaccount_id        = btp_subaccount.project.id
+  role_collection_name = "Integration_Provisioner"
+  user_name            = each.value
 }
-
-resource "btp_subaccount_subscription" "aem_app" {
-  subaccount_id = btp_subaccount.project.id
-  app_name      = "integration-suite-advanced-event-mesh"
-  plan_name     = "default"
-  parameters = jsonencode({
-    "admin_user_email" : var.advanced_event_mesh_admin
-  })
-  depends_on = [btp_subaccount_entitlement.aem]
-}
-
