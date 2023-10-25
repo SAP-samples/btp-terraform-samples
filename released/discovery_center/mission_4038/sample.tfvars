@@ -4,7 +4,7 @@
 # Your global account subdomain
 globalaccount        = "youraccount"
 region               = "us10"
-subaccount_name      = "Discovery Center mission - SAP Ariba Procurement Operations"
+subaccount_name      = "DC Mission 4038 - SAP Ariba Procurement Operations"
 cf_environment_label = "cf-us10"
 cf_space_name        = "dev"
 

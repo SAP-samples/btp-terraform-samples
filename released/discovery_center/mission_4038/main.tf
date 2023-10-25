@@ -37,32 +37,6 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 }
 
 ######################################################################
-# Creation of Cloud Foundry environment
-######################################################################
-module "cloudfoundry_environment" {
-  source                = "../../modules/environment/cloudfoundry/envinstance_cf/"
-  subaccount_id         = btp_subaccount.project.id
-  instance_name         = local.project_subaccount_cf_org
-  plan_name             = "standard"
-  cf_org_name = local.project_subaccount_cf_org
-  cf_org_auditors       = ["navya.khurana@sap.com"]
-  cf_org_managers       = ["navya.khurana@sap.com"]
-  cf_org_billing_managers = ["navya.khurana@sap.com"]
-}
-
-######################################################################
-# Creation of Cloud Foundry space
-######################################################################
-module "cloudfoundry_space" {
-  source              = "../../modules/environment/cloudfoundry/space_cf/"
-  cf_org_id           = module.cloudfoundry_environment.cf_org_id
-  name                = var.cf_space_name
-  cf_space_managers   = var.cf_space_managers
-  cf_space_developers = var.cf_space_developers
-  cf_space_auditors   = var.cf_space_auditors
-}
-
-######################################################################
 # Add "sleep" resource for generic purposes
 ######################################################################
 resource "time_sleep" "wait_a_few_seconds" {
