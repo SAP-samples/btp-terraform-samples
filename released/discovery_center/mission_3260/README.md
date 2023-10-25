@@ -4,16 +4,16 @@ This script simplifies the majority of tasks in the [Discovery Center Mission](h
 
 ## SETUP AND PREPARE PHASE
 
-|   Steps                        | Automation status |
----------------------------------| ----------------
-|Subscribe to SAP Build Process Automation Free Tier | Automated |
-|Install the Desktop Agent       | Manual |
-|Manage the Agent to execute automations|Manual|
-|Set up SAP S/4HANA Cloud        | Manual|
-|SAP S/4HANA Cloud Masterdata    | Manual |
-|Create relevant Destinations in the SAP BTP Subaccount| Manual|
-|Create Destination in SAP Build Process Automation|Manual|
-|Create Outlook folder and temp folder in system for Attachments|Manual|
+|   Steps                                                       | Automation status |
+---------------------------------                               | ----------------
+|Subscribe to SAP Build Process Automation Free Tier            | Automated
+|Install the Desktop Agent                                      | Manual
+|Manage the Agent to execute automations                        | Manual
+|Set up SAP S/4HANA Cloud                                       | Manual
+|SAP S/4HANA Cloud Masterdata                                   | Manual
+|Create relevant Destinations in the SAP BTP Subaccount         | Manual
+|Create Destination in SAP Build Process Automation             | Manual
+|Create Outlook folder and temp folder in system for Attachments| Manual
 
 ## Execution
 
@@ -22,12 +22,16 @@ This script simplifies the majority of tasks in the [Discovery Center Mission](h
 
     ```bash
     Mac & Linux 
-        export TF_VAR_username=<your_username>
-        export TF_VAR_password=<your_password>
+        export BTP_USERNAME=<your_username>
+        export BTP_PASSWORD=<your_password>
+        export CF_USER=<your_username>
+        export CF_PASSWORD=<your_password>
 
     Windows(PS) 
-        $env:TF_VAR_username=<your_username>
-        $env:TF_VAR_password=<your_password>
+        $env:BTP_USERNAME=<your_username>
+        $env:BTP_PASSWORD=<your_password>
+        $env:CF_USER=<your_username>
+        $env:CF_PASSWORD=<your_password>
     ```
 
 3. Execute a `terraform init` to initialize the terraform providers and modules.

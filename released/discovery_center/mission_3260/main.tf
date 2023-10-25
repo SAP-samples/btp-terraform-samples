@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------------------------
 locals {
   random_uuid               = uuid()
-  project_subaccount_domain = "teched23-tf-sap-ms-${local.random_uuid}"
+  project_subaccount_domain = "discoverycenter-tf-sap-ms-${local.random_uuid}"
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
 
@@ -61,9 +61,10 @@ resource "btp_subaccount_entitlement" "bpa" {
 }
 
 resource "btp_subaccount_subscription" "bpa" {
-  app_name   = "process-automation"
-  plan_name  = "free"
-  depends_on = [btp_subaccount_entitlement.bpa]
+  subaccount_id = btp_subaccount.project.id
+  app_name      = "process-automation"
+  plan_name     = "free"
+  depends_on    = [btp_subaccount_entitlement.bpa]
 }
 
 # Assign users to Role Collection: ProcessAutomationAdmin

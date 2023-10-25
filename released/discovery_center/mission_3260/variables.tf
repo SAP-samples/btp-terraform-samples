@@ -1,13 +1,3 @@
-variable "username" {
-  type        = string
-  description = "BTP User Name"
-}
-
-variable "password" {
-  type        = string
-  description = "BTP Password"
-}
-
 ######################################################################
 # Customer account setup
 ######################################################################

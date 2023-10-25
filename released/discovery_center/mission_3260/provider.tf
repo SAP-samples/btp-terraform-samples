@@ -15,10 +15,7 @@ terraform {
 # Please checkout documentation on how best to authenticate against SAP BTP
 # via the Terraform provider for SAP BTP
 provider "btp" {
-  globalaccount  = var.globalaccount
-  cli_server_url = var.cli_server_url
-  username       = var.username
-  password       = var.password
+  globalaccount = var.globalaccount
 }
 
 # Get the Cloudfoundry API endpoint
@@ -29,7 +26,5 @@ module "cloudfoundry_api" {
 
 // Configuration is described in https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs
 provider "cloudfoundry" {
-  api_url  = module.cloudfoundry_api.api_url
-  user     = var.username
-  password = var.password
+  api_url = module.cloudfoundry_api.api_url
 }
