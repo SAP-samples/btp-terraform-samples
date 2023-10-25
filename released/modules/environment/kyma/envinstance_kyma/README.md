@@ -6,7 +6,7 @@ This Terraform module is used to create and manage a Kyma Runtime in a BTP (Busi
 
 ```hcl
 module "kyma_runtime" {
-  source        = "github.com/SAP-samples/released/modules/envinstance-kyma"
+  source        = "github.com/SAP-samples/released/modules/environment/kyma/envinstance_kyma"
   subaccount_id = "your-subaccount-id"
   name          = "kyma-cluster-name"
   administrators = ["user1@example.com", "user2@example.com"]
