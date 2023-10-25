@@ -1,14 +1,9 @@
 output "subaccount_id" {
-  value       = btp_subaccount.project.id
+  value       = data.btp_subaccount.project.id
   description = "The ID of the project subaccount."
 }
 
-output "subaccount_name" {
-  value       = btp_subaccount.project.name
-  description = "The name of the project subaccount."
-}
-
-output "sap_build_apps_subscription_url" {
-  value       = module.sap-build-apps_standard.sap_build_apps_subscription_url
-  description = "Subscription URL of SAP Build Apps"
+output "sap_build_app_subscription_url" {
+  value       = btp_subaccount_subscription.sap-build-apps_standard.subscription_url
+  description = "The subscription_url of build app."
 }
