@@ -11,7 +11,6 @@ locals {
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "create_subaccount" {
-  # Use count to create this resource conditionally
   count = var.subaccount_id == "" ? 1 : 0
 
   name      = var.subaccount_name
@@ -43,7 +42,6 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 }
  
 resource "btp_subaccount_entitlement" "identity" {
-  # Use count to create this resource conditionally
   count = var.custom_idp == "" ? 1 : 0
  
   subaccount_id = data.btp_subaccount.project.id
@@ -52,7 +50,6 @@ resource "btp_subaccount_entitlement" "identity" {
 }
  
 resource "btp_subaccount_subscription" "identity_instance" {
-  # Use count to create this resource conditionally
   count = var.custom_idp == "" ? 1 : 0
  
   subaccount_id = data.btp_subaccount.project.id
@@ -70,10 +67,7 @@ resource "btp_subaccount_subscription" "identity_instance" {
 resource "btp_subaccount_entitlement" "build_workzone" {
   subaccount_id = data.btp_subaccount.project.id
   service_name  = "SAPLaunchpad"
-  plan_name     = var.build_workzone_service_plan
- 
-  # if workzone_service_plan free is used on canary
-  #amount        = var.build_workzone_service_plan == "free" ? 1 : null
+  plan_name     = var.build_workzone_service_plan 
 }
  
 # Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
