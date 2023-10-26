@@ -40,13 +40,6 @@ variable "hana_cloud_system_password" {
   default     = "Abcd1234"
 }
 
-# CLI server
-variable "cli_server_url" {
-  type        = string
-  description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
-}
-
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
@@ -96,11 +89,6 @@ variable "entitlements" {
     {
       service_name = "destination"
       plan_name    = "lite",
-      type         = "service"
-    },
-    {
-      service_name = "html5-apps-repo"
-      plan_name    = "app-host",
       type         = "service"
     },
     {

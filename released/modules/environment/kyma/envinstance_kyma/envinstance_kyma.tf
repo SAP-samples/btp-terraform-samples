@@ -1,3 +1,18 @@
+# ------------------------------------------------------------------------------------------------------
+# Define the required providers for this module
+# ------------------------------------------------------------------------------------------------------
+terraform {
+  required_providers {
+    btp = {
+      source = "SAP/btp"
+      version = "0.5.0-beta1"
+    }
+  }
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Execute the Kyma instance creation
+# ------------------------------------------------------------------------------------------------------
 locals {
   subaccount_iaas_provider = [for region in data.btp_regions.all.values : region if region.region == data.btp_subaccount.this.region][0].iaas_provider
 }
