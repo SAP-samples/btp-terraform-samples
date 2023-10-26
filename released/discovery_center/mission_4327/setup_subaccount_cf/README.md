@@ -13,7 +13,7 @@ The Terraform script  documented here automates the setup of an SAP BTP subaccou
 
 Before using this script, make sure you have Terraform downloaded and installed.
 
-- **Install Terraform**: If you haven't already, download and install Terraform (We currently have an issue when using the Terraform CLI in version 1.6.x please install Terraform CLI version 1.5.7) from [here](https://www.terraform.io/downloads.html).
+- **Install Terraform**: If you haven't already, download and install Terraform (We currently having an issue when using the Terraform CLI in version 1.6.x, please install Terraform CLI version 1.5.7) from [here](https://www.terraform.io/downloads.html).
 
 ## BTP Sub Account Setup
 
