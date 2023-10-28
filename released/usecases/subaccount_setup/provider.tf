@@ -10,13 +10,15 @@ terraform {
       version = "0.51.3"
     }
   }
+
 }
 
 # Please checkout documentation on how best to authenticate against SAP BTP
 # via the Terraform provider for SAP BTP
 provider "btp" {
-  globalaccount  = var.globalaccount
-  cli_server_url = var.cli_server_url
-  username      = var.username
-  password      = var.password
+  globalaccount = "<YOUR GLOBALACCOUNT SUBDOMAIN>"
+}
+
+provider "cloudfoundry" {
+  api_url = "https://api.cf.${var.region}.hana.ondemand.com"
 }
