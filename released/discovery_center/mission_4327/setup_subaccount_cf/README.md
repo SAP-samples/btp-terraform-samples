@@ -1,5 +1,16 @@
 # Set Up SAP BTP Account using Terraform – Cloud Foundry
 
+The Terraform provider for SAP Business Technology Platform (BTP) enables you to automate the provisioning, management, and configuration of resources on SAP BTP. By leveraging this provider, you can simplify and streamline the deployment and maintenance of SAP BTP services and applications.
+
+Currently, the SAP BTP provider is available in beta for non productive usage: [SAP BTP Terraform](https://registry.terraform.io/providers/SAP/btp/latest).
+
+The Terraform script documented here automates the setup of an SAP BTP subaccount based on a predefined template. The scripts can be used create SAP BTP subaccount with Cloud Foundry or Kyma runtime. The Terraform script does the below configuration after creating a SAP BTP subaccount:
+
+1. Configures the SAP BTP entitlements required to complete the mission. See [Setup SAP BTP Account using Terraform](https://github.com/SAP-samples/btp-terraform-samples/blob/main/released/discovery_center/mission_4327/setup_subaccount_cf/README.md#entitlements).
+2. Enables the SAP BTP runtime (Cloud Foundry or Kyma).
+3. Creates the neccessary subscription to applications: SAP Business Application Studio (BAS), SAP Build Work Zone, standard edition, etc.
+4. Assigns users the neccessary roles required to access the applications, such as SAP Business Application Studio.
+5. Adds additional users to the subaccount.
 ### [Entitlements ](https://github.tools.sap/refapps/incidents-mgmt/blob/main/documentation/administrate/Prepare-BTP/Configure-BTP-CF.md)
 
 | Service     |      Plan      |  Quota required |
@@ -61,7 +72,8 @@ Linux, macOS:
     ```
 
     Confirm the resource destruction by typing "yes."
-   ``If the terraform destroy fails with error `VCAP::CloudController::User with guid:`, Please remove the org member manually from BTP cockpit and retrigger `terraform    destroy` command.``
+   
+   If the terraform destroy fails with error `VCAP::CloudController::User with guid:`, Please remove the org member manually from BTP cockpit and retrigger `terraform    destroy` command.
 
 11. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
 
