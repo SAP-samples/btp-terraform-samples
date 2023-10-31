@@ -1,22 +1,6 @@
-# Setup SAP BTP Account using Terraform
-The [Terraform provider](https://registry.terraform.io/providers/SAP/btp/latest) for SAP Business Technology Platform (BTP) enables you to automate the provisioning, management, and configuration of resources on SAP Business Technology Platform. By leveraging this provider, you can simplify and streamline the deployment and maintenance of BTP services and applications. Currently the BTP Terraform provider is available in beta for non productive usage. 
+# Set Up SAP BTP Account using Terraform – Cloud Foundry
 
-The Terraform script  documented here automates the setup of an SAP BTP subaccount based on a predefined template. The scripts can be used create BTP Sub Account with Cloud Foundry or Kyma runtime. The terraform scripts does the below configuration after creating a BTP Subaccount
-
-1. Configure the BTP entitlements required to complete the Discovery Center mission
-2. Enables BTP runtime Cloud Foundry
-3. Create the neccessary Subscription to Software as Service(SaaS) Apps (SAP Business Application Studio(BAS), SAP Build Work Zone, standard edition etc)
-4. Assgn users the neccessary roles required to access the SaaS Apps e.g BAS
-5. Add additional users to the subaccount.
-
-## Prerequisites
-
-You can install the Terraform CLI locally on your machine as described in the installation instructions [here](https://github.com/SAP-samples/btp-terraform-samples/blob/main/GET_STARTED.md)
-## BTP Sub Account Setup
-
-- [BTP Subaccount with Cloud Foundry runtime environment](#btp-subaccount-with-cf-runtime-environment)
-
- ### [Entitlements ](https://github.tools.sap/refapps/incidents-mgmt/blob/main/documentation/administrate/Prepare-BTP/Configure-BTP-CF.md)
+### [Entitlements ](https://github.tools.sap/refapps/incidents-mgmt/blob/main/documentation/administrate/Prepare-BTP/Configure-BTP-CF.md)
 
 | Service     |      Plan      |  Quota required |
 | ------------- | :-----------: | ----: |
@@ -26,7 +10,7 @@ You can install the Terraform CLI locally on your machine as described in the in
 | SAP HANA Cloud |   tools   |    1 |
 | SAP HANA Schemas & HDI Containers |   hdi-shared   |    1 |
 
-## Deploying the resources
+## Deploy the resources
 
 To deploy the resources you must:
 1. Clone repository `git clone https://github.com/SAP-samples/btp-terraform-samples.git`
@@ -77,13 +61,8 @@ Linux, macOS:
     ```
 
     Confirm the resource destruction by typing "yes."
+   ``If the terraform destroy fails with error `VCAP::CloudController::User with guid:`, Please remove the org member manually from BTP cockpit and retrigger `terraform    destroy` command.``
 
-10. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
+11. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
 
 Please exercise caution when using this script, especially in production environments, and ensure you understand the resources that will be created or modified.
-
-
-## Known issues
-
-[Issues with Terraform CLI version 1.6.x - No resource type found](https://github.com/SAP/terraform-provider-btp/discussions/477)
-If you are using Terraform CLI in version 1.6.x, please downgrade to version 1.5.7 of the Terraform CLI.
