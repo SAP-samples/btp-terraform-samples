@@ -21,28 +21,22 @@ jobs:
         folder: ['released/usecases/services_apps/sap_build_apps' ]  
         
     steps:
-    - name: Set up Git repository
-      id: checkout_repo
-      uses: actions/checkout@v4
-    - name: Setup Terraform
-      id : setup_terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_wrapper: false
-    - name: Terraform Init
-      id: terraform_init
-      shell: bash
-      run: |
-        terraform -chdir=${{ matrix.folder }} init -no-color
-    
-    - name: Terraform Apply
-      id: terraform_apply
-      shell: bash
-      run: |
-        terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color -var-file='sample.tfvars' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}'
-    #- name: Terraform Destroy
-    #  id: terraform_destroy
-    #  shell: bash
-    #  run: |
-    #    terraform -chdir=${{ matrix.folder }} destroy -auto-approve -no-color
-      
+      - name: Set up Git repository
+        id: checkout_repo
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        id : setup_terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+      - name: Terraform Init
+        id: terraform_init
+        shell: bash
+        run: |
+          terraform -chdir=${{ matrix.folder }} init -no-color
+      - name: Terraform Apply
+        id: terraform_apply
+        shell: bash
+        run: |
+          terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color -var-file='sample.tfvars' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}'
+     
