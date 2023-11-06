@@ -22,7 +22,7 @@ jobs:
       matrix:
         usecase: [
           {'name': "sap_build_apps",      'folder': 'released/usecases/services_apps/sap_build_apps', 'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
-          #{'name', 'dev_test_prod_setup', 'folder': 'released/usecases/dev_test_prod_setup',          'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
+          #,{'name', 'dev_test_prod_setup', 'folder': 'released/usecases/dev_test_prod_setup',          'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
         ]
         
     steps:
@@ -68,4 +68,4 @@ jobs:
           else 
             terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
           fi
-        
+   

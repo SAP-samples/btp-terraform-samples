@@ -1,8 +1,8 @@
-# Discovery Center Mission: Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS (4172)
+# Discovery Center Mission: Extract your Ariba Spend Data using SAP Integration Suite (4038)
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission - [Build Events-to-Business Actions Apps with SAP BTP and MS Azure/AWS](https://discovery-center.cloud.sap/missiondetail/4172/)
+This sample shows how to create a landscape for the Discovery Center Mission "Extract your Ariba Spend Data using SAP Integration Suite"
 
 ## Content of setup
 

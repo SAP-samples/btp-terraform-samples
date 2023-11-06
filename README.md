@@ -4,13 +4,17 @@
 
 ## Description
 
-This repository provides you with samples on how to best use the **Terraform provider for SAP BTP** for various use cases.
-
-## Content
-
-You will find the detailed information about the [provider](https://registry.terraform.io/providers/SAP/btp/latest) in the official [documentation](https://registry.terraform.io/providers/SAP/btp/latest/docs) in the [Terraform registry](https://registry.terraform.io/).
+This repository provides you with samples on how to use the **Terraform provider for SAP BTP** for various use cases.
 
 > **Note**: The application of the Terraform configurations we provide in this repository can create cost on your side depending on the sample and the contained resources. Please be aware of that and destroy the resources if no longer needed to avoid unnecessary costs on your side.
+
+## Get started
+
+You have three options to get started. You find the details in the [Get started section](./GET_STARTED.md).
+
+## The Terraform Provider for SAP BTP
+
+If you want to learn more about the [Terraform provider for SAP BTP](https://registry.terraform.io/providers/SAP/btp/latest) then the official [documentation](https://registry.terraform.io/providers/SAP/btp/latest/docs) in the [Terraform registry](https://registry.terraform.io/) is a perfect place to start. In case you want to dive deeper into the provider, you can also check out the [source code](https://github.com/SAP/terraform-provider-btp) on GitHub.
 
 ## Support, Feedback, Contributing
 

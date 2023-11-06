@@ -11,7 +11,7 @@ variable "globalaccount" {
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "UC - Events to Business Actions"
+  default     = "UC - Deliver Connected Experiences with a single view of Material Availability"
 }
 # Region
 variable "region" {
@@ -46,35 +46,6 @@ variable "subaccount_service_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "advanced_event_mesh_admin" {
-  type        = string
-  description = "Defines the colleagues who are Cloudfoundry org auditors"
-  default     = "jane.doe@test.com"
-}
-
-variable "appstudio_developers" {
-  type        = list(string)
-  description = "Business Application Studio Developer"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "appstudio_admin" {
-  type        = list(string)
-  description = "Business Application Studio Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cloudconnector_admin" {
-  type        = list(string)
-  description = "Cloud Connector Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "conn_dest_admin" {
-  type        = list(string)
-  description = "Connectivity and Destination Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
 
 ###
 # Entitlements
@@ -113,21 +84,42 @@ variable "entitlements" {
       type         = "service"
     },
     {
-      service_name = "hana"
-      plan_name    = "hdi-shared",
-      type         = "service"
-    },
-    {
-      service_name = "hana-cloud"
-      plan_name    = "hana",
-      type         = "service"
+      service_name = "integrationsuite"
+      plan_name    = "enterprise_agreement",
+      type         = "app"
     }
   ]
 }
 
-# variable "advanced_event_mesh" {
-#   service_name = "integration-suite-advanced-event-mesh"
-# }
+variable "appstudio_developers" {
+  type        = list(string)
+  description = "Business Application Studio Developer"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "appstudio_admin" {
+  type        = list(string)
+  description = "Business Application Studio Administrator"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cloudconnector_admin" {
+  type        = list(string)
+  description = "Cloud Connector Administrator"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "conn_dest_admin" {
+  type        = list(string)
+  description = "Connectivity and Destination Administrator"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "int_provisioner" {
+  type        = list(string)
+  description = "Integration Provisioner"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
 
 variable "username" {
   description = "BTP username"
@@ -142,22 +134,9 @@ variable "password" {
   sensitive   = true
 }
 
-variable "custom_idp" {
-  type        = string
-  description = "Defines the custom IDP to be used for the subaccount"
-  default     = "terraformint"
-
-  validation {
-    condition     = can(regex("^[a-z-]", var.custom_idp))
-    error_message = "Please enter a valid entry for the custom-idp of the subaccount."
-  }
-}
-
 # Cloudfoundry environment label
 variable "cf_environment_label" {
   type        = string
   description = "The Cloudfoundry environment label"
   default     = "cf-us10"
 }
-
-

@@ -11,7 +11,7 @@ variable "globalaccount" {
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "UC - Events to Business Actions"
+  default     = "UC - Build resilient BTP Apps"
 }
 # Region
 variable "region" {
@@ -19,19 +19,25 @@ variable "region" {
   description = "The region where the project account shall be created in."
   default     = "us10"
 }
+# Cloudfoundry environment label
+variable "cf_environment_label" {
+  type        = string
+  description = "The Cloudfoundry environment label"
+  default     = "cf-us10"
+}
+
+# Cloudfoundry space name
+variable "cf_space_name" {
+  type        = string
+  description = "The Cloudfoundry space name"
+  default     = "development"
+}
 
 # hana password
 variable "hana_cloud_system_password" {
   type        = string
   description = "The system password for the hana_cloud service instance."
   default     = "Abcd1234"
-}
-
-# CLI server
-variable "cli_server_url" {
-  type        = string
-  description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
 }
 
 variable "subaccount_admins" {
@@ -46,33 +52,21 @@ variable "subaccount_service_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "advanced_event_mesh_admin" {
-  type        = string
-  description = "Defines the colleagues who are Cloudfoundry org auditors"
-  default     = "jane.doe@test.com"
-}
-
-variable "appstudio_developers" {
+variable "cf_space_managers" {
   type        = list(string)
-  description = "Business Application Studio Developer"
+  description = "Defines the colleagues who are Cloudfoundry space managers"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "appstudio_admin" {
+variable "cf_space_developers" {
   type        = list(string)
-  description = "Business Application Studio Administrator"
+  description = "Defines the colleagues who are Cloudfoundry space developers"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "cloudconnector_admin" {
+variable "cf_space_auditors" {
   type        = list(string)
-  description = "Cloud Connector Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "conn_dest_admin" {
-  type        = list(string)
-  description = "Connectivity and Destination Administrator"
+  description = "Defines the colleagues who are Cloudfoundry space auditors"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
@@ -98,14 +92,19 @@ variable "entitlements" {
       type         = "service"
     },
     {
-      service_name = "html5-apps-repo"
-      plan_name    = "app-host",
-      type         = "service"
-    },
-    {
       service_name = "sapappstudio"
       plan_name    = "standard-edition",
       type         = "app"
+    },
+    {
+      service_name = "enterprise-messaging"
+      plan_name    = "default",
+      type         = "service"
+    },
+    {
+      service_name = "application-logs"
+      plan_name    = "lite",
+      type         = "service"
     },
     {
       service_name = "xsuaa"
@@ -121,43 +120,31 @@ variable "entitlements" {
       service_name = "hana-cloud"
       plan_name    = "hana",
       type         = "service"
+    },
+    {
+      service_name = "autoscaler"
+      plan_name    = "standard",
+      type         = "service"
+    },
+    {
+      service_name = "enterprise-messaging-hub"
+      plan_name    = "standard",
+      type         = "app"
+    },
+    {
+      service_name = "SAPLaunchpad"
+      plan_name    = "standard",
+      type         = "app"
+    },
+    {
+      service_name = "cicd-app"
+      plan_name    = "default",
+      type         = "app"
+    },
+    {
+      service_name = "alm-ts"
+      plan_name    = "standard",
+      type         = "app"
     }
   ]
 }
-
-# variable "advanced_event_mesh" {
-#   service_name = "integration-suite-advanced-event-mesh"
-# }
-
-variable "username" {
-  description = "BTP username"
-  type        = string
-  sensitive   = false
-
-}
-
-variable "password" {
-  description = "BTP user password"
-  type        = string
-  sensitive   = true
-}
-
-variable "custom_idp" {
-  type        = string
-  description = "Defines the custom IDP to be used for the subaccount"
-  default     = "terraformint"
-
-  validation {
-    condition     = can(regex("^[a-z-]", var.custom_idp))
-    error_message = "Please enter a valid entry for the custom-idp of the subaccount."
-  }
-}
-
-# Cloudfoundry environment label
-variable "cf_environment_label" {
-  type        = string
-  description = "The Cloudfoundry environment label"
-  default     = "cf-us10"
-}
-
-
