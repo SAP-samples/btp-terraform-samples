@@ -1,10 +1,11 @@
 # ------------------------------------------------------------------------------------------------------
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
-# Your global account subdomain
+# Your global account subdomain and custom idp
 globalaccount = "youraccount"
-region        = "us10"
 custom_idp    = "abcde1234.accounts.ondemand.com"
+# Region for your subaccount
+region        = "us10"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration

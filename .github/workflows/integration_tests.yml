@@ -18,7 +18,10 @@ jobs:
 
     strategy:
       matrix:
-        folder: ['released/usecases/services_apps/sap_build_apps', 'released/usecases/multi_account_setup']  
+        usecase: [
+          {"folder": 'released/usecases/services_apps/sap_build_apps', "tf_vars": ${{ variables.BTP_USERNAME }}
+          {"folder": 'released/usecases/multi_account_setup'
+        ]  
         
     steps:
     - name: Set up Git repository
@@ -39,10 +42,10 @@ jobs:
       id: terraform_apply
       shell: bash
       run: |
-        terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color
-    - name: Terraform Destroy
-      id: terraform_destroy
-      shell: bash
-      run: |
-        terraform -chdir=${{ matrix.folder }} destroy -auto-approve -no-color
+        terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color -var-file='sample.tfvars' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}'
+    #- name: Terraform Destroy
+    #  id: terraform_destroy
+    #  shell: bash
+    #  run: |
+    #    terraform -chdir=${{ matrix.folder }} destroy -auto-approve -no-color
       
