@@ -18,10 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        usecase: [
-          {"folder": 'released/usecases/services_apps/sap_build_apps', "tf_vars": ${{ variables.BTP_USERNAME }}
-          {"folder": 'released/usecases/multi_account_setup'
-        ]  
+        folder: ['released/usecases/services_apps/sap_build_apps' ]  
         
     steps:
     - name: Set up Git repository
