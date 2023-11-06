@@ -38,5 +38,7 @@ jobs:
         id: terraform_apply
         shell: bash
         run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
           terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color -var-file='sample.tfvars' -var globalaccount=${{ secrets.GLOBALACCOUNT }} -var custom_idp=${{ secrets.CUSTOM_IDP }}
      
