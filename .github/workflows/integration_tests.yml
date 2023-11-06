@@ -34,9 +34,9 @@ jobs:
         shell: bash
         run: |
           terraform -chdir=${{ matrix.folder }} init -no-color
-      #- name: Terraform Apply
-      #  id: terraform_apply
-      #  shell: bash
-      #  run: |
-      #    terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color -var-file='sample.tfvars' -var globalaccount=${{ secrets.GLOBALACCOUNT }} -var custom_idp=${{ secrets.CUSTOM_IDP }}
+      - name: Terraform Apply
+        id: terraform_apply
+        shell: bash
+        run: |
+          terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color -var-file='sample.tfvars' -var globalaccount=${{ secrets.GLOBALACCOUNT }} -var custom_idp=${{ secrets.CUSTOM_IDP }}
      
