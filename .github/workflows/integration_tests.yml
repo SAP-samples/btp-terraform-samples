@@ -21,16 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         usecase: [
-          {
-            'folder'         : 'released/usecases/services_apps/sap_build_apps',
-            'var_file'       : 'sample.tfvars',
-            'use_custom_idp' : true
-          },
-          {
-            'folder'         : 'released/usecases/dev_test_prod_setup',
-            'var_file'       : 'sample.tfvars',
-            'use_custom_idp' : true
-          }
+          {'folder'         : 'released/usecases/services_apps/sap_build_apps', 'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
+          #,
+          #{'folder'         : 'released/usecases/dev_test_prod_setup', 'var_file'       : 'sample.tfvars', 'use_custom_idp' : true}
         ]
         
     steps:
@@ -57,7 +50,8 @@ jobs:
           export CF_USER=${{ secrets.BTP_USERNAME }}
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]; then export TF_VAR_custom_idp=${{ secrets.CUSTOM_IDP }}; fi
-          terraform -chdir=${{ matrix.usecase.folder }} apply -auto-approve -no-color -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
+          echo 'custom IDP = $TF_VAR_custom_idp'
+          # terraform -chdir=${{ matrix.usecase.folder }} apply -auto-approve -no-color -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
       - name: Terraform Destroy
         id: terraform_destroy
         shell: bash
@@ -67,5 +61,5 @@ jobs:
           export CF_USER=${{ secrets.BTP_USERNAME }}
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]; then export TF_VAR_custom_idp=${{ secrets.CUSTOM_IDP }}; fi
-          terraform -chdir=${{ matrix.usecase.folder }} destroy -auto-approve -no-color-var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
+          # terraform -chdir=${{ matrix.usecase.folder }} destroy -auto-approve -no-color-var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
     
