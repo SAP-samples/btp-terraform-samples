@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        folder: ['released/usecases/services_apps/sap_build_apps' ]  
+        folder: ['released/usecases/services_apps/sap_build_apps']  
         
     steps:
       - name: Set up Git repository
@@ -34,9 +34,9 @@ jobs:
         shell: bash
         run: |
           terraform -chdir=${{ matrix.folder }} init -no-color
-      - name: Terraform Apply
-        id: terraform_apply
-        shell: bash
-        run: |
-          terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color -var-file='sample.tfvars' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}'
+      #- name: Terraform Apply
+      #  id: terraform_apply
+      #  shell: bash
+      #  run: |
+      #    terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color -var-file='sample.tfvars' -var globalaccount=${{ secrets.GLOBALACCOUNT }} -var custom_idp=${{ secrets.CUSTOM_IDP }}
      
