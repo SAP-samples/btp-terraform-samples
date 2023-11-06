@@ -14,7 +14,7 @@ env:
 
 jobs:
   setup_infrastructure:
-    name: Run Terraform script
+    name: Run test
     runs-on: ubuntu-latest
 
     strategy:
@@ -57,7 +57,7 @@ jobs:
           export CF_USER=${{ secrets.BTP_USERNAME }}
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]; then export TF_VAR_custom_idp=${{ secrets.CUSTOM_IDP }}; fi
-          terraform -chdir=${{ matrix.usecase.folder }} apply -auto-approve -no-color ${{ matrix.usecase.tf_config }} -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
+          terraform -chdir=${{ matrix.usecase.folder }} apply -auto-approve -no-color -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
       - name: Terraform Destroy
         id: terraform_destroy
         shell: bash
@@ -67,5 +67,5 @@ jobs:
           export CF_USER=${{ secrets.BTP_USERNAME }}
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]; then export TF_VAR_custom_idp=${{ secrets.CUSTOM_IDP }}; fi
-          terraform -chdir=${{ matrix.usecase.folder }} destroy -auto-approve -no-color ${{ matrix.usecase.tf_config }} -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
+          terraform -chdir=${{ matrix.usecase.folder }} destroy -auto-approve -no-color-var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
     
