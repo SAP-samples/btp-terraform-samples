@@ -18,19 +18,19 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         usecase: [
           {
             'folder'         : 'released/usecases/services_apps/sap_build_apps',
             'var_file'       : 'sample.tfvars',
             'use_custom_idp' : true
+          },
+          {
+            'folder'         : 'released/usecases/dev_test_prod_setup',
+            'var_file'       : 'sample.tfvars',
+            'use_custom_idp' : true
           }
-          #,
-          #{
-          #  'folder'         : 'released/usecases/dev_test_prod_setup',
-          #  'var_file'       : 'sample.tfvars',
-          #  'use_custom_idp' : true
-          #}
         ]
         
     steps:
@@ -54,6 +54,8 @@ jobs:
         run: |
           export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
           export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]; then export TF_VAR_custom_idp=${{ secrets.CUSTOM_IDP }}; fi
           terraform -chdir=${{ matrix.usecase.folder }} apply -auto-approve -no-color ${{ matrix.usecase.tf_config }} -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
       - name: Terraform Destroy
@@ -62,6 +64,8 @@ jobs:
         run: |
           export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
           export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]; then export TF_VAR_custom_idp=${{ secrets.CUSTOM_IDP }}; fi
           terraform -chdir=${{ matrix.usecase.folder }} destroy -auto-approve -no-color ${{ matrix.usecase.tf_config }} -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
     
