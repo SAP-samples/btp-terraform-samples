@@ -68,16 +68,3 @@ variable "emergency_admins" {
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
-
-variable "username" {
-  description = "BTP username"
-  type        = string
-  sensitive   = true
-
-}
-
-variable "password" {
-  description = "BTP user password"
-  type        = string
-  sensitive   = true
-}

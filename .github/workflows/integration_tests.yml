@@ -24,6 +24,11 @@ jobs:
             'folder'         : 'released/usecases/services_apps/sap_build_apps',
             'var_file'       : 'sample.tfvars',
             'use_custom_idp' : true
+          },
+          {
+            'folder'         : 'released/usecases/dev_test_prod_setup',
+            'var_file'       : 'sample.tfvars',
+            'use_custom_idp' : true
           }
         ]
         
