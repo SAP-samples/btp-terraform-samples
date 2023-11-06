@@ -48,5 +48,5 @@ jobs:
         run: |
           export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
           export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
-          if [ "${{ matrix.usecase.use_custom_idp }}" = true ]; then export TF_VAR_custom_idp=${{ secrets.CUSTOM_IDP }}
+          if [ ${{ matrix.usecase.use_custom_idp }} = true ]; then export TF_VAR_custom_idp=${{ secrets.CUSTOM_IDP }}
           terraform -chdir=${{ matrix.usecase.folder }} apply -auto-approve -no-color ${{ matrix.usecase.tf_config }} -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
