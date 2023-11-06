@@ -9,6 +9,7 @@ env:
   BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
   CF_USER: ${{ secrets.BTP_USERNAME }}
   CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+  CUSTOM_IDP:  ${{ secrets.CUSTOM_IDP }}
 
 
 jobs:
@@ -21,7 +22,7 @@ jobs:
         usecase: [
           {
             'folder'   : 'released/usecases/services_apps/sap_build_apps',
-            'tf_config': "-var-file=sample.tfvars -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}'"
+            'tf_config': "-var-file=sample.tfvars -var custom_idp='${{ env.CUSTOM_IDP }}'"
           }
         ]
         
@@ -46,12 +47,4 @@ jobs:
         run: |
           export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
           export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
-          terraform -chdir=${{ matrix.usecase.folder }} apply -auto-approve -no-color ${{ matrix.usecase.tf_config }}
-      - name: Terraform Destroy
-        id: terraform_destroy
-        shell: bash
-        run: |
-          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
-          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
-          terraform -chdir=${{ matrix.usecase.folder }} destroy -auto-approve -no-color ${{ matrix.usecase.tf_config }}
-
+          terraform -chdir=${{ matrix.usecase.folder }} apply -auto-approve -no-color ${{ matrix.usecase.tf_config }} -var globalaccount='${{ secrets.GLOBALACCOUNT }}'
