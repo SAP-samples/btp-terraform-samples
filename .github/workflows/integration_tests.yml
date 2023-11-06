@@ -35,14 +35,14 @@ jobs:
       run: |
         terraform -chdir=${{ matrix.folder }} init -no-color
     
-    #- name: Terraform Apply
-    #  id: terraform_apply
-    #  shell: bash
-    #  run: |
-    #    terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color
-    #- name: Terraform Destroy
-    #  id: terraform_destroy
-    #  shell: bash
-    #  run: |
-    #    terraform -chdir=${{ matrix.folder }} destroy -auto-approve -no-color
+    - name: Terraform Apply
+      id: terraform_apply
+      shell: bash
+      run: |
+        terraform -chdir=${{ matrix.folder }} apply -auto-approve -no-color
+    - name: Terraform Destroy
+      id: terraform_destroy
+      shell: bash
+      run: |
+        terraform -chdir=${{ matrix.folder }} destroy -auto-approve -no-color
       
