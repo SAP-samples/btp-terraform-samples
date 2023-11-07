@@ -1,4 +1,4 @@
-name: Integration Tests - Released
+name: Integration Tests - DC missions
 
 on:
   workflow_dispatch:
@@ -21,22 +21,10 @@ jobs:
       matrix:
         usecase: [
           {
-            'name': 'SAP Build Apps',
-            'folder': 'released/usecases/services_apps/sap_build_apps', 
-            'var_file' : '../../../../tests/uc-services_apps-sap_build_apps.tfvars', 
-            'use_custom_idp' : true 
-          },
-          {
-            'name': 'Dev/test/prod setup',  
-            'folder': 'released/usecases/dev_test_prod_setup',
-            'var_file' : '../../../tests/uc-dev_test_prod_setup.tfvars',
-            'use_custom_idp' : true 
-          },
-          {
-            'name': 'Resillient apps',      
-            'folder': 'released/usecases/resillient_apps',              
-            'var_file' : '../../../tests/uc-resillient_apps.tfvars', 
-            'use_custom_idp' : false 
+           'name': 'DC-4024-Build Apps',
+           'folder': 'released/discovery_center/mission_4024',
+           'var_file' : '../../../tests/dc-mission_4024.tfvars',
+           'use_custom_idp' : true
           }
         ]
         
