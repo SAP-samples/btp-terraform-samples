@@ -8,9 +8,9 @@ region        = "us10"
 # Project specific configuration
 # ------------------------------------------------------------------------------------------------------
 # Account setup
-subaccount_name = "Integration Test Samples Repo: SAP Build Apps"
+subaccount_name = "Int-test: SAP Build Apps"
 # User (please change to actually existing users)
-emergency_admins         = ["rui.nogueira@sap.com"]
+emergency_admins         = ["john.doe@test.com"]
 users_BuildAppsAdmin     = ["rui.nogueira@sap.com"]
 users_BuildAppsDeveloper = ["rui.nogueira@sap.com"]
 users_RegistryAdmin      = ["rui.nogueira@sap.com"]
