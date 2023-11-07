@@ -8,8 +8,6 @@ terraform {
 }
 
 provider "btp" {
-  username       = var.user_email
-  password       = var.password
   idp            = var.custom_idp
 
   globalaccount  = var.globalaccount
