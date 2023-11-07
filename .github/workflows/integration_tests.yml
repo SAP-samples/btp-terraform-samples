@@ -42,7 +42,7 @@ jobs:
             'vars':[
               {
                 'name': "user_email", 
-                'value': '${{env.BTP_USERNAME}}'
+                'value': 'BTP_USERNAME'
               }
             ]
           }
@@ -64,3 +64,32 @@ jobs:
         run: |
           terraform -chdir=${{ matrix.usecase.folder }} init -no-color
           echo ${{ matrix.usecase.vars }}
+      - name: Terraform apply
+        id: terraform_apply
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
+          then 
+            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
+          fi
+      - name: Terraform destroy
+        id: terraform_destroy
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
+          then 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
+          fi
+   
