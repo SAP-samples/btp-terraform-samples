@@ -189,7 +189,7 @@ module "create_cf_service_instance_hana_cloud" {
 
 # hana
 module "create_cf_service_instance_hdishared" {
-  depends_on            = [time_sleep.wait_a_few_seconds, , module.cloudfoundry_space, module.create_cf_service_instance_hana_cloud]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_space, module.create_cf_service_instance_hana_cloud]
   source                = "../../modules/environment/cloudfoundry/serviceinstance_cf"
   cf_space_id           = module.cloudfoundry_space.id
   service_name          = "hana"
