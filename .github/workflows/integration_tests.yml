@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         usecase: [
-          {'name': "sap_build_apps",      'folder': 'released/usecases/services_apps/sap_build_apps', 'var_file' : './tests/uc-services_apps-sap_build_apps.tfvars', 'use_custom_idp' : true },
+          {'name': "sap_build_apps",      'folder': 'released/usecases/services_apps/sap_build_apps', 'var_file' : '../../../../tests/uc-services_apps-sap_build_apps.tfvars', 'use_custom_idp' : true },
           {'name', 'dev_test_prod_setup', 'folder': 'released/usecases/dev_test_prod_setup',          'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
         ]
         
