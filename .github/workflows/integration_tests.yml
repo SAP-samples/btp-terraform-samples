@@ -40,8 +40,8 @@ jobs:
         shell: bash
         run: |
           terraform -chdir=${{ matrix.usecase.folder }} init -no-color
-      - name: Terraform apply and destroy
-        id: terraform_apply_destroy
+      - name: Terraform apply
+        id: terraform_apply
         shell: bash
         run: |
           export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
