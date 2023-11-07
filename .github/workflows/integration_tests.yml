@@ -11,22 +11,44 @@ env:
   CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
   CUSTOM_IDP:  ${{ secrets.CUSTOM_IDP }}
 
-
 jobs:
   setup_infrastructure:
-    name: Run test
+    name: Test
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         usecase: [
-          {'name': "sap_build_apps",      'folder': 'released/usecases/services_apps/sap_build_apps', 'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
-          #,{'name', 'dev_test_prod_setup', 'folder': 'released/usecases/dev_test_prod_setup',          'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
+          {
+            'name': 'SAP Build Apps',
+            'folder': 'released/usecases/services_apps/sap_build_apps', 
+            'var_file' : '../../../../tests/uc-services_apps-sap_build_apps.tfvars', 
+            'use_custom_idp' : true 
+          },
+          {
+            'name': 'Dev/test/prod setup',  
+            'folder': 'released/usecases/dev_test_prod_setup',
+            'var_file' : '../../../tests/uc-dev_test_prod_setup.tfvars',
+            'use_custom_idp' : true 
+          },
+          {
+            'name': 'Resillient apps',      
+            'folder': 'released/usecases/resillient_apps',              
+            'var_file' : '../../../tests/uc-resillient_apps.tfvars', 
+            'use_custom_idp' : false 
+          }
+          #,
+          #{
+          #  'name': 'DC-4024-Build Apps',
+          #  'folder': 'released/discovery_center/mission_4024',
+          #  'var_file' : '../../../tests/dc-mission_4024.tfvars',
+          #  'use_custom_idp' : true
+          #}
         ]
         
     steps:
-      - name: Set up Git repository
+      - name: Check out Git repository
         id: checkout_repo
         uses: actions/checkout@v4
       - name: Setup Terraform
@@ -40,8 +62,8 @@ jobs:
         shell: bash
         run: |
           terraform -chdir=${{ matrix.usecase.folder }} init -no-color
-      - name: Terraform apply and destroy
-        id: terraform_apply_destroy
+      - name: Terraform apply
+        id: terraform_apply
         shell: bash
         run: |
           export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
@@ -50,9 +72,9 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]
           then 
-            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
           else 
-            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
           fi
       - name: Terraform destroy
         id: terraform_destroy

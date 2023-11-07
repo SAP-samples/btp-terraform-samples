@@ -83,67 +83,67 @@ variable "entitlements" {
   default = [
     {
       service_name = "connectivity"
-      plan_name    = "lite",
+      plan_name    = "lite"
       type         = "service"
     },
     {
       service_name = "destination"
-      plan_name    = "lite",
+      plan_name    = "lite"
       type         = "service"
     },
     {
       service_name = "sapappstudio"
-      plan_name    = "standard-edition",
+      plan_name    = "standard-edition"
       type         = "app"
     },
     {
       service_name = "enterprise-messaging"
-      plan_name    = "default",
+      plan_name    = "default"
       type         = "service"
     },
     {
       service_name = "application-logs"
-      plan_name    = "lite",
+      plan_name    = "lite"
       type         = "service"
     },
     {
       service_name = "xsuaa"
-      plan_name    = "application",
+      plan_name    = "application"
       type         = "service"
     },
     {
       service_name = "hana"
-      plan_name    = "hdi-shared",
+      plan_name    = "hdi-shared"
       type         = "service"
     },
     {
       service_name = "hana-cloud"
-      plan_name    = "hana",
+      plan_name    = "hana"
       type         = "service"
     },
     {
       service_name = "autoscaler"
-      plan_name    = "standard",
+      plan_name    = "standard"
       type         = "service"
     },
     {
       service_name = "enterprise-messaging-hub"
-      plan_name    = "standard",
+      plan_name    = "standard"
       type         = "app"
     },
     {
       service_name = "SAPLaunchpad"
-      plan_name    = "standard",
+      plan_name    = "standard"
       type         = "app"
     },
     {
       service_name = "cicd-app"
-      plan_name    = "default",
+      plan_name    = "default"
       type         = "app"
     },
     {
       service_name = "alm-ts"
-      plan_name    = "standard",
+      plan_name    = "standard"
       type         = "app"
     }
   ]
