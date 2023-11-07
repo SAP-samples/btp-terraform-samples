@@ -96,7 +96,7 @@ module "create_cf_service_instance_connectivity" {
   plan_name             = "lite"
   parameters            = null
 }
-/*
+
 # destination
 module "create_cf_service_instance_destination" {
   depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_space]
@@ -223,4 +223,3 @@ resource "btp_subaccount_subscription" "app" {
   plan_name  = each.value.plan_name
   depends_on = [btp_subaccount_entitlement.name]
 }
-*/
