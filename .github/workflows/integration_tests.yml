@@ -1,4 +1,4 @@
-name: Integration Tests - Released
+name: Integration Tests - main TF ressources
 
 on:
   workflow_dispatch:
