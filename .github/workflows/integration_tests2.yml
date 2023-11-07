@@ -1,0 +1,53 @@
+name: Integration Tests - playground
+
+on:
+  workflow_dispatch:
+
+env:
+  # Credentials used by the Terraform script
+  BTP_USERNAME: ${{ secrets.BTP_USERNAME }}
+  BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+  CF_USER: ${{ secrets.BTP_USERNAME }}
+  CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+  CUSTOM_IDP:  ${{ secrets.CUSTOM_IDP }}
+
+
+jobs:
+  setup_infrastructure:
+    name: Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        usecase: [
+          {
+            'name': 'DC-4024-Build Apps',
+            'folder': 'released/discovery_center/mission_4024',
+            'var_file' : '../../../tests/dc-mission_4024.tfvars',
+            'use_custom_idp' : true,
+            'vars':[
+              {
+                'name': "user_email", 
+                'value': '${{env.BTP_USERNAME}}'
+              }
+            ]
+          }
+        ]
+        
+    steps:
+      - name: Set up Git repository<
+        id: checkout_repo
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        id : setup_terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+          terraform_version: "1.5.7"
+      - name: Terraform Init
+        id: terraform_init
+        shell: bash
+        run: |
+          terraform -chdir=${{ matrix.usecase.folder }} init -no-color
+          echo ${{ matrix.usecase.vars }}
