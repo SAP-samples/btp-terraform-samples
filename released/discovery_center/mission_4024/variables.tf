@@ -1,13 +1,13 @@
-#variable "user_email" {
-#  type        = string
-#  description = "The user e-mail which is passed to TF provider for SAP BTP"
-#}
+variable "user_email" {
+  type        = string
+  description = "The user e-mail which is passed to TF provider for SAP BTP"
+}
 
-#variable "password" {
-#  type        = string
-#  description = "The password which authenticates the user in passed to TF provider for SAP BTP"
-#  sensitive   = true
-#}
+variable "password" {
+  type        = string
+  description = "The password which authenticates the user in passed to TF provider for SAP BTP"
+  sensitive   = true
+}
 
 variable "globalaccount" {
   type        = string
