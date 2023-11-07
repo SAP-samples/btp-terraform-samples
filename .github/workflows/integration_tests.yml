@@ -22,7 +22,7 @@ jobs:
       matrix:
         usecase: [
           {'name': "SAP Build Apps",      'folder': 'released/usecases/services_apps/sap_build_apps', 'var_file' : '../../../../tests/uc-services_apps-sap_build_apps.tfvars', 'use_custom_idp' : true },
-          {'name', "Dev/test/prod setup", 'folder': 'released/usecases/dev_test_prod_setup',          'var_file' : '../../../uc-dev_test_prod_setup.tfvars', 'use_custom_idp' : true }
+          {'name', "Dev/test/prod setup", 'folder': 'released/usecases/dev_test_prod_setup',          'var_file' : '../../../tests/uc-dev_test_prod_setup.tfvars', 'use_custom_idp' : true }
         ]
         
     steps:
