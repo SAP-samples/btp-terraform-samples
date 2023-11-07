@@ -1,55 +1,71 @@
-name: Integration tests - released
+name: Integration Tests - Released
 
 on:
   workflow_dispatch:
 
 env:
-  # folder created by GitHub automatically within Docker container)!
-  FOLDER_REPO: /__w/
   # Credentials used by the Terraform script
   BTP_USERNAME: ${{ secrets.BTP_USERNAME }}
   BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
   CF_USER: ${{ secrets.BTP_USERNAME }}
   CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+  CUSTOM_IDP:  ${{ secrets.CUSTOM_IDP }}
+
 
 jobs:
   setup_infrastructure:
-    name: Run Terraform script
+    name: Run test
     runs-on: ubuntu-latest
-    env: 
-        BTP_USE_CASE_FOLDER: /released/usecases/services_apps/sap_build_apps
+
+    strategy:
+      fail-fast: false
+      matrix:
+        usecase: [
+          {'name': "sap_build_apps",      'folder': 'released/usecases/services_apps/sap_build_apps', 'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
+          #,{'name', 'dev_test_prod_setup', 'folder': 'released/usecases/dev_test_prod_setup',          'var_file' : 'sample.tfvars', 'use_custom_idp' : true }
+        ]
+        
     steps:
-    - name: Set up Git repository
-      uses: actions/checkout@v4
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_wrapper: false
-    - name: Terraform Init
-      id: init
-      working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      shell: bash
-      run: |
-        echo "Run terraform init in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
-        terraform init
-    - name: Terraform Apply
-      id: init
-      working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      shell: bash
-      run: |
-        echo "Run terraform apply in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
-        terraform apply -auto-approve
-    - name: Terraform Destroy
-      id: init
-      working-directory:  /__w/$(basename ${{ github.repository }})/$(basename ${{ github.repository }})${{ env.BTP_USE_CASE_FOLDER }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      shell: bash
-      run: |
-        echo "Run terraform destroy in folder: ${{ env.BTP_USE_CASE_FOLDER }}"
-        terraform destroy -auto-approve
-      
+      - name: Set up Git repository
+        id: checkout_repo
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        id : setup_terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+          terraform_version: "1.5.7"
+      - name: Terraform Init
+        id: terraform_init
+        shell: bash
+        run: |
+          terraform -chdir=${{ matrix.usecase.folder }} init -no-color
+      - name: Terraform apply and destroy
+        id: terraform_apply_destroy
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
+          then 
+            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
+          fi
+      - name: Terraform destroy
+        id: terraform_destroy
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
+          then 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
+          fi
+   
