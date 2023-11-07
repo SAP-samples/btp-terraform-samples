@@ -38,7 +38,13 @@ jobs:
             'name': 'DC-4024-Build Apps',
             'folder': 'released/discovery_center/mission_4024',
             'var_file' : '../../../tests/dc-mission_4024.tfvars',
-            'use_custom_idp' : true 
+            'use_custom_idp' : true,
+            'vars':[
+              {
+                'name': "user_email", 
+                'value': '${{env.BTP_USERNAME}}'
+              }
+            ]
           }
         ]
         
@@ -57,32 +63,4 @@ jobs:
         shell: bash
         run: |
           terraform -chdir=${{ matrix.usecase.folder }} init -no-color
-      - name: Terraform apply
-        id: terraform_apply
-        shell: bash
-        run: |
-          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
-          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
-          export CF_USER=${{ secrets.BTP_USERNAME }}
-          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
-          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
-          then 
-            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
-          else 
-            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
-          fi
-      - name: Terraform destroy
-        id: terraform_destroy
-        shell: bash
-        run: |
-          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
-          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
-          export CF_USER=${{ secrets.BTP_USERNAME }}
-          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
-          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
-          then 
-            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
-          else 
-            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
-          fi
-   
+          echo ${{ matrix.usecase.vars }}
