@@ -11,7 +11,6 @@ env:
   CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
   CUSTOM_IDP:  ${{ secrets.CUSTOM_IDP }}
 
-
 jobs:
   setup_infrastructure:
     name: Test
@@ -21,31 +20,31 @@ jobs:
       fail-fast: false
       matrix:
         usecase: [
-          #{
-          #  'name': 'SAP Build Apps',
-          #  'folder': 'released/usecases/services_apps/sap_build_apps', 
-          #  'var_file' : '../../../../tests/uc-services_apps-sap_build_apps.tfvars', 
-          #  'use_custom_idp' : true 
-          #},
-          #{
-          #  'name': 'Dev/test/prod setup',  
-          #  'folder': 'released/usecases/dev_test_prod_setup',
-          #  'var_file' : '../../../tests/uc-dev_test_prod_setup.tfvars',
-          #  'use_custom_idp' : true 
-          #},
-          #{'name': 'Resillient apps',      'folder': 'released/usecases/resillient_apps',              'var_file' : '../../../tests/uc-resillient_apps.tfvars', 'use_custom_idp' : false },
           {
-            'name': 'DC-4024-Build Apps',
-            'folder': 'released/discovery_center/mission_4024',
-            'var_file' : '../../../tests/dc-mission_4024.tfvars',
-            'use_custom_idp' : true,
-            'vars':[
-              {
-                'name': "user_email", 
-                'value': 'BTP_USERNAME'
-              }
-            ]
+            'name': 'SAP Build Apps',
+            'folder': 'released/usecases/services_apps/sap_build_apps', 
+            'var_file' : '../../../../tests/uc-services_apps-sap_build_apps.tfvars', 
+            'use_custom_idp' : true 
+          },
+          {
+            'name': 'Dev/test/prod setup',  
+            'folder': 'released/usecases/dev_test_prod_setup',
+            'var_file' : '../../../tests/uc-dev_test_prod_setup.tfvars',
+            'use_custom_idp' : true 
+          },
+          {
+            'name': 'Resillient apps',      
+            'folder': 'released/usecases/resillient_apps',              
+            'var_file' : '../../../tests/uc-resillient_apps.tfvars', 
+            'use_custom_idp' : false 
           }
+          #,
+          #{
+          #  'name': 'DC-4024-Build Apps',
+          #  'folder': 'released/discovery_center/mission_4024',
+          #  'var_file' : '../../../tests/dc-mission_4024.tfvars',
+          #  'use_custom_idp' : true
+          #}
         ]
         
     steps:
@@ -74,9 +73,9 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]
           then 
-            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -var custom_idp='${{ secrets.CUSTOM_IDP }}' -auto-approve -no-color 
           else 
-            terraform -chdir=${{ matrix.usecase.folder }} apply   -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file='${{ matrix.usecase.var_file }}' -var globalaccount='${{ secrets.GLOBALACCOUNT }}' -auto-approve -no-color 
           fi
       - name: Terraform destroy
         id: terraform_destroy

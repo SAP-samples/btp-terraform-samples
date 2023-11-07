@@ -10,4 +10,12 @@ subaccount_admins           = []
 subaccount_service_admins   = ["rui.nogueira@sap.com"]
 cf_space_managers           = ["rui.nogueira@sap.com"]
 cf_space_developers         = ["rui.nogueira@sap.com"]
-cf_space_auditors           = ["rui.nogueira@sap.com"]
+cf_space_auditors           = ["rui.nogueira@sap.com"]#
+
+entitlements                = [
+                                {
+                                    service_name = "connectivity"
+                                    plan_name    = "lite",
+                                    type         = "service"
+                                }
+                            ]
