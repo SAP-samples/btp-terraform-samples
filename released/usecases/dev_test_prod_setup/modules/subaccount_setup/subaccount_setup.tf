@@ -15,9 +15,9 @@ terraform {
 # ------------------------------------------------------------------------------------------------------
 locals {
   project_subaccount_name   = "${var.unit_shortname}_${var.stage}"
-  project_subaccount_domain = lower(replace("${local.project_subaccount_name}", "_", "-"))
-  # Restrict length of Cloudfoundry org to 32 characters
-  project_subaccount_cf_org = substr(replace(join("_", ["${var.unit}", "${local.project_subaccount_domain}"]), " ", "_"), 0, 32)
+  # Remove all blanks and substitute all "_" with a "-"
+  project_subaccount_domain = replace(lower(replace("${local.project_subaccount_name}", "_", "-")), " ", "")
+  project_subaccount_cf_org = replace(join("", ["${var.unit}", "${local.project_subaccount_domain}"]), " ", "")
 }
 
 # ------------------------------------------------------------------------------------------------------
