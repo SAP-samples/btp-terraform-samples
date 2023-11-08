@@ -15,6 +15,7 @@ terraform {
 # ------------------------------------------------------------------------------------------------------
 locals {
   project_subaccount_name   = "${var.unit_shortname}_${var.stage}"
+  # Remove all blanks and substitute all "_" with a "-"
   project_subaccount_domain = replace(lower(replace("${local.project_subaccount_name}", "_", "-")), " ", "")
   project_subaccount_cf_org = replace(join("", ["${var.unit}", "${local.project_subaccount_domain}"]), " ", "")
 }
