@@ -7,7 +7,7 @@ region        = "us10"
 # Project specific configuration
 # ------------------------------------------------------------------------------------------------------
 landscapes       = ["DEV", "TST", "PRD"]
-unit             = "Integration Test - dev test prod"
-unit_shortname   = "int_test"
+unit             = "Integration Test"
+unit_shortname   = "dev test prod"
 costcenter       = "1234567890"
 emergency_admins = []
