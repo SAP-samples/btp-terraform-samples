@@ -42,7 +42,7 @@ data "btp_subaccount_service_plan" "sap_abap_env" {
   subaccount_id = var.subaccount_id
   name          = "free"
   offering_name = "abap"
-  depends_on    = [btp_subaccount_entitlement.sap_abap_env]  
+  depends_on    = [btp_subaccount_entitlement.sap_abap_env]
 }
 
 # Create service instance for SAP BTP, ABAP environment
@@ -57,7 +57,7 @@ resource "btp_subaccount_service_instance" "sap_abap_env" {
     sapsystemname = "H01"
   })
 
-  depends_on    = [btp_subaccount_entitlement.sap_abap_env]
+  depends_on = [btp_subaccount_entitlement.sap_abap_env]
 }
 
 # Create service binding to ABAP service
@@ -85,3 +85,13 @@ resource "btp_subaccount_subscription" "abapcp-web-router" {
   depends_on    = [btp_subaccount_entitlement.abapcp-web-router]
 }
 
+# ------------------------------------------------------------------------------------------------------
+# Add Azure storage container on Azure
+# ------------------------------------------------------------------------------------------------------
+module "azure_storage" {
+  source               = "../modules/azure_storage"
+  rg_name              = var.azure_rg_name
+  location             = var.azure_location
+  storage_account_name = var.azure_storage_account_name
+  container_name       = var.azure_container_name
+}
