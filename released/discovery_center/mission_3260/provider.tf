@@ -3,7 +3,7 @@ terraform {
   required_providers {
     btp = {
       source  = "sap/btp"
-      version = "0.6.0-beta2"
+      version = "1.0.0-rc1"
     }
     cloudfoundry = {
       source  = "cloudfoundry-community/cloudfoundry"
