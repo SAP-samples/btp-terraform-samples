@@ -4,7 +4,7 @@
 terraform {
   required_providers {
     btp = {
-      source = "SAP/btp"
+      source  = "SAP/btp"
       version = "1.0.0-rc1"
     }
   }
@@ -54,6 +54,13 @@ resource "btp_subaccount_environment_instance" "kymaruntime" {
   }))
 
   depends_on = [btp_subaccount_entitlement.kymaruntime]
+
+  timeouts = {
+    read   = "10m"
+    create = "60m"
+    update = "60m"
+    delete = "120m"
+  }
 }
 
 data "http" "kubeconfig" {
