@@ -6,3 +6,10 @@ terraform {
     }
   }
 }
+
+# Please checkout documentation on how best to authenticate against SAP BTP
+# via the Terraform provider for SAP BTP
+
+# provider "btp" {
+#   globalaccount = "<YOUR GLOBALACCOUNT SUBDOMAIN>"
+# }
