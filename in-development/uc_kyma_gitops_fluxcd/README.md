@@ -18,7 +18,7 @@ The workspace contains the following files:
 
 ## Usage
 
-1. Create a new git repository to be used by flux  and fill it with the content you can find [here](https://github.com/SAP-samples/btp-terraform-samples/tree/kyma-gitops).
+1. Create a new git repository to be used by flux  and fill it with the content you can find here (TODO: add link after publishing).
 
 2. Clone the repository:
     ```
