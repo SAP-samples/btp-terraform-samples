@@ -5,10 +5,6 @@ terraform {
       source  = "sap/btp"
       version = "1.0.0-rc2"
     }
-    cloudfoundry = {
-      source  = "cloudfoundry-community/cloudfoundry"
-      version = "~>0.53.0"
-    }
   }
 
 }
@@ -17,8 +13,4 @@ terraform {
 # via the Terraform provider for SAP BTP
 provider "btp" {
   globalaccount = var.globalaccount
-}
-
-provider "cloudfoundry" {
-  api_url = "https://api.cf.${var.region}-001.hana.ondemand.com"
 }

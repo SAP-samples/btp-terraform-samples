@@ -6,4 +6,4 @@
 
 You've now successfully configured the Terraform provider.  
 
-Continue to - [# Exercise 5 - Assign entitlements to a subaccount](exercises/EXERCISE5.md).
+Continue to - [# Exercise 5 - Assign entitlements to a subaccount](../EXERCISE5/README.md).

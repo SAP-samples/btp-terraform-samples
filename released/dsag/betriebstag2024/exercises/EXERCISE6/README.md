@@ -7,4 +7,4 @@
 
 You've now successfully configured the Terraform provider.  
 
-Continue to - [EExercise 7 - Handle configuration drift](exercises/EXERCISE7.md).
+Continue to - [EExercise 7 - Handle configuration drift](../EXERCISE7/README.md).

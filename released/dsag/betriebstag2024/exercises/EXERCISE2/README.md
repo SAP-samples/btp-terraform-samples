@@ -6,4 +6,4 @@
 
 You've now successfully configured the Terraform provider.  
 
-Continue to - [Exercise 3 - Setup of a subaccount](exercises/EXERCISE3.md).
+Continue to - [Exercise 3 - Setup of a subaccount](../EXERCISE3/README.md).

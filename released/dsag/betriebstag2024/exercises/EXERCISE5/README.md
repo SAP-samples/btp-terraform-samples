@@ -7,4 +7,4 @@
 
 You've now successfully configured the Terraform provider.  
 
-Continue to - [Exercise 6 - Create service instances and app subscriptions](exercises/EXERCISE6.md).
+Continue to - [Exercise 6 - Create service instances and app subscriptions](../EXERCISE6/README.md).

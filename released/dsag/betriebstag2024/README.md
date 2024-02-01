@@ -8,15 +8,15 @@ In this HandsOn you will learn how to use the [Terraform Provider for SAP BTP](h
 
 In this HandsOn we want to make you familiar with the Terraform Provider for SAP BTP. We will use the provider to provision and manage resources in SAP BTP. To achieve this we will walk through the following steps:
 
-1. [Exercise 1 - Configure the Terraform Provider for SAP BTP](exercises/EXERCISE1.md)
-2. [Exercise 2 - Define the basic configuration setup](exercises/EXERCISE2.md)
-3. [Exercise 3 - Setup of a subaccount](exercises/EXERCISE3.md)
-4. [Exercise 4 - Assignment of subaccount emergency administrators](exercises/EXERCISE4.md)
-5. [Exercise 5 - Assign entitlements to a subaccount](exercises/EXERCISE5.md)
-6. [Exercise 6 - Create a service instance](exercises/EXERCISE6.md)
-7. [Exercise 7 - Handle configuration drift](exercises/EXERCISE7.md)
-8. [Exercise 8 - Setup a Cloud Foundry environment (optional)](exercises/EXERCISE8.md)
-9. [Exercise 9 - Cleanup](exercises/EXERCISE9.md)
+1. [Exercise 1 - Configure the Terraform Provider for SAP BTP](exercises/EXERCISE1/README.md)
+2. [Exercise 2 - Define the basic configuration setup](exercises/EXERCISE2/README.md)
+3. [Exercise 3 - Setup of a subaccount](exercises/EXERCISE3/README.md)
+4. [Exercise 4 - Assignment of subaccount emergency administrators](exercises/EXERCISE4/README.md)
+5. [Exercise 5 - Assign entitlements to a subaccount](exercises/EXERCISE5/README.md)
+6. [Exercise 6 - Create a service instance](exercises/EXERCISE6/README.md)
+7. [Exercise 7 - Handle configuration drift](exercises/EXERCISE7/README.md)
+8. [Exercise 8 - Setup a Cloud Foundry environment (optional)](exercises/EXERCISE8/README.md)
+9. [Exercise 9 - Cleanup](exercises/EXERCISE9/README.md)
 
 The level of the exercises is beginner. You don't need any prior knowledge about Terraform or the Terraform Provider for SAP BTP. We will guide you through the exercises step by step.
 
@@ -130,8 +130,17 @@ Validate that the values are set via:
 - Windows: `$env:BTP_USERNAME` and `$env:BTP_PASSWORD`
 - Linux/MacOS/GitHub Codeapses: `echo $BTP_USERNAME` and `echo $BTP_PASSWORD`
 
+## Folder layout
+
+You find all exercises of this tutorial in the folder `released/dsag/betriebstag2024/exercises`. Each exercise is contained in a dedicated folder containing:
+
+- A `README.md` file with the instructions for the exercise
+- A folder `SOLUTION_EX<number>` which contains the solution for the exercise if needed including the file `terraform.tfvars-sample` contains the definition of the local variables. In case you get stuck you can check the content of this folder.  
+
+In addition the folder `solution` contains the final configuration setup if you have gone through all exercises.
+
 ## Summary
 
 You've now prepared your development environment and have all information to finally start using Terraform provider for SAP BTP.  
 
-Continue to - [Exercise 1 - Configure the Terraform Provider for SAP BTP](exercises/EXERCISE1.md).
+Continue to - [Exercise 1 - Configure the Terraform Provider for SAP BTP](exercises/EXERCISE1/README.md).

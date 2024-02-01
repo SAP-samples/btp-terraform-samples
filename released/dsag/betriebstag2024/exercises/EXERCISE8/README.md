@@ -2,8 +2,11 @@
 
 ## Goal of this Exercise 🎯
 
+terraform inti to re-istall modules
+
+
 ## Summary
 
 You've now successfully configured the Terraform provider.  
 
-Continue to - [Exercise 9 - Cleanup](exercises/EXERCISE9.md).
+Continue to - [Exercise 9 - Cleanup](../EXERCISE9/README.md).
