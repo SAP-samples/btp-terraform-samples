@@ -3,7 +3,7 @@ terraform {
   required_providers {
     btp = {
       source  = "sap/btp"
-      version = "1.0.0-rc2"
+      version = "1.0.0"
     }
   }
 }

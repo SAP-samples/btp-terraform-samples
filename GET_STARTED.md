@@ -7,8 +7,6 @@ To execute the samples in this repository, you need to have the Terraform CLI. Y
 
 You can install the CLI locally on your machine as described in the installation instructions [here](https://learn.hashicorp.com/tutorials/terraform/install-cli). After that you can clone this repository and execute the samples locally.
 
-> **Note**: There is a temporal limitation concerning the Terraform CLI version and the Terraform Provider for SAP BTP: the release `0.5.0-beta1` of the Terraform provider is working with version `1.5.7` (or lower) of the Terraform CLI. The release `1.0.0-rc1` and later of the Terraform provider is working with version `1.6.x` of the Terraform CLI. See also this [discussion](https://github.com/SAP/terraform-provider-btp/discussions/477). Please make sure to use the correct versions.
-
 ## Devcontainer
 
 We provide a [devcontainer](https://code.visualstudio.com/docs/remote/containers) for Visual Studio Code which contains the Terraform CLI matching the latest release of the Terraform Provider for SAP BTP. There are two prerequisites to use the devcontainer:

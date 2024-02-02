@@ -95,4 +95,4 @@ Further samples can be found in the `examples` folder and serve as basis for you
 | Name                                                                                                                   | Version     |
 | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
 | [Terraform provider for SAP BTP](https://registry.terraform.io/providers/SAP/btp/latest)                               | 0.4.0-beta1 |
-| [Cloud Foundry community provider](https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest) | ~>0.51.3    |
+| [Cloud Foundry community provider](https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest) | ~>0.53.0    |
