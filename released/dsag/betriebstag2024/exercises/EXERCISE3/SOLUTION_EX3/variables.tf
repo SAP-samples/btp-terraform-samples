@@ -9,7 +9,7 @@ variable "globalaccount" {
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "eu10"
+  default     = "us10"
 }
 
 ###
@@ -73,31 +73,4 @@ variable "emergency_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-
-###
-# Entitlements for Subaccount
-###
-variable "entitlements" {
-  type = list(object({
-    name   = string
-    plan   = string
-    amount = number
-  }))
-  description = "List of entitlements for the subaccount."
-  default     = []
-}
-
-
-###
-# Subscriptions to apps
-###
-variable "subscriptions" {
-  type = list(object({
-    app_name = string
-    plan     = string
-  }))
-  description = "List of app subscriptions to be subscribed to in the subaccount."
-  default     = []
 }

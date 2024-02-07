@@ -4,9 +4,9 @@
 
 The goal of this exercise is to setup a *subaccount* in the SAP BTP using the Terraform provider. Besides that we will learn how to work with `variables` and `outputs` in Terraform. As a cherry on top we will also learn how to validate user input.
 
-## Step 1: Create the subaccount configuration
+## Create the subaccount configuration
 
-### Step 1.1: Input variables
+### Step 1: Input variables
 
 We want to create a subaccount that follows a specific naming convention and has additional information about the development project like the cost center displayed via labels. To achieve this we will use input variables in Terraform.
 
@@ -24,7 +24,7 @@ Open the file `variables.tf` and add the following code to define the input vari
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "eu10"
+  default     = "us10"
 }
 ```
 
@@ -105,10 +105,12 @@ variable "org_name" {
 
 As you can see you can also use functions inside of functions to express more complex conditions. In this case we use the [`concat` function](https://developer.hashicorp.com/terraform/language/functions/concat) to combine multiple lists into one list and then use the `contains` function to check if the input is part of the list of valid organization names.
 
+As we have all variables in place, you should save the changes now.
+
 > [!NOTE]
 > As you can see you have a lot of possibilities to validate the user input in Terraform in this way ensure that the input is correct and meets your corporate requirements.
 
-### Step 1.2: Local values
+### Step 2: Local values
 
 Now we want to leverage the input variables to create a subaccount name that follows a specific naming convention. Here are the conditions:
 
@@ -126,7 +128,9 @@ locals {
 
 For the subaccount name we referenced the values of the variables and combined them to a string using the `${}` syntax. For the subaccount domain we used the [`replace` function](https://developer.hashicorp.com/terraform/language/functions/replace) to remove spaces from the domain name and the [`lower` function](https://developer.hashicorp.com/terraform/language/functions/lower) to bring all letter in lowercase.
 
-### Step 1.3: The subaccount configuration
+As we have all local values in place, you should save the changes now.
+
+### Step 3: The subaccount configuration
 
 As all bits and pieces are in place we can now create the subaccount configuration. Besides the name and domain we also want to add labels to the subaccount to display the stage and cost center. In addition we want to set the usage of the subaccount to `NOT_USED_FOR_PRODUCTION`.
 
@@ -147,7 +151,9 @@ resource "btp_subaccount" "project" {
 
 We used the resource [`btp_subaccount`](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount) to create the subaccount. We referenced the local values to set the name and domain. We added labels to the subaccount to display the stage and cost center. The usage of the subaccount is hardcoded to `NOT_USED_FOR_PRODUCTION`.
 
-### Step 1.4: Output values
+As we have the configuration in place, you should save the changes now.
+
+### Step 4: Output values
 
 Before we can finally apply the Terraform configuration we want to add an output value to display the subaccount name id. Add the following code to the `outputs.tf` file to define the output value:
 
@@ -165,7 +171,9 @@ output "subaccount_name" {
 
 These output values will display the ID and name of the created subaccount after the Terraform configuration has been successfully applied.
 
-### Step 1.5: Apply the Terraform configuration
+As we have all output values in place, you should save the changes now.
+
+### Step 5: Apply the Terraform configuration
 
 Now the moment has come to apply the Terraform configuration for the first time. Open a terminal window and execute the following commands:
 
@@ -194,6 +202,8 @@ Now the moment has come to apply the Terraform configuration for the first time.
 
 After the application you will find a new file called `terraform.tfstate` in your directory. This file contains the [state](https://developer.hashicorp.com/terraform/language/state) of the Terraform configuration and is used to keep track of the resources that have been created.
 
+You can also check that everything is in place via the SAP BTP cockpit. You should see a new subaccount that comprises our configuration.
+
 ## Additional information
 
 Here you find additional information on the used Terraform features and functions:
@@ -205,6 +215,6 @@ Here you find additional information on the used Terraform features and function
 
 ## Summary
 
-You've now successfully configured the Terraform provider.  
+You've now successfully created a subaccount.  
 
 Continue to - [Exercise 3 - Assignment of subaccount emergency administrators](exercises/EXERCISE3.md).
