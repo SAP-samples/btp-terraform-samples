@@ -9,14 +9,13 @@ In this HandsOn you will learn how to use the [Terraform Provider for SAP BTP](h
 In this HandsOn we want to make you familiar with the Terraform Provider for SAP BTP. We will use the provider to provision and manage resources in SAP BTP. To achieve this we will walk through the following steps:
 
 1. [Exercise 1 - Configure the Terraform Provider for SAP BTP](exercises/EXERCISE1/README.md)
-2. [Exercise 2 - Define the basic configuration setup](exercises/EXERCISE2/README.md)
-3. [Exercise 3 - Setup of a subaccount](exercises/EXERCISE3/README.md)
-4. [Exercise 4 - Assignment of subaccount emergency administrators](exercises/EXERCISE4/README.md)
-5. [Exercise 5 - Assign entitlements to a subaccount](exercises/EXERCISE5/README.md)
-6. [Exercise 6 - Create a service instance](exercises/EXERCISE6/README.md)
-7. [Exercise 7 - Handle configuration drift](exercises/EXERCISE7/README.md)
-8. [Exercise 8 - Setup a Cloud Foundry environment (optional)](exercises/EXERCISE8/README.md)
-9. [Exercise 9 - Cleanup](exercises/EXERCISE9/README.md)
+1. [Exercise 2 - Setup of a subaccount](exercises/EXERCISE2/README.md)
+1. [Exercise 3 - Assignment of subaccount emergency administrators](exercises/EXERCISE3/README.md)
+1. [Exercise 4 - Assign entitlements to a subaccount](exercises/EXERCISE4/README.md)
+1. [Exercise 5 - Create a service instance](exercises/EXERCISE5/README.md)
+1. [Exercise 6 - Handle configuration drift](exercises/EXERCISE6/README.md)
+1. [Exercise 7 - Setup a Cloud Foundry environment (optional)](exercises/EXERCISE7/README.md)
+1. [Exercise 8 - Cleanup](exercises/EXERCISE8/README.md)
 
 The level of the exercises is beginner. You don't need any prior knowledge about Terraform or the Terraform Provider for SAP BTP. We will guide you through the exercises step by step.
 
@@ -103,7 +102,8 @@ You can then access the Codespace following these steps:
 
 4. Once all is done, you are in your Codespace.
 
-    > **Note** - GitHub codespaces are free for a certain amount of time per month. For the hands-on session the free time is more than enough. **Don't forget to delete your codespace again after the hands-on session!**
+    > [!IMPORTANT]
+    > GitHub codespaces are free for a certain amount of time per month. For the hands-on session the free time is more than enough. **Don't forget to delete your codespace again after the hands-on session!**
 
     ![Screenshot of GitHub Codespace view on the repository Terraform samples](assets/codespace-screen.png)
 

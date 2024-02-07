@@ -1,38 +1,3 @@
 globalaccount = "<YOUR GLOBAL ACCOUT SUBDOMAIN>"
 
 region        = "us10"
-
-entitlements = [
-  {
-    name   = "alert-notification"
-    plan   = "standard"
-    amount = null
-  },
-  {
-    name   = "SAPLaunchpad"
-    plan   = "standard"
-    amount = null
-  },
-  {
-    name   = "hana-cloud-trial"
-    plan   = "hana"
-    amount = null
-  },
-  {
-    name   = "hana"
-    plan   = "hdi-shared"
-    amount = null
-  },
-  {
-    name   = "sapappstudiotrial"
-    plan   = "trial"
-    amount = null
-  }
-]
-
-subscriptions = [
-  {
-    app_name = "sapappstudiotrial"
-    plan     = "trial"
-  }
-]

@@ -1,4 +1,4 @@
-# Exercise 5 - Assign entitlements to a subaccount
+# Exercise 5 - Create service instances and app subscriptions
 
 ## Goal of this Exercise 🎯
 
@@ -7,4 +7,4 @@
 
 You've now successfully configured the Terraform provider.  
 
-Continue to - [Exercise 6 - Create service instances and app subscriptions](../EXERCISE6/README.md).
+Continue to - [Exercise 6 - Handle configuration drift](../EXERCISE6/README.md).
