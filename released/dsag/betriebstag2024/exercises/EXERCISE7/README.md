@@ -14,15 +14,23 @@ Inspect the folder and you will see a known file structure:
 
 - `envinstance_cf_variables.tf`: The file contains the input variables for the module.
 - `envinstance_cf.tf`: The file contains the main configuration of the module comprising the resource [`btp_subaccount_environment_instance`](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_environment_instance) of the Terraform Provider for SAP BTP and the resource [`cloudfoundry_org_users`](https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs/resources/org_users) from the Terraform Provider for Cloud Foundry. It corresponds to the `main.tf` file of a Terraform configuration and also contains the required providers.
-    > [!NOTE]
-    > The Terraform provider for Cloud Foundry is a community provider and not maintained by SAP.
+
+> [!NOTE]
+> The Terraform provider for Cloud Foundry is a community provider and not maintained by SAP.
+
 - `envinstance_cf_outputs.tf`: The file contains the output variables for the module.
 
 When taking a closer look at the `envinstance_cf.tf` file, we see that we do not want to implement these steps again. We will re-use the module to create the Cloud Foundry environment.
 
 ### Step 1: Add the module to the Terraform configuration
 
-Open the `main.tf` file and add the following code to call this module:
+First we need to add one more local variable in the `main.tf` file. Open the `main.tf` file and add the following code to the `locals` block:
+
+```terraform
+project_subaccount_cf_org = replace("${var.org_name}_${lower(var.project_name)}-${lower(var.stage)}", " ", "_")
+```	
+
+Then add the following code to call this module:
 
 ```terraform
 module "cloudfoundry_environment" {
@@ -101,7 +109,7 @@ To fulfill all requirements for the authentication against the Cloud Foundry env
     ```
 
 > [!NOTE]
-> Although we do not use the Cloud FOundry part of the module namely the assignment of users to the organization, Terraform will initialize the Cloud Foundry provider and try to authenticate against the Cloud Foundry environment. This is why we need to define the configuration and provide the credentials.
+> Although we do not use the Cloud Foundry part of the module namely the assignment of users to the organization, Terraform will initialize the Cloud Foundry provider and try to authenticate against the Cloud Foundry environment. This is why we need to define the configuration and provide the credentials.
 
 ### Step 3: Apply the changes
 

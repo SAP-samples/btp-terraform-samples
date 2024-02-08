@@ -59,7 +59,7 @@ the file `terraform.tfvars` and add the following content:
 globalaccount = "<YOUR GLOBAL ACCOUT SUBDOMAIN>"
 ```
 
- > [!NOTE] 
+ > [!NOTE]
  > We are using here a naming convention of Terraform to define the variable values. The file `terraform.tfvars` is used to define the variable values. The file is not checked into the source code repository. This is important to keep sensitive information out of the source code repository. When you run Terraform, it will automatically load the variable values from this file.
 
 ## Summary

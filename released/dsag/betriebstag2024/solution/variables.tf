@@ -1,6 +1,3 @@
-###
-# Provider configuration
-###
 variable "globalaccount" {
   type        = string
   description = "The subdomain of the SAP BTP global account."
@@ -12,9 +9,6 @@ variable "region" {
   default     = "us10"
 }
 
-###
-# Subaccount setup
-###
 variable "project_name" {
   type        = string
   description = "The subaccount name."
@@ -66,19 +60,12 @@ variable "org_name" {
   }
 }
 
-###
-# Emergency admin setup
-###
 variable "emergency_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-
-###
-# Entitlements for Subaccount
-###
 variable "entitlements" {
   type = list(object({
     name   = string
@@ -89,10 +76,6 @@ variable "entitlements" {
   default     = []
 }
 
-
-###
-# Subscriptions to apps
-###
 variable "subscriptions" {
   type = list(object({
     app_name = string

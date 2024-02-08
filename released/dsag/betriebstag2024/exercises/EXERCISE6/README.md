@@ -28,8 +28,8 @@ A manual change of the configuration could be due to two reasons:
 
 1. Somebody changed the configuration by accident. Consequently, the configuration stored in the Terraform state is the desired one. In this case yo can revert the change in the subaccount by executing a `terraform apply` which will re-apply the configuration stored in the Terraform state.
 
-    > [!NOTE]
-    > You can of course also revert the change in the SAP BTP cockpit (or via the BTP CLI) to match the Terraform state. However this might be a bit cumbersome in a real-world scenario.
+> [!NOTE]
+> You can of course also revert the change in the SAP BTP cockpit (or via the BTP CLI) to match the Terraform state. However this might be a bit cumbersome in a real-world scenario.
 
 2. The manual change was an "emergency" change and is how the configuration should look like. So you need to adjust the state in Terraform to match the actual state in the SAP BTP.
 

@@ -183,8 +183,8 @@ Now the moment has come to apply the Terraform configuration for the first time.
     terraform init
     ```
 
-    > [!NOTE]
-    > Check your files. You should have a new folder called `.terraform` as well as new file called `.terraform.lock.hcl` in your directory. This means that the Terraform provider has been successfully downloaded and the version constraints are stored for your setup.
+> [!NOTE]
+> Check your files. You should have a new folder called `.terraform` as well as new file called `.terraform.lock.hcl` in your directory. This means that the Terraform provider has been successfully downloaded and the version constraints are stored for your setup.
 
 2. Plan the Terraform configuration to see what will be created:
 
@@ -217,4 +217,4 @@ Here you find additional information on the used Terraform features and function
 
 You've now successfully created a subaccount.  
 
-Continue to - [Exercise 3 - Assignment of subaccount emergency administrators](exercises/EXERCISE3.md).
+Continue to - [Exercise 3 - Assignment of subaccount emergency administrators](../EXERCISE3/README.md).

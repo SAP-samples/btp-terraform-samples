@@ -28,7 +28,7 @@ After the deletion of the resources, check the Terraform state. Walk through the
 - If it is still there what is the content of the state file?
 
 > [!TIP]
-> You can also use the `terraform state` command to inspect the state of the resources. You find more information about that command in the [Terraform documentation](https://developer.hashicorp.com/terraform/cli/state/inspect).
+> You can also use the `terraform state list` command to inspect the state of the resources. You find more information about that command in the [Terraform documentation](https://developer.hashicorp.com/terraform/cli/state/inspect).
 
 ## Summary
 

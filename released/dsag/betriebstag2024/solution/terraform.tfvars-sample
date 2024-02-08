@@ -1,6 +1,4 @@
-globalaccount = "<YOUR GLOBAL ACCOUT SUBDOMAIN>"
-
-costcenter = "9876543210"
+globalaccount = "<YOUR GLOBAL ACCOUNT>"
 
 entitlements = [
   {
@@ -36,3 +34,5 @@ subscriptions = [
     plan     = "trial"
   }
 ]
+
+costcenter = "9876543210"
