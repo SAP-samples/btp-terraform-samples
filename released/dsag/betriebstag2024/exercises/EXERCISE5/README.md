@@ -123,6 +123,8 @@ Now we can apply the changes to our subaccount. Run the following commands:
 > [!NOTE]
 > As we did not change the configuration of the provider or add any Terraform [modules](https://developer.hashicorp.com/terraform/language/modules), we do not need to run `terraform init` again.
 
+And you know the drill:
+
 1. Plan the Terraform configuration to see what will be created:
 
     ```bash

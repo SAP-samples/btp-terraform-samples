@@ -70,7 +70,6 @@ The configuration drift is now handled and the Terraform state is in sync with t
 > [!WARNING]
 > You might also come to the conclusion that the easiest way to deal with such a scenario is to manually change the content of the state file. Manually changing is something you should **never** do in a real world scenario to deal with such scenarios. The state file is a very sensitive file and manual changes can have severe side-effects.
 
-
 ## Additional information
 
 You find more information about managing configuration drift in the Terraform documentation [Manipulating Terraform State](https://developer.hashicorp.com/terraform/cli/state).
