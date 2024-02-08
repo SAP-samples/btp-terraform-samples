@@ -88,16 +88,3 @@ variable "entitlements" {
   description = "List of entitlements for the subaccount."
   default     = []
 }
-
-
-###
-# Subscriptions to apps
-###
-variable "subscriptions" {
-  type = list(object({
-    app_name = string
-    plan     = string
-  }))
-  description = "List of app subscriptions to be subscribed to in the subaccount."
-  default     = []
-}
