@@ -1,7 +1,5 @@
 globalaccount = "<YOUR GLOBAL ACCOUT SUBDOMAIN>"
 
-region        = "us10"
-
 entitlements = [
   {
     name   = "alert-notification"

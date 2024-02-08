@@ -38,6 +38,9 @@ resource "btp_subaccount_role_collection_assignment" "subaccount_users" {
 
 To create a resource for our user we make use of the [`for_each`](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each) meta-argument provided by Terraform. This allows us to create a resource for each element in the list of users. The `for_each` argument works on a map or a set, so we must transform our list of strings into a set via the [`toset`](https://www.terraform.io/docs/language/functions/toset.html) function. We access the value of the current iteration via `each.value`. The `subaccount_id` is set to the id of the subaccount we created in the previous exercise.
 
+> [!NOTE]
+> How does Terraform know that it first needs to create the subaccount and then assign the users to the role collection? Terraform automatically detects this dependency as we are using the output of the subaccount creation namely the `btp_subaccount.project.id` as parameter for the role collection assignment. Due to this Terraform knows that the role collection assignment can only be created after the subaccount has been created and creates a corresponding execution plan. Sometimes you must explicitly model this dependency and we will see how to that in [exercise 5](../EXERCISE5/README.md).
+
 That is already all we need to do. Save the changes.
 
 ### Step 3: Apply the changes

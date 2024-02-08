@@ -76,21 +76,4 @@ resource "btp_subaccount_service_instance" "alert_notification_standard" {
   name           = "alert-notification"
   serviceplan_id = data.btp_subaccount_service_plan.alert_notification_standard_plan.id
   subaccount_id  = btp_subaccount.project.id
-  depends_on     = [data.btp_subaccount_service_plan.alert_notification_standard_plan]
-}
-
-
-###
-# Creation of Cloud Foundry environment via module
-###
-module "cloudfoundry_environment" {
-  source = "../../../modules/environment/cloudfoundry/envinstance_cf"
-
-  subaccount_id           = btp_subaccount.project.id
-  instance_name           = local.project_subaccount_cf_org
-  cf_org_name             = local.project_subaccount_cf_org
-  plan_name               = "trial"
-  cf_org_managers         = []
-  cf_org_billing_managers = []
-  cf_org_auditors         = []
 }
