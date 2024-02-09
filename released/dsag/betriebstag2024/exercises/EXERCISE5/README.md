@@ -73,15 +73,23 @@ Now we can apply the changes to our subaccount. Run the following commands:
     terraform plan
     ```
 
+    You should see the following output:
+
+    <img width="600px" src="assets/ex5_1a.png" alt="terraform plan output for subscription">
+
 2. Apply the Terraform configuration to create the subaccount:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue.
+    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue. You should see the following output:
+
+    <img width="600px" src="assets/ex5_1b.png" alt="terraform apply output for subscription">
 
 You can also check that everything is in place via the SAP BTP cockpit. You should see the app subscription in the subaccount.
+
+<img width="600px" src="assets/ex5_2.png" alt="subscription in SAP BTP">
 
 ## 2. Create a service instance
 
@@ -131,15 +139,23 @@ And you know the drill:
     terraform plan
     ```
 
+    You should see the following output:
+
+    <img width="600px" src="assets/ex5_3a.png" alt="terraform plan output for service instance">
+
 2. Apply the Terraform configuration to create the subaccount:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue.
+    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue. You should see the following output:
 
-You can also check that everything is in place via the SAP BTP cockpit. You should see the service instance in the subaccount.
+    <img width="600px" src="assets/ex5_3b.png" alt="terraform apply output for service instance">
+
+You can also check that everything is in place via the SAP BTP cockpit. You should see the service instance in the subaccount:
+
+<img width="600px" src="assets/ex5_4.png" alt="service instance in SAP BTP">
 
 ## Summary
 
