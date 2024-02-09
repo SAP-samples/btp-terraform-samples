@@ -183,8 +183,14 @@ Now the moment has come to apply the Terraform configuration for the first time.
     terraform init
     ```
 
+    You should see an output similar to the following:
+
+    <img width="600px" src="assets/ex2_1.png" alt="terraform init output">
+
 > [!NOTE]
 > Check your files. You should have a new folder called `.terraform` as well as new file called `.terraform.lock.hcl` in your directory. This means that the Terraform provider has been successfully downloaded and the version constraints are stored for your setup.
+
+<img width="400px" src="assets/ex2_1b.png" alt="terraform folder after init">
 
 2. Plan the Terraform configuration to see what will be created:
 
@@ -192,17 +198,32 @@ Now the moment has come to apply the Terraform configuration for the first time.
     terraform plan
     ```
 
+    You should see an output similar to the following:
+
+    <img width="600px" src="assets/ex2_2.png" alt="terraform plan output">
+
 3. Apply the Terraform configuration to create the subaccount:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue.
+    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue. You should see an output similar to the following:
 
-After the application you will find a new file called `terraform.tfstate` in your directory. This file contains the [state](https://developer.hashicorp.com/terraform/language/state) of the Terraform configuration and is used to keep track of the resources that have been created.
+    <img width="600px" src="assets/ex2_3a.png" alt="terraform apply output">
 
-You can also check that everything is in place via the SAP BTP cockpit. You should see a new subaccount that comprises our configuration.
+    <img width="600px" src="assets/ex2_3b.png" alt="terraform apply output after execution">
+
+After the application you will find a new file called `terraform.tfstate` in your directory. This file contains the [state](https://developer.hashicorp.com/terraform/language/state) of the Terraform configuration and is used to keep track of the resources that have been created:
+
+<img width="200px" src="assets/ex2_5.png" alt="terraform state in the file sytem">
+
+> [!NOTE]
+> In real life you would not store this file locally but use a [remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/configuration) that is capable of storing the state in a secure and consistent way. For the purpose of this exercise we will use the local backend.
+
+You can also check that everything is in place via the SAP BTP cockpit. You should see a new subaccount that comprises our configuration:
+
+<img width="600px" src="assets/ex2_4.png" alt="subaccount in SAP BTP">
 
 ## Additional information
 
