@@ -85,7 +85,7 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 
 ## 2. Create a service instance
 
-In addition to the app subscription, we want to create a service instance of the `alert-notification`service with the plan `standard`. We will use the [btp_subaccount_service_instance](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_service_instance) resource to achieve this. For the sake of the hands-on exercise, we will cretae the instance in a hard coded way. In a real-world scenario, you would use variables to define the service instance.
+In addition to the app subscription, we want to create a service instance of the `alert-notification`service with the plan `standard`. We will use the [btp_subaccount_service_instance](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_service_instance) resource to achieve this. For the sake of the hands-on exercise, we will create the instance in a hard coded way. In a real-world scenario, you would use variables to define the service instance.
 
 ### Step 2.1: Add the service instance configuration
 

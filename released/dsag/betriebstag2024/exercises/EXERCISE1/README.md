@@ -56,7 +56,7 @@ We have now defined the variable `globalaccount` which is required for the provi
 the file `terraform.tfvars` and add the following content:
 
 ```terraform
-globalaccount = "<YOUR GLOBAL ACCOUT SUBDOMAIN>"
+globalaccount = "<YOUR GLOBAL ACCOUNT SUBDOMAIN>"
 ```
 
  > [!NOTE]

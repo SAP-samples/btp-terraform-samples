@@ -8,7 +8,7 @@ In this exercise, you will learn how to assign entitlements to a subaccount usin
 
 ## Step 1: Enhance the variables
 
-Our goal is to have one variable that contains the list of entitlements that we want to assign to the subaccount. An entitlement is an object that consists of several attributes, such as the service name, the plan name, and if necessary the amount. 
+Our goal is to have one variable that contains the list of entitlements that we want to assign to the subaccount. An entitlement is an object that consists of several attributes, such as the service name, the plan name, and if necessary the amount.
 We will define the variable `entitlements` in the `variables.tf` file. Open the `variables.tf` file and add the following code:
 
 ```terraform
@@ -27,16 +27,15 @@ We define a complex variable type, which is a [list](https://developer.hashicorp
 
 ## Step 2: Add the variable to the tfvars file
 
-Now we need to specify the entitlements we want to create to the `terraform.tfvars` file. 
+Now we need to specify the entitlements we want to create to the `terraform.tfvars` file.
 
-We want to addd the following entitlements to the subaccount:
+We want to add the following entitlements to the subaccount:
 
 - `alert-notification` service with the `standard` plan
 - `SAPLaunchpad` application with the `standard` plan
 - `hana-cloud-trial` service with the `hana` plan
 - `hana` service with the `hdi-shared` plan
 - `sapappstudiotrial` application with the `trial` plan
-
 
 Open the `terraform.tfvars` file and add the following code:
 

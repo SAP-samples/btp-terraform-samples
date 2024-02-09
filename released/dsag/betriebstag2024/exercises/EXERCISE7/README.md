@@ -28,7 +28,7 @@ First we need to add one more local variable in the `main.tf` file. Open the `ma
 
 ```terraform
 project_subaccount_cf_org = replace("${var.org_name}_${lower(var.project_name)}-${lower(var.stage)}", " ", "_")
-```	
+```
 
 Then add the following code to call this module:
 

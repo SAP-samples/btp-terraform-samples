@@ -10,7 +10,7 @@ In this exercise, you will learn how to handle configuration drift with Terrafor
 
 We will now introduce a *configuration drift* i.e., we change the label of the cost center in the SAP BTP cockpit. Open the SAP BTP cockpit and navigate to the subaccount. Navigate to the subaccount overview and click on the "..." and then "Edit". Change the label of the cost center to something else and save the change.
 
-Now the Terraform state that you have stored locally will no longer mathc the actual state of the subaccount in the SAP BTP cockpit. This is called *configuration drift*.
+Now the Terraform state that you have stored locally will no longer match the actual state of the subaccount in the SAP BTP cockpit. This is called *configuration drift*.
 
 ### Step 2: Detect the configuration drift
 
@@ -43,7 +43,7 @@ First we check the drift with `terraform plan` and add the `--refresh-only` flag
 terraform plan -refresh-only
 ```
 
-The output shows the update Terraform would apply to the state file to match the actual state in the SAP BTP. Check if the output is waht you would expect and then apply the changes:
+The output shows the update Terraform would apply to the state file to match the actual state in the SAP BTP. Check if the output is what you would expect and then apply the changes:
 
 ```bash
 terraform apply -refresh-only

@@ -13,7 +13,7 @@ We want to create a subaccount that follows a specific naming convention and has
 We want to have the following input when creating a subaccount as base information:
 
 - *region* - The region where the subaccount should be created. We will default this to `eu10` for the purpose of this exercise.
-- *project name* - The name of the project. We want to validate the iinput to follow a specific naming convention.
+- *project name* - The name of the project. We want to validate the input to follow a specific naming convention.
 - *stage* - The stage of the project. We want to validate the input to be either `DEV`, `TST` or `PRD`.
 - *cost center* - The cost center of the project. We want to validate the input to be a valid number.
 - *organization name* - The organization where the subaccount should be created. We want to validate this against several fixed values.
