@@ -10,6 +10,9 @@ In this exercise, you will learn how to handle configuration drift with Terrafor
 
 We will now introduce a *configuration drift* i.e., we change the label of the cost center in the SAP BTP cockpit. Open the SAP BTP cockpit and navigate to the subaccount. Navigate to the subaccount overview and click on the "..." and then "Edit". Change the label of the cost center to something else and save the change.
 
+<img width="600px" src="assets/ex6_1.png" alt="change label for costcenter on subaccount">
+
+
 Now the Terraform state that you have stored locally will no longer match the actual state of the subaccount in the SAP BTP cockpit. This is called *configuration drift*.
 
 ### Step 2: Detect the configuration drift
@@ -20,7 +23,11 @@ The easiest way to detect the configuration drift is to run the `terraform plan`
 terraform plan
 ```
 
-The command will not do any changes. However, sometimes the output might not perfectly match the drift that you have introduced i.e., some other changes might be shown as well as a consequence of the potential re-creation of the resource. Do not get irritated by the output as the additional changes are in-place changes only where Terraform cannot distinguish if a new attribute value will be applied or not.
+The command will not do any changes. The output will show you that changes need to be appllied although you have not changed anything in the Terraform configuration:
+
+<img width="600px" src="assets/ex6_2.png" alt="terraform plan output due to configuration drift">
+
+However, sometimes the output might not perfectly match the drift that you have introduced i.e., some other changes might be shown as well as a consequence of the potential re-creation of the resource. Do not get irritated by the output as the additional changes are in-place changes only where Terraform cannot distinguish if a new attribute value will be applied or not.
 
 ### Step 2: Handle configuration drift
 
@@ -43,11 +50,19 @@ First we check the drift with `terraform plan` and add the `--refresh-only` flag
 terraform plan -refresh-only
 ```
 
+You can now detect what exactly was changed and how Terraform would change the state to match the actual state in the SAP BTP:
+
+<img width="600px" src="assets/ex6_3.png" alt="output of terraform plan -refresh-only">
+
 The output shows the update Terraform would apply to the state file to match the actual state in the SAP BTP. Check if the output is what you would expect and then apply the changes:
 
 ```bash
 terraform apply -refresh-only
 ```
+
+You should see the following output:
+
+<img width="600px" src="assets/ex6_4.png" alt="output of terraform apply -refresh-only">
 
 The state should now match the actual state in the SAP BTP.
 
@@ -57,13 +72,19 @@ To be in sync with the new setup we must also override the the default value of 
 costcenter = "<YOUR NEW VALUE>"
 ```
 
- You can verify this e.g., by executing a `terraform plan` again.
+You can verify this e.g., by executing a `terraform plan` again:
+
+<img width="600px" src="assets/ex6_5.png" alt="output of terraform plan after state refresh">
 
 As an alternative you can also use the following command to display the state of the resource:
 
 ```bash
 terraform state show btp_subaccount.project
 ```
+
+You should see the following output with the updated value for the cost center label:
+
+<img width="600px" src="assets/ex6_6.png" alt="output of terraform state show">
 
 The configuration drift is now handled and the Terraform state is in sync with the actual state in the SAP BTP.
 
