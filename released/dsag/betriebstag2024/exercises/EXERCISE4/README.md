@@ -103,13 +103,20 @@ Now we can apply the changes to our subaccount. Run the following commands:
     terraform plan
     ```
 
+    You should see the following output:
+
+    <img width="600px" src="assets/ex4_1.png" alt="terraform plan output for entitlements">
+
 2. Apply the Terraform configuration to create the subaccount:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue.
+    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue. You should see the following output:
+
+    <img width="600px" src="assets/ex4_2.png" alt="terraform apply output for entitlements">
+
 
 You can also check that everything is in place via the SAP BTP cockpit. You should see the assigned entitlements in the subaccount.
 
