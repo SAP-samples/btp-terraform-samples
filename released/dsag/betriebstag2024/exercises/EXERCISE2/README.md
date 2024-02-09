@@ -18,6 +18,8 @@ We want to have the following input when creating a subaccount as base informati
 - *cost center* - The cost center of the project. We want to validate the input to be a valid number.
 - *organization name* - The organization where the subaccount should be created. We want to validate this against several fixed values.
 
+#### Input variable *region*
+
 Open the file `variables.tf` and add the following code to define the input variable for *region*:
 
 ```terraform
@@ -29,6 +31,8 @@ variable "region" {
 ```
 
 As you can see a variable has a name (`region`) so that we can address it from the Terraform configuration. It also has a type (`string`) and a description. The `default` value is optional and will be used if no value is provided when running Terraform.
+
+#### Input variable *project_name*
 
 Add the following code to define the *project name* the `variables.tf` file:
 
@@ -47,6 +51,8 @@ variable "project_name" {
 
 This variable contains an additional `validation` block. This block contains a `condition` that checks if the input matches the regular expression. If the condition is not met, the `error_message` will be displayed. We use the [`can` expression](https://developer.hashicorp.com/terraform/language/functions/can) to check if the input is valid when compared to a specific regular expression leveraging the [`regex` function](https://developer.hashicorp.com/terraform/language/functions/regex).
 
+#### Input variable *stage*
+
 Let us continue with the *stage* variable that should be validated against some fixed values. To do so add the following code to the `variables.tf` file:
 
 ```terraform
@@ -64,6 +70,8 @@ variable "stage" {
 
 You can see a different type of validation here. We use the [`contains` function](https://developer.hashicorp.com/terraform/language/functions/contains) to check if the input is part of the list of valid stages.
 
+#### Input variable *costcenter*
+
 Let us move on to the *cost center* variable. Add the following code to the `variables.tf` file:
 
 ```terraform
@@ -80,6 +88,8 @@ variable "costcenter" {
 ```
 
 Nothing new here that we have not seen before. We use the `can` expression to check if the input is valid when compared to a specific regular expression leveraging the `regex` function.
+
+#### Input variable *org_name*
 
 And last but not least we want to add and validate the *organization name* variable. Add the following code to the `variables.tf` file:
 
@@ -218,7 +228,7 @@ After the application you will find a new file called `terraform.tfstate` in you
 
 <img width="200px" src="assets/ex2_5.png" alt="terraform state in the file sytem">
 
-> [!NOTE]
+> [!IMPORTANT]
 > In real life you would not store this file locally but use a [remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/configuration) that is capable of storing the state in a secure and consistent way. For the purpose of this exercise we will use the local backend.
 
 You can also check that everything is in place via the SAP BTP cockpit. You should see a new subaccount that comprises our configuration:

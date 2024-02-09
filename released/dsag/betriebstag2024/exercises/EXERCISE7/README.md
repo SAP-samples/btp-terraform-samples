@@ -150,7 +150,7 @@ The result should look like this:
 
 <img width="600px" src="assets/ex7_3.png" alt="executing terraform apply with cloud foundry provider">
 
-You can also check that everything is in place via the SAP BTP cockpit. You should see the Cloud Foundry environment in the subaccount.
+You can also check that everything is in place via the SAP BTP cockpit. You should see the Cloud Foundry environment in the subaccount:
 
  <img width="600px" src="assets/ex7_4.png" alt="SAP BTP Cockpit with Cloud Foundry environment">
 

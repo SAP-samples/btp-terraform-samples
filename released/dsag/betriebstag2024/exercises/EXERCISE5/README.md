@@ -87,7 +87,7 @@ Now we can apply the changes to our subaccount. Run the following commands:
 
     <img width="600px" src="assets/ex5_1b.png" alt="terraform apply output for subscription">
 
-You can also check that everything is in place via the SAP BTP cockpit. You should see the app subscription in the subaccount.
+You can also check that everything is in place via the SAP BTP cockpit. You should see the app subscription in the subaccount:
 
 <img width="600px" src="assets/ex5_2.png" alt="subscription in SAP BTP">
 

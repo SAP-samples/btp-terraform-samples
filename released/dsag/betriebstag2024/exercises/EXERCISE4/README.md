@@ -117,7 +117,6 @@ Now we can apply the changes to our subaccount. Run the following commands:
 
     <img width="600px" src="assets/ex4_2.png" alt="terraform apply output for entitlements">
 
-
 You can also check that everything is in place via the SAP BTP cockpit. You should see the assigned entitlements in the subaccount.
 
 ## Summary
