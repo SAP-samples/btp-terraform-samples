@@ -12,9 +12,19 @@ You can delete the resources by running the following command:
 terraform destroy
 ```
 
+The output of the command will look similar to this:
+
+<img width="600px" src="assets/ex8_1.png" alt="executing terraform destroy">
+
+Take also a look at the summary. This will show how the number of resources to be deleted:
+
+<img width="600px" src="assets/ex8_2.png" alt="overview of deleted resources">
+
 Terraform will calculate the changes it will execute, namely the deletion of the resources. You will be prompted to confirm the deletion. Check the output of the plan. Type `yes` and hit `Enter` to confirm the deletion.
 
-This will now recursively delete all resources that were created by Terraform. This might take a bit of time.
+This will now recursively delete all resources that were created by Terraform. This might take a bit of time. At the end you should see a message like this:
+
+<img width="600px" src="assets/ex8_3.png" alt="result of terraform destroy">
 
 ## Step 2: Verify the deletion of the resources
 

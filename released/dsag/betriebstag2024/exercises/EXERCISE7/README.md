@@ -119,6 +119,10 @@ As we have a new provider and a new module in place, we need to re-initialize th
 terraform init
 ```
 
+The output should look like this:
+
+<img width="600px" src="assets/ex7_1.png" alt="executing terraform init with cloud foundry provider">
+
 > [!NOTE]
 > There is also a command parameter called `--upgrade` for the `terraform init` command. This parameter will *upgrade* the provider to the latest version. As we are adding new providers, we do not need to use this parameter.
 
@@ -130,6 +134,10 @@ You know the drill by now:
     terraform plan
     ```
 
+    The output should look like this:
+
+    <img width="600px" src="assets/ex7_2.png" alt="executing terraform plan with cloud foundry">
+
 2. Apply the Terraform configuration to create the subaccount:
 
     ```bash
@@ -138,7 +146,13 @@ You know the drill by now:
 
     You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue.
 
+The result should look like this:
+
+<img width="600px" src="assets/ex7_3.png" alt="executing terraform apply with cloud foundry provider">
+
 You can also check that everything is in place via the SAP BTP cockpit. You should see the Cloud Foundry environment in the subaccount.
+
+ <img width="600px" src="assets/ex7_4.png" alt="SAP BTP Cockpit with Cloud Foundry environment">
 
 ## Summary
 
