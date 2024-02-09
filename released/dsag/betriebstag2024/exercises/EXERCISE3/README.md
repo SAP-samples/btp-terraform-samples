@@ -56,15 +56,23 @@ Now we can apply the changes to our subaccount. Run the following commands:
     terraform plan
     ```
 
+    You should see the following output:
+
+    <img width="600px" src="assets/ex3_1.png" alt="terraform plan output for role collection assignment">
+
 2. Apply the Terraform configuration to create the subaccount:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue.
+    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue. You should see the following output:
 
-You can also check that everything is in place via the SAP BTP cockpit. You should see the assigned users in the role collection `Subaccount Administrator`.
+    <img width="600px" src="assets/ex3_2.png" alt="terraform apply output for role collection assignment">
+
+You can also check that everything is in place via the SAP BTP cockpit. You should see the assigned users in the role collection `Subaccount Administrator`:
+
+<img width="600px" src="assets/ex3_3.png" alt="role collection assignment in SAP BTP">
 
 ## Summary
 
