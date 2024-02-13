@@ -59,6 +59,49 @@ resource "btp_subaccount_service_binding" "ai_core_binding" {
 }
 
 # ------------------------------------------------------------------------------------------------------
+# Prepare & setup SAP AI Launchpad
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_entitlement" "ai_launchpad" {
+  subaccount_id = btp_subaccount.gen_ai.id
+  service_name  = "ai-launchpad"
+  plan_name     = "standard"
+}
+
+resource "btp_subaccount_subscription" "ai_launchpad" {
+  subaccount_id = btp_subaccount.gen_ai.id
+  app_name      = "ai-launchpad"
+  plan_name     = "standard"
+  depends_on    = [btp_subaccount_entitlement.ai_launchpad]
+}
+
+# Assign users to Role Collection: SAP HANA Cloud Administrator
+resource "btp_subaccount_role_collection_assignment" "ai_launchpad_admin" {
+  for_each             = toset("${var.admins}")
+  subaccount_id        = btp_subaccount.gen_ai.id
+  role_collection_name = "ailaunchpad_genai_administrator"
+  user_name            = each.value
+  depends_on           = [btp_subaccount_subscription.ai_launchpad]
+}
+
+# Assign users to Role Collection: SAP HANA Cloud Administrator
+resource "btp_subaccount_role_collection_assignment" "ailaunchpad_aicore_admin_editor" {
+  for_each             = toset("${var.admins}")
+  subaccount_id        = btp_subaccount.gen_ai.id
+  role_collection_name = "ailaunchpad_aicore_admin_editor"
+  user_name            = each.value
+  depends_on           = [btp_subaccount_subscription.ai_launchpad]
+}
+
+# Assign users to Role Collection: SAP HANA Cloud Administrator
+resource "btp_subaccount_role_collection_assignment" "ailaunchpad_allow_all_resourcegroups" {
+  for_each             = toset("${var.admins}")
+  subaccount_id        = btp_subaccount.gen_ai.id
+  role_collection_name = "ailaunchpad_allow_all_resourcegroups"
+  user_name            = each.value
+  depends_on           = [btp_subaccount_subscription.ai_launchpad]
+}
+
+# ------------------------------------------------------------------------------------------------------
 # Prepare & setup SAP HANA Cloud for usage of Vector Engine
 # ------------------------------------------------------------------------------------------------------
 # Entitle subaccount for usage of SAP HANA Cloud tools
