@@ -11,3 +11,4 @@ terraform.tfvars
 
 # Any packaged files
 *.zip
+my_*
