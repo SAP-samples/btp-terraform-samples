@@ -96,7 +96,7 @@ And last but not least we want to add and validate the *organization name* varia
 ```terraform
 variable "org_name" {
   type        = string
-  description = "Defines to which organisation the project account shall belong to."
+  description = "Defines to which organization the project account shall belong to."
   default     = "B2C"
 
   validation {
