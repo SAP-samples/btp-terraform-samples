@@ -1,4 +1,4 @@
-# DSAG Betriebtsag 2024 - HandsOn SAP Terraform Provider for SAP BTP
+# DSAG Betriebstag 2024 - HandsOn SAP Terraform Provider for SAP BTP
 
 ## Goal of this HandsOn 🎯
 
@@ -84,7 +84,7 @@ To use [Codespaces](https://docs.github.com/codespaces/overview) you must have a
 
 You can then access the Codespace following these steps:
 
-1. Open the [GitHub repository of the Terraform smaples](https://github.com/SAP-samples/btp-terraform-samples).
+1. Open the [GitHub repository of the Terraform samples](https://github.com/SAP-samples/btp-terraform-samples).
 
     ![Screenshot of GitHub repository Terraform samples](assets/repo-terraform-samples.png)
 
