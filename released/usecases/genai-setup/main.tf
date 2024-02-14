@@ -101,15 +101,6 @@ resource "btp_subaccount_role_collection_assignment" "ailaunchpad_allow_all_reso
   depends_on           = [btp_subaccount_subscription.ai_launchpad]
 }
 
-# Assign users to Role Collection: SAP HANA Cloud Administrator
-resource "btp_subaccount_role_collection_assignment" "connections_editor" {
-  for_each             = toset("${var.admins}")
-  subaccount_id        = btp_subaccount.gen_ai.id
-  role_collection_name = "connections_editor"
-  user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.ai_launchpad]
-}
-
 # ------------------------------------------------------------------------------------------------------
 # Prepare & setup SAP HANA Cloud for usage of Vector Engine
 # ------------------------------------------------------------------------------------------------------
