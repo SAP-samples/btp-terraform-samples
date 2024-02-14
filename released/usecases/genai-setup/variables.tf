@@ -22,7 +22,7 @@ variable "ai_core_plan_name" {
   validation {
     condition     = contains(["sap-internal", "extended"], var.ai_core_plan_name)
     error_message = "Valid values for ai_core_plan_name are: sap-internal, extended."
-  } 
+  }
 }
 
 variable "BTP_USERNAME" {
@@ -41,7 +41,7 @@ variable "hana_system_password" {
   description = "The password of the database 'superuser' DBADMIN."
   sensitive   = true
   validation {
-    condition = length(var.hana_system_password) > 7
+    condition     = length(var.hana_system_password) > 7
     error_message = "The hana_system_password must be at least 8 characters long."
   }
 
@@ -58,11 +58,11 @@ variable "custom_idp" {
   }
 }
 
-variable "target_ai_core_model"{
-  type        = list
+variable "target_ai_core_model" {
+  type        = list(any)
   description = "Defines the target AI core model to be used by the AI Core service"
   default     = ["gpt-35-turbo"]
-  
+
   validation {
     condition = length([
       for o in var.target_ai_core_model : true
@@ -80,7 +80,7 @@ variable "region" {
   validation {
     condition     = contains(["eu10", "eu11", "us10", "eu10-canary"], var.region)
     error_message = "Valid values for region are: eu10, eu11, us10, eu10-canary."
-  } 
+  }
 }
 
 variable "admins" {
@@ -111,3 +111,34 @@ variable "users_RegistryDeveloper" {
   description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
+
+variable "roles_ai_launchpad" {
+  type        = list(string)
+  description = "Defines the list of roles to be assigned to the users in the AI Launchpad."
+  default     = [
+    "ailaunchpad_aicore_admin_editor", 
+    "ailaunchpad_aicore_admin_editor_without_genai", 
+    "ailaunchpad_aicore_admin_viewer", 
+    "ailaunchpad_aicore_admin_viewer_without_genai", 
+    "ailaunchpad_allow_all_resourcegroups", 
+    "ailaunchpad_connections_editor", 
+    "ailaunchpad_connections_editor_without_genai", 
+    "ailaunchpad_functions_explorer_editor", 
+    "ailaunchpad_functions_explorer_editor_v2", 
+    "ailaunchpad_functions_explorer_editor_v2_without_genai", 
+    "ailaunchpad_functions_explorer_editor_without_genai", 
+    "ailaunchpad_functions_explorer_viewer", 
+    "ailaunchpad_functions_explorer_viewer_v2", 
+    "ailaunchpad_functions_explorer_viewer_v2_without_genai", 
+    "ailaunchpad_functions_explorer_viewer_without_genai", 
+    "ailaunchpad_genai_administrator", 
+    "ailaunchpad_genai_experimenter", 
+    "ailaunchpad_genai_manager", 
+    "ailaunchpad_mloperations_editor", 
+    "ailaunchpad_mloperations_editor_without_genai", 
+    "ailaunchpad_mloperations_viewer", 
+    "ailaunchpad_mloperations_viewer_without_genai"
+    ]
+
+}
+

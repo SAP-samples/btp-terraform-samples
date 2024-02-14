@@ -11,6 +11,20 @@ locals {
   # in a destroy and recreation of the subaccount and all its resources!
   random_uuid               = uuid()
   project_subaccount_domain = "btpllm${local.random_uuid}"
+
+  # ------------------------------------------------------------------------------------------------------
+  # Prepare the list of admins and roles for the AI Launchpad
+  # ------------------------------------------------------------------------------------------------------
+  role_mapping_admins_ai_launchpad = distinct(flatten([
+    for admin in var.admins : [
+      for role in var.roles_ai_launchpad : {
+        user_name = admin
+        role_name = role
+      }
+    ]
+    ]
+  ))
+
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -40,20 +54,20 @@ data "btp_subaccount_service_plan" "ai_core" {
   subaccount_id = btp_subaccount.gen_ai.id
   offering_name = "aicore"
   name          = var.ai_core_plan_name
-  depends_on    = [btp_subaccount_entitlement.ai_core]  
+  depends_on    = [btp_subaccount_entitlement.ai_core]
 }
 
 # Create service instance for SAP AI Core service
-resource "btp_subaccount_service_instance" "ai_core"{
-  subaccount_id = btp_subaccount.gen_ai.id
+resource "btp_subaccount_service_instance" "ai_core" {
+  subaccount_id  = btp_subaccount.gen_ai.id
   serviceplan_id = data.btp_subaccount_service_plan.ai_core.id
   name           = "my-ai-core-instance"
-  depends_on    = [btp_subaccount_entitlement.ai_core]
+  depends_on     = [btp_subaccount_entitlement.ai_core]
 }
 
 # Create service binding to SAP AI Core service (exposed for a specific user group)
 resource "btp_subaccount_service_binding" "ai_core_binding" {
-  subaccount_id = btp_subaccount.gen_ai.id
+  subaccount_id       = btp_subaccount.gen_ai.id
   service_instance_id = btp_subaccount_service_instance.ai_core.id
   name                = "ai-core-key"
 }
@@ -74,32 +88,15 @@ resource "btp_subaccount_subscription" "ai_launchpad" {
   depends_on    = [btp_subaccount_entitlement.ai_launchpad]
 }
 
-# Assign users to Role Collection: SAP HANA Cloud Administrator
-resource "btp_subaccount_role_collection_assignment" "ai_launchpad_admin" {
-  for_each             = toset("${var.admins}")
+# Assign users to Role Collection of SAP AI Launchpad
+resource "btp_subaccount_role_collection_assignment" "ai_launchpad_role_mapping" {
+  for_each             = { for entry in local.role_mapping_admins_ai_launchpad : "${entry.user_name}.${entry.role_name}" => entry }
   subaccount_id        = btp_subaccount.gen_ai.id
-  role_collection_name = "ailaunchpad_genai_administrator"
-  user_name            = each.value
+  role_collection_name = each.value.role_name
+  user_name            = each.value.user_name
   depends_on           = [btp_subaccount_subscription.ai_launchpad]
 }
 
-# Assign users to Role Collection: SAP HANA Cloud Administrator
-resource "btp_subaccount_role_collection_assignment" "ailaunchpad_aicore_admin_editor" {
-  for_each             = toset("${var.admins}")
-  subaccount_id        = btp_subaccount.gen_ai.id
-  role_collection_name = "ailaunchpad_aicore_admin_editor"
-  user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.ai_launchpad]
-}
-
-# Assign users to Role Collection: SAP HANA Cloud Administrator
-resource "btp_subaccount_role_collection_assignment" "ailaunchpad_allow_all_resourcegroups" {
-  for_each             = toset("${var.admins}")
-  subaccount_id        = btp_subaccount.gen_ai.id
-  role_collection_name = "ailaunchpad_allow_all_resourcegroups"
-  user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.ai_launchpad]
-}
 
 # ------------------------------------------------------------------------------------------------------
 # Prepare & setup SAP HANA Cloud for usage of Vector Engine
@@ -187,3 +184,20 @@ resource "btp_subaccount_role_collection_assignment" "ailaunchpad_allow_all_reso
 #   name                = "hana-cloud-key"
 # }
 
+# ------------------------------------------------------------------------------------------------------
+# Export the AI Core service binding keys to a local file for further usage
+# ------------------------------------------------------------------------------------------------------
+resource "local_file" "private_key" {
+  content  = <<-EOT
+  AICORE_LLM_AUTH_URL=${jsondecode(btp_subaccount_service_binding.ai_core_binding.credentials)["url"]}
+  AICORE_LLM_CLIENT_ID=${jsondecode(btp_subaccount_service_binding.ai_core_binding.credentials)["clientid"]}
+  AICORE_LLM_CLIENT_SECRET=${jsondecode(btp_subaccount_service_binding.ai_core_binding.credentials)["clientsecret"]}
+  AICORE_LLM_API_BASE=${jsondecode(btp_subaccount_service_binding.ai_core_binding.credentials)["serviceurls"]["AI_API_URL"]}
+  AICORE_LLM_RESOURCE_GROUP=default
+  HANA_DB_ADDRESS=${jsondecode(btp_subaccount_service_binding.hana_cloud.credentials)["host"]}
+  HANA_DB_PORT=${jsondecode(btp_subaccount_service_binding.hana_cloud.credentials)["port"]}
+  HANA_DB_USER=DBADMIN
+  HANA_DB_PASSWORD=${var.hana_system_password}
+  EOT
+  filename = "my_outputs.env"
+}
