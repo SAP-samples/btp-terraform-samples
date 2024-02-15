@@ -99,6 +99,7 @@ resource "btp_subaccount_role_collection_assignment" "ai_launchpad_role_mapping"
   depends_on           = [btp_subaccount_subscription.ai_launchpad]
 }
 
+# Commmented out the following code block as the vector engine of SAP HANA Cloud is not GA, yet.
 # ------------------------------------------------------------------------------------------------------
 # Prepare & setup SAP HANA Cloud for usage of Vector Engine
 # ------------------------------------------------------------------------------------------------------
