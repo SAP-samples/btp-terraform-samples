@@ -88,57 +88,33 @@ variable "admins" {
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
 }
 
-variable "users_BuildAppsAdmin" {
-  type        = list(string)
-  description = "Defines the colleagues who have the role of 'BuildAppsAdmin' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "users_BuildAppsDeveloper" {
-  type        = list(string)
-  description = "Defines the colleagues who have the role of 'BuildAppsDeveloper' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "users_RegistryAdmin" {
-  type        = list(string)
-  description = "Defines the colleagues who have the role of 'RegistryAdmin' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "users_RegistryDeveloper" {
-  type        = list(string)
-  description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
 variable "roles_ai_launchpad" {
   type        = list(string)
   description = "Defines the list of roles to be assigned to the users in the AI Launchpad."
-  default     = [
-    "ailaunchpad_aicore_admin_editor", 
-    "ailaunchpad_aicore_admin_editor_without_genai", 
-    "ailaunchpad_aicore_admin_viewer", 
-    "ailaunchpad_aicore_admin_viewer_without_genai", 
-    "ailaunchpad_allow_all_resourcegroups", 
-    "ailaunchpad_connections_editor", 
-    "ailaunchpad_connections_editor_without_genai", 
-    "ailaunchpad_functions_explorer_editor", 
-    "ailaunchpad_functions_explorer_editor_v2", 
-    "ailaunchpad_functions_explorer_editor_v2_without_genai", 
-    "ailaunchpad_functions_explorer_editor_without_genai", 
-    "ailaunchpad_functions_explorer_viewer", 
-    "ailaunchpad_functions_explorer_viewer_v2", 
-    "ailaunchpad_functions_explorer_viewer_v2_without_genai", 
-    "ailaunchpad_functions_explorer_viewer_without_genai", 
-    "ailaunchpad_genai_administrator", 
-    "ailaunchpad_genai_experimenter", 
-    "ailaunchpad_genai_manager", 
-    "ailaunchpad_mloperations_editor", 
-    "ailaunchpad_mloperations_editor_without_genai", 
-    "ailaunchpad_mloperations_viewer", 
+  default = [
+    "ailaunchpad_aicore_admin_editor",
+    "ailaunchpad_aicore_admin_editor_without_genai",
+    "ailaunchpad_aicore_admin_viewer",
+    "ailaunchpad_aicore_admin_viewer_without_genai",
+    "ailaunchpad_allow_all_resourcegroups",
+    "ailaunchpad_connections_editor",
+    "ailaunchpad_connections_editor_without_genai",
+    "ailaunchpad_functions_explorer_editor",
+    "ailaunchpad_functions_explorer_editor_v2",
+    "ailaunchpad_functions_explorer_editor_v2_without_genai",
+    "ailaunchpad_functions_explorer_editor_without_genai",
+    "ailaunchpad_functions_explorer_viewer",
+    "ailaunchpad_functions_explorer_viewer_v2",
+    "ailaunchpad_functions_explorer_viewer_v2_without_genai",
+    "ailaunchpad_functions_explorer_viewer_without_genai",
+    "ailaunchpad_genai_administrator",
+    "ailaunchpad_genai_experimenter",
+    "ailaunchpad_genai_manager",
+    "ailaunchpad_mloperations_editor",
+    "ailaunchpad_mloperations_editor_without_genai",
+    "ailaunchpad_mloperations_viewer",
     "ailaunchpad_mloperations_viewer_without_genai"
-    ]
+  ]
 
 }
 
