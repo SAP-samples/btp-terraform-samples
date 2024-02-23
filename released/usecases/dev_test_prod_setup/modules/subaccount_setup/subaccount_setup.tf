@@ -5,7 +5,7 @@ terraform {
   required_providers {
     btp = {
       source  = "SAP/btp"
-      version = "0.5.0-beta1"
+      version = "1.0.0"
     }
   }
 }
@@ -15,8 +15,9 @@ terraform {
 # ------------------------------------------------------------------------------------------------------
 locals {
   project_subaccount_name   = "${var.unit_shortname}_${var.stage}"
-  project_subaccount_domain = lower(replace("${local.project_subaccount_name}", "_", "-"))
-  project_subaccount_cf_org = replace(join("_", ["${var.unit}", "${local.project_subaccount_domain}"]), " ", "_")
+  # Remove all blanks and substitute all "_" with a "-"
+  project_subaccount_domain = replace(lower(replace("${local.project_subaccount_name}", "_", "-")), " ", "")
+  project_subaccount_cf_org = replace(join("", ["${var.unit}", "${local.project_subaccount_domain}"]), " ", "")
 }
 
 # ------------------------------------------------------------------------------------------------------

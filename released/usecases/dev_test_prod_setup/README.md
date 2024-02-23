@@ -19,11 +19,13 @@ The setup comprises the following resources:
 
 To deploy the resources you must:
 
-1. Create a file `secret.auto.tfvars` and maintain the credentials for the BTP and CF provider
+1. Export the variables for user name and password
 
-   ```hcl
-   username = "<Email address of your BTP user>"
-   password = "<Password of your BTP user>"
+   ```bash
+   export BTP_USERNAME='<Email address of your BTP user>'
+   export BTP_PASSWORD='<Password of your BTP user>'
+   export CF_USER='<Email address of your BTP user>'
+   export CF_PASSWORD='<Password of your BTP user>'
    ```
 
 2. Change the variables in the `samples.tfvars` file to meet your requirements

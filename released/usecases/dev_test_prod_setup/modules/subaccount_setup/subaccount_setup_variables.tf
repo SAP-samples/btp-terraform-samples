@@ -7,7 +7,7 @@ variable "unit" {
   default     = "Research"
 
   validation {
-    condition     = contains(concat(["Research", "Test", "Sales", "Purchase", "Production"]), var.unit)
+    condition     = contains(concat(["Research", "Test", "Sales", "Purchase", "Production", "Integration Test"]), var.unit)
     error_message = "Please select a valid org name for the project account."
   }
 }
