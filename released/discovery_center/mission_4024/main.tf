@@ -68,6 +68,7 @@ resource "btp_subaccount_entitlement" "build_workzone" {
   subaccount_id = data.btp_subaccount.project.id
   service_name  = "SAPLaunchpad"
   plan_name     = var.build_workzone_service_plan 
+  amount        = var.build_workzone_service_plan == "free" ? 1 : null
 }
  
 # Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
