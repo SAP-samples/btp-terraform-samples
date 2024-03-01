@@ -38,8 +38,8 @@ variable "sap_build_apps_service_plan" {
   description = "The plan for sap_build_apps subscription"
   default     = "free"
   validation {
-    condition     = contains(["free", "standard"], var.sap_build_apps_service_plan)
-    error_message = "Invalid value for sap_build_apps_service_plan. Only 'free' and 'standard' are allowed."
+    condition     = contains(["free", "standard", "partner"], var.sap_build_apps_service_plan)
+    error_message = "Invalid value for sap_build_apps_service_plan. Only 'free', 'standard' and 'partner' are allowed."
   }
 }
  
