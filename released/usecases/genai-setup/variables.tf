@@ -1,63 +1,78 @@
+# Description: This file contains the input variables for the GenAI setup use case.
+
+# ------------------------------------------------------------------------------------------------------
+# Input variables
+# ------------------------------------------------------------------------------------------------------
+
+# The globalaccount subdomain where the sub account shall be created.
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain where the sub account shall be created."
 }
 
+# The subaccount name.
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
   default     = "My SAP Build Apps subaccount."
 }
 
+# The BTP CLI server URL.
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
   default     = "https://cpcli.cf.sap.hana.ondemand.com"
 }
 
+# The name of the AI Core service plan.
 variable "ai_core_plan_name" {
   type        = string
   description = "The name of the AI Core service plan."
   default     = "extended"
+
+  # The AI Core service plan name can be only "extended".
   validation {
-    condition     = contains(["sap-internal", "extended"], var.ai_core_plan_name)
-    error_message = "Valid values for ai_core_plan_name are: sap-internal, extended."
+    condition     = contains(["extended"], var.ai_core_plan_name)
+    error_message = "Valid values for ai_core_plan_name are: extended."
   }
 }
 
-variable "BTP_USERNAME" {
-  type        = string
-  description = "Your BTP user name (email)."
-}
-
-variable "BTP_PASSWORD" {
-  type        = string
-  description = "Your BTP password."
-  sensitive   = true
-}
-
+# The password of the database 'superuser' DBADMIN.
 variable "hana_system_password" {
   type        = string
   description = "The password of the database 'superuser' DBADMIN."
   sensitive   = true
+
+  # validation to check if the password is at least 8 characters long
   validation {
     condition     = length(var.hana_system_password) > 7
     error_message = "The hana_system_password must be at least 8 characters long."
   }
 
-}
-
-variable "custom_idp" {
-  type        = string
-  description = "Defines the custom IDP to be used for the subaccount"
-  default     = "terraformint"
-
+  # validation to check if the password contains at least one upper case
   validation {
-    condition     = can(regex("^[a-z-]", var.custom_idp))
-    error_message = "Please enter a valid entry for the custom-idp of the subaccount."
+    condition     = can(regex("[A-Z]", var.hana_system_password))
+    error_message = "The hana_system_password must contain at least one upper case."
   }
+
+  # validation to check if the password contains at least two lower case characters
+  validation {
+    condition     = length([for c in var.hana_system_password : c if can(regex("[a-z]", c))]) > 1
+    error_message = "The hana_system_password must contain at least two lower case characters."
+  }
+
+  # validation to check if the password contains at least one numeric character
+  validation {
+    condition     = can(regex("[0-9]", var.hana_system_password))
+    error_message = "The hana_system_password must contain at least one numeric character."
+  }
+
+  # You can as well create another user/password combination for the database
+  # within the DB UI and use that one instead of the superuser DBADMIN.
+
 }
 
+# The target AI core model to be used by the AI Core service.
 variable "target_ai_core_model" {
   type        = list(any)
   description = "Defines the target AI core model to be used by the AI Core service"
@@ -72,22 +87,26 @@ variable "target_ai_core_model" {
   }
 }
 
+# The region where the sub account shall be created.
 variable "region" {
   type        = string
-  description = "The region where the sub account shall be created in."
+  description = "The region where the sub account shall be created."
   default     = "eu12"
 
+  # The region can be only "eu10", "eu11", "us10".
   validation {
-    condition     = contains(["eu10", "eu11", "us10", "eu10-canary"], var.region)
-    error_message = "Valid values for region are: eu10, eu11, us10, eu10-canary."
+    condition     = contains(["eu10", "eu11", "us10"], var.region)
+    error_message = "Valid values for region are: eu10, eu11, us10."
   }
 }
 
+# The colleagues who are added to each subaccount as emergency administrators.
 variable "admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
 }
 
+# The list of roles to be assigned to the users in the AI Launchpad.
 variable "roles_ai_launchpad" {
   type        = list(string)
   description = "Defines the list of roles to be assigned to the users in the AI Launchpad."

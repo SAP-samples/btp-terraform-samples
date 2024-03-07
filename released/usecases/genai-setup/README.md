@@ -17,27 +17,35 @@ The setup comprises the following resources:
 
 To deploy the resources you must:
 
-1. Change the variables in the `samples.tfvars` file to meet your requirements
+1. Change the variables in the `sample.tfvars` file to meet your requirements
 
-2. Initialize your workspace:
+
+2. Export the variables for user name and password
+
+   ```bash
+   export BTP_USERNAME='<Email address of your BTP user>'
+   export BTP_PASSWORD='<Password of your BTP user>'
+   ```
+
+3. Initialize your workspace:
 
    ```bash
    terraform init
    ```
 
-3. You can check what Terraform plans to apply based on your configuration:
+4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
    terraform plan -var-file="sample.tfvars"
    ```
 
-4. Apply your configuration to provision the resources:
+5. Apply your configuration to provision the resources:
 
    ```bash
    terraform apply -var-file="sample.tfvars"
    ```
 
-5. You'll notice, that a `.env` file has been created, containing some environment variables that you can use for your genAI experiments.
+6. You'll notice, that a `.env` file has been created, containing some environment variables that you can use for your genAI experiments.
 
 ## In the end
 

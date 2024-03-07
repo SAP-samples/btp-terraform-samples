@@ -7,10 +7,7 @@ locals {
   # That's whay we are using a random UUID to ensure uniqueness
   # But, you can also use a fixed domain name, if you are sure that it is unique
   # ------------------------------------------------------------------------------------------------------
-  # IMPORTANT: But this means as well, that running a terraform apply command twice, will result
-  # in a destroy and recreation of the subaccount and all its resources!
-  random_uuid = uuid()
-  #random_uuid              = "1234567890"
+  random_uuid              = "your-unique-identifier"
   project_subaccount_domain = "btpllm${local.random_uuid}"
 
   # ------------------------------------------------------------------------------------------------------
