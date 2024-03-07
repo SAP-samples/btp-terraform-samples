@@ -5,9 +5,12 @@ terraform.tfstate*
 secret.auto.tfvars
 terraform.tfvars
 
+
 # Any kind of invironment variables
 *.env
 .vscode/settings.json
 
 # Any packaged files
 *.zip
+my_*
+.env
