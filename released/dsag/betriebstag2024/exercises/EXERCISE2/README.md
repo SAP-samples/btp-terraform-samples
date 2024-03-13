@@ -51,6 +51,8 @@ variable "project_name" {
 
 This variable contains an additional `validation` block. This block contains a `condition` that checks if the input matches the regular expression. If the condition is not met, the `error_message` will be displayed. We use the [`can` expression](https://developer.hashicorp.com/terraform/language/functions/can) to check if the input is valid when compared to a specific regular expression leveraging the [`regex` function](https://developer.hashicorp.com/terraform/language/functions/regex).
 
+As we will later construct the subdomain based on the project name, change the default value `proj-1234` to something unique by using your name, birthday or something similar.
+
 #### Input variable *stage*
 
 Let us continue with the *stage* variable that should be validated against some fixed values. To do so add the following code to the `variables.tf` file:

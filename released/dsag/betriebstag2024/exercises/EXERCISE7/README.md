@@ -90,7 +90,7 @@ provider "cloudfoundry" {
 Save your changes.
 
 > [!WARNING]
-> We assume that the Cloud FOundry environment is deployed to the extension landscape 001. If this is not the case the authentication might fail. In a real-world scenario you would probably have a different boundary of content to the module.
+> We assume that the Cloud Foundry environment is deployed to the extension landscape 001. If this is not the case the authentication might fail. In a real-world scenario you would probably have a different boundary of content to the module.
 
 To fulfill all requirements for the authentication against the Cloud Foundry environment you must export the following environment variables:
 
