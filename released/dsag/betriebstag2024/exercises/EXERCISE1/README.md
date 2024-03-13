@@ -30,7 +30,6 @@ terraform {
       version = "1.1.0"
     }
   }
-
 }
 
 provider "btp" {
