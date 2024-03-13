@@ -66,27 +66,27 @@ resource "btp_subaccount_subscription" "identity_instance" {
 # Entitle subaccount for usage of app  destination SAP Build Workzone, standard edition
 resource "btp_subaccount_entitlement" "build_workzone" {
   subaccount_id = data.btp_subaccount.project.id
-  service_name  = "SAPLaunchpad"
-  plan_name     = var.build_workzone_service_plan
-  amount        = var.build_workzone_service_plan == "free" ? 1 : null
+  service_name  = local.service_name__build_workzone
+  plan_name     = var.service_plan__build_workzone
+  amount        = var.service_plan__build_workzone == "free" ? 1 : null
 }
  
 # Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
 resource "btp_subaccount_subscription" "build_workzone" {
   subaccount_id = data.btp_subaccount.project.id
-  app_name      = "SAPLaunchpad"
-  plan_name     = var.build_workzone_service_plan
+  app_name      = local.service_name__build_workzone
+  plan_name     = var.service_plan__build_workzone
   depends_on    = [btp_subaccount_entitlement.build_workzone]
 }
  
 ###############################################################################################
 # Prepare and setup app: SAP Build Apps
 ###############################################################################################
-# Entitle subaccount for usage of app  destination SAP Build Workzone, standard edition
+# Entitle subaccount for usage of SAP Build Apps
 resource "btp_subaccount_entitlement" "sap_build_apps" {
   subaccount_id = data.btp_subaccount.project.id
-  service_name  = "sap-build-apps"
-  plan_name     = var.sap_build_apps_service_plan
+  service_name  = local.service_name__sap_build_apps
+  plan_name     = var.service_plan__sap_build_apps
   amount = 1
   depends_on = [btp_subaccount_trust_configuration.fully_customized]
 }
@@ -95,7 +95,7 @@ resource "btp_subaccount_entitlement" "sap_build_apps" {
 resource "btp_subaccount_subscription" "sap-build-apps_standard" {
   subaccount_id = data.btp_subaccount.project.id
   app_name      = "sap-appgyver-ee"
-  plan_name     = var.sap_build_apps_service_plan
+  plan_name     = var.service_plan__sap_build_apps
   depends_on = [btp_subaccount_entitlement.sap_build_apps]
 }
  
