@@ -228,10 +228,13 @@ Now the moment has come to apply the Terraform configuration for the first time.
 
 After the application you will find a new file called `terraform.tfstate` in your directory. This file contains the [state](https://developer.hashicorp.com/terraform/language/state) of the Terraform configuration and is used to keep track of the resources that have been created:
 
-<img width="200px" src="assets/ex2_5.png" alt="terraform state in the file sytem">
+<img width="200px" src="assets/ex2_5.png" alt="terraform state in the file system">
 
 > [!IMPORTANT]
 > In real life you would not store this file locally but use a [remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/configuration) that is capable of storing the state in a secure and consistent way. For the purpose of this exercise we will use the local backend.
+
+> [!NOTE]
+> In case you are getting an error that the subdomain already exists, you need change the project name in the `variables.tf` file.
 
 You can also check that everything is in place via the SAP BTP cockpit. You should see a new subaccount that comprises our configuration:
 
