@@ -104,7 +104,7 @@ To fulfill all requirements for the authentication against the Cloud Foundry env
 - Linux/MacOS/GitHub Codespaces:
 
     ```bash
-    export CF_USERNAME=<your SAP BTP username>
+    export CF_USER=<your SAP BTP username>
     export CF_PASSWORD='<your SAP BTP password>'
     ```
 
