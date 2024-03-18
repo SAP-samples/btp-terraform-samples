@@ -6,7 +6,7 @@ The goal of this exercise is to configure the Terraform provider for SAP BTP. In
 
 ## Step 1: Create a new directory
 
-To make use of Terraform you must create several configuration files using the [Terraform configuration language](https://developer.hashicorp.com/terraform/language). Create a new directory named `my-tf-handson`.
+To make use of Terraform you must create several configuration files using the [Terraform configuration language](https://developer.hashicorp.com/terraform/language). Create a new directory named `my-tf-handson` under the folder `betriebstag2024`.
 
 Terraform expects a specific file layout for its configurations. Create the following empty files in the directory `my-tf-handson`:
 
