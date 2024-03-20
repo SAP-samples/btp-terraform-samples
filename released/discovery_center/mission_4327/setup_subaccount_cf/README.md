@@ -73,8 +73,6 @@ Linux, macOS:
 
     Confirm the resource destruction by typing "yes."
    
-   > If the terraform destroy fails with `Error: Could not find VCAP::CloudController::User with guid:`, Please remove the org member manually from BTP cockpit and retrigger `terraform destroy` command.
-
 11. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
 
 Please exercise caution when using this script, especially in production environments, and ensure you understand the resources that will be created or modified.
