@@ -1,4 +1,4 @@
-# Exercise 3 - Setup of a subaccount
+# Exercise 2 - Setup of a subaccount
 
 ## Goal of this Exercise 🎯
 
