@@ -1,6 +1,7 @@
 # Terraform specific local files
 .terraform
 .terraform.lock.hcl
+.terraform.tfstate.lock.info
 terraform.tfstate*
 *.log
 secret.auto.tfvars

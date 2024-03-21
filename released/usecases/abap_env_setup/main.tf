@@ -29,14 +29,14 @@ resource "btp_subaccount_entitlement" "abap__standard" {
 resource "btp_subaccount_entitlement" "abap__abap_compute_unit" {
   subaccount_id = btp_subaccount.abap-subaccount.id
   service_name  = "abap"
-  plan_name     = "abap-compute-unit"
+  plan_name     = "abap_compute_unit"
   amount        = 1
 }
 
 resource "btp_subaccount_entitlement" "abap__hana_compute_unit" {
   subaccount_id = btp_subaccount.abap-subaccount.id
   service_name  = "abap"
-  plan_name     = "hana-compute-unit"
+  plan_name     = "hana_compute_unit"
   amount        = 2
 }
 
@@ -63,6 +63,7 @@ resource "btp_subaccount_subscription" "abap_web_access" {
   subaccount_id = btp_subaccount.abap-subaccount.id
   app_name      = "abapcp-web-router"
   plan_name     = "default"
+  depends_on    = [btp_subaccount_entitlement.abapcp-web-router__default]
 }
 
 
@@ -107,7 +108,8 @@ resource "time_sleep" "wait_a_few_seconds" {
 # Creation of service instance for ABAP
 ###
 data "cloudfoundry_service" "abap_service_plans" {
-  name = "abap"
+  name       = "abap"
+  depends_on = [time_sleep.wait_a_few_seconds, btp_subaccount_entitlement.abap__abap_compute_unit, btp_subaccount_entitlement.abap__hana_compute_unit]
 }
 
 resource "cloudfoundry_service_instance" "abap_si" {
