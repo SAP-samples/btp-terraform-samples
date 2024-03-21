@@ -29,14 +29,14 @@ resource "btp_subaccount_entitlement" "abap__standard" {
 resource "btp_subaccount_entitlement" "abap__abap_compute_unit" {
   subaccount_id = btp_subaccount.abap-subaccount.id
   service_name  = "abap"
-  plan_name     = "abap_compute_unit"
+  plan_name     = var.abap_compute_unit_quota
   amount        = 1
 }
 
 resource "btp_subaccount_entitlement" "abap__hana_compute_unit" {
   subaccount_id = btp_subaccount.abap-subaccount.id
   service_name  = "abap"
-  plan_name     = "hana_compute_unit"
+  plan_name     = var.hana_compute_unit_quota
   amount        = 2
 }
 
@@ -114,14 +114,14 @@ data "cloudfoundry_service" "abap_service_plans" {
 
 resource "cloudfoundry_service_instance" "abap_si" {
   name         = local.abap_service_instance_name
-  space        = cloudfoundry_space.dev.id
+  space        = module.cloudfoundry_space.id
   service_plan = data.cloudfoundry_service.abap_service_plans.service_plans["default"]
   json_params = jsonencode({
-    admin_email              = "${var.admin_email}"
+    admin_email              = "${var.abap_admin_email}"
     is_development_allowed   = "true"
     sapsystemname            = "${var.abap_sid}"
-    size_of_runtime          = "1"
-    size_of_persistence      = "2"
+    size_of_runtime          = "${var.abap_compute_unit_quota}"
+    size_of_persistence      = "${var.hana_compute_unit_quota}"
     size_of_persistence_disk = "auto"
     login_attribute          = "email"
   })

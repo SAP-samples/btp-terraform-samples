@@ -26,6 +26,18 @@ variable "abap_admin_email" {
   description = "Email of the ABAP Administrtor."
 }
 
+variable "abap_compute_unit_quota" {
+  type        = number
+  description = "The amount of ABAP compute units to be assigned to the subaccount."
+  default     = 1
+}
+
+variable "hana_compute_unit_quota" {
+  type        = number
+  description = "The amount of ABAP compute units to be assigned to the subaccount."
+  default     = 2
+}
+
 variable "custom_idp" {
   type        = string
   description = "Name of custom IDP to be used for the subaccount"
