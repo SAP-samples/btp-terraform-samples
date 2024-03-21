@@ -140,8 +140,8 @@ resource "cloudfoundry_service_key" "abap_adtkey" {
 ###
 # Creation of service key for COMM Arrangement
 ###
-resource "cloudfoundry_service_key" "abap_adtkey" {
-  name             = "${var.abap_sid}_adtkey"
+resource "cloudfoundry_service_key" "abap_ipskey" {
+  name             = "${var.abap_sid}_ipskey"
   service_instance = cloudfoundry_service_instance.abap_si.id
   params_json = jsonencode({
     scenario_id = "SAP_COM_0193"
