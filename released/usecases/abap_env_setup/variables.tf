@@ -18,12 +18,11 @@ variable "region" {
 variable "abap_sid" {
   type        = string
   description = "The system ID (SID) of the ABAP system."
-  default     = "NPL"
 }
 
 variable "abap_admin_email" {
   type        = string
-  description = "Email of the ABAP Administrtor."
+  description = "Email of the ABAP Administrator."
 }
 
 variable "abap_compute_unit_quota" {
