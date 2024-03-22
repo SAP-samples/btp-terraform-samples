@@ -2,9 +2,9 @@
 # Setup of names based on variables
 ###
 locals {
-  project_subaccount_name    = "${var.subaccount_name}-${var.abap_sid}"
-  project_subaccount_domain  = lower("abap-env-${var.abap_sid}")
-  project_subaccount_cf_org  = "CF-ABAP-${var.abap_sid}"
+  project_subaccount_name    = "${var.project_name}-${var.abap_sid}"
+  project_subaccount_domain  = lower("${var.project_name}-${var.abap_sid}")
+  project_subaccount_cf_org  = "CF-${var.project_name}-${var.abap_sid}"
   abap_service_instance_name = "abap-${var.abap_sid}"
 }
 
@@ -21,10 +21,10 @@ resource "btp_subaccount" "abap-subaccount" {
 ###
 # Assignment of basic entitlements for an ABAP setup
 ###
-resource "btp_subaccount_entitlement" "abap__standard" {
+resource "btp_subaccount_entitlement" "abap__service_instance_plan" {
   subaccount_id = btp_subaccount.abap-subaccount.id
   service_name  = "abap"
-  plan_name     = "standard"
+  plan_name     = var.abap_si_plan
 }
 
 resource "btp_subaccount_entitlement" "abap__abap_compute_unit" {
@@ -110,13 +110,13 @@ resource "time_sleep" "wait_a_few_seconds" {
 ###
 data "cloudfoundry_service" "abap_service_plans" {
   name       = "abap"
-  depends_on = [time_sleep.wait_a_few_seconds, btp_subaccount_entitlement.abap__abap_compute_unit, btp_subaccount_entitlement.abap__hana_compute_unit]
+  depends_on = [time_sleep.wait_a_few_seconds, btp_subaccount_entitlement.abap__service_instance_plan, btp_subaccount_entitlement.abap__abap_compute_unit, btp_subaccount_entitlement.abap__hana_compute_unit]
 }
 
 resource "cloudfoundry_service_instance" "abap_si" {
   name         = local.abap_service_instance_name
   space        = module.cloudfoundry_space.id
-  service_plan = data.cloudfoundry_service.abap_service_plans.service_plans["standard"]
+  service_plan = data.cloudfoundry_service.abap_service_plans.service_plans[var.abap_si_plan].id
   json_params = jsonencode({
     admin_email              = "${var.abap_admin_email}"
     is_development_allowed   = true

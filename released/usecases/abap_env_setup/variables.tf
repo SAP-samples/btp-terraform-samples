@@ -3,10 +3,9 @@ variable "globalaccount" {
   description = "The global account subdomain."
 }
 
-variable "subaccount_name" {
+variable "project_name" {
   type        = string
-  description = "The subaccount name."
-  default     = "ABAP-TF"
+  description = "The prefix for the subaccount name and subdomain."
 }
 
 variable "region" {
@@ -23,6 +22,12 @@ variable "abap_sid" {
 variable "abap_admin_email" {
   type        = string
   description = "Email of the ABAP Administrator."
+}
+
+variable "abap_si_plan" {
+  type        = string
+  description = "Plan for the service instance of ABAP."
+  default     = "standard"
 }
 
 variable "abap_compute_unit_quota" {
@@ -49,13 +54,13 @@ variable "cf_space_name" {
 }
 
 variable "cf_space_developers" {
-  type       = list(string)
+  type        = list(string)
   description = "List of developers for the Cloud Foundry space."
-  default     = []  
+  default     = []
 }
 
 variable "cf_space_managers" {
-  type       = list(string)
+  type        = list(string)
   description = "List of managers for the Cloud Foundry space."
-  default     = []  
+  default     = []
 }
