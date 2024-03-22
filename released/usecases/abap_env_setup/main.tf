@@ -116,7 +116,7 @@ data "cloudfoundry_service" "abap_service_plans" {
 resource "cloudfoundry_service_instance" "abap_si" {
   name         = local.abap_service_instance_name
   space        = module.cloudfoundry_space.id
-  service_plan = data.cloudfoundry_service.abap_service_plans.service_plans[var.abap_si_plan].id
+  service_plan = data.cloudfoundry_service.abap_service_plans.service_plans[var.abap_si_plan]
   json_params = jsonencode({
     admin_email              = "${var.abap_admin_email}"
     is_development_allowed   = true
