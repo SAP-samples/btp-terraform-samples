@@ -51,10 +51,10 @@ resource "btp_subaccount_entitlement" "abapcp-web-router__default" {
 ###
 # Setup Trust Configuration
 ###
-resource "btp_subaccount_trust_configuration" "subaccount_trust_abap" {
-  subaccount_id     = btp_subaccount.abap-subaccount.id
-  identity_provider = var.custom_idp
-}
+#resource "btp_subaccount_trust_configuration" "subaccount_trust_abap" {
+#  subaccount_id     = btp_subaccount.abap-subaccount.id
+#  identity_provider = var.custom_idp
+#}
 
 
 ###
@@ -90,8 +90,8 @@ module "cloudfoundry_space" {
   source              = "../../modules/environment/cloudfoundry/space_cf"
   cf_org_id           = module.cloudfoundry_environment.cf_org_id
   name                = var.cf_space_name
-  cf_space_managers   = []
-  cf_space_developers = []
+  cf_space_managers   = var.cf_space_managers
+  cf_space_developers = var.cf_space_developers
   cf_space_auditors   = []
 }
 
