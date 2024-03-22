@@ -37,13 +37,25 @@ variable "hana_compute_unit_quota" {
   default     = 2
 }
 
-variable "custom_idp" {
-  type        = string
-  description = "Name of custom IDP to be used for the subaccount"
-}
+#variable "custom_idp" {
+#  type        = string
+#  description = "Name of custom IDP to be used for the subaccount"
+#}
 
 variable "cf_space_name" {
   type        = string
   description = "The name of the Cloud Foundry space."
   default     = "dev"
+}
+
+variable "cf_space_developers" {
+  type       = list(string)
+  description = "List of developers for the Cloud Foundry space."
+  default     = []  
+}
+
+variable "cf_space_managers" {
+  type       = list(string)
+  description = "List of managers for the Cloud Foundry space."
+  default     = []  
 }
