@@ -6,7 +6,7 @@ variable "globalaccount" {
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "ABAP-ENV-USECASE-DEV"
+  default     = "ABAP-TF"
 }
 
 variable "region" {
