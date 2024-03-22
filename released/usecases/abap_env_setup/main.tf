@@ -2,7 +2,8 @@
 # Setup of names based on variables
 ###
 locals {
-  project_subaccount_domain  = lower("abap-env-${var.subaccount_name}")
+  project_subaccount_name    = "${var.subaccount_name}-${var.abap_sid}"
+  project_subaccount_domain  = lower("abap-env-${var.abap_sid}")
   project_subaccount_cf_org  = "CF-ABAP-${var.abap_sid}"
   abap_service_instance_name = "abap-${var.abap_sid}"
 }
@@ -11,7 +12,7 @@ locals {
 # Creation of subaccount
 ###
 resource "btp_subaccount" "abap-subaccount" {
-  name      = var.subaccount_name
+  name      = local.project_subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
 }
@@ -29,15 +30,15 @@ resource "btp_subaccount_entitlement" "abap__standard" {
 resource "btp_subaccount_entitlement" "abap__abap_compute_unit" {
   subaccount_id = btp_subaccount.abap-subaccount.id
   service_name  = "abap"
-  plan_name     = var.abap_compute_unit_quota
-  amount        = 1
+  plan_name     = "abap_compute_unit"
+  amount        = var.abap_compute_unit_quota
 }
 
 resource "btp_subaccount_entitlement" "abap__hana_compute_unit" {
   subaccount_id = btp_subaccount.abap-subaccount.id
   service_name  = "abap"
-  plan_name     = var.hana_compute_unit_quota
-  amount        = 2
+  plan_name     = "hana_compute_unit"
+  amount        = var.hana_compute_unit_quota
 }
 
 resource "btp_subaccount_entitlement" "abapcp-web-router__default" {
