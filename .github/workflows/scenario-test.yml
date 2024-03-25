@@ -31,8 +31,6 @@ jobs:
       - name: Check out Git repository
         id: checkout_repo
         uses: actions/checkout@v4
-        with:
-          path: terraform-samples
       - name: Setup Terraform
         id : setup_terraform
         uses: hashicorp/setup-terraform@v3
