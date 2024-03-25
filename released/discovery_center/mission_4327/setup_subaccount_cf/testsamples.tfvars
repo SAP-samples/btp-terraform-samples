@@ -2,7 +2,7 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "sa0176014160"
+globalaccount        = "terraformintprod"
 region               = "eu10"
 subaccount_name      = "testgh"
 #------------------------------------------------------------------------------------------------------
