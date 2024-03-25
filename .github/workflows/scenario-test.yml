@@ -31,6 +31,8 @@ jobs:
       - name: Check out Git repository
         id: checkout_repo
         uses: actions/checkout@v4
+        with:
+          path: terraform-samples
       - name: Setup Terraform
         id : setup_terraform
         uses: hashicorp/setup-terraform@v3
@@ -42,35 +44,35 @@ jobs:
         shell: bash
         run: |
           terraform -chdir=${{ matrix.usecase.folder }} init -no-color
-      # - name: Terraform apply
-      #   id: terraform_apply
-      #   shell: bash
-      #   run: |
-      #     export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
-      #     export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
-      #     export CF_USER=${{ secrets.BTP_USERNAME }}
-      #     export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
-      #     if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
-      #     then 
-      #      else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
-      #     else 
-      #       terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}"  -auto-approve -no-color 
-      #     fi
+      - name: Terraform apply
+        id: terraform_apply
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
+          then 
+           else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}"  -auto-approve -no-color 
+          fi
 
-      # - name: Terraform destroy
-      #   id: terraform_destroy
-      #   shell: bash
-      #   run: |
-      #     export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
-      #     export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
-      #     export CF_USER=${{ secrets.BTP_USERNAME }}
-      #     export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
-      #     if [ ${{ matrix.usecase.use_custom_idp }} = true ]
-      #     then 
-      #       terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
-      #     else 
-      #       terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
-      #     fi
+      - name: Terraform destroy
+        id: terraform_destroy
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
+          then 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
+          fi
       - name: Check out provider repository
         id: checkout_provider_repo
         uses: actions/checkout@v4
