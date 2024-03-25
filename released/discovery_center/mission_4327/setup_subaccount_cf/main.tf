@@ -2,7 +2,7 @@
 # Setup of names in accordance to naming convention
 ###############################################################################################
 locals {
-  current_timestamp         = regex_replace(timestamp(), "[-:T]", "")
+  current_timestamp         = formatdate("YYYYMMDDHHmmss", timestamp())
   unique_subaccount_name    = "${var.subaccount_name}-${local.current_timestamp}"
   project_subaccount_domain = "btp-dev-${local.current_timestamp}"
   project_subaccount_cf_org = substr("cf-${local.current_timestamp}", 0, 32)
