@@ -6,6 +6,7 @@ locals {
   unique_subaccount_name    = "${var.subaccount_name}-${local.current_timestamp}"
   project_subaccount_domain = "btp-dev-${local.current_timestamp}"
   project_subaccount_cf_org = substr("cf-${local.current_timestamp}", 0, 32)
+  unique_cf_org_name        = "cf-org-${local.unique_subaccount_name}"
 }
 ###############################################################################################
 # Creation of subaccount
@@ -39,7 +40,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   # the instance shall be created using the parameter landscape label. 
   # available environments can be looked up using the btp_subaccount_environments datasource
   parameters = jsonencode({
-    instance_name = "my-cf-org-name"
+    instance_name = local.unique_cf_org_name
   })
   timeouts = {
     create = "1h"
