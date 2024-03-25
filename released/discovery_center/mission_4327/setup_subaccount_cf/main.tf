@@ -2,15 +2,16 @@
 # Setup of names in accordance to naming convention
 ###############################################################################################
 locals {
-  random_uuid               = uuid()
-  project_subaccount_domain = "btp-developers-guide${local.random_uuid}"
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
+  current_timestamp         = regex_replace(timestamp(), "[-:T]", "")
+  unique_subaccount_name    = "${var.subaccount_name}-${local.current_timestamp}"
+  project_subaccount_domain = "btp-dev-${local.current_timestamp}"
+  project_subaccount_cf_org = substr("cf-${local.current_timestamp}", 0, 32)
 }
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
-  name      = var.subaccount_name
+  name      = local.unique_subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
 }
