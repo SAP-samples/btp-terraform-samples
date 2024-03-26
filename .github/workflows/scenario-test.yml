@@ -92,8 +92,6 @@ jobs:
         id: set_to_override
         shell: bash
         run: |
-          ls
-          pwd
           rm -rf .terraform && rm -rf .terraform.lock.hcl && cp ${{ env.DEV_OVERRIDE }} ~/.terraformrc
 
       - name: Check out Github repository
