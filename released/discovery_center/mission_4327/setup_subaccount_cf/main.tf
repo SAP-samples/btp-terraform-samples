@@ -2,17 +2,15 @@
 # Setup of names in accordance to naming convention
 ###############################################################################################
 locals {
-  current_timestamp         = formatdate("YYYYMMDDHHmmss", timestamp())
-  unique_subaccount_name    = "${var.subaccount_name}-${local.current_timestamp}"
-  project_subaccount_domain = "btp-dev-${local.current_timestamp}"
-  project_subaccount_cf_org = substr("cf-${local.current_timestamp}", 0, 32)
-  unique_cf_org_name        = "cf-org-${local.unique_subaccount_name}"
+  random_uuid               = uuid()
+  project_subaccount_domain = "btp-developers-guide${local.random_uuid}"
+  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
-  name      = local.unique_subaccount_name
+  name      = var.subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
 }
@@ -40,7 +38,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   # the instance shall be created using the parameter landscape label. 
   # available environments can be looked up using the btp_subaccount_environments datasource
   parameters = jsonencode({
-    instance_name = local.unique_cf_org_name
+    instance_name = "my-cf-org-name"
   })
   timeouts = {
     create = "1h"
