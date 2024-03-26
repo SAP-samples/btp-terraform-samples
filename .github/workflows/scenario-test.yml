@@ -51,7 +51,7 @@ jobs:
           export CF_USER=${{ secrets.BTP_USERNAME }}
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           timestamp=$(date +"%Y%m%d%H%M%S")
-          cat testsamples.tfvars | hclq set 'subaccount_name' "dcmtest_${timestamp}" > testsamples.tfvars
+          sed -i "s/\(subaccount_name *= *\)\("[^"]*"\)/\1\"dcmtest_${timestamp}\"/" "$testsamples.tfvars"
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
            else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
