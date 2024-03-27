@@ -1,6 +1,8 @@
 name: Scenario Tests - DC missions
 
 on:
+  schedule:
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 env:
@@ -48,6 +50,8 @@ jobs:
           export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
           export CF_USER=${{ secrets.BTP_USERNAME }}
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          timestamp=$(date +"%Y%m%d%H%M%S")
+          sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
            else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
@@ -110,6 +114,8 @@ jobs:
           export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
           export CF_USER=${{ secrets.BTP_USERNAME }}
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          timestamp=$(date +"%Y%m%d%H%M%S")
+          sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
            else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
@@ -131,3 +137,23 @@ jobs:
           else 
             terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
           fi
+          
+  create_issue_on_failure:
+    runs-on: ubuntu-latest
+    needs: setup_infrastructure
+    if: ${{ always() && (needs.setup_infrastructure.result == 'failure') }}
+    steps:
+      - name: Create issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Automated issue creation: Scenario-tests failure',
+              body: 'DC mission scenario-tests workflow is failed, Please find the details below'
+              \n**Workflow Name:** ${process.env.GITHUB_WORKFLOW}
+              \n**Run Number:** ${process.env.GITHUB_RUN_NUMBER}
+              \n**Trigger:** ${process.env.GITHUB_EVENT_NAME}
+            });
