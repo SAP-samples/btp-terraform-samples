@@ -11,7 +11,7 @@ variable "project_name" {
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "us10"
+  default     = "eu10"
 }
 
 variable "abap_sid" {
@@ -57,7 +57,6 @@ variable "cf_landscape_label" {
   type        = string
   description = "The label for the Cloud Foundry landscape (format cf-eu10)."
   default     = "cf-eu10-004"
-
 }
 
 variable "cf_space_name" {
