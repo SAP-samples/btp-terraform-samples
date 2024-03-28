@@ -47,6 +47,13 @@ variable "hana_compute_unit_quota" {
 #  description = "Name of custom IDP to be used for the subaccount"
 #}
 
+variable "cf_landscape_label" {
+  type        = string
+  description = "The label for the Cloud Foundry landscape (format cf-eu10)."
+  default     = "cf-eu10-004"
+
+}
+
 variable "cf_space_name" {
   type        = string
   description = "The name of the Cloud Foundry space."
@@ -64,3 +71,4 @@ variable "cf_space_managers" {
   description = "List of managers for the Cloud Foundry space."
   default     = []
 }
+

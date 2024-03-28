@@ -76,6 +76,7 @@ module "cloudfoundry_environment" {
 
   subaccount_id           = btp_subaccount.abap-subaccount.id
   instance_name           = local.project_subaccount_cf_org
+  environment_label       = var.cf_landscape_label
   cf_org_name             = local.project_subaccount_cf_org
   cf_org_managers         = []
   cf_org_billing_managers = []
