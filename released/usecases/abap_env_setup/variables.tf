@@ -42,6 +42,12 @@ variable "hana_compute_unit_quota" {
   default     = 2
 }
 
+variable "abap_is_development_allowed" {
+  type        = bool
+  description = "Flag to define if development on the ABAP system is allowed."
+  default     = true
+}
+
 #variable "custom_idp" {
 #  type        = string
 #  description = "Name of custom IDP to be used for the subaccount"
