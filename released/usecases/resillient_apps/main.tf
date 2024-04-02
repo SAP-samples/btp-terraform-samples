@@ -131,7 +131,7 @@ module "create_cf_service_instance_ems" {
     {
       "emname" : "tfe",
       "namespace" : "tfe/bpem/em",
-      "version" : "1.1.0",
+      "version" : "1.2.0",
       "resources" : {
         "units" : "10"
       },
