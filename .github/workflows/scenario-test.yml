@@ -5,6 +5,10 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  issues: write
+
 env:
   # Credentials used by the Terraform script
   BTP_USERNAME: ${{ secrets.BTP_USERNAME }}
