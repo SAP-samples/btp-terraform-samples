@@ -24,6 +24,13 @@ variable "cli_server_url" {
   default     = "https://cpcli.cf.sap.hana.ondemand.com"
 }
 
+# Switch to enable the setup of the AI Launchpad.
+variable "switch_setup_ai_launchpad" {
+  type        = bool
+  description = "Switch to enable the setup of the AI Launchpad."
+  default     = true
+}
+
 # The name of the AI Core service plan.
 variable "ai_core_plan_name" {
   type        = string
@@ -38,38 +45,35 @@ variable "ai_core_plan_name" {
 }
 
 # The password of the database 'superuser' DBADMIN.
+
 variable "hana_system_password" {
   type        = string
   description = "The password of the database 'superuser' DBADMIN."
   sensitive   = true
 
-  # validation to check if the password is at least 8 characters long
+  # add validation to check if the password is at least 8 characters long
   validation {
     condition     = length(var.hana_system_password) > 7
     error_message = "The hana_system_password must be at least 8 characters long."
   }
 
-  # validation to check if the password contains at least one upper case
+  # add validation to check if the password contains at least one upper case
   validation {
     condition     = can(regex("[A-Z]", var.hana_system_password))
     error_message = "The hana_system_password must contain at least one upper case."
   }
 
-  # validation to check if the password contains at least two lower case characters
+  # add validation to check if the password contains at least two lower case characters
   validation {
-    condition     = length([for c in var.hana_system_password : c if can(regex("[a-z]", c))]) > 1
+    condition     = can(regex("[a-z]{2}", var.hana_system_password))
     error_message = "The hana_system_password must contain at least two lower case characters."
   }
 
-  # validation to check if the password contains at least one numeric character
+  # add validation to check if the password contains at least one numeric character
   validation {
     condition     = can(regex("[0-9]", var.hana_system_password))
     error_message = "The hana_system_password must contain at least one numeric character."
   }
-
-  # You can as well create another user/password combination for the database
-  # within the DB UI and use that one instead of the superuser DBADMIN.
-
 }
 
 # The target AI core model to be used by the AI Core service.
@@ -134,6 +138,4 @@ variable "roles_ai_launchpad" {
     "ailaunchpad_mloperations_viewer",
     "ailaunchpad_mloperations_viewer_without_genai"
   ]
-
 }
-

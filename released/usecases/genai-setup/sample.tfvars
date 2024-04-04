@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------------------------------------------
 # Your BTP user credentials (you can also provide them as environment variables)
 # ------------------------------------------------------------------------------------------------------
-BTP_USERNAME="your.email@test.com"
+#BTP_USERNAME="your.email@test.com"
 # ------------------------------------------------------------------------------------------------------
 # Comment out the next line if you want to provide the password here instead of typing it in the console (not recommended for security reasons)
-BTP_PASSWORD="xxxxx"
+#BTP_PASSWORD="xxxxx"
 
 # ------------------------------------------------------------------------------------------------------
 # Provider configuration
@@ -20,6 +20,9 @@ region        = "us10"
 
 # Name of your sub account
 subaccount_name = "GenAI on BTP"
+
+# If set to true, the script will create an app subscription for the AI Launchpad
+switch_setup_ai_launchpad = false
 
 # The service plan to be used for the AI Core service
 ai_core_plan_name = "extended"
