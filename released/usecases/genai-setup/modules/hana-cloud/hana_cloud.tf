@@ -18,7 +18,7 @@ resource "btp_subaccount_entitlement" "hana_cloud_tools" {
   service_name  = "hana-cloud-tools"
   plan_name     = "tools"
 }
-  
+
 resource "btp_subaccount_subscription" "hana_cloud_tools" {
   subaccount_id = var.subaccount_id
   app_name      = "hana-cloud-tools"
@@ -52,18 +52,30 @@ data "btp_subaccount_service_plan" "hana_cloud" {
   depends_on    = [btp_subaccount_entitlement.hana_cloud]
 }
 
-# Create service instance for SAP HANA Cloud
 resource "btp_subaccount_service_instance" "hana_cloud" {
   subaccount_id  = var.subaccount_id
   serviceplan_id = data.btp_subaccount_service_plan.hana_cloud.id
   name           = "my-hana-cloud-instance"
   depends_on     = [btp_subaccount_entitlement.hana_cloud]
   parameters = jsonencode(
-    { "data" : {
-      "memory" : 30,
-      "edition" : "cloud",
-      "systempassword" : "${var.hana_system_password}",
-      "whitelistIPs" : ["0.0.0.0/0"]
+    { 
+      "data" : {
+        "memory" : 32,
+        "edition" : "cloud",
+        "systempassword" : "${var.hana_system_password}",
+        "additionalWorkers" : 0,
+        "disasterRecoveryMode" : "no_disaster_recovery",
+        "enabledservices" : {
+          "docstore" : false,
+          "dpserver" : true,
+          "scriptserver" : false
+        },
+        "requestedOperation" : {},
+        "serviceStopped" : false,
+        "slaLevel" : "standard",
+        "storage" : 120,
+        "vcpu" : 2,
+        "whitelistIPs" : ["0.0.0.0/0"]
       }
   })
 
@@ -74,10 +86,9 @@ resource "btp_subaccount_service_instance" "hana_cloud" {
   }
 }
 
-# Create service binding to SAP HANA Cloud service (exposed for a specific user group)
+# Create service binding to SAP HANA Cloud service 
 resource "btp_subaccount_service_binding" "hana_cloud" {
   subaccount_id       = var.subaccount_id
   service_instance_id = btp_subaccount_service_instance.hana_cloud.id
   name                = "hana-cloud-key"
 }
-

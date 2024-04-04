@@ -2,7 +2,7 @@
 # Setup subaccount domain (to ensure uniqueness in BTP global account)
 # ------------------------------------------------------------------------------------------------------
 resource "random_id" "subaccount_domain_suffix" {
-  byte_length = 8
+  byte_length = 12
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -25,26 +25,18 @@ module "ai_setup" {
   ai_core_plan_name         = var.ai_core_plan_name
   target_ai_core_model      = var.target_ai_core_model
   admins                    = var.admins
+
 }
 
-# ------------------------------------------------------------------------------------------------------
-# Setup HANA Cloud
-# ------------------------------------------------------------------------------------------------------
 module "hana_cloud_setup" {
-
   source = "./modules/hana-cloud"
-
-  #count = var.switch_setup_hana_cloud ? 1 : 0
 
   subaccount_id        = btp_subaccount.gen_ai.id
   hana_system_password = var.hana_system_password
   admins               = var.admins
 }
 
-# ------------------------------------------------------------------------------------------------------
-# Write environment variables to file
-# ------------------------------------------------------------------------------------------------------
 resource "local_file" "env_file" {
   content  = join("\n", [module.ai_setup.ai_core_envs, module.hana_cloud_setup.hana_cloud_envs])
-  filename = ".env"
+  filename = "../../config/secrets/.env"
 }
