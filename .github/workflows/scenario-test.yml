@@ -159,5 +159,5 @@ jobs:
               body: 'DC mission scenario-tests workflow is failed, Please find the details below'
               **Workflow Name:** ${process.env.GITHUB_WORKFLOW}
               **Run Number:** ${process.env.GITHUB_RUN_NUMBER}
-              **Trigger:** ${process.env.GITHUB_EVENT_NAME}`
+              **Trigger:** ${process.env.GITHUB_EVENT_NAME}
             });
