@@ -14,6 +14,12 @@ variable "region" {
   default     = "eu10"
 }
 
+variable "cf_landscape" {
+  type        = string
+  description = "The Cloud Foundry landscape (format example eu10-004)."
+  default     = "eu10-004"
+}
+
 variable "abap_sid" {
   type        = string
   description = "The system ID (SID) of the ABAP system."
@@ -52,12 +58,6 @@ variable "abap_is_development_allowed" {
 #  type        = string
 #  description = "Name of custom IDP to be used for the subaccount"
 #}
-
-variable "cf_landscape_label" {
-  type        = string
-  description = "The label for the Cloud Foundry landscape (format cf-eu10)."
-  default     = "cf-eu10-004"
-}
 
 variable "cf_space_name" {
   type        = string

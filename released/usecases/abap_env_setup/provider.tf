@@ -22,5 +22,5 @@ provider "btp" {
 
 # This will only work if we know the region in advance
 provider "cloudfoundry" {
-  api_url = "https://api.cf.${var.region}.hana.ondemand.com"
+  api_url = "https://api.cf.${var.cf_landscape}.hana.ondemand.com"
 }
