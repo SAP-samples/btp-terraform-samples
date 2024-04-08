@@ -56,6 +56,7 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           timestamp=$(date +"%Y%m%d%H%M%S")
           sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
            else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
@@ -120,6 +121,7 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           timestamp=$(date +"%Y%m%d%H%M%S")
           sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
            else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
@@ -156,7 +158,7 @@ jobs:
               repo: context.repo.repo,
               title: 'Automated issue creation: Scenario-tests failure',
               body: 'DC mission scenario-tests workflow is failed, Please find the details below'
-              \n**Workflow Name:** ${process.env.GITHUB_WORKFLOW}
-              \n**Run Number:** ${process.env.GITHUB_RUN_NUMBER}
-              \n**Trigger:** ${process.env.GITHUB_EVENT_NAME}
+              **Workflow Name:** ${process.env.GITHUB_WORKFLOW}
+              **Run Number:** ${process.env.GITHUB_RUN_NUMBER}
+              **Trigger:** ${process.env.GITHUB_EVENT_NAME}
             });
