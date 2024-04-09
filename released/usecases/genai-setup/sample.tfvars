@@ -22,10 +22,7 @@ region        = "us10"
 subaccount_name = "GenAI on BTP"
 
 # If set to true, the script will create an app subscription for the AI Launchpad
-switch_setup_ai_launchpad = false
-
-# The service plan to be used for the AI Core service
-ai_core_plan_name = "extended"
+setup_ai_launchpad = false
 
 # The model that the AI Core service should use
 target_ai_core_model = ["gpt-35-turbo", "text-embedding-ada-002"]

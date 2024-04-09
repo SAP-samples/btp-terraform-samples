@@ -47,7 +47,7 @@ variable "admins" {
 
 }
 
-variable "switch_setup_ai_launchpad" {
+variable "setup_ai_launchpad" {
   type        = bool
   description = "Switch to enable the setup of the AI Launchpad."
   default     = false

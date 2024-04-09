@@ -61,7 +61,7 @@ resource "btp_subaccount_service_binding" "ai_core_binding" {
 # Prepare & setup SAP AI Launchpad
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_entitlement" "ai_launchpad" {
-  count = var.switch_setup_ai_launchpad ? 1 : 0
+  count = var.setup_ai_launchpad ? 1 : 0
 
   subaccount_id = var.subaccount_id
   service_name  = "ai-launchpad"
@@ -69,7 +69,7 @@ resource "btp_subaccount_entitlement" "ai_launchpad" {
 }
 
 resource "btp_subaccount_subscription" "ai_launchpad" {
-  count = var.switch_setup_ai_launchpad ? 1 : 0
+  count = var.setup_ai_launchpad ? 1 : 0
 
   subaccount_id = var.subaccount_id
   app_name      = "ai-launchpad"
@@ -81,7 +81,7 @@ resource "btp_subaccount_subscription" "ai_launchpad" {
 resource "btp_subaccount_role_collection_assignment" "ai_launchpad_role_mapping" {
 
   for_each = { for entry in local.role_mapping_admins_ai_launchpad : "${entry.user_name}.${entry.role_name}" => entry
-  if var.switch_setup_ai_launchpad == true }
+  if var.setup_ai_launchpad == true }
 
   subaccount_id        = var.subaccount_id
   role_collection_name = each.value.role_name

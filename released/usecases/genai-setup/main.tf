@@ -20,11 +20,11 @@ resource "btp_subaccount" "gen_ai" {
 module "ai_setup" {
   source = "./modules/ai"
 
-  subaccount_id             = btp_subaccount.gen_ai.id
-  switch_setup_ai_launchpad = var.switch_setup_ai_launchpad
-  ai_core_plan_name         = var.ai_core_plan_name
-  target_ai_core_model      = var.target_ai_core_model
-  admins                    = var.admins
+  subaccount_id        = btp_subaccount.gen_ai.id
+  setup_ai_launchpad   = var.setup_ai_launchpad
+  ai_core_plan_name    = var.ai_core_plan_name
+  target_ai_core_model = var.target_ai_core_model
+  admins               = var.admins
 
 }
 
@@ -38,5 +38,5 @@ module "hana_cloud_setup" {
 
 resource "local_file" "env_file" {
   content  = join("\n", [module.ai_setup.ai_core_envs, module.hana_cloud_setup.hana_cloud_envs])
-  filename = "../../config/secrets/.env"
+  filename = ".env"
 }
