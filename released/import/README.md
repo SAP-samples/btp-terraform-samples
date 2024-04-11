@@ -56,9 +56,9 @@ As for the subaccount we must check the information about the [import of the res
 
 We have different option to retrieve this data. We can:
 
-- determine it via the SAP BTP Cockpit.
-- use the BTP CLI to extract the data. We recommend using the `-format json` option.
-- use the Terraform provider namely the data sources for the corresponding resources.
+- determine it via the *SAP BTP Cockpit*.
+- use the *BTP CLI* to extract the data. We recommend using the `-format json` option.
+- use the Terraform provider namely the *data sources* for the corresponding resources.
 
 Or we can also use a combination of the above.
 
