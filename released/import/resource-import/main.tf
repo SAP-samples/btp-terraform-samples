@@ -7,7 +7,7 @@ resource "btp_subaccount" "my_imported_subaccount" {
 }
 
 resource "btp_subaccount_entitlement" "my_imported_entitlement" {
-  subaccount_id = resource.btp_subaccount.my_imported_suibaccount.id
+  subaccount_id = btp_subaccount.my_imported_subaccount.id
   service_name  = var.service_name
   plan_name     = var.service_plan_name
 }

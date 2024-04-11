@@ -2,40 +2,41 @@
 
 ## Introduction
 
-In this sample we want to highlight how you can import existing resources on SAP BTP into Terraform to be able to manage them via Terraform. We will show the flow on a simple example by importing a subaccount and a service entitlement for this subaccount.
+In this sample we want to walk you through the *import* of existing resources on SAP BTP into Terraform to be able to manage them via Terraform. We will show the flow via a simple example by importing a subaccount and a service entitlement for this subaccount.
 
-In a nutshell to execute an import of a Terraform resource you must:
+In a nutshell we will:
 
-- Define so called import blocks for the resources you want to import to tell Terraform where to find the data for the resources.
+- Describe how to collect the necessary data for an import.
 - Define the matching Terraform configuration for the resources you want to import.
+- Define so called import blocks for the resources you want to import to tell Terraform where to find the data for the resources.
 
-We will walk through this process in the following sections.
+We will now walk through this process in detail in the following sections.
 
 ## Prerequisites
 
-To have resources that need to be imported we need to create a subaccount and a service entitlement on SAP BTP using the SAP BTP Cockpit.
+To have resources that need to be imported we first need to create a subaccount and a service entitlement on SAP BTP using the SAP BTP Cockpit.
 
-Create a subaccount with the following settings:
+We create a subaccount with the following settings:
 
 - Display Name: test-terraform-import
-- Region: us-10 (depending on the available regions in your account)
+- Region: us10 (depending on the available regions in your account)
 
-In addition under `Advanced`
+In addition, we make the following setting in the section `Advanced`
 
-- Tick the checkbox "Used for production"
-- Add a label with the key "type" and the value "legacy"
+- We tick the checkbox "Used for production"
+- We add a label with the key `type` and the value `legacy`
 
 The configuration result should look like this:
 
 ![Configuration of subaccount](./assets/subaccount-setup.png)
 
-Assign an entitlement to the subaccount for the service "Alert Notification" (technical name `alert-notification`) and the service plan `standard`.
+We also assign an entitlement to the subaccount for the service *"Alert Notification"* (technical name `alert-notification`) and the service plan `standard`.
 
 ## Data Collection
 
-To configure the resources for the import we must collect the necessary information. For that we must first identify what parameters are needed for the resources. We can determine the needed information via the Terraform provider documentation for the resources.
+To configure the resources for the import we must collect the necessary information. For that we must first identify the parameters needed for the resource configuration. We derive the necessary information via the [Terraform provider documentation](https://registry.terraform.io/providers/SAP/btp/latest/docs).
 
-According to the documentation of the [subaccount resource](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount) the following parameters are needed to match our subaccount setup from the prerequisites:
+According to the documentation of the [subaccount resource](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount) we need the following parameters to match our subaccount setup:
 
 - `name`
 - `region`
@@ -43,30 +44,31 @@ According to the documentation of the [subaccount resource](https://registry.ter
 - `usage`
 - `labels`
 
-Besides that we must also check the information about the [import of the resource](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount#import) to see which keys are needed. Here we need the `subaccount_id` which we anyway know from the SAP BTP Cockpit.
+Besides that we must also check the information about the [import of the resource](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount#import) to see which keys are needed to import the resource. For the subaccount we need the `subaccount_id` which we anyway know from the SAP BTP Cockpit.
 
-According to the documentation of the [entitlement resource](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_entitlement) the following parameters are needed to match our service entitlement setup from the prerequisites:
+According to the documentation of the [entitlement resource](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_entitlement) we need the following parameters to match our service entitlement setup:
 
 - `plan_name`
 - `service_name`
 - `subaccount_id`
 
-As for the subaccount we must check the information about the [import of the resource](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_entitlement#import) to see which keys are needed. Here we need the `subaccount_id`, `service_name` and the `plan_name` which we also need for the resource configuration.
+As for the subaccount we must check the information about the [import of the resource](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_entitlement#import) to see which keys we need for the import. Here we need the `subaccount_id`, the `service_name` and the `plan_name`. We have that information already from resource configuration.
 
-You have different ways to retrieve this data. You can:
+We have different option to retrieve this data. We can:
 
-- Determine it via the SAP BTP Cockpit.
-- Use the BTP CLI to extract the data. We recommend using the `-format json` option.
-- Use the Terraform provider namely the data sources for the corresponding resources.
-- A combination of the above.
+- determine it via the SAP BTP Cockpit.
+- use the BTP CLI to extract the data. We recommend using the `-format json` option.
+- use the Terraform provider namely the data sources for the corresponding resources.
 
-In this repository we provide a setup via data sources in the folder `data-collection`. We leverage the data sources for the subaccount and the service entitlement to collect the necessary information and transfer the data relevant for the import as output variables defined in the `output.tf` file. To execute the data collection for your setup you must create a `terraform.tfvars` file in the `data-collection` folder with the values matching your setup namely:
+Or we can also use a combination of the above.
+
+In this repository we provide a setup via *data sources*. You find the setup in the in the folder `released/import/data-collection`. We leverage the data sources for the subaccount and the service entitlement to collect the necessary information and transfer the data relevant for the import as output variables defined in the `output.tf` file. To execute the data collection for your setup you must create a `terraform.tfvars` file in the `data-collection` folder with the values matching your setup namely:
 
 ```terraform
-globalaccount = "Global Account Subdomain"
-subaccount_id = "ID of the subaccount"
-service_name = "Name of the service"
-service_plan_name = "Name of the service plan"
+globalaccount     = "<Your global account subdomain>"
+subaccount_id     = "<Your subaccount ID>"
+service_name      = "alert-notification"
+service_plan_name = "standard"
 ```
 
 The flow to execute the data collection is:
@@ -77,23 +79,18 @@ The flow to execute the data collection is:
 
 The output the gives you the necessary information for the resource configuration.
 
-> **Note** - the data collection via data sources is a bit overenigneered for this simple example. In a real world scenario this can however sacve you a lot of time compared to navigating through the SAP BTP cockpit.
+> **Note** - The data collection via data sources is a bit overengineered for this simple example. In a real world scenario this can however save you a lot of time compared to navigating through the SAP BTP cockpit.
 
 ## Configuring the import
 
-As we have gathered all necessary information we can now as a first step configure the resources for the import. We will do this in the in the `resource-import` folder.
+As we have gathered all necessary information we can as a first step define the *configuration of the resources* we want to the import. You find the code in the `released/import/resource-import` folder.
 
-We define the input variables that we later need for the configuration as well as for the import of the resources. The input variables are defined in the file `variables.tf` as:
+We define the input variables that we later need for the configuration as well as for the import of the resources. The input variables are defined in the file `variables.tf` file as:
 
 ```terraform
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain."
-}
-
-variable "subaccount_id" {
-  type        = string
-  description = "The subaccount ID."
 }
 
 variable "subaccount_name" {
@@ -130,11 +127,29 @@ variable "service_plan_name" {
   type        = string
   description = "The service plan name."
 }
+
+// Only needed for the import
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+}
 ```
 
-We supply them via a `terraform.tfvars` file in the same `resource-import` filled with the parameters we collected in the previous step.
+To supply them you must define a `terraform.tfvars` file in the same folder filled with the parameters we collected in the previous step:
 
-We do the configuration for the resources in the `main.tf`:
+```terraform
+globalaccount        = "<Your global account subdomain>"
+service_name         = "alert-notification"
+service_plan_name    = "standard"
+subaccount_name      = "<Your Subaccount Name>"
+subaccount_region    = "<Your Subaccount region>"
+subaccount_subdomain = "<Your Subaccount subdomain>"
+subaccount_usage     = "USED_FOR_PRODUCTION"
+subaccount_labels    = { "type" = ["legacy"] }
+subaccount_id        = "<Your subaccount ID>"
+```
+
+We define the configuration for the resources in the `main.tf` file:
 
 ```terraform
 resource "btp_subaccount" "my_imported_subaccount" {
@@ -146,15 +161,15 @@ resource "btp_subaccount" "my_imported_subaccount" {
 }
 
 resource "btp_subaccount_entitlement" "my_imported_entitlement" {
-  subaccount_id = resource.btp_subaccount.my_imported_suibaccount.id
+  subaccount_id = btp_subaccount.my_imported_subaccount.id
   service_name  = var.service_name
   plan_name     = var.service_plan_name
 }
 ```
 
-The configuration should correspond to the configuration you would write when creating the resources from scratch.
+> **Note** - The configuration should correspond to the configuration you would write when creating the resources from scratch.
 
-The last piece that is missing is the definition of the [import blocks](https://developer.hashicorp.com/terraform/language/import). They provide the connection between the resource configuration and where to find the data for the resource import on the platform. We define them in the `import.tf` file:
+The last piece that is missing is the definition of the [import blocks](https://developer.hashicorp.com/terraform/language/import). They provide the connection between the resource configuration and where to find the data for the resource import on the platform. We define them in the `import.tf` file as:
 
 ```terraform
 import {
@@ -168,10 +183,91 @@ import {
 }
 ```
 
-Be awrae of the combined key used for the import of the entitlement resource. The key is a combination of the `subaccount_id`, `service_name` and the `plan_name`.
+Be aware of the combined key used for the import of the entitlement resource. The key is a combination of the `subaccount_id`, `service_name` and the `plan_name`.
+
+The setup for an import is now complete. The last step is to execute the import.
 
 ## Executing the import
 
+The import is executed via the Terraform CLI in the same flow as the creation of resources. First you must initialize the Terraform configuration:
+
+```bash
+terraform init
+```
+
+Next we execute a plan to see what Terraform would do:
+
+```bash
+terraform plan
+```
+
+The result should display that two resources get imported. No additions, changes or deletions should be planned. The output should look like this:
+
+```bash	
+btp_subaccount.my_imported_subaccount: Preparing import... [id=XYZ]
+btp_subaccount.my_imported_subaccount: Refreshing state... [id=XYZ]
+btp_subaccount_entitlement.my_imported_entitlement: Preparing import... [id=XYZ,alert-notification,standard]
+btp_subaccount_entitlement.my_imported_entitlement: Refreshing state...
+
+Terraform will perform the following actions:
+
+  # btp_subaccount.my_imported_subaccount will be imported
+    resource "btp_subaccount" "my_imported_subaccount" {
+        beta_enabled  = false
+        created_by    = "christian.lechner@sap.com"
+        created_date  = "2024-04-10T12:43:08Z"
+        id            = "XYZ"
+        labels        = {
+            "type" = [
+                "legacy",
+            ]
+        }
+        last_modified = "2024-04-10T12:43:29Z"
+        name          = "test-terraform-import"
+        parent_id     = "ZYX"
+        region        = "us10"
+        state         = "OK"
+        subdomain     = "test-terraform-import-abc1234"
+        usage         = "USED_FOR_PRODUCTION"
+    }
+
+  # btp_subaccount_entitlement.my_imported_entitlement will be imported
+    resource "btp_subaccount_entitlement" "my_imported_entitlement" {
+        amount        = 2
+        category      = "ELASTIC_SERVICE"
+        created_date  = "2024-04-10T13:37:44Z"
+        id            = "alertnotificationservicecf"
+        last_modified = "2024-04-10T13:37:53Z"
+        plan_id       = "alertnotificationservicecf"
+        plan_name     = "standard"
+        service_name  = "alert-notification"
+        state         = "OK"
+        subaccount_id = "XYZ"
+    }
+
+Plan: 2 to import, 0 to add, 0 to change, 0 to destroy.
+```
+
+> **Note** In case that Terraform plans to apply unexpected changes or even additions or deletions of resources, you should revisit our configuration in the `main.tf` file and make adjustments, until the `terraform plan` output shows only planned imports.
+
+To execute the import, we run:
+
+```bash
+terraform apply
+```
+
+As a result we see a `terraform.tfstate` file in our filesystem. 
+
+To validate that we have brought the manually created resources under the control of Terraform we execute a `terraform plan` which should state that:
+
+```bash
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
+```
+
+The import was successful, and you can manage the imported resources via Terraform.
+
 ## Additional Information
 
-You find more information about the Teraform import functionality in the [Terraform documentation](https://www.terraform.io/docs/cli/import/index.html)
+You find more information about the Teraform import functionality in the [Terraform documentation](https://www.terraform.io/docs/cli/import/index.html).
