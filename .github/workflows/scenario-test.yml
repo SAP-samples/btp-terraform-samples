@@ -56,6 +56,7 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           timestamp=$(date +"%Y%m%d%H%M%S")
           sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
            else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
@@ -120,6 +121,7 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           timestamp=$(date +"%Y%m%d%H%M%S")
           sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
            else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
@@ -150,14 +152,23 @@ jobs:
       - name: Create issue
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const issueTitle = `Automated Issue Alert: DC Missions Scenario Tests Failure`;
+            const issueBody = `
+              ## Failure Report
+              **Workflow:** [${process.env.GITHUB_WORKFLOW}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+              **Run Number:** ${process.env.GITHUB_RUN_NUMBER}
+              **Trigger:** ${process.env.GITHUB_EVENT_NAME}
+          
+              ### Description
+              The DC mission scenario-tests workflow has failed during the ${process.env.GITHUB_EVENT_NAME} event. Please review the details linked above and investigate the root cause.
+          
+              ### Suggested Action
+              - Review the complete logs at the provided link.
+            `;
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'Automated issue creation: Scenario-tests failure',
-              body: 'DC mission scenario-tests workflow is failed, Please find the details below'
-              \n**Workflow Name:** ${process.env.GITHUB_WORKFLOW}
-              \n**Run Number:** ${process.env.GITHUB_RUN_NUMBER}
-              \n**Trigger:** ${process.env.GITHUB_EVENT_NAME}
+              title: issueTitle,
+              body: issueBody
             });
