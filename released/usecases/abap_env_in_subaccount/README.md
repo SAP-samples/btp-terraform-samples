@@ -10,7 +10,7 @@ You have three options to deploy the resources:
 1. You can an existing CF environment and create a new CF space for the ABAP environment.
 1. You can use an existing CF environment and an existing CF space for the ABAP environment.
 
-The variable values must be provided correspondingly in the `terraform.tfvars` file. We will provide an example for each of the three options.
+The variable values must be provided correspondingly in the `terraform.tfvars` file. We will provide the relevant parameters for each of the three options in the following sections. Be aware to also add the other required parameters like `globalaccount` and `cf_landscape`.
 
 ### Option 1: Create a new CF environment including the CF space for the ABAP environment
 
@@ -31,7 +31,7 @@ The `terraform.tfvars` file should look like this:
 
 ```terraform
 create_cf_space     = true
-cf_environment_id   = "ID of the existing CF environment"
+cf_org_id           = "ID of the existing CF organization"
 cf_space_name       = "dev"
 cf_space_developers = ["jane.dow@test.com"]
 cf_space_managers   = ["john.doe@test.com"]
@@ -42,8 +42,8 @@ cf_space_managers   = ["john.doe@test.com"]
 The `terraform.tfvars` file should look like this:
 
 ```terraform
-cf_environment_id   = "ID of the existing CF environment"
-cf_space_id         = "ID of the existing CF space"
+cf_org_id           = "ID of the existing CF organization"
+cf_space_name       = "Name of the existing CF space"
 ```
 
 ## Deploying the resources

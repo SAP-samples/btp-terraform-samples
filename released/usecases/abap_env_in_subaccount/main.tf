@@ -2,7 +2,7 @@
 # Setup of names based on variables
 ###
 locals {
-  project_subaccount_cf_org  = "CF-${var.project_name}-${var.abap_sid}"
+  project_subaccount_cf_org  = var.create_cf_org ? "CF-${var.project_name}-${var.abap_sid}" : ""
   abap_service_instance_name = "abap-${var.abap_sid}"
 }
 
@@ -23,7 +23,7 @@ module "cloudfoundry_environment" {
   count  = var.create_cf_org ? 1 : 0
   source = "../../modules/environment/cloudfoundry/envinstance_cf"
 
-  subaccount_id           = btp_subaccount.abap-subaccount.id
+  subaccount_id           = var.subaccount_id
   instance_name           = local.project_subaccount_cf_org
   environment_label       = "cf-${var.cf_landscape}"
   cf_org_name             = local.project_subaccount_cf_org
@@ -39,20 +39,26 @@ module "cloudfoundry_environment" {
 module "cloudfoundry_space" {
   count               = var.create_cf_space ? 1 : 0
   source              = "../../modules/environment/cloudfoundry/space_cf"
-  cf_org_id           = module.cloudfoundry_environment.cf_org_id
+  cf_org_id           = var.create_cf_org ? module.cloudfoundry_environment[0].cf_org_id : var.cf_org_id
   name                = var.cf_space_name
   cf_space_managers   = var.cf_space_managers
   cf_space_developers = var.cf_space_developers
   cf_space_auditors   = []
 }
 
+# Fetch the space data for having one source of the space ID
+data "cloudfoundry_space" "cf_space_data" {
+  name       = var.cf_space_name
+  org        = var.cf_org_id
+  depends_on = [module.cloudfoundry_space]
+}
 
 ###
 # Artificial timeout for entitlement propagation to CF Marketplace
 ###
 resource "time_sleep" "wait_a_few_seconds" {
   count           = var.create_cf_space ? 1 : 0
-  depends_on      = [module.cloudfoundry_space]
+  depends_on      = [data.cloudfoundry_space.cf_space_data]
   create_duration = "30s"
 }
 
@@ -65,9 +71,10 @@ data "cloudfoundry_service" "abap_service_plans" {
   depends_on = [time_sleep.wait_a_few_seconds]
 }
 
+
 resource "cloudfoundry_service_instance" "abap_si" {
   name         = local.abap_service_instance_name
-  space        = module.cloudfoundry_space.id
+  space        = data.cloudfoundry_space.cf_space_data.id
   service_plan = data.cloudfoundry_service.abap_service_plans.service_plans[var.abap_si_plan]
   json_params = jsonencode({
     admin_email              = "${var.abap_admin_email}"

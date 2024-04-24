@@ -66,7 +66,7 @@ variable "create_cf_space" {
 variable "project_name" {
   type        = string
   description = "The name of the project. Used as part of the name for the Cloud Foundry Org"
-
+  default     = "my-abap-project"
 }
 
 variable "cf_space_name" {
@@ -90,16 +90,11 @@ variable "cf_space_managers" {
 ###
 # Variable block relevant for usage of existing CF organization and space
 ###
-variable "cf_environment_id" {
+variable "cf_org_id" {
   type        = string
-  description = "The ID of the Cloud Foundry environment."
+  description = "The ID of the Cloud Foundry organization."
+  default     = ""
 }
-
-variable "cf_space_id" {
-  type        = string
-  description = "The ID of the Cloud Foundry space."
-}
-
 
 #variable "custom_idp" {
 #  type        = string
