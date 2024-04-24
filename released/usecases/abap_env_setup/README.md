@@ -2,11 +2,7 @@
 
 ## Overview
 
-tbd
-
-## Content of setup
-
-tbd
+This directory contains the setup of an ABAP environment from scratch namely a new subaccount including the relevant entitlements, a Cloud Foundry environment and a Cloud Foundry space. 
 
 ## Deploying the resources
 
