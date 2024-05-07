@@ -1,0 +1,264 @@
+    ---
+displayName: "SAP Build Code"
+profile: "live"
+name: "SAP Build Code"
+params:
+    entitlements:
+        subscriptions:
+            - quotaType:
+                  codes:
+                      - name: "standard"
+                        amount: 1
+                  type: "build-code"
+              optional: false
+              hideEntitlement: false
+              order: 0
+            - quotaType:
+                  codes:
+                      - name: "build-code"
+                        amount: 1
+                        isBuildCodePlan: true
+                  type: "sapappstudio"
+              optional: true
+              hideEntitlement: false
+              order: 1
+            - quotaType:
+                  codes:
+                      - amount: 1
+                        name: "foundation"
+                  type: "SAPLaunchpad"
+              optional: true
+              hideEntitlement: false
+              order: 2
+            - quotaType:
+                  codes:
+                      - name: "build-code"
+                        amount: 1
+                        isBuildCodePlan: true
+                  type: "cicd-app"
+              optional: true
+              hideEntitlement: false
+              order: 3
+            - quotaType:
+                  codes:
+                      - name: "build-code"
+                        amount: 1
+                        isBuildCodePlan: true
+                  type: "alm-ts"
+              optional: true
+              hideEntitlement: true
+              order: 4
+            - quotaType:
+                  codes:
+                      - name: "build-code"
+                        amount: 1
+                        isBuildCodePlan: true
+                  type: "sdm-web"
+              optional: true
+              hideEntitlement: true
+              order: 5
+            - quotaType:
+                  codes:
+                      - name: "dashboard"
+                        amount: 1
+                  type: "feature-flags-dashboard"
+              optional: true
+              hideEntitlement: true
+              order: 6
+        services:
+            - quotaType:
+                  codes:
+                      - amount: 1
+                        name: "build-code"
+                        isBuildCodePlan: true
+                  type: "cloudfoundry"
+                  alias: "APPLICATION_RUNTIME"
+              hideEntitlement: false
+              optional: true
+            - quotaType:
+                  codes:
+                      - amount: 1
+                        name: "build-code"
+                        isBuildCodePlan: true
+                  type: "sdm"
+              needsInstance: true
+              requiresKey: true
+              hideEntitlement: false
+              optional: true
+            - quotaType:
+                  codes:
+                      - amount: 1
+                        name: "build-code"
+                        isBuildCodePlan: true
+                  type: "mobile-services"
+              optional: true
+              needsInstance: true
+              requiresKey: true
+              hideEntitlement: false
+            - quotaType:
+                  codes:
+                      - amount: 1
+                        name: "standard"
+                  type: "transport"
+              needsInstance: true
+              requiresKey: true
+              hideEntitlement: false
+              optional: true
+            - quotaType:
+                  codes:
+                      - amount: 1
+                        name: build-code
+                        isBuildCodePlan: true
+                  type: "cloud-logging"
+              needsInstance: true
+              requiresKey: true
+              hideEntitlement: false
+              optional: true
+            - quotaType:
+                  codes:
+                      - amount: 1
+                        name: standard
+                  type: "autoscaler"
+              needsInstance: true
+              requiresKey: false
+              hideEntitlement: true
+              optional: true
+            - quotaType:
+                  codes:
+                      - amount: 1
+                        name: standard
+                  type: "feature-flags"
+              needsInstance: true
+              requiresKey: true
+              hideEntitlement: true
+              optional: true
+            - quotaType:
+                  codes:
+                      - name: "default"
+                        amount: 1
+                  type: "cicd-service"
+              needsInstance: true
+              instances:
+                  - runtimeEnv: "Other"
+              requiresKey: true
+              optional: true
+            - quotaType:
+                  codes:
+                      - name: "build-code"
+                        amount: 1
+                        isBuildCodePlan: true
+                  type: "alert-notification"
+              needsInstance: true
+              requiresKey: true
+              optional: true
+    destinations:
+        - name:
+              source: "static"
+              value:
+                  text: "cicd-backend"
+          credentials:
+              source: "serviceKey"
+              value:
+                  code: "default"
+                  type: "cicd-service"
+          httpUrl:
+              source: "serviceKey"
+              value:
+                  path: "url"
+                  code: "default"
+                  type: "cicd-service"
+              relativePath: ""
+          httpAuth:
+              source: "static"
+              value:
+                  text: "OAuth2JWTBearer"
+          description:
+              source: "static"
+              value:
+                  text: "[Do not delete] SAP Continuous Integration and Delivery"
+          pairs:
+              - source: "static"
+                name: "HTML5.DynamicDestination"
+                value:
+                    text: "true"
+    roleCollections:
+        - roles:
+              - name: "Developer"
+                source:
+                    type: "subscription"
+                    extraInfo:
+                        codes:
+                            - "build-code"
+                        type: "sapappstudio"
+                roleTemplateName: "Business_Application_Studio_Developer"
+              - name: "Developer"
+                roleTemplateName: "Developer"
+                roleTemplateAppId: "cicdservice"
+              - name: "RegistryDeveloper"
+                roleTemplateName: "RegistryDeveloper"
+                roleTemplateAppId: "applicationdevelopment"
+              - name: "Feature Flags Service dashboard Auditor"
+                roleTemplateName: "FeatureFlags_Dashboard_Auditor"
+                roleTemplateAppId: "feature-flags"
+              - name: "SDM_User"
+                roleTemplateName: "SDM_User"
+                roleTemplateAppId: "sdm-di-SDM_DI_PROD-prod"
+              - name: "Viewer"
+                roleTemplateName: "Viewer"
+                roleTemplateAppId: "alm-ts"
+              - name: "Workzone_User"
+                roleTemplateName: "Workzone_User"
+                roleTemplateAppId: "workzone-rt-approuter"
+              - name: "SDMWeb_User"
+                roleTemplateName: "SDMWeb_User"
+                roleTemplateAppId: "sdm-SDM_WEB_PROD-prod"
+          name: "Build Code Developer"
+          description: "Build Code Developer"
+        - roles:
+              - name: "Administrator"
+                source:
+                    type: "subscription"
+                    extraInfo:
+                        codes:
+                            - "build-code"
+                        type: "sapappstudio"
+                roleTemplateName: "Business_Application_Studio_Administrator"
+              - name: "Administrator"
+                roleTemplateName: "Administrator"
+                roleTemplateAppId: "cicdservice"
+              - name: "RegistryAdmin"
+                roleTemplateName: "RegistryAdmin"
+                roleTemplateAppId: "applicationdevelopment"
+              - name: "Administrator"
+                roleTemplateName: "Administrator"
+                roleTemplateAppId: "alm-ts"
+              - name: "Feature Flags Service dashboard Administrator"
+                roleTemplateName: "FeatureFlags_Dashboard_Administrator"
+                roleTemplateAppId: "feature-flags"
+              - name: "SDM_Admin"
+                roleTemplateName: "SDM_Admin"
+                roleTemplateAppId: "sdm-di-SDM_DI_PROD-prod"
+              - name: "SDM_BusinessAdmin"
+                roleTemplateName: "SDM_BusinessAdmin"
+                roleTemplateAppId: "sdm-di-SDM_DI_PROD-prod"
+              - name: "SDM_MigrationAdmin"
+                roleTemplateName: "SDM_MigrationAdmin"
+                roleTemplateAppId: "sdm-di-SDM_DI_PROD-prod"
+              - name: "SuperAdmin"
+                roleTemplateName: "SuperAdmin"
+                roleTemplateAppId: "workzone-rt-approuter"
+              - name: "SDMWeb_Admin"
+                roleTemplateName: "SDMWeb_Admin"
+                roleTemplateAppId: "sdm-SDM_WEB_PROD-prod"
+              - name: "SDMWeb_Migration"
+                roleTemplateName: "SDMWeb_Migration"
+                roleTemplateAppId: "sdm-SDM_WEB_PROD-prod"
+          name: "Build Code Administrator"
+          description: "Build Code Administrator"
+    roleMapping:
+        developers:
+            roleCollections:
+                - "Build Code Developer"
+        administrators:
+            roleCollections:
+                - "Build Code Administrator"

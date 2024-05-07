@@ -40,7 +40,7 @@ locals {
 # Define Org Manager role
 resource "cloudfoundry_org_role" "all_org_roles" {
 
-  for_each = { for entry in local.role_mapping_admins_org : "${entry.user_name}.${entry.role_name}" => entry  }
+  for_each = { for entry in local.role_mapping_admins_org : "${entry.user_name}.${entry.role_name}" => entry }
 
   username = each.value.user_name
   type     = each.value.role_name
@@ -52,10 +52,10 @@ resource "cloudfoundry_org_role" "all_org_roles" {
 # ------------------------------------------------------------------------------------------------------
 # Define Space Manager role
 resource "cloudfoundry_space_role" "my_role" {
-  for_each = { for entry in local.role_mapping_admins_space : "${entry.user_name}.${entry.role_name}" => entry  }
+  for_each = { for entry in local.role_mapping_admins_space : "${entry.user_name}.${entry.role_name}" => entry }
 
-  username = each.value.user_name
-  type     = each.value.role_name
+  username   = each.value.user_name
+  type       = each.value.role_name
   space      = cloudfoundry_space.space.id
   depends_on = [cloudfoundry_org_role.all_org_roles]
 }
