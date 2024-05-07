@@ -14,30 +14,41 @@ resource "btp_subaccount" "build_code" {
   region    = lower(var.region)
 }
 
+
 # ------------------------------------------------------------------------------------------------------
-# Creation of Cloudfoundry environment
+# Fetch all available environments for the subaccount
 # ------------------------------------------------------------------------------------------------------
-module "cloudfoundry_environment" {
-  source                  = "../../../../modules/environment/cloudfoundry/envinstance_cf"
-  subaccount_id           = btp_subaccount.build_code.id
-  instance_name           = join("-", ["cf-", random_id.subaccount_domain_suffix.hex])
-  plan_name               = "standard"
-  cf_org_name             = join("-", ["cf-org", random_id.subaccount_domain_suffix.hex])
-  cf_org_auditors         = []
-  cf_org_billing_managers = []
-  cf_org_managers         = []
+data "btp_subaccount_environments" "all" {
+  subaccount_id = btp_subaccount.build_code.id
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Creation of Cloud Foundry space
+# Take the landscape label from the first CF environment if no environment label is provided
 # ------------------------------------------------------------------------------------------------------
-module "cloudfoundry_space" {
-  source              = "../../../../modules/environment/cloudfoundry/space_cf"
-  cf_org_id           = module.cloudfoundry_environment.cf_org_id
-  name                = "dev"
-  cf_space_managers   = []
-  cf_space_developers = []
-  cf_space_auditors   = []
+resource "null_resource" "cache_target_environment" {
+  triggers = {
+    label = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+  }
+
+  lifecycle {
+    ignore_changes = all
+  }
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Create the Cloud Foundry environment instance
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_environment_instance" "cf" {
+  subaccount_id    = btp_subaccount.build_code.id
+  name             = "cf-${random_id.subaccount_domain_suffix.hex}"
+  environment_type = "cloudfoundry"
+  service_name     = "cloudfoundry"
+  plan_name        = "standard"
+  landscape_label  = null_resource.cache_target_environment.triggers.label
+
+  parameters = jsonencode({
+    instance_name = "cf-${random_id.subaccount_domain_suffix.hex}"
+  })
 }
 
 # ------------------------------------------------------------------------------------------------------

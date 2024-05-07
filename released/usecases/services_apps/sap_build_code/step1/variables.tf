@@ -45,9 +45,8 @@ variable "admins" {
   }
 }
 
-# Cloudfoundry environment label
 variable "cf_environment_label" {
   type        = string
-  description = "The Cloudfoundry environment label"
-  default     = "cf-us10"
+  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
+  default     = ""
 }
