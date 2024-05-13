@@ -1,8 +1,10 @@
 # ------------------------------------------------------------------------------------------------------
 # Setup subaccount domain and the CF org (to ensure uniqueness in BTP global account)
 # ------------------------------------------------------------------------------------------------------
+resource "random_uuid" "uuid" {}
+
 locals {
-  random_uuid               = uuid()
+  random_uuid               = random_uuid.uuid.result
   project_subaccount_domain = "buildapps${local.random_uuid}"
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
