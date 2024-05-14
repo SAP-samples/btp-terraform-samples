@@ -13,11 +13,11 @@ Generate an [Access Token](https://jfrog.com/help/r/jfrog-artifactory-documentat
 ```hcl
 terraform {
   backend "remote" {
-    hostname     = "<hostname of the artifactory eg: >"
+    hostname     = "<hostname of the artifactory>"
     organization = "<name of the artifactory repository>"
 
     workspaces {
-      name = "my-workspace-"
+      name = "<WORKSPACE NAME>"
     }
   }
 }
