@@ -21,12 +21,12 @@ variable "region" {
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
+  default     = "https://cli.btp.cloud.sap"
 }
 
 # Plan_name update
 variable "bas_plan_name" {
-description = "BAS plan"
-type = string
-default = "free-tier" #For production use of Business Application Studio, upgrade the plan from the `free-tier` to the appropriate plan e.g standard-editio
+  description = "BAS plan"
+  type        = string
+  default     = "free-tier" #For production use of Business Application Studio, upgrade the plan from the `free-tier` to the appropriate plan e.g standard-editio
 }
