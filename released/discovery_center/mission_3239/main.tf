@@ -23,6 +23,10 @@ data "btp_subaccount" "project" {
 }
  
 
+data "btp_subaccount_environments" "all" {
+  subaccount_id = data.btp_subaccount.project.id
+}
+
  
 ###############################################################################################
 # Assign custom IDP to sub account
@@ -37,25 +41,62 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 ###############################################################################################
 # Creation of Cloud Foundry environment
 ###############################################################################################
-module "cloudfoundry_environment" {
-  source = "../../modules/environment/cloudfoundry/envinstance_cf"
 
-  subaccount_id           = data.btp_subaccount.project.id
-  instance_name           = local.project_subaccount_cf_org
-  cf_org_name             = local.project_subaccount_cf_org
-  cf_org_managers         = var.cf_admins
-  cf_org_billing_managers = var.cf_admins
-  cf_org_auditors         = var.cf_admins
+
+# ------------------------------------------------------------------------------------------------------
+# Take the landscape label from the first CF environment if no environment label is provided
+# ------------------------------------------------------------------------------------------------------
+resource "null_resource" "cache_target_environment" {
+  triggers = {
+    label = length(var.environment_label) > 0 ? var.environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+  }
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
-module "cloudfoundry_space" {
-  source = "../../modules/environment/cloudfoundry/space_cf"
-  cf_org_id           = module.cloudfoundry_environment.cf_org_id
-  name                = var.cf_space
-  cf_space_managers   = var.cf_admins
-  cf_space_developers = var.cf_admins
-  cf_space_auditors   = var.cf_admins
+resource "btp_subaccount_environment_instance" "cf" {
+  subaccount_id    = data.btp_subaccount.project.id
+  name             = local.project_subaccount_cf_org
+  environment_type = "cloudfoundry"
+  service_name     = "cloudfoundry"
+  plan_name        = "standard"
+  landscape_label  = null_resource.cache_target_environment.triggers.label
+
+  parameters = jsonencode({
+    instance_name = local.project_subaccount_cf_org
+  })
+ }
+
+resource "cloudfoundry_org_role" "manager" {
+  for_each = toset(var.admins)
+  username = each.value
+  type     = "organization_manager"
+  org      = btp_subaccount_environment_instance.cf.platform_id
+  origin  = var.origin
+  depends_on = [ btp_subaccount_environment_instance.cf ]
 }
+
+resource "cloudfoundry_org_role" "user" {
+  for_each = toset(var.developers)
+  username = each.value
+  type     = "organization_user"
+  org      = btp_subaccount_environment_instance.cf.platform_id
+  #origin = btp_subaccount_trust_configuration.simple.origin
+  origin  = var.origin
+  depends_on = [ btp_subaccount_environment_instance.cf ]
+}
+resource "cloudfoundry_org_role" "user_admins" {
+  for_each = toset(var.admins)
+  username = each.value
+  type     = "organization_user"
+  org      = btp_subaccount_environment_instance.cf.platform_id
+  #origin = btp_subaccount_trust_configuration.simple.origin
+  origin  = var.origin
+  depends_on = [ btp_subaccount_environment_instance.cf ]
+}
+
  
 ###############################################################################################
 # Prepare and setup app: SAP Build Workzone, standard edition

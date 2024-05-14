@@ -11,13 +11,16 @@ region                         = "us10"
 subaccount_name                = "Mission-3239"
 org                            = "team1"
 cf_space                       = "dev"
+cf_url                         = "https://api.cf.us10.hana.ondemand.com"
 
 #################################
 # User Configuration
 #################################
 admins               = ["jane.doe@test.com", "john.doe@test.com"]
 developers           = ["carl.tester@test.com"]
-cf_admins            = []
+
+
+
 
 #################################
 # Service Plans

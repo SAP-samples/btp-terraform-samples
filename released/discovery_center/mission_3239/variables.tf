@@ -21,7 +21,13 @@ variable "custom_idp" {
   description = "Defines the custom IDP to be used for the subaccount"
   default = "" 
 }
- 
+
+variable "origin" {
+   type = string
+   description = "The IAS of the user configuration for the cloudfoundry environment"
+   default = "sap.ids"
+} 
+
 variable "region" {
   type        = string
   description = "The region where the sub account shall be created in."
@@ -34,7 +40,11 @@ variable "org" {
   default = "org"
 }
  
-
+variable "environment_label" {
+  type        = string
+  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
+  default     = ""
+}
  
 variable "build_workzone_service_plan" {
   type        = string
@@ -81,19 +91,17 @@ variable "btp_username" {
   description = "SAP BTP user name"
 }
 
+
 variable "btp_password" {
   type = string
   description = "Password for SAP BTP user"
   sensitive = true
 }
-
+variable "cf_url" {
+  type = string
+  default = "URL to Cloud Foundry landscape"
+}
 variable "cf_space" {
   type = string
   description = "Name of the cloud foundry space"
-}
-
-variable "cf_admins" {
-  type        = list(string)
-  description = "Name of the cloud foundry space"
-  default = []
 }

@@ -5,9 +5,9 @@ terraform {
       source  = "sap/btp"
       version = ">=1.0.0"
     }
-    cloudfoundry = {
-      source  = "cloudfoundry-community/cloudfoundry"
-      version = ">=0.53.1"
+   cloudfoundry = {
+      source = "SAP/cloudfoundry"
+      version = "0.1.0-beta"
     }
   }
 }
@@ -20,8 +20,9 @@ provider "btp" {
   password       = var.btp_password
   
 }
+
 provider "cloudfoundry" {
-  api_url  = "https://api.cf.${var.region}.hana.ondemand.com"
-  user = var.btp_username
-  password = var.btp_password
+    api_url = var.cf_url
+    user = var.btp_username
+    password = var.btp_password
 }
