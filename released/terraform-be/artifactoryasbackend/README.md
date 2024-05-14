@@ -1,6 +1,6 @@
 # Backend As Artifactory
 
-This terraform backend configuration utilizes Artifactory as a remote [backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote), Storing the state in a workspace of an artifactory.
+This terraform backend configuration utilizes [Artifactory](https://jfrog.com/artifactory/) as a remote [backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote), Storing the state in a workspace of an artifactory repository.
 
 ## Prerequisite
 
