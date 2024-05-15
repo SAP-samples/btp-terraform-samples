@@ -89,7 +89,7 @@ You should see the following output with the updated value for the cost center l
 The configuration drift is now handled and the Terraform state is in sync with the actual state in the SAP BTP.
 
 > [!WARNING]
-> You might also come to the conclusion that the easiest way to deal with such a scenario is to manually change the content of the state file. Manually changing is something you should **never** do in a real world scenario to deal with such scenarios. The state file is a very sensitive file and manual changes can have severe side-effects.
+> You might also come to the conclusion that the easiest way to deal with such a scenario is to manually change the content of the state file. Manually changing this file is something you should **never** do in a real world scenario to deal with drifts. The state file is a very sensitive file and manual changes can have severe side-effects.
 
 ## Additional information
 

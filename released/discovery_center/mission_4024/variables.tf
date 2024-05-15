@@ -32,24 +32,24 @@ variable "region" {
   description = "The region where the sub account shall be created in."
   default     = "us10"
 }
- 
-variable "sap_build_apps_service_plan" {
+
+variable "service_plan__sap_build_apps" {
   type        = string
-  description = "The plan for sap_build_apps subscription"
+  description = "The plan for SAP Build Apps subscription"
   default     = "free"
   validation {
-    condition     = contains(["free", "standard"], var.sap_build_apps_service_plan)
-    error_message = "Invalid value for sap_build_apps_service_plan. Only 'free' and 'standard' are allowed."
+    condition     = contains(["free", "standard", "partner"], var.service_plan__sap_build_apps)
+    error_message = "Invalid value for service_plan__sap_build_apps. Only 'free', 'standard' and 'partner' are allowed."
   }
 }
  
-variable "build_workzone_service_plan" {
+variable "service_plan__build_workzone" {
   type        = string
   description = "The plan for build_workzone subscription"
   default     = "free"
   validation {
-    condition     = contains(["free", "standard"], var.build_workzone_service_plan)
-    error_message = "Invalid value for build_workzone_service_plan. Only 'free' and 'standard' are allowed."
+    condition     = contains(["free", "standard"], var.service_plan__build_workzone)
+    error_message = "Invalid value for service_plan__build_workzone. Only 'free' and 'standard' are allowed."
   }
 }
  

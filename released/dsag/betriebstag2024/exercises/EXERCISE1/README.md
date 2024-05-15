@@ -6,7 +6,7 @@ The goal of this exercise is to configure the Terraform provider for SAP BTP. In
 
 ## Step 1: Create a new directory
 
-To make use of Terraform you must create several configuration files using the [Terraform configuration language](https://developer.hashicorp.com/terraform/language). Create a new directory named `my-tf-handson`.
+To make use of Terraform you must create several configuration files using the [Terraform configuration language](https://developer.hashicorp.com/terraform/language). Create a new directory named `my-tf-handson` under the folder `betriebstag2024`.
 
 Terraform expects a specific file layout for its configurations. Create the following empty files in the directory `my-tf-handson`:
 
@@ -27,10 +27,9 @@ terraform {
   required_providers {
     btp = {
       source  = "sap/btp"
-      version = "1.0.0"
+      version = "~> 1.3.0"
     }
   }
-
 }
 
 provider "btp" {
@@ -38,7 +37,7 @@ provider "btp" {
 }
 ```
 
-What have we done? First we defined which provider we want to use and which version of the provider we want to use. In this case we want to use the provider `sap/btp` in version `1.0.0`. Then we defined the provider configuration. In this case we only need to provide the `globalaccount` parameter where we reference a variable. We will define this variable in the next step.
+What have we done? First we defined which provider we want to use and which version of the provider we want to use. In this case we want to use the provider `sap/btp` in version `1.3.0` (including potential patch versions). Then we defined the provider configuration. In this case we only need to provide the `globalaccount` parameter where we reference a variable. We will define this variable in the next step.
 
  > [!NOTE]
  > We do not need any authentication information in this file. We provided the authentication information via environment variables.

@@ -1,0 +1,174 @@
+name: Scenario Tests - DC missions
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  # Credentials used by the Terraform script
+  BTP_USERNAME: ${{ secrets.BTP_USERNAME }}
+  BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+  CF_USER: ${{ secrets.BTP_USERNAME }}
+  CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+  CUSTOM_IDP:  ${{ secrets.CUSTOM_IDP }}
+  DEV_OVERRIDE: 'assets/provider-config-ghaction.txt'
+
+jobs:
+  setup_infrastructure:
+    name: Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        usecase:
+          - name: 'DC mission 4327'
+            folder: 'released/discovery_center/mission_4327/setup_subaccount_cf'
+            var_file: 'testsamples.tfvars'
+            use_custom_idp: false    
+    steps:
+      - name: Check out Git repository
+        id: checkout_repo
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        id : setup_terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+          terraform_version: latest
+      - name: Terraform Init
+        id: terraform_init
+        shell: bash
+        run: |
+          terraform -chdir=${{ matrix.usecase.folder }} init -no-color
+      - name: Terraform apply
+        id: terraform_apply
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          timestamp=$(date +"%Y%m%d%H%M%S")
+          sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
+          if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
+          then 
+           else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}"  -auto-approve -no-color 
+          fi
+
+      - name: Terraform destroy
+        id: terraform_destroy
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
+          then 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
+          fi
+      - name: Check out provider repository
+        id: checkout_provider_repo
+        uses: actions/checkout@v4
+        with:
+          repository: SAP/terraform-provider-btp
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Install local Terraform provider
+        id: build_provider
+        shell: bash
+        run: |
+          go mod tidy && make install
+
+      - name: Remove init data and place override
+        id: set_to_override
+        shell: bash
+        run: |
+          rm -rf .terraform && rm -rf .terraform.lock.hcl && cp ${{ env.DEV_OVERRIDE }} ~/.terraformrc
+
+      - name: Check out Github repository
+        id: checkout_github_repo
+        uses: actions/checkout@v4
+
+      - name: Terraform Init
+        id: init_terraform
+        shell: bash
+        run: |
+          terraform -chdir=${{ matrix.usecase.folder }} init -no-color
+
+      - name: Terraform apply for local provider
+        id: terraform_apply_against_local_provider
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          timestamp=$(date +"%Y%m%d%H%M%S")
+          sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
+          if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
+          then 
+           else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}"  -auto-approve -no-color 
+          fi
+
+      - name: Terraform destroy for local provider
+        id: terraform_destroy_against_local_provider
+        shell: bash
+        run: |
+          export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
+          export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          export CF_USER=${{ secrets.BTP_USERNAME }}
+          export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
+          if [ ${{ matrix.usecase.use_custom_idp }} = true ]
+          then 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
+          else 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}'  -auto-approve -no-color 
+          fi
+          
+  create_issue_on_failure:
+    runs-on: ubuntu-latest
+    needs: setup_infrastructure
+    if: ${{ always() && (needs.setup_infrastructure.result == 'failure') }}
+    steps:
+      - name: Create issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueTitle = `Automated Issue Alert: DC Missions Scenario Tests Failure`;
+            const issueBody = `
+              ## Failure Report
+              **Workflow:** [${process.env.GITHUB_WORKFLOW}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+              **Run Number:** ${process.env.GITHUB_RUN_NUMBER}
+              **Trigger:** ${process.env.GITHUB_EVENT_NAME}
+          
+              ### Description
+              The DC mission scenario-tests workflow has failed during the ${process.env.GITHUB_EVENT_NAME} event. Please review the details linked above and investigate the root cause.
+          
+              ### Suggested Action
+              - Review the complete logs at the provided link.
+            `;
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody
+            });

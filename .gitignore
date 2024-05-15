@@ -1,9 +1,12 @@
 # Terraform specific local files
-.terraform*
-terraform.tfstate*
+.terraform
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+*terraform.tfstate*
 *.log
 secret.auto.tfvars
 terraform.tfvars
+
 
 # Any kind of invironment variables
 *.env
@@ -11,3 +14,5 @@ terraform.tfvars
 
 # Any packaged files
 *.zip
+my_*
+.env

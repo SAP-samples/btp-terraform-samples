@@ -24,9 +24,8 @@ The level of the exercises is beginner. You don't need any prior knowledge about
 Make sure that the following prerequisites are met:
 
 - You have an SAP BTP Trial Account. If you don't have one yet, you can get one [here](https://developers.sap.com/tutorials/hcp-create-trial-account.html).
-- Make sure that your SAP Universal ID is configured for the logon to applications that are not compatible with the SAP Universal ID. You can find the instructions in [SAP Note 3085908](https://me.sap.com/notes/3085908).
-
-The Terraform provider does not support SSO or 2FA. Make sure that these options are not enforced for your account.
+- Make sure that your SAP Universal ID is configured correctly. You can find the instructions in [SAP Note 3085908](https://me.sap.com/notes/3085908).
+- The Terraform provider does not support SSO or 2FA. Make sure that these options are not enforced for your account.
 
 ## Tools 🛠️
 
