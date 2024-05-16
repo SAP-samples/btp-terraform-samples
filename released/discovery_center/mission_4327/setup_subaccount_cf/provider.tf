@@ -4,6 +4,10 @@ terraform {
       source  = "sap/btp"
       version = "~> 1.3.0"
     }
+    cloudfoundry = {
+      source = "SAP/cloudfoundry"
+      version = "0.1.0-beta"
+    }
   }
 }
 
@@ -12,4 +16,8 @@ terraform {
 provider "btp" {
   globalaccount  = var.globalaccount
   cli_server_url = var.cli_server_url
+}
+
+provider "cloudfoundry" {
+  api_url  = "https://api.cf.${var.region}.hana.ondemand.com"
 }
