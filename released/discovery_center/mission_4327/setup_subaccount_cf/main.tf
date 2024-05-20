@@ -1,4 +1,4 @@
-###############################################################################################
+e###############################################################################################
 # Generating random ID for subdomain
 ###############################################################################################
 resource "random_uuid" "uuid" {}
@@ -7,7 +7,7 @@ resource "random_uuid" "uuid" {}
 ###############################################################################################
 resource "btp_subaccount" "project" {
   name      = var.subaccount_name
-  subdomain = "${var.subaccount_name}-${random_uuid.uuid.result}"
+  subdomain = "btp-gp${random_uuid.uuid.result}"
   region    = lower(var.region)
 }
 data "btp_whoami" "me" {}
