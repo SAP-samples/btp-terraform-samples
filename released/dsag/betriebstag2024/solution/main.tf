@@ -59,7 +59,7 @@ resource "btp_subaccount_service_instance" "alert_notification_standard" {
 }
 
 module "cloudfoundry_environment" {
-  source = "../../modules/environment/cloudfoundry/envinstance_cf"
+  source = "../modules/environment/cloudfoundry/envinstance_cf"
 
   subaccount_id           = btp_subaccount.project.id
   instance_name           = local.project_subaccount_cf_org
@@ -71,7 +71,7 @@ module "cloudfoundry_environment" {
 }
 
 module "cloudfoundry_space" {
-  source = "../../modules/environment/cloudfoundry/space_cf"
+  source = "../modules/environment/cloudfoundry/space_cf"
 
   cf_org_id           = module.cloudfoundry_environment.cf_org_id
   name                = var.cf_space_name

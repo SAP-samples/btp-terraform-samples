@@ -51,21 +51,21 @@ resource "btp_subaccount_environment_instance" "cf" {
 ###
 # Create the Cloud Foundry org users
 ###
-resource "cloudfoundry_org_role" "my_role" {
+resource "cloudfoundry_org_role" "cf_org_managers" {
   for_each = toset(var.cf_org_managers)
   username = each.value
   type     = "organization_manager"
   org      = resource.btp_subaccount_environment_instance.cf.platform_id
 }
 
-resource "cloudfoundry_org_role" "my_role" {
+resource "cloudfoundry_org_role" "cf_org_auditors" {
   for_each = toset(var.cf_org_auditors)
   username = each.value
   type     = "organization_auditor"
   org      = resource.btp_subaccount_environment_instance.cf.platform_id
 }
 
-resource "cloudfoundry_org_role" "my_role" {
+resource "cloudfoundry_org_role" "cf_org_billing_managers" {
   for_each = toset(var.cf_org_billing_managers)
   username = each.value
   type     = "organization_billing_manager"

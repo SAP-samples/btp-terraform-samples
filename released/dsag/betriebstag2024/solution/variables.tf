@@ -12,7 +12,7 @@ variable "region" {
 variable "project_name" {
   type        = string
   description = "The subaccount name."
-  default     = "proj-1234"
+  default     = "myproj-1234"
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.project_name))

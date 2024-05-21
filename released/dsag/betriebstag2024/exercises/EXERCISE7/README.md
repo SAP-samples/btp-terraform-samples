@@ -34,7 +34,7 @@ Then add the following code to call this module:
 
 ```terraform
 module "cloudfoundry_environment" {
-  source = "../../modules/environment/cloudfoundry/envinstance_cf"
+  source = "../modules/environment/cloudfoundry/envinstance_cf"
 
   subaccount_id           = btp_subaccount.project.id
   instance_name           = local.project_subaccount_cf_org
@@ -75,7 +75,7 @@ As we are using an additional provider we must make Terraform aware of this in t
 ```terraform
 cloudfoundry = {
       source  = "SAP/cloudfoundry"
-      version = "0.1.0-beta1"
+      version = "0.1.0-beta"
     }
 ```
 
@@ -178,7 +178,7 @@ To trigger the creation of a Cloud Foundry space, we add the module to the `main
 
 ```terraform
 module "cloudfoundry_space" {
-  source = "../../modules/environment/cloudfoundry/space_cf"
+  source = "../modules/environment/cloudfoundry/space_cf"
 
   cf_org_id           = module.cloudfoundry_environment.cf_org_id
   name                = var.cf_space_name
@@ -192,7 +192,17 @@ Save the changes.
 
 ### Step 3: Apply the changes
 
-As we have all prerequisites already in place when it comes to provider configuration and authentication, we can directly . Run the following commands:
+As we have all prerequisites already in place when it comes to provider configuration and authentication. However, we need to reinitialize the module that we use. To achieve that run the following command:
+
+```bash
+terraform init
+```
+
+The output should look like this:
+
+<img width="600px" src="assets/ex7_1.png" alt="executing terraform init with cloud foundry provider">
+
+Once we have initialized the module we can proceed with the creation of the Cloud Foundry space. As before we execute the following commands:
 
 1. Plan the Terraform configuration to see what will be created:
 
