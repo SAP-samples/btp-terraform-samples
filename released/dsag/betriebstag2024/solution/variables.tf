@@ -12,7 +12,7 @@ variable "region" {
 variable "project_name" {
   type        = string
   description = "The subaccount name."
-  default     = "proj-1234"
+  default     = "myproj-1234"
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.project_name))
@@ -83,4 +83,10 @@ variable "subscriptions" {
   }))
   description = "List of app subscriptions to be subscribed to in the subaccount."
   default     = []
+}
+
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
 }

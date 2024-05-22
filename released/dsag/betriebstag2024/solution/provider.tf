@@ -5,8 +5,8 @@ terraform {
       version = "~> 1.3.0"
     }
     cloudfoundry = {
-      source  = "cloudfoundry-community/cloudfoundry"
-      version = "~>0.53.1"
+      source  = "sap/cloudfoundry"
+      version = "0.1.0-beta"
     }
   }
 

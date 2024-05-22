@@ -101,3 +101,12 @@ variable "subscriptions" {
   description = "List of app subscriptions to be subscribed to in the subaccount."
   default     = []
 }
+
+###
+# Cloud Foundry space setup
+###
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
+}
