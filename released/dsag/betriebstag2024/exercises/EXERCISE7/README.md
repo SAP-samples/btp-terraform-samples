@@ -200,7 +200,7 @@ terraform init
 
 The output should look like this:
 
-<img width="600px" src="assets/ex7_1.png" alt="executing terraform init with cloud foundry provider">
+<img width="600px" src="assets/ex7_5.png" alt="executing terraform init with cloud foundry provider">
 
 Once we have initialized the module we can proceed with the creation of the Cloud Foundry space. As before we execute the following commands:
 
@@ -212,7 +212,7 @@ Once we have initialized the module we can proceed with the creation of the Clou
 
     The output should look like this:
 
-    <img width="600px" src="assets/ex7_2.png" alt="executing terraform plan for cloud foundry space creation">
+    <img width="600px" src="assets/ex7_6.png" alt="executing terraform plan for cloud foundry space creation">
 
 2. Apply the Terraform configuration to create the space:
 
@@ -224,7 +224,11 @@ Once we have initialized the module we can proceed with the creation of the Clou
 
 The result should look like this:
 
-<img width="600px" src="assets/ex7_3.png" alt="executing terraform apply for cloud foundry space creation">
+<img width="600px" src="assets/ex7_7.png" alt="executing terraform apply for cloud foundry space creation">
+
+You can also check that everything is in place via the SAP BTP cockpit. You should see the Cloud Foundry space in the subaccount:
+
+ <img width="600px" src="assets/ex7_8.png" alt="SAP BTP Cockpit with Cloud Foundry space">
 
 ## Summary
 
