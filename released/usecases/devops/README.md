@@ -25,7 +25,11 @@ To deploy the resources you must:
    btp_username = "<Email address of your BTP user>"
    btp_password = "<Password of your BTP user>"
    ```
-
+   as an alternative you can also set the credentials as environment variables: 
+   ```bash
+   export BTP_USERNAME='<Email address of your BTP user>'
+   export BTP_PASSWORD='<Password of your BTP user>'
+   ```
 2. Change the variables in the `samples.tfvars` file to meet your requirements
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
