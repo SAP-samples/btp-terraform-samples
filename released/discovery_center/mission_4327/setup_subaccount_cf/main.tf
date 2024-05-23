@@ -1,19 +1,16 @@
 ###############################################################################################
-# Setup of names in accordance to naming convention
+# Generating random ID for subdomain
 ###############################################################################################
-locals {
-  random_uuid               = uuid()
-  project_subaccount_domain = "btp-developers-guide${local.random_uuid}"
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
-}
+resource "random_uuid" "uuid" {}
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
+  subdomain = "btp-gp${random_uuid.uuid.result}"
   region    = lower(var.region)
 }
+data "btp_whoami" "me" {}
 ###############################################################################################
 # Assignment of users as sub account administrators
 ###############################################################################################
@@ -26,21 +23,62 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
 ######################################################################
 # Creation of Cloud Foundry environment
 ######################################################################
-module "cloudfoundry_environment" {
-  source                    = "../../../modules/environment/cloudfoundry/envinstance_cf"
-  subaccount_id             = btp_subaccount.project.id
-  instance_name             = local.project_subaccount_cf_org
-  plan_name                 = "standard"
-  cf_org_name               = local.project_subaccount_cf_org
-  cf_org_auditors           = var.cf_org_auditors
-  cf_org_managers           = var.cf_org_managers
-  cf_org_billing_managers   = var.cf_org_billing_managers
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
+  subaccount_id    = btp_subaccount.project.id
+  name             = "my-cf-environment"
+  landscape_label  = "cf-eu10"
+  environment_type = "cloudfoundry"
+  service_name     = "cloudfoundry"
+  plan_name        = "standard"
+  # ATTENTION: some regions offer multiple environments of a kind and you must explicitly select the target environment in which
+  # the instance shall be created using the parameter landscape label. 
+  # available environments can be looked up using the btp_subaccount_environments datasource
+  parameters = jsonencode({
+    instance_name = "my-cf-org-name"
+  })
+  timeouts = {
+    create = "1h"
+    update = "35m"
+    delete = "30m"
+  }
 }
+
 ######################################################################
 # Add "sleep" resource for generic purposes
 ######################################################################
 resource "time_sleep" "wait_a_few_seconds" {
   create_duration = "30s"
+}
+
+######################################################################
+# Create Cloudfoundry space
+######################################################################
+
+output "org_id" {
+  value = btp_subaccount_environment_instance.cloudfoundry.platform_id
+  
+}
+
+resource "cloudfoundry_org_role" "my_role" {
+  for_each = var.cf_org_user
+  username = each.value
+  type     = "organization_user"
+  org      = btp_subaccount_environment_instance.cloudfoundry.platform_id
+}
+
+# Create Space
+resource "cloudfoundry_space" "team_space" {
+  depends_on = [cloudfoundry_org_role.my_role]
+  name = var.space_name
+  org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
+}
+
+resource "cloudfoundry_space_role" "space_role" {
+  depends_on = [cloudfoundry_org_role.my_role]
+  for_each = var.cf_space_manager
+  username = each.value
+  type     = "space_manager"
+  space    = cloudfoundry_space.team_space.id
 }
 
 ######################################################################
@@ -60,13 +98,15 @@ resource "btp_subaccount_subscription" "bas-subscribe" {
 resource "btp_subaccount_role_collection_assignment" "Business_Application_Studio_Administrator" {
   subaccount_id        = btp_subaccount.project.id
   role_collection_name = "Business_Application_Studio_Administrator"
-  user_name            = var.btp_user
+  user_name            = data.btp_whoami.me.email
   depends_on           = [btp_subaccount_subscription.bas-subscribe]
 }
+
+
 resource "btp_subaccount_role_collection_assignment" "Business_Application_Studio_Developer" {
   subaccount_id        = btp_subaccount.project.id
   role_collection_name = "Business_Application_Studio_Developer"
-  user_name            = var.btp_user
+  user_name            = data.btp_whoami.me.email
   depends_on           = [btp_subaccount_subscription.bas-subscribe]
 }
 ######################################################################
@@ -86,7 +126,7 @@ resource "btp_subaccount_subscription" "build_workzone_subscribe" {
 resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
   subaccount_id        = btp_subaccount.project.id
   role_collection_name = "Launchpad_Admin"
-  user_name            = var.btp_user
+  user_name            = data.btp_whoami.me.email
   depends_on           = [btp_subaccount_subscription.build_workzone_subscribe]
 }
 ######################################################################

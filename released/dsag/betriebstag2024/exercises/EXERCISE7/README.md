@@ -2,13 +2,13 @@
 
 ## Goal of this Exercise 🎯
 
-In this *optional* exercise you will earn how to create a Cloud Foundry environment instance in SAP BTP using Terraform. You will see how to leverage multiple providers (the **real** strength of Terraform) and how to work with modules.
+In this *optional* exercise you will earn how to create a Cloud Foundry environment instance and a Cloud Foundry space in SAP BTP using Terraform. You will see how to leverage multiple providers (the **real** strength of Terraform) and how to work with modules.
 
 ## Creation of a Cloud Foundry environment
 
-We ant to create a Cloud Foundry environment in the subaccount. We will not directly use the resources of the Terraform provider for SAP BTP, but leverage a concept called [modules](https://developer.hashicorp.com/terraform/language/modules).
+We want to create a Cloud Foundry environment in the subaccount. We will not directly use the resources of the Terraform provider for SAP BTP, but leverage a concept called [modules](https://developer.hashicorp.com/terraform/language/modules).
 
-Modules are a way to organize Terraform configurations into reusable components. We have a fitting module for the task at hand in this repository. Navigate to the `modules` folder in the root of this repo and you will find the fitting module at [environments/cloudfoundry/envinstance_cf](../../../../modules/environment/cloudfoundry/).
+Modules are a way to organize Terraform configurations into reusable components. We have a fitting module for the task at hand in this repository. Navigate to the `modules` folder in the root of this repo and you will find the fitting module at [environments/cloudfoundry/envinstance_cf](../../modules/environment/cloudfoundry/envinstance_cf/README.md).
 
 Inspect the folder and you will see a known file structure:
 
@@ -34,7 +34,7 @@ Then add the following code to call this module:
 
 ```terraform
 module "cloudfoundry_environment" {
-  source = "../../../modules/environment/cloudfoundry/envinstance_cf"
+  source = "../modules/environment/cloudfoundry/envinstance_cf"
 
   subaccount_id           = btp_subaccount.project.id
   instance_name           = local.project_subaccount_cf_org
@@ -74,8 +74,8 @@ As we are using an additional provider we must make Terraform aware of this in t
 
 ```terraform
 cloudfoundry = {
-      source  = "cloudfoundry-community/cloudfoundry"
-      version = "~>0.53.0"
+      source  = "SAP/cloudfoundry"
+      version = "0.1.0-beta"
     }
 ```
 
@@ -104,7 +104,7 @@ To fulfill all requirements for the authentication against the Cloud Foundry env
 - Linux/MacOS/GitHub Codespaces:
 
     ```bash
-    export CF_USERNAME=<your SAP BTP username>
+    export CF_USER=<your SAP BTP username>
     export CF_PASSWORD='<your SAP BTP password>'
     ```
 
@@ -138,13 +138,13 @@ You know the drill by now:
 
     <img width="600px" src="assets/ex7_2.png" alt="executing terraform plan with cloud foundry">
 
-2. Apply the Terraform configuration to create the subaccount:
+2. Apply the Terraform configuration to create the environment:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue.
+    You will be prompted to confirm the creation of the environment. Type `yes` and press `Enter` to continue.
 
 The result should look like this:
 
@@ -154,8 +154,84 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 
  <img width="600px" src="assets/ex7_4.png" alt="SAP BTP Cockpit with Cloud Foundry environment">
 
+## Creation of a Cloud Foundry space
+
+As a last task we also want to add a Cloud Foundry space to the Cloud Foundry environment. We will use the same concept as before and leverage a module. Navigate to the `modules` folder in the root of this repo and you will find the fitting module at [environments/cloudfoundry/space_cf](../../modules/environment/cloudfoundry/space_cf/README.md).
+
+### Step 1: Add the space name variable to the configuration
+
+First we need to add one more variable in the `variables.tf` file. Open the `variables.tf` file and add the following code:
+
+```terraform
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
+}
+```
+
+This allows us to specify the name of the Cloud Foundry space. We also define a default value (`dev`) for the variable. Save the changes.
+
+### Step 2: Add the module to the Terraform configuration
+
+To trigger the creation of a Cloud Foundry space, we add the module to the `main.tf` file. Open the `main.tf` file and add the following code:
+
+```terraform
+module "cloudfoundry_space" {
+  source = "../modules/environment/cloudfoundry/space_cf"
+
+  cf_org_id           = module.cloudfoundry_environment.cf_org_id
+  name                = var.cf_space_name
+  cf_space_managers   = []
+  cf_space_developers = []
+  cf_space_auditors   = []
+}
+```
+
+Save the changes.
+
+### Step 3: Apply the changes
+
+As we have all prerequisites already in place when it comes to provider configuration and authentication. However, we need to reinitialize the module that we use. To achieve that run the following command:
+
+```bash
+terraform init
+```
+
+The output should look like this:
+
+<img width="600px" src="assets/ex7_5.png" alt="executing terraform init with cloud foundry provider">
+
+Once we have initialized the module we can proceed with the creation of the Cloud Foundry space. As before we execute the following commands:
+
+1. Plan the Terraform configuration to see what will be created:
+
+    ```bash
+    terraform plan
+    ```
+
+    The output should look like this:
+
+    <img width="600px" src="assets/ex7_6.png" alt="executing terraform plan for cloud foundry space creation">
+
+2. Apply the Terraform configuration to create the space:
+
+    ```bash
+    terraform apply
+    ```
+
+    You will be prompted to confirm the creation of the space. Type `yes` and press `Enter` to continue.
+
+The result should look like this:
+
+<img width="600px" src="assets/ex7_7.png" alt="executing terraform apply for cloud foundry space creation">
+
+You can also check that everything is in place via the SAP BTP cockpit. You should see the Cloud Foundry space in the subaccount:
+
+ <img width="600px" src="assets/ex7_8.png" alt="SAP BTP Cockpit with Cloud Foundry space">
+
 ## Summary
 
-You've now successfully created a Cloud Foundry environment instance in SAP BTP.  
+You've now successfully created a Cloud Foundry environment instance as well as a Cloud Foundry space in SAP BTP.  
 
 Continue to - [Exercise 8 - Cleanup](../EXERCISE8/README.md).

@@ -1,8 +1,10 @@
 ###############################################################################################
 # Setup of names in accordance to naming convention
 ###############################################################################################
+resource "random_uuid" "uuid" {}
+
 locals {
-  random_uuid               = uuid()
+  random_uuid               = random_uuid.uuid.result
   project_subaccount_domain = "teched23-tf-sap-ms-${local.random_uuid}"
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
@@ -47,34 +49,34 @@ resource "time_sleep" "wait_a_few_seconds" {
 # Entitlement of all services and apps
 ######################################################################
 resource "btp_subaccount_entitlement" "integrationsuite" {
-  depends_on = [time_sleep.wait_a_few_seconds]
+  depends_on    = [time_sleep.wait_a_few_seconds]
   subaccount_id = btp_subaccount.project.id
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement if contains(["app"], entitlement.type)
   }
-  service_name  = each.value.service_name
-  plan_name     = each.value.plan_name
+  service_name = each.value.service_name
+  plan_name    = each.value.plan_name
 }
 
 ######################################################################
 # Create service subscriptions
 ######################################################################
-data "btp_subaccount_subscriptions" "all"{
+data "btp_subaccount_subscriptions" "all" {
   subaccount_id = btp_subaccount.project.id
-  depends_on = [ btp_subaccount_entitlement.integrationsuite ]
+  depends_on    = [btp_subaccount_entitlement.integrationsuite]
 }
 
 resource "btp_subaccount_subscription" "app" {
 
   subaccount_id = btp_subaccount.project.id
   for_each = {
-  for index, entitlement in var.entitlements :
-  index => entitlement if contains(["app"], entitlement.type)
+    for index, entitlement in var.entitlements :
+    index => entitlement if contains(["app"], entitlement.type)
   }
 
-  app_name   = [
-    for subscription in data.btp_subaccount_subscriptions.all.values:subscription
+  app_name = [
+    for subscription in data.btp_subaccount_subscriptions.all.values : subscription
     if subscription.commercial_app_name == each.value.service_name
   ][0].app_name
 

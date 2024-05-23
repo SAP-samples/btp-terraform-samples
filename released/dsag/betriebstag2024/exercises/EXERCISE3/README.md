@@ -60,13 +60,13 @@ Now we can apply the changes to our subaccount. Run the following commands:
 
     <img width="600px" src="assets/ex3_1.png" alt="terraform plan output for role collection assignment">
 
-2. Apply the Terraform configuration to create the subaccount:
+2. Apply the Terraform configuration to create the assignment of the role collections:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue. You should see the following output:
+    You will be prompted to confirm the creation the assignment of the role collections. Type `yes` and press `Enter` to continue. You should see the following output:
 
     <img width="600px" src="assets/ex3_2.png" alt="terraform apply output for role collection assignment">
 

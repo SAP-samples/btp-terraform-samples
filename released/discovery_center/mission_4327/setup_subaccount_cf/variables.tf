@@ -25,10 +25,27 @@ variable "cf_environment_label" {
 }
 
 # Cloudfoundry space name
-variable "cf_space_name" {
+variable "space_name" {
   type        = string
   description = "The Cloudfoundry space name"
-  default     = "dev"
+  default     = "gpdev"
+}
+variable "cf_org_name" {
+  type        = string
+  description = "Defines to which organisation the project account shall belong to."
+  default     = "e2e-tf-demo"
+}
+
+variable "cf_org_user" {
+    type        = set(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cf_space_manager" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 # CLI server
@@ -43,49 +60,6 @@ variable "subaccount_admins" {
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
-
-variable "subaccount_service_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_managers" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space managers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_developers" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_auditors" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space auditors"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_org_auditors" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry org auditors"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_org_managers" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry org auditors"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_org_billing_managers" {
-  type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry org auditors"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
 ###
 # Entitlements
 ###
@@ -149,11 +123,6 @@ variable "entitlements" {
     }
   ]
 }
-variable "btp_user" {
-description = "BTP user email"
-type = string
-}
-
 # Plan_name update
 variable "bas_plan_name" {
 description = "BAS plan"

@@ -1,6 +1,6 @@
 # Terraform Workspace for Kyma GitOps
 
-This Terraform workspace creates a BTP subaccount and a Kubernetes cluster with Kyma runtime, and then bootstraps it with [Flux CD](https://flux.io) for GitOps. 
+This Terraform workspace creates a BTP subaccount and a Kubernetes cluster with Kyma runtime, and then bootstraps it with [Flux CD](https://fluxcd.io/) for GitOps.
 
 ## Structure
 
