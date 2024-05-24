@@ -17,6 +17,7 @@ env:
   CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
   CUSTOM_IDP:  ${{ secrets.CUSTOM_IDP }}
   GH_ACTION_USER_1: ${{ secrets.GH_ACTION_USER_1 }}
+  GH_ACTION_USER_2: ${{ secrets.GH_ACTION_USER_2 }}
   DEV_OVERRIDE: 'assets/provider-config-ghaction.txt'
 
 jobs:
@@ -60,9 +61,9 @@ jobs:
           sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
-           else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var cf_org_user=${{ secrets.GH_ACTION_USER_1 }} -var cf_space_manager=${{ secrets.GH_ACTION_USER_1 }} -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var='cf_org_user=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var='cf_space_manager=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
           else 
-            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var cf_org_user=${{ secrets.GH_ACTION_USER_1 }} -var cf_space_manager=${{ secrets.GH_ACTION_USER_1 }} -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var='cf_org_user=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var='cf_space_manager=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -auto-approve -no-color 
           fi
 
       - name: Terraform destroy
@@ -75,9 +76,9 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]
           then 
-            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var cf_org_user=${{ secrets.GH_ACTION_USER_1 }} -var cf_space_manager=${{ secrets.GH_ACTION_USER_1 }} -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var='cf_org_user=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var='cf_space_manager=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -auto-approve -no-color 
           else 
-            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var cf_org_user=${{ secrets.GH_ACTION_USER_1 }} -var cf_space_manager=${{ secrets.GH_ACTION_USER_1 }} -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var='cf_org_user=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var='cf_space_manager=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -auto-approve -no-color 
           fi
       - name: Check out provider repository
         id: checkout_provider_repo
@@ -125,9 +126,9 @@ jobs:
           sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
-           else.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var cf_org_user=${{ secrets.GH_ACTION_USER_1 }} -var cf_space_manager=${{ secrets.GH_ACTION_USER_1 }} -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var='cf_org_user=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var='cf_space_manager=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var "btp_user=${BTP_USERNAME}" -var "btp_pass=${BTP_PASSWORD}" -auto-approve -no-color 
           else 
-            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var cf_org_user=${{ secrets.GH_ACTION_USER_1 }} -var cf_space_manager=${{ secrets.GH_ACTION_USER_1 }} -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} apply -var-file="${{ matrix.usecase.var_file }}" -var='cf_org_user=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var='cf_space_manager=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -auto-approve -no-color 
           fi
 
       - name: Terraform destroy for local provider
@@ -140,9 +141,9 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
           if [ ${{ matrix.usecase.use_custom_idp }} = true ]
           then 
-            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var cf_org_user=${{ secrets.GH_ACTION_USER_1 }} -var cf_space_manager=${{ secrets.GH_ACTION_USER_1 }} -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var='cf_org_user=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var='cf_space_manager=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -auto-approve -no-color 
           else 
-            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var cf_org_user=${{ secrets.GH_ACTION_USER_1 }} -var cf_space_manager=${{ secrets.GH_ACTION_USER_1 }} -auto-approve -no-color 
+            terraform -chdir=${{ matrix.usecase.folder }} destroy -var-file='${{ matrix.usecase.var_file }}' -var='cf_org_user=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -var='cf_space_manager=["${{ secrets.GH_ACTION_USER_1 }},${{ secrets.GH_ACTION_USER_2 }}"]' -auto-approve -no-color 
           fi
           
   create_issue_on_failure:
