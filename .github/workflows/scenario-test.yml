@@ -16,6 +16,7 @@ env:
   CF_USER: ${{ secrets.BTP_USERNAME }}
   CF_PASSWORD: ${{ secrets.BTP_PASSWORD }}
   CUSTOM_IDP:  ${{ secrets.CUSTOM_IDP }}
+  GH_ACTION_USER_1: ${{ secrets.GH_ACTION_USER_1 }}
   DEV_OVERRIDE: 'assets/provider-config-ghaction.txt'
 
 jobs:
