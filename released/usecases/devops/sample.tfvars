@@ -1,10 +1,3 @@
-##########################################################################
-# IAS configuration - 
-# Custom IAS must added as "Custom Identity Provider for Platform Users"
-# at the global account
-##########################################################################
-custom_idp                     = "<your custom IAS>"
-
 #################################cd
 # Account settings
 #################################
@@ -13,9 +6,23 @@ region                         = "eu10"
 subaccount_name                = "devopsdemo"
 org                            = "org"
 cf_space                       = "dev"
+# a valid Cloud Foundry URL - please check which are available for your global account
 cf_url                         = "https://api.cf.eu10.hana.ondemand.com"
 directory_labels = {CostCenter = ["123456"], Department= ["ABCD"]}
 subaccount_labels = {Owner = ["Bla Bla"]}
+
+##############################################
+# IAS configuration for application users 
+# if not set the default would be taken
+##############################################
+#custom_idp = "your IAS for application users"
+
+######################################################################
+# IAS configuration - Set the origin of the custom platform user trust.
+# If not set the sap.ids would be taken
+#####################################################################
+#origin = "the origin for the IAS for platform users"
+
 
 ############################################################
 # User configuration - the users must exit in the custom IAS

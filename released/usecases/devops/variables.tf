@@ -114,8 +114,8 @@ variable "environment_label" {
 }
 variable "origin" {
   type = string
-  description = "Origin for Cloud Foundry users"
-  default = "sap.ids"
+  description = "The origin for the IAS account for platform-users - if not set the sap.ids would be taken"
+  default = ""
 }
 
 variable "hana_system_password" {

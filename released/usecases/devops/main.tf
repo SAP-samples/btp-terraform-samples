@@ -40,12 +40,14 @@ data "btp_subaccount_environments" "all" {
 ###############################################################################################
 
 resource "btp_subaccount_trust_configuration" "simple" {
+  count = var.custom_idp != "" ? 1 : 0
   subaccount_id     = data.btp_subaccount.project.id
   identity_provider = var.custom_idp
 }
 
-
-
+locals {
+  default_origin = var.origin != "" ? var.origin : "sap.ids"
+}
 
 
 ###############################################################################################
@@ -57,7 +59,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-administrators"
   role_collection_name = "Subaccount Administrator"
   for_each             = toset(var.admins)
   user_name            = each.value
-  origin               = btp_subaccount_trust_configuration.simple.origin
+  origin               = local.default_origin
   depends_on           = [btp_subaccount.create_subaccount]
 }
 
@@ -66,7 +68,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-viewer" {
   role_collection_name = "Subaccount Viewer"
   for_each             = toset(var.developers)
   user_name            = each.value
-  origin               = btp_subaccount_trust_configuration.simple.origin
+  origin               = local.default_origin
   depends_on           = [btp_subaccount.create_subaccount]
 }
 
@@ -107,7 +109,7 @@ resource "cloudfoundry_org_role" "manager" {
   username = each.value
   type     = "organization_manager"
   org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = btp_subaccount_trust_configuration.simple.origin
+  origin   = local.default_origin
   depends_on = [ btp_subaccount_environment_instance.cf ]
 }
 
@@ -116,7 +118,7 @@ resource "cloudfoundry_org_role" "user" {
   username = each.value
   type     = "organization_user"
   org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = btp_subaccount_trust_configuration.simple.origin
+  origin   = local.default_origin
   depends_on = [ btp_subaccount_environment_instance.cf ]
 }
 resource "cloudfoundry_org_role" "user_admins" {
@@ -124,7 +126,7 @@ resource "cloudfoundry_org_role" "user_admins" {
   username = each.value
   type     = "organization_user"
   org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = btp_subaccount_trust_configuration.simple.origin
+  origin   = local.default_origin
   depends_on = [ btp_subaccount_environment_instance.cf ]
 }
 resource "cloudfoundry_space" "space" {
@@ -140,7 +142,7 @@ resource "cloudfoundry_space_role" "space_manager" {
   username = each.value
   type     = "space_manager"
   space    = cloudfoundry_space.space.id
-  origin   = btp_subaccount_trust_configuration.simple.origin
+  origin   = local.default_origin
   depends_on = [ cloudfoundry_space.space ]
 }
 
@@ -149,7 +151,7 @@ resource "cloudfoundry_space_role" "space_developers" {
   username = each.value
   type     = "space_developer"
   space    = cloudfoundry_space.space.id
-  origin   = btp_subaccount_trust_configuration.simple.origin
+  origin   = local.default_origin
   depends_on = [ cloudfoundry_space.space ]
 }
 
@@ -345,37 +347,37 @@ data "btp_subaccount_service_plan" "hana_cloud" {
   depends_on    = [btp_subaccount_entitlement.hana_cloud]  
 }
 
-# Create service instance for SAP HANA Cloud
-resource "btp_subaccount_service_instance" "hana_cloud"{
-  subaccount_id  = data.btp_subaccount.project.id
-  serviceplan_id = data.btp_subaccount_service_plan.hana_cloud.id
-  name           = var.hana_db_name
-  depends_on     = [btp_subaccount_entitlement.hana_cloud]
-  parameters     = jsonencode(
-    { "data" : { 
-        "memory":16,
-        "edition":"cloud",
-        "systempassword": "${var.hana_system_password}",
-        "additionalWorkers":0,
-        "dataEncryption":{"mode":"DEDICATED_KEY"},
-        "disasterRecoveryMode":"no_disaster_recovery",
-        "enabledservices":{
-          "docstore":false,
-          "dpserver":true,
-          "scriptserver":false
-        },
-        "productVersion":{
-          "releaseCycle":"pre-release-quarterly",
-          "track":"2024.2"
-        },
-        "requestedOperation":{},
-        "serviceStopped":false,
-        "slaLevel":"standard",
-        "storage":80,
-        "updateStrategy":"withRestart",
-        "vcpu":1,
-        "whitelistIPs":["0.0.0.0/0"]
-      }
-  }) 
- }
+# # Create service instance for SAP HANA Cloud
+# resource "btp_subaccount_service_instance" "hana_cloud"{
+#   subaccount_id  = data.btp_subaccount.project.id
+#   serviceplan_id = data.btp_subaccount_service_plan.hana_cloud.id
+#   name           = var.hana_db_name
+#   depends_on     = [btp_subaccount_entitlement.hana_cloud]
+#   parameters     = jsonencode(
+#     { "data" : { 
+#         "memory":16,
+#         "edition":"cloud",
+#         "systempassword": "${var.hana_system_password}",
+#         "additionalWorkers":0,
+#         "dataEncryption":{"mode":"DEDICATED_KEY"},
+#         "disasterRecoveryMode":"no_disaster_recovery",
+#         "enabledservices":{
+#           "docstore":false,
+#           "dpserver":true,
+#           "scriptserver":false
+#         },
+#         "productVersion":{
+#           "releaseCycle":"pre-release-quarterly",
+#           "track":"2024.2"
+#         },
+#         "requestedOperation":{},
+#         "serviceStopped":false,
+#         "slaLevel":"standard",
+#         "storage":80,
+#         "updateStrategy":"withRestart",
+#         "vcpu":1,
+#         "whitelistIPs":["0.0.0.0/0"]
+#       }
+#   }) 
+#  }
 
