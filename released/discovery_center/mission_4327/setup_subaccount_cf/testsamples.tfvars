@@ -6,9 +6,6 @@ globalaccount        = "terraformintprod"
 region               = "eu10"
 subaccount_name      = "dcmtest"
 subaccount_admins    = ["jane.doe@test.com", "john.doe@test.com"]
-cf_org_user          = ["jane.doe@test.com", "john.doe@test.com"]
-cf_space_manager     = ["jane.doe@test.com", "john.doe@test.com"]
-
 #------------------------------------------------------------------------------------------------------
 # Entitlements plan update
 #------------------------------------------------------------------------------------------------------
