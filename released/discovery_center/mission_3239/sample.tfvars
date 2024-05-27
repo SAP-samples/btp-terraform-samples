@@ -11,6 +11,7 @@ region                         = "us10"
 subaccount_name                = "Mission-3239"
 org                            = "team1"
 cf_space                       = "dev"
+# a valid Cloud Foundry URL - please check which are available for your global account
 cf_url                         = "https://api.cf.us10.hana.ondemand.com"
 
 #################################

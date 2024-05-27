@@ -8,6 +8,7 @@ This sample shows how to setup your SAP BTP account for the Discovery Center Mis
 The setup comprises the following resources:
 
 - Creation of the SAP BTP subaccount
+- Enablement of Cloudfoundry Environment - [see available regions and endpoints](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-available-for-cloud-foundry-environment)
 - Entitlements of services
    * SAP Business Application Studio
    * SAP Build Work Zone, standard edition

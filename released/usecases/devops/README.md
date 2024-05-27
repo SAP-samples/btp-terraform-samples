@@ -9,6 +9,7 @@ This sample shows how to create an account with DevOps tools like the SAP Contin
 The setup comprises the following resources:
 
 - Creation of the DevOps account
+- Enablement of Cloudfoundry Environment - [see available regions and endpoints](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-available-for-cloud-foundry-environment)
 - Entitlements of services
 - Subscriptions to applications
 - Role collection assignments to users
