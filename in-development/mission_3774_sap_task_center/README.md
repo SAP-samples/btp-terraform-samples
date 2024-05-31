@@ -11,7 +11,7 @@ The setup comprises the following resources:
 - Creation of the SAP BTP subaccount
 - Entitlements of services
 - Subscriptions to applications
-- Creation of service instances
+- Creation of service instance
 - Role collection assignments to users
 
 ## Deploying the resources
