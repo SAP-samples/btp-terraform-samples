@@ -2,7 +2,7 @@
 
 ## Overview
 
-This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Keep the Core Clean Using SAP Build Apps with SAP S/4HANA](https://discovery-center.cloud.sap/index.html#/missiondetail/3774/)
+This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Establish a Central Inbox with SAP Task Center](https://discovery-center.cloud.sap/index.html#/missiondetail/3774/)
 
 ## Content of setup
 
