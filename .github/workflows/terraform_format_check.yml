@@ -10,9 +10,8 @@ on:
     workflow_dispatch:
 
 jobs:
-    # Retrive the changed directories from the PR
     terraform-fmt:
-      name: Validate format of Terraform files
+      name: Validate Format of Terraform Files
       runs-on: ubuntu-latest
       steps:
         - name: Checkout code
