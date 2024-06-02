@@ -26,7 +26,7 @@ variable "cli_server_url" {
 
 # Plan_name update
 variable "bas_plan_name" {
-description = "BAS plan"
-type = string
-default = "standard-edition" #For production use of Business Application Studio, upgrade the plan from the `free-tier` to the appropriate plan e.g standard-edition
+  description = "BAS plan"
+  type        = string
+  default     = "standard-edition" #For production use of Business Application Studio, upgrade the plan from the `free-tier` to the appropriate plan e.g standard-edition
 }

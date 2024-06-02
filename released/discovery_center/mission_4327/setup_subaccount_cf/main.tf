@@ -56,7 +56,7 @@ resource "time_sleep" "wait_a_few_seconds" {
 
 output "org_id" {
   value = btp_subaccount_environment_instance.cloudfoundry.platform_id
-  
+
 }
 
 resource "cloudfoundry_org_role" "my_role" {
@@ -69,16 +69,16 @@ resource "cloudfoundry_org_role" "my_role" {
 # Create Space
 resource "cloudfoundry_space" "team_space" {
   depends_on = [cloudfoundry_org_role.my_role]
-  name = var.space_name
-  org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
+  name       = var.space_name
+  org        = btp_subaccount_environment_instance.cloudfoundry.platform_id
 }
 
 resource "cloudfoundry_space_role" "space_role" {
   depends_on = [cloudfoundry_org_role.my_role]
-  for_each = var.cf_space_manager
-  username = each.value
-  type     = "space_manager"
-  space    = cloudfoundry_space.team_space.id
+  for_each   = var.cf_space_manager
+  username   = each.value
+  type       = "space_manager"
+  space      = cloudfoundry_space.team_space.id
 }
 
 ######################################################################
@@ -133,24 +133,24 @@ resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
 # Create HANA entitlement subscription
 ######################################################################
 resource "btp_subaccount_entitlement" "hana-cloud" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana-cloud"
-  plan_name        = var.hana-cloud_plan_name
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana-cloud"
+  plan_name     = var.hana-cloud_plan_name
 }
 # Enable HANA Cloud Tools
 resource "btp_subaccount_entitlement" "hana-cloud-tools" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana-cloud-tools"
-  plan_name        = "tools"
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana-cloud-tools"
+  plan_name     = "tools"
 }
 resource "btp_subaccount_subscription" "hana-cloud-tools" {
-  subaccount_id    = btp_subaccount.project.id
-  app_name         = "hana-cloud-tools"
-  plan_name        = "tools"
-  depends_on       = [btp_subaccount_entitlement.hana-cloud-tools]
+  subaccount_id = btp_subaccount.project.id
+  app_name      = "hana-cloud-tools"
+  plan_name     = "tools"
+  depends_on    = [btp_subaccount_entitlement.hana-cloud-tools]
 }
 resource "btp_subaccount_entitlement" "hana-hdi-shared" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana"
-  plan_name        = "hdi-shared"
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana"
+  plan_name     = "hdi-shared"
 }

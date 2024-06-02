@@ -9,8 +9,8 @@ output "hana_cloud_service_instance_name" {
   description = "The ID of the HANA Cloud service instance."
 }
 
-output "hana_cloud_envs"{
-  value = <<-EOT
+output "hana_cloud_envs" {
+  value       = <<-EOT
   HANA_DB_ADDRESS=${jsondecode(btp_subaccount_service_binding.hana_cloud.credentials)["host"]}
   HANA_DB_PORT=${jsondecode(btp_subaccount_service_binding.hana_cloud.credentials)["port"]}
   HANA_DB_USER=DBADMIN

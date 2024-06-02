@@ -5,7 +5,7 @@ terraform {
       version = "~> 1.4.0"
     }
     cloudfoundry = {
-      source = "SAP/cloudfoundry"
+      source  = "SAP/cloudfoundry"
       version = "0.1.0-beta"
     }
   }
@@ -19,5 +19,5 @@ provider "btp" {
 }
 
 provider "cloudfoundry" {
-  api_url  = "https://api.cf.${var.region}.hana.ondemand.com"
+  api_url = "https://api.cf.${var.region}.hana.ondemand.com"
 }
