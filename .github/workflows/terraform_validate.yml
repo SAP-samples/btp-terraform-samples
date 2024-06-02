@@ -1,4 +1,4 @@
-name: Terraform Format Check
+name: Terraform Validation Check
 
 on:
     pull_request:
@@ -10,8 +10,8 @@ on:
     workflow_dispatch:
 
 jobs:
-    terraform-fmt:
-      name: Validate Format of Terraform Files
+    terraform-validate:
+      name: Validate Syntax of Terraform Files
       runs-on: ubuntu-latest
       steps:
         - name: Checkout code
@@ -28,7 +28,7 @@ jobs:
           with:
               dir_names: 'true'
         
-        - name: Validate Terraform format
+        - name: Validate Terraform sytnax
           if: steps.changed-files.outputs.any_changed == 'true'
           env:
             ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
@@ -36,7 +36,11 @@ jobs:
           run: |
               EXIT_CODE=0
               for file in ${ALL_CHANGED_FILES}; do
-                echo "Checking format of $file with terraform fmt"
-                terraform fmt -check -recursive "$file" || EXIT_CODE=$?
+                echo "Validating Terraform files in $file with terraform fmt"
+                cd $file
+                terraform init -backend=false || EXIT_CODE=$?
+                terraform validate || EXIT_CODE=$?
+                rm -rf .terraform/
+                cd ${{ github.workspace }}
               done
               exit $EXIT_CODE
