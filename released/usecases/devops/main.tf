@@ -3,21 +3,21 @@
 ###############################################################################################
 locals {
   project_subaccount_domain = lower("${var.subaccount_name}")
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}${var.org}", "-", ""),0,32)
+  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}${var.org}", "-", ""), 0, 32)
 }
 
 resource "btp_directory" "proj" {
   name        = var.directory
   description = var.directory_desc
   features    = ["DEFAULT"]
-  labels = var.directory_labels
+  labels      = var.directory_labels
 }
- 
+
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "create_subaccount" {
-  count = var.subaccount_id == "" ? 1 : 0
+  count     = var.subaccount_id == "" ? 1 : 0
   name      = var.subaccount_name
   subdomain = local.project_subaccount_domain
   parent_id = btp_directory.proj.id
@@ -34,13 +34,13 @@ data "btp_subaccount_environments" "all" {
 }
 
 
- 
+
 ###############################################################################################
 # Assign custom IDP to subaccount
 ###############################################################################################
 
 resource "btp_subaccount_trust_configuration" "simple" {
-  count = var.custom_idp != "" ? 1 : 0
+  count             = var.custom_idp != "" ? 1 : 0
   subaccount_id     = data.btp_subaccount.project.id
   identity_provider = var.custom_idp
 }
@@ -101,58 +101,58 @@ resource "btp_subaccount_environment_instance" "cf" {
   parameters = jsonencode({
     instance_name = local.project_subaccount_cf_org
   })
-  depends_on = [ btp_subaccount_role_collection_assignment.subaccount-administrators,btp_subaccount_role_collection_assignment.subaccount-viewer ]
+  depends_on = [btp_subaccount_role_collection_assignment.subaccount-administrators, btp_subaccount_role_collection_assignment.subaccount-viewer]
 }
 
 resource "cloudfoundry_org_role" "manager" {
-  for_each = toset(var.admins)
-  username = each.value
-  type     = "organization_manager"
-  org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = local.default_origin
-  depends_on = [ btp_subaccount_environment_instance.cf ]
+  for_each   = toset(var.admins)
+  username   = each.value
+  type       = "organization_manager"
+  org        = btp_subaccount_environment_instance.cf.platform_id
+  origin     = local.default_origin
+  depends_on = [btp_subaccount_environment_instance.cf]
 }
 
 resource "cloudfoundry_org_role" "user" {
-  for_each = toset(var.developers)
-  username = each.value
-  type     = "organization_user"
-  org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = local.default_origin
-  depends_on = [ btp_subaccount_environment_instance.cf ]
+  for_each   = toset(var.developers)
+  username   = each.value
+  type       = "organization_user"
+  org        = btp_subaccount_environment_instance.cf.platform_id
+  origin     = local.default_origin
+  depends_on = [btp_subaccount_environment_instance.cf]
 }
 resource "cloudfoundry_org_role" "user_admins" {
-  for_each = toset(var.admins)
-  username = each.value
-  type     = "organization_user"
-  org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = local.default_origin
-  depends_on = [ btp_subaccount_environment_instance.cf ]
+  for_each   = toset(var.admins)
+  username   = each.value
+  type       = "organization_user"
+  org        = btp_subaccount_environment_instance.cf.platform_id
+  origin     = local.default_origin
+  depends_on = [btp_subaccount_environment_instance.cf]
 }
 resource "cloudfoundry_space" "space" {
-  name      = var.cf_space
-  org       = btp_subaccount_environment_instance.cf.platform_id
-  labels    = { test : "pass", purpose : "prod" }
-  depends_on = [ btp_subaccount_environment_instance.cf, cloudfoundry_org_role.user_admins,cloudfoundry_org_role.user]
+  name       = var.cf_space
+  org        = btp_subaccount_environment_instance.cf.platform_id
+  labels     = { test : "pass", purpose : "prod" }
+  depends_on = [btp_subaccount_environment_instance.cf, cloudfoundry_org_role.user_admins, cloudfoundry_org_role.user]
 }
 
 
 resource "cloudfoundry_space_role" "space_manager" {
-  for_each = toset(var.admins)
-  username = each.value
-  type     = "space_manager"
-  space    = cloudfoundry_space.space.id
-  origin   = local.default_origin
-  depends_on = [ cloudfoundry_space.space ]
+  for_each   = toset(var.admins)
+  username   = each.value
+  type       = "space_manager"
+  space      = cloudfoundry_space.space.id
+  origin     = local.default_origin
+  depends_on = [cloudfoundry_space.space]
 }
 
 resource "cloudfoundry_space_role" "space_developers" {
-  for_each = toset(var.developers)
-  username = each.value
-  type     = "space_developer"
-  space    = cloudfoundry_space.space.id
-  origin   = local.default_origin
-  depends_on = [ cloudfoundry_space.space ]
+  for_each   = toset(var.developers)
+  username   = each.value
+  type       = "space_developer"
+  space      = cloudfoundry_space.space.id
+  origin     = local.default_origin
+  depends_on = [cloudfoundry_space.space]
 }
 
 
@@ -188,12 +188,12 @@ data "btp_subaccount_service_plan" "cicd_service" {
   offering_name = "cicd-service"
   name          = "default"
   depends_on    = [btp_subaccount_entitlement.cicd_service]
-} 
+}
 resource "btp_subaccount_service_instance" "cicd_service" {
   subaccount_id  = data.btp_subaccount.project.id
   serviceplan_id = data.btp_subaccount_service_plan.cicd_service.id
   name           = "cicdservice"
-  parameters     = jsonencode({"data" : { "role" : "administrator" }})
+  parameters     = jsonencode({ "data" : { "role" : "administrator" } })
   depends_on     = [btp_subaccount_subscription.cicd_app]
 }
 
@@ -260,9 +260,9 @@ resource "btp_subaccount_entitlement" "bas" {
   service_name  = "sapappstudio"
   plan_name     = "standard-edition"
   depends_on    = [btp_subaccount_trust_configuration.simple]
- }
+}
 
- # Create app subscription to SAP Build Apps (depends on entitlement)
+# Create app subscription to SAP Build Apps (depends on entitlement)
 resource "btp_subaccount_subscription" "bas-subscribe" {
   subaccount_id = data.btp_subaccount.project.id
   app_name      = "sapappstudio"
@@ -291,46 +291,46 @@ resource "btp_subaccount_role_collection_assignment" "bas_admin" {
 # HANA Cloud 
 ########################################################################
 resource "btp_subaccount_entitlement" "hana-cloud-tools" {
-  subaccount_id    =  data.btp_subaccount.project.id
-  service_name     = "hana-cloud-tools"
-  plan_name        = "tools"
+  subaccount_id = data.btp_subaccount.project.id
+  service_name  = "hana-cloud-tools"
+  plan_name     = "tools"
 }
 resource "btp_subaccount_subscription" "hana-cloud-tools" {
-  subaccount_id    =  data.btp_subaccount.project.id
-  app_name         = "hana-cloud-tools"
-  plan_name        = "tools"
-  depends_on       = [btp_subaccount_entitlement.hana-cloud-tools]
+  subaccount_id = data.btp_subaccount.project.id
+  app_name      = "hana-cloud-tools"
+  plan_name     = "tools"
+  depends_on    = [btp_subaccount_entitlement.hana-cloud-tools]
 }
 
 resource "btp_subaccount_entitlement" "hana_hdi_shared" {
-  subaccount_id =  data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.project.id
   service_name  = "hana"
   plan_name     = "hdi-shared"
 }
 
 resource "btp_subaccount_role_collection_assignment" "hana_admin" {
-  subaccount_id        =  data.btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "SAP HANA Cloud Administrator"
   for_each             = toset(var.admins)
   user_name            = each.value
-  depends_on  = [btp_subaccount_subscription.hana-cloud-tools]
+  depends_on           = [btp_subaccount_subscription.hana-cloud-tools]
 }
 
 
 resource "btp_subaccount_role_collection_assignment" "hana_viewer" {
-  subaccount_id        =  data.btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "SAP HANA Cloud Viewer"
   for_each             = toset(var.developers)
   user_name            = each.value
-  depends_on  = [btp_subaccount_subscription.hana-cloud-tools]
+  depends_on           = [btp_subaccount_subscription.hana-cloud-tools]
 }
 
 resource "btp_subaccount_role_collection_assignment" "hana_security" {
-  subaccount_id        =  data.btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "SAP HANA Cloud Security Administrator"
   for_each             = toset(var.admins)
   user_name            = each.value
-  depends_on  = [btp_subaccount_subscription.hana-cloud-tools]
+  depends_on           = [btp_subaccount_subscription.hana-cloud-tools]
 }
 
 resource "btp_subaccount_entitlement" "hana_cloud" {
@@ -344,7 +344,7 @@ data "btp_subaccount_service_plan" "hana_cloud" {
   subaccount_id = data.btp_subaccount.project.id
   offering_name = "hana-cloud"
   name          = "hana"
-  depends_on    = [btp_subaccount_entitlement.hana_cloud]  
+  depends_on    = [btp_subaccount_entitlement.hana_cloud]
 }
 
 # # Create service instance for SAP HANA Cloud

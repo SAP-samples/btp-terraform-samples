@@ -2,18 +2,18 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "<Global Account ID>"
-region               = "<BTP Landscape region e.g ap11>"
-subaccount_name      = "<Sub Account Name>"
+globalaccount   = "<Global Account ID>"
+region          = "<BTP Landscape region e.g ap11>"
+subaccount_name = "<Sub Account Name>"
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
 # To add extra users to the subaccount, the user running the script becomes the admin, without inclusion in admins.
-subaccount_admins         = ["user1-email", "user2-email"]
+subaccount_admins = ["user1-email", "user2-email"]
 # To Create Cloudfoundry Org and add users with specific roles
-cf_org_name               = "<NAME FOR CF ORG>"
-cf_org_user               = ["user1-email", "user2-email"]
-cf_space_manager          = ["user1-email", "user2-email"]
+cf_org_name      = "<NAME FOR CF ORG>"
+cf_org_user      = ["user1-email", "user2-email"]
+cf_space_manager = ["user1-email", "user2-email"]
 #------------------------------------------------------------------------------------------------------
 # Entitlements plan update
 #------------------------------------------------------------------------------------------------------

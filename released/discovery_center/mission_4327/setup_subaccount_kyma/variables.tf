@@ -42,8 +42,8 @@ variable "subaccount_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 variable "btp_user" {
-description = "BTP user email"
-type = string
+  description = "BTP user email"
+  type        = string
 }
 variable "administrators" {
   description = "Users to be assigned as administrators."
@@ -77,17 +77,17 @@ variable "oidc" {
 # Plan_name update for services
 #################################
 variable "bas_plan_name" {
-description = "BAS plan"
-type = string
-default = "free-tier"
+  description = "BAS plan"
+  type        = string
+  default     = "free-tier"
 }
 variable "build_workzone_plan_name" {
-description = "Build Workzone plan"
-type = string
-default = "free-tier"
+  description = "Build Workzone plan"
+  type        = string
+  default     = "free-tier"
 }
 variable "hana-cloud_plan_name" {
-description = "hana-cloud plan"
-type = string
-default = "free"
+  description = "hana-cloud plan"
+  type        = string
+  default     = "free"
 }

@@ -85,7 +85,7 @@ variable "region" {
   validation {
     condition     = contains(["eu10-canary", "ap10", "eu10", "eu11", "jp10", "us10"], var.region)
     error_message = "Please enter a valid region for the sub account. Checkout https://github.com/SAP-samples/btp-service-metadata/blob/main/v0/developer/aicore.json for regions providing the AI Core service."
-  }  
+  }
 }
 
 variable "admins" {

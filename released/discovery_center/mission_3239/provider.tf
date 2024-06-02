@@ -5,8 +5,8 @@ terraform {
       source  = "sap/btp"
       version = "~> 1.3.0"
     }
-   cloudfoundry = {
-      source = "SAP/cloudfoundry"
+    cloudfoundry = {
+      source  = "SAP/cloudfoundry"
       version = "0.2.1-beta"
     }
   }
@@ -16,13 +16,13 @@ terraform {
 # via the Terraform provider for SAP BTP
 provider "btp" {
   globalaccount = var.globalaccount
-  username       = var.btp_username
-  password       = var.btp_password
-  
+  username      = var.btp_username
+  password      = var.btp_password
+
 }
 
 provider "cloudfoundry" {
-    api_url = var.cf_url
-    user = var.btp_username
-    password = var.btp_password
+  api_url  = var.cf_url
+  user     = var.btp_username
+  password = var.btp_password
 }

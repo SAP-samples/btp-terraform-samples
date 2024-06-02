@@ -14,7 +14,7 @@ terraform {
 # Setup of names in accordance to naming convention
 # ------------------------------------------------------------------------------------------------------
 locals {
-  project_subaccount_name   = "${var.unit_shortname}_${var.stage}"
+  project_subaccount_name = "${var.unit_shortname}_${var.stage}"
   # Remove all blanks and substitute all "_" with a "-"
   project_subaccount_domain = replace(lower(replace("${local.project_subaccount_name}", "_", "-")), " ", "")
   project_subaccount_cf_org = replace(join("", ["${var.unit}", "${local.project_subaccount_domain}"]), " ", "")
@@ -62,9 +62,9 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 module "cloudfoundry_environment" {
   source = "../../../../modules/environment/cloudfoundry/envinstance_cf"
 
-  subaccount_id         = btp_subaccount.project.id
-  instance_name         = local.project_subaccount_cf_org
-  cf_org_name           = local.project_subaccount_cf_org
+  subaccount_id           = btp_subaccount.project.id
+  instance_name           = local.project_subaccount_cf_org
+  cf_org_name             = local.project_subaccount_cf_org
   cf_org_managers         = var.emergency_admins
   cf_org_billing_managers = var.emergency_admins
   cf_org_auditors         = var.emergency_admins

@@ -3,24 +3,24 @@ variable "globalaccount" {
   description = "The globalaccount subdomain where the sub account shall be created."
 }
 variable "directory" {
-  type = string
+  type        = string
   description = "Directory name"
-  default = "terraform-demo"
+  default     = "terraform-demo"
 }
 variable "directory_desc" {
-  type = string
+  type        = string
   description = "Directory description"
-  default = "Project ABCD"
+  default     = "Project ABCD"
 }
-variable directory_labels {
-  type = map(set(string))
+variable "directory_labels" {
+  type        = map(set(string))
   description = "Labels for directory"
 }
-variable subaccount_labels {
-  type = map(set(string))
+variable "subaccount_labels" {
+  type        = map(set(string))
   description = "Labels for directory"
   default = {
-    "name" = [ "value" ]
+    "name" = ["value"]
   }
 }
 variable "subaccount_name" {
@@ -39,9 +39,9 @@ variable "subaccount_id" {
 variable "custom_idp" {
   type        = string
   description = "Defines the custom IDP to be used for the subaccount"
-  default = "" 
+  default     = ""
 }
- 
+
 variable "region" {
   type        = string
   description = "The region where the sub account shall be created in."
@@ -49,9 +49,9 @@ variable "region" {
 }
 
 variable "org" {
-  type = string
+  type        = string
   description = "Your SAP BTP org e.g. department"
-  default = "org"
+  default     = "org"
 }
 
 variable "cicd_service_plan" {
@@ -65,9 +65,9 @@ variable "cicd_service_plan" {
 }
 
 variable "cicd_service_params" {
-  type = string
+  type        = string
   description = "The parameters for the CI/CD service instance"
-  default = ""
+  default     = ""
 }
 
 variable "admins" {
@@ -76,35 +76,35 @@ variable "admins" {
 }
 
 variable "developers" {
-  type = list(string)
+  type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as developers."
-} 
+}
 
 variable "btp_username" {
-  type = string
+  type        = string
   description = "SAP BTP user name"
 }
 
 variable "btp_password" {
-  type = string
+  type        = string
   description = "Password for SAP BTP user"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "cf_space" {
-  type = string
+  type        = string
   description = "Name of the cloud foundry space"
 }
 
 variable "cf_url" {
-  type = string
+  type        = string
   description = "URL of Cloud Foundry landscape"
 }
 
 variable "cf_admins" {
   type        = list(string)
   description = "Name of the cloud foundry space"
-  default = []
+  default     = []
 }
 
 variable "environment_label" {
@@ -113,17 +113,17 @@ variable "environment_label" {
   default     = ""
 }
 variable "origin" {
-  type = string
+  type        = string
   description = "The origin for the IAS account for platform-users - if not set the sap.ids would be taken"
-  default = ""
+  default     = ""
 }
 
 variable "hana_system_password" {
-  type = string
+  type        = string
   description = "Password for the SAP HANA Cloud SYSTEM user"
 }
 
 variable "hana_db_name" {
-  type = string
+  type        = string
   description = "Name of the SAP HANA Cloud DB"
 }

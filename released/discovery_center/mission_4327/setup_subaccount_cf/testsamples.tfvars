@@ -2,10 +2,10 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "terraformintprod"
-region               = "eu10"
-subaccount_name      = "dcmtest"
-subaccount_admins    = ["jane.doe@test.com", "john.doe@test.com"]
+globalaccount     = "terraformintprod"
+region            = "eu10"
+subaccount_name   = "dcmtest"
+subaccount_admins = ["jane.doe@test.com", "john.doe@test.com"]
 #------------------------------------------------------------------------------------------------------
 # Entitlements plan update
 #------------------------------------------------------------------------------------------------------
