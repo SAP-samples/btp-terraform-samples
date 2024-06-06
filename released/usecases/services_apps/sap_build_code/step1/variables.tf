@@ -79,6 +79,27 @@ variable "cf_space_developer" {
   }
 }
 
+variable "build_code_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF space as space developer."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.build_code_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.build_code_admins)
+    error_message = "Please enter a valid email address for the admins."
+  }
+}
+variable "build_code_developers" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF space as space developer."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.build_code_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.build_code_developers)
+    error_message = "Please enter a valid email address for the admins."
+  }
+}
+
 variable "cf_environment_label" {
   type        = string
   description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."

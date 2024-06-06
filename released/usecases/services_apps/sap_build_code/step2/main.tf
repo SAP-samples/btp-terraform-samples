@@ -23,6 +23,7 @@ resource "btp_subaccount_entitlement" "sdm" {
 # Create the service instance
 data "cloudfoundry_service" "sdm" {
   name = "sdm"
+  depends_on = [ btp_subaccount_entitlement.sdm ]
 }
 resource "cloudfoundry_service_instance" "sdm" {
   name         = "default_sdm"
@@ -54,6 +55,7 @@ resource "btp_subaccount_entitlement" "mobile_services" {
 # Create the service instance
 data "cloudfoundry_service" "mobile_services" {
   name = "mobile-services"
+  depends_on = [ btp_subaccount_entitlement.mobile_services ]
 }
 resource "cloudfoundry_service_instance" "mobile_services" {
   name         = "default_mobile-services"
@@ -72,8 +74,6 @@ resource "cloudfoundry_service_credential_binding" "mobile_services" {
   service_instance = cloudfoundry_service_instance.mobile_services.id
 }
 
-
-
 # ------------------------------------------------------------------------------------------------------
 # Setup cloud-logging
 # ------------------------------------------------------------------------------------------------------
@@ -86,6 +86,7 @@ resource "btp_subaccount_entitlement" "cloud_logging" {
 # Create the service instance
 data "cloudfoundry_service" "cloud_logging" {
   name = "cloud-logging"
+  depends_on = [ btp_subaccount_entitlement.cloud_logging ]
 }
 resource "cloudfoundry_service_instance" "cloud_logging" {
   name         = "default_cloud-logging"
@@ -116,6 +117,7 @@ resource "btp_subaccount_entitlement" "alert_notification" {
 # Create the service instance
 data "cloudfoundry_service" "alert_notification" {
   name = "alert-notification"
+  depends_on = [ btp_subaccount_entitlement.alert_notification ]
 }
 resource "cloudfoundry_service_instance" "alert_notification" {
   name         = "default_alert-notification"
@@ -148,6 +150,7 @@ resource "btp_subaccount_entitlement" "transport" {
 # Create the service instance
 data "cloudfoundry_service" "transport" {
   name = "transport"
+  depends_on = [ btp_subaccount_entitlement.transport ]
 }
 resource "cloudfoundry_service_instance" "transport" {
   name         = "default_transport"
@@ -178,6 +181,7 @@ resource "btp_subaccount_entitlement" "autoscaler" {
 # Create the service instance
 data "cloudfoundry_service" "autoscaler" {
   name = "autoscaler"
+  depends_on = [ btp_subaccount_entitlement.autoscaler ]
 }
 resource "cloudfoundry_service_instance" "autoscaler" {
   name         = "default_autoscaler"
@@ -199,6 +203,7 @@ resource "btp_subaccount_entitlement" "feature_flags" {
 # Create the service instance
 data "cloudfoundry_service" "feature_flags" {
   name = "feature-flags"
+  depends_on = [ btp_subaccount_entitlement.feature_flags ]
 }
 resource "cloudfoundry_service_instance" "feature_flags" {
   name         = "default_feature-flags"
@@ -216,7 +221,6 @@ resource "cloudfoundry_service_credential_binding" "feature_flags" {
   name             = join("_", ["defaultKey", random_id.service_key_feature_flags.hex])
   service_instance = cloudfoundry_service_instance.feature_flags.id
 }
-
 
 # ------------------------------------------------------------------------------------------------------
 #  USERS AND ROLES
