@@ -23,4 +23,4 @@ region               = "us10"
 subaccount_name = "SAP Build Code TF setup"
 
 # The admin users
-admins = ["jane.doe@test.com", "your.email@test.com"]
+subaccount_admins = ["jane.doe@test.com", "your.email@test.com"]

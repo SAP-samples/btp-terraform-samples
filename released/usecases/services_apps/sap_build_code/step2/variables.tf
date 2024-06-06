@@ -37,45 +37,43 @@ variable "cf_org_name" {
  
 }
 
-# The admins of the CF Org
-variable "admins" {
+variable "cf_org_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to each cf org."
+  description = "Defines the colleagues who are added to a CF org as administrators."
 
   # add validation to check if admins contains a list of valid email addresses
   validation {
-    condition     = length([for email in var.admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.admins)
+    condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
     error_message = "Please enter a valid email address for the admins."
   }
 }
 
-# Define roles for a CF user
-variable "roles_cf_org" {
+variable "cf_space_manager" {
   type        = list(string)
-  description = "Defines the list of roles to be assigned to the users in a CF Org."
-  default = [
-    "organization_user",
-    "organization_manager",
-    "organization_auditor",
-    "organization_billing_manager"
-  ]
+  description = "Defines the colleagues who are added to a CF space as space manager."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_manager : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_manager)
+    error_message = "Please enter a valid email address for the admins."
+  }
 }
 
-# Define roles for a user in the CF space
-variable "roles_cf_space" {
+variable "cf_space_developer" {
   type        = list(string)
-  description = "Defines the list of roles to be assigned to the users in a CF Org."
-  default = [
-    "space_developer",
-    "space_supporter",
-    "space_manager",
-    "space_auditor"
-  ]
+  description = "Defines the colleagues who are added to a CF space as space developer."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_developer : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developer)
+    error_message = "Please enter a valid email address for the admins."
+  }
 }
+
 
 # The identity provider for the subaccount
 variable "identity_provider" {
   type        = string
   description = "The identity provider for the subaccount."
-  default     = "sap.default"
+  default     = "sap.ids"
 }

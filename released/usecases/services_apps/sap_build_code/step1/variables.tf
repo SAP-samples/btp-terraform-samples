@@ -34,13 +34,47 @@ variable "region" {
   }
 }
 
-variable "admins" {
+variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
 
   # add validation to check if admins contains a list of valid email addresses
   validation {
-    condition     = length([for email in var.admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.admins)
+    condition     = length([for email in var.subaccount_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_admins)
+    error_message = "Please enter a valid email address for the admins."
+  }
+}
+
+
+variable "cf_org_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF org as administrators."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
+    error_message = "Please enter a valid email address for the admins."
+  }
+}
+
+variable "cf_space_manager" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF space as space manager."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_manager : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_manager)
+    error_message = "Please enter a valid email address for the admins."
+  }
+}
+
+variable "cf_space_developer" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF space as space developer."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_developer : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developer)
     error_message = "Please enter a valid email address for the admins."
   }
 }
@@ -54,6 +88,6 @@ variable "cf_environment_label" {
 variable "identity_provider" {
   type        = string
   description = "The identity provider for the subaccount."
-  default     = "sap.default"
+  default     = "sap.ids"
   
 }
