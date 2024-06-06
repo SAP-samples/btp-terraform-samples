@@ -209,22 +209,22 @@ resource "btp_subaccount_subscription" "cicd_app" {
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.cicd_app]
 }
 
-# ------------------------------------------------------------------------------------------------------
-# Setup alm-ts (Cloud Transport Management)
-# ------------------------------------------------------------------------------------------------------
-# Entitle
-resource "btp_subaccount_entitlement" "alm_ts" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "alm-ts"
-  plan_name     = "build-code"
-}
-# subscribe
-resource "btp_subaccount_subscription" "alm_ts" {
-  subaccount_id = btp_subaccount.build_code.id
-  app_name      = "alm-ts"
-  plan_name     = "build-code"
-  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.alm_ts]
-}
+# # ------------------------------------------------------------------------------------------------------
+# # Setup alm-ts (Cloud Transport Management)
+# # ------------------------------------------------------------------------------------------------------
+# # Entitle
+# resource "btp_subaccount_entitlement" "alm_ts" {
+#   subaccount_id = btp_subaccount.build_code.id
+#   service_name  = "alm-ts"
+#   plan_name     = "build-code"
+# }
+# # subscribe
+# resource "btp_subaccount_subscription" "alm_ts" {
+#   subaccount_id = btp_subaccount.build_code.id
+#   app_name      = "alm-ts"
+#   plan_name     = "build-code"
+#   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.alm_ts]
+# }
 
 # ------------------------------------------------------------------------------------------------------
 # Setup feature-flags-dashboard (Feature Flags Service)
@@ -243,22 +243,22 @@ resource "btp_subaccount_subscription" "feature_flags_dashboard" {
   depends_on    = [btp_subaccount_entitlement.feature_flags_dashboard]
 }
 
-# ------------------------------------------------------------------------------------------------------
-# Setup sdm-web (Document Management Service)
-# ------------------------------------------------------------------------------------------------------
-# Entitle
-resource "btp_subaccount_entitlement" "sdm-web" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "sdm-web"
-  plan_name     = "build-code"
-}
-# subscribe
-resource "btp_subaccount_subscription" "sdm-web" {
-  subaccount_id = btp_subaccount.build_code.id
-  app_name      = "sdm-web"
-  plan_name     = "build-code"
-  depends_on    = [btp_subaccount_entitlement.sdm-web]
-}
+# # ------------------------------------------------------------------------------------------------------
+# # Setup sdm-web (Document Management Service)
+# # ------------------------------------------------------------------------------------------------------
+# # Entitle
+# resource "btp_subaccount_entitlement" "sdm-web" {
+#   subaccount_id = btp_subaccount.build_code.id
+#   service_name  = "sdm-web"
+#   plan_name     = "build-code"
+# }
+# # subscribe
+# resource "btp_subaccount_subscription" "sdm-web" {
+#   subaccount_id = btp_subaccount.build_code.id
+#   app_name      = "sdm-web"
+#   plan_name     = "build-code"
+#   depends_on    = [btp_subaccount_entitlement.sdm-web]
+# }
 
 # ------------------------------------------------------------------------------------------------------
 # Create tfvars file for step2 with cf configuration
