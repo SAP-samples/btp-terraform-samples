@@ -107,35 +107,35 @@ data "btp_subaccount_service_plan" "destination" {
   offering_name = "destination"
   name          = "lite"
 }
-# Create service instance
-resource "btp_subaccount_service_instance" "destination" {
-  subaccount_id  = btp_subaccount.build_code.id
-  serviceplan_id = data.btp_subaccount_service_plan.destination.id
-  name           = "destination"
-  depends_on     = [btp_subaccount_service_binding.cicd_service]
-    parameters = jsonencode({
-    HTML5Runtime_enabled = true
-    init_data = {
-      subaccount = {
-        existing_destinations_policy = "update"
-        destinations = [
-          {
-            Description = "[Do not delete] SAP Continuous Integration and Delivery"
-            Type = "HTTP"
-            clientId = "${btp_subaccount_service_binding.cicd_service["uaa"]["clientid"]}"
-            "HTML5.DynamicDestination" = true
-            Authentication = "OAuth2JWTBearer"
-            Name = "cicd-backend"
-            tokenServiceURL = "${btp_subaccount_service_binding.cicd_service["uaa"]["url"]}"
-            ProxyType = "Internet"
-            URL =  "${btp_subaccount_service_binding.cicd_service["url"]}"
-            tokenServiceURLType = "Dedicated"
-          }
-        ]
-      }
-    }
-  })
-}
+# # Create service instance
+# resource "btp_subaccount_service_instance" "destination" {
+#   subaccount_id  = btp_subaccount.build_code.id
+#   serviceplan_id = data.btp_subaccount_service_plan.destination.id
+#   name           = "destination"
+#   depends_on     = [btp_subaccount_service_binding.cicd_service]
+#     parameters = jsonencode({
+#     HTML5Runtime_enabled = true
+#     init_data = {
+#       subaccount = {
+#         existing_destinations_policy = "update"
+#         destinations = [
+#           {
+#             Description = "[Do not delete] SAP Continuous Integration and Delivery"
+#             Type = "HTTP"
+#             clientId = "${btp_subaccount_service_binding.cicd_service["uaa"]["clientid"]}"
+#             "HTML5.DynamicDestination" = true
+#             Authentication = "OAuth2JWTBearer"
+#             Name = "cicd-backend"
+#             tokenServiceURL = "${btp_subaccount_service_binding.cicd_service["uaa"]["url"]}"
+#             ProxyType = "Internet"
+#             URL =  "${btp_subaccount_service_binding.cicd_service.url}"
+#             tokenServiceURLType = "Dedicated"
+#           }
+#         ]
+#       }
+#     }
+#   })
+# }
 
 # ------------------------------------------------------------------------------------------------------
 # APP SUBSCRIPTIONS
