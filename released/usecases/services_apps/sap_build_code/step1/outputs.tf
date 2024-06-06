@@ -11,5 +11,5 @@ output "cf_org_id" {
 output "cf_org_name" {
   value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]
   description = "The Cloudfoundry ORG name."
-  
+
 }

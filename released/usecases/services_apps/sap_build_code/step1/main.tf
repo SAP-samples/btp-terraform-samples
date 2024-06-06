@@ -145,8 +145,19 @@ data "btp_subaccount_service_plan" "cicd_service" {
 resource "btp_subaccount_service_instance" "cicd_service" {
   subaccount_id  = btp_subaccount.build_code.id
   serviceplan_id = data.btp_subaccount_service_plan.cicd_service.id
-  name           = "cicd-service-instance"
-  depends_on     = [btp_subaccount_entitlement.cicd_service]
+  name           = "default_cicd-service"
+  depends_on     = [btp_subaccount_entitlement.cicd_service, btp_subaccount_environment_instance.cf]
+}
+
+# Create service key
+resource "random_id" "service_key_cicd_service" {
+  byte_length = 12
+}
+resource "btp_subaccount_service_binding" "cicd_service" {
+  subaccount_id       = btp_subaccount.build_code.id
+  service_instance_id = btp_subaccount_service_instance.cicd_service.id
+  name                = join("_", ["defaultKey", random_id.service_key_cicd_service.hex])
+  depends_on          = [btp_subaccount_service_instance.cicd_service]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -253,4 +264,33 @@ resource "btp_subaccount_subscription" "feature_flags_dashboard" {
   app_name      = "feature-flags-dashboard"
   plan_name     = "dashboard"
   depends_on    = [btp_subaccount_entitlement.feature_flags_dashboard]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Setup sdm-web (Document Management Service)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "sdm-web" {
+  subaccount_id = btp_subaccount.build_code.id
+  service_name  = "sdm-web"
+  plan_name     = "build-code"
+}
+# subscribe
+resource "btp_subaccount_subscription" "sdm-web" {
+  subaccount_id = btp_subaccount.build_code.id
+  app_name      = "sdm-web"
+  plan_name     = "build-code"
+  depends_on    = [btp_subaccount_entitlement.sdm-web]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Create tfvars file for step2 with cf configuration
+# ------------------------------------------------------------------------------------------------------
+resource "local_file" "output_vars_step1" {
+  content       = <<-EOT
+  cf_api_endpoint = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
+  cf_org_id       = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
+  cf_org_name     = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
+  EOT
+  filename = "../step2/step1.tfvars"
 }
