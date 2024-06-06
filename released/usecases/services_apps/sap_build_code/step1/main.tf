@@ -137,40 +137,6 @@ resource "btp_subaccount_service_instance" "destination" {
   })
 }
 
-
-{
-  "uaa": {
-    "apiurl": "https://api.authentication.us10.hana.ondemand.com",
-    "clientid": "sb-13e4ff75-668f-4cce-bd8d-bcaba24534bf!b291653|cicdservice!b5250",
-    "clientsecret": "01fd1df3-df8f-4c85-a780-a0931ac208ca$rLCnhtZ2J5JaCCWMnNudlQ6hQa-jgs7VP_qQOcd38X4=",
-    "credential-type": "binding-secret",
-    "identityzone": "qh4nfwr7cd2vgn1f",
-    "identityzoneid": "11e9aea4-23f9-437b-9090-057c8c60e4e6",
-    "sburl": "https://internal-xsuaa.authentication.us10.hana.ondemand.com",
-    "serviceInstanceId": "13e4ff75-668f-4cce-bd8d-bcaba24534bf",
-    "subaccountid": "11e9aea4-23f9-437b-9090-057c8c60e4e6",
-    "tenantid": "11e9aea4-23f9-437b-9090-057c8c60e4e6",
-    "tenantmode": "shared",
-    "uaadomain": "authentication.us10.hana.ondemand.com",
-    "url": "https://qh4nfwr7cd2vgn1f.authentication.us10.hana.ondemand.com",
-    "verificationkey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjrAMl7d9t4CqVr3SB27f\n7kofW/7k0mijLsFqGZbacHYNtupVMy3g3zTkqLCJiK5P2hLuNBrejXiheP/jR9BQ\nRZXbwuHsMmvuh1qKM7Fx/NlJ130CAB5XmqtaFiWHtqoboQIoHtmYSX1mzdxlq7Qo\nFGiELZwO4wRlD7bn+7xmZG3yQwO/qzcsDQ1Lr3w7NneDnBiNz5Vpsenw0a48Fjlq\nSuqgGCI/VsB45FcPAtH3sspJnCWjsa8kd5DD/6vbe1Xtc2asOn5g5Nr4TY0fufmP\n/4f408BPSW8dqJEyHJeP50P1keCEG7p9ahbBmcHBWp+p0lRLrI+Oae92bLXx+1RO\nFwIDAQAB\n-----END PUBLIC KEY-----",
-    "xsappname": "13e4ff75-668f-4cce-bd8d-bcaba24534bf!b291653|cicdservice!b5250",
-    "zoneid": "11e9aea4-23f9-437b-9090-057c8c60e4e6"
-  },
-  "url": "https://cicd-service.cfapps.us10.hana.ondemand.com",
-  "vendor": "SAP"
-}
-Description=[Do not delete] SAP Continuous Integration and Delivery
-Type=HTTP
-clientId=sb-13e4ff75-668f-4cce-bd8d-bcaba24534bf\!b291653|cicdservice\!b5250
-HTML5.DynamicDestination=true
-Authentication=OAuth2JWTBearer
-Name=cicd-backend
-tokenServiceURL=https\://qh4nfwr7cd2vgn1f.authentication.us10.hana.ondemand.com/oauth/token
-ProxyType=Internet
-URL=https\://cicd-service.cfapps.us10.hana.ondemand.com
-tokenServiceURLType=Dedicated
-
 # ------------------------------------------------------------------------------------------------------
 # APP SUBSCRIPTIONS
 # ------------------------------------------------------------------------------------------------------
