@@ -346,3 +346,14 @@ resource "btp_subaccount_role_collection_assignment" "build_code_developer" {
   user_name            = each.value
   depends_on           = [btp_subaccount_role_collection.build_code_developer]
 }
+
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "Subaccount Administrator"
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "build_code_developer" {
+  for_each             = toset("${var.subaccount_admins}")
+  subaccount_id        = btp_subaccount.build_code.id
+  role_collection_name = "Subaccount Administrator"
+  user_name            = each.value
+  depends_on           = [btp_subaccount.build_code]
+}
