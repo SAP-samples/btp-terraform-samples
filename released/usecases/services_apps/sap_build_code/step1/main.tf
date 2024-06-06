@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------------------------------------------
-# Setup subaccount domain (to ensure uniqueness in BTP global account)
+# SUBACCOUNT SETUP
 # ------------------------------------------------------------------------------------------------------
+# Setup subaccount domain (to ensure uniqueness in BTP global account)
 resource "random_id" "subaccount_domain_suffix" {
   byte_length = 12
 }
-
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
 # ------------------------------------------------------------------------------------------------------
@@ -14,17 +14,14 @@ resource "btp_subaccount" "build_code" {
   region    = lower(var.region)
 }
 
-
+# ------------------------------------------------------------------------------------------------------
+# CLOUDFOUNDRY PREPARATION
 # ------------------------------------------------------------------------------------------------------
 # Fetch all available environments for the subaccount
-# ------------------------------------------------------------------------------------------------------
 data "btp_subaccount_environments" "all" {
   subaccount_id = btp_subaccount.build_code.id
 }
-
-# ------------------------------------------------------------------------------------------------------
 # Take the landscape label from the first CF environment if no environment label is provided
-# ------------------------------------------------------------------------------------------------------
 resource "null_resource" "cache_target_environment" {
   triggers = {
     label = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
@@ -34,7 +31,6 @@ resource "null_resource" "cache_target_environment" {
     ignore_changes = all
   }
 }
-
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
 # ------------------------------------------------------------------------------------------------------
@@ -55,7 +51,6 @@ resource "btp_subaccount_environment_instance" "cf" {
 # SERVICES
 # ------------------------------------------------------------------------------------------------------
 #
-
 # ------------------------------------------------------------------------------------------------------
 # Setup cicd-service (not running in CF environment)
 # ------------------------------------------------------------------------------------------------------
@@ -79,7 +74,6 @@ resource "btp_subaccount_service_instance" "cicd_service" {
   name           = "default_cicd-service"
   depends_on     = [btp_subaccount_entitlement.cicd_service, data.btp_subaccount_service_plan.cicd_service]
 }
-
 # Create service key
 resource "random_id" "service_key_cicd_service" {
   byte_length = 12
@@ -90,7 +84,6 @@ resource "btp_subaccount_service_binding" "cicd_service" {
   name                = join("_", ["defaultKey", random_id.service_key_cicd_service.hex])
   depends_on          = [btp_subaccount_service_instance.cicd_service]
 }
-
 
 # ------------------------------------------------------------------------------------------------------
 # Setup destination
@@ -139,7 +132,6 @@ resource "btp_subaccount_service_instance" "destination" {
   })
 }
 
-
 # ------------------------------------------------------------------------------------------------------
 # APP SUBSCRIPTIONS
 # ------------------------------------------------------------------------------------------------------
@@ -153,7 +145,7 @@ resource "btp_subaccount_entitlement" "build_code" {
   service_name  = "build-code"
   plan_name     = "standard"
 }
-# subscribe
+# Subscribe
 resource "btp_subaccount_subscription" "build_code" {
   subaccount_id = btp_subaccount.build_code.id
   app_name      = "build-code"
@@ -170,7 +162,7 @@ resource "btp_subaccount_entitlement" "sapappstudio" {
   service_name  = "sapappstudio"
   plan_name     = "build-code"
 }
-# subscribe (depends on subscription of build-code)
+# Subscribe (depends on subscription of build-code)
 resource "btp_subaccount_subscription" "sapappstudio" {
   subaccount_id = btp_subaccount.build_code.id
   app_name      = "sapappstudio"
@@ -187,7 +179,7 @@ resource "btp_subaccount_entitlement" "sap_launchpad" {
   service_name  = "SAPLaunchpad"
   plan_name     = "standard"
 }
-# subscribe
+# Subscribe
 resource "btp_subaccount_subscription" "sap_launchpad" {
   subaccount_id = btp_subaccount.build_code.id
   app_name      = "SAPLaunchpad"
@@ -204,7 +196,7 @@ resource "btp_subaccount_entitlement" "cicd_app" {
   service_name  = "cicd-app"
   plan_name     = "build-code"
 }
-# subscribe
+# Subscribe
 resource "btp_subaccount_subscription" "cicd_app" {
   subaccount_id = btp_subaccount.build_code.id
   app_name      = "cicd-app"
@@ -221,7 +213,7 @@ resource "btp_subaccount_entitlement" "alm_ts" {
   service_name  = "alm-ts"
   plan_name     = "build-code"
 }
-# subscribe
+# Subscribe
 resource "btp_subaccount_subscription" "alm_ts" {
   subaccount_id = btp_subaccount.build_code.id
   app_name      = "alm-ts"
@@ -238,7 +230,7 @@ resource "btp_subaccount_entitlement" "feature_flags_dashboard" {
   service_name  = "feature-flags-dashboard"
   plan_name     = "dashboard"
 }
-# subscribe
+# Subscribe
 resource "btp_subaccount_subscription" "feature_flags_dashboard" {
   subaccount_id = btp_subaccount.build_code.id
   app_name      = "feature-flags-dashboard"
@@ -255,37 +247,13 @@ resource "btp_subaccount_entitlement" "sdm-web" {
   service_name  = "sdm-web"
   plan_name     = "build-code"
 }
-# subscribe
+# Subscribe
 resource "btp_subaccount_subscription" "sdm-web" {
   subaccount_id = btp_subaccount.build_code.id
   app_name      = "sdm-web"
   plan_name     = "build-code"
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.sdm-web]
 }
-
-# ------------------------------------------------------------------------------------------------------
-# Create tfvars file for step2 with cf configuration
-# ------------------------------------------------------------------------------------------------------
-resource "local_file" "output_vars_step1" {
-  content  = <<-EOT
-  globalaccount      = "${var.globalaccount}"
-  cli_server_url     = ${jsonencode(var.cli_server_url)}
-
-  subaccount_id      = "${btp_subaccount.build_code.id}"
-
-  cf_api_endpoint    = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
-  cf_org_id          = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
-  cf_org_name        = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
-
-  identity_provider  = "${var.identity_provider}"
-
-  cf_org_admins      = ${jsonencode(var.cf_org_admins)}
-  cf_space_developer = ${jsonencode(var.cf_space_developer)}
-  cf_space_manager   = ${jsonencode(var.cf_space_manager)}
-  EOT
-  filename = "../step2/terraform.tfvars"
-}
-
 
 # ------------------------------------------------------------------------------------------------------
 #  USERS AND ROLES
@@ -357,4 +325,28 @@ resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
   depends_on           = [btp_subaccount.build_code]
+}
+
+
+# ------------------------------------------------------------------------------------------------------
+# Create tfvars file for step2 with cf configuration
+# ------------------------------------------------------------------------------------------------------
+resource "local_file" "output_vars_step1" {
+  content  = <<-EOT
+  globalaccount      = "${var.globalaccount}"
+  cli_server_url     = ${jsonencode(var.cli_server_url)}
+
+  subaccount_id      = "${btp_subaccount.build_code.id}"
+
+  cf_api_endpoint    = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
+  cf_org_id          = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
+  cf_org_name        = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
+
+  identity_provider  = "${var.identity_provider}"
+
+  cf_org_admins      = ${jsonencode(var.cf_org_admins)}
+  cf_space_developer = ${jsonencode(var.cf_space_developer)}
+  cf_space_manager   = ${jsonencode(var.cf_space_manager)}
+  EOT
+  filename = "../step2/terraform.tfvars"
 }
