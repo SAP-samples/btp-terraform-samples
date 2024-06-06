@@ -216,6 +216,8 @@ resource "cloudfoundry_service_credential_binding" "feature_flags" {
   name             = join("_", ["defaultKey", random_id.service_key_feature_flags.hex])
   service_instance = cloudfoundry_service_instance.feature_flags.id
 }
+
+
 # ------------------------------------------------------------------------------------------------------
 #  USERS AND ROLES
 # ------------------------------------------------------------------------------------------------------
@@ -241,8 +243,6 @@ resource "cloudfoundry_org_role" "organization_manager" {
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 
-
-
 # ------------------------------------------------------------------------------------------------------
 # Assign CF space roles to the users
 # ------------------------------------------------------------------------------------------------------
@@ -264,7 +264,3 @@ resource "cloudfoundry_space_role" "space_developer" {
   space      = cloudfoundry_space.dev.id
   depends_on = [cloudfoundry_org_role.organization_manager]
 }
-
-
-# ------------------------------------------------------------------------------------------------------
-# Output the CF API endpoint
