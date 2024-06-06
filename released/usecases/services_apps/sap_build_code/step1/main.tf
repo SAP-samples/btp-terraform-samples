@@ -77,7 +77,7 @@ resource "btp_subaccount_service_instance" "cicd_service" {
   subaccount_id  = btp_subaccount.build_code.id
   serviceplan_id = data.btp_subaccount_service_plan.cicd_service.id
   name           = "default_cicd-service"
-  depends_on     = [btp_subaccount_entitlement.cicd_service]
+  depends_on     = [btp_subaccount_entitlement.cicd_service, data.btp_subaccount_service_plan.cicd_service]
 }
 
 # Create service key
@@ -106,13 +106,14 @@ data "btp_subaccount_service_plan" "destination" {
   subaccount_id = btp_subaccount.build_code.id
   offering_name = "destination"
   name          = "lite"
+  depends_on = [ btp_subaccount_entitlement.destination ]
 }
 # Create service instance
 resource "btp_subaccount_service_instance" "destination" {
   subaccount_id  = btp_subaccount.build_code.id
   serviceplan_id = data.btp_subaccount_service_plan.destination.id
   name           = "destination"
-  depends_on     = [btp_subaccount_service_binding.cicd_service]
+  depends_on     = [btp_subaccount_service_binding.cicd_service, data.btp_subaccount_service_plan.destination]
   parameters = jsonencode({
     HTML5Runtime_enabled = true
     init_data = {
@@ -259,7 +260,7 @@ resource "btp_subaccount_subscription" "sdm-web" {
   subaccount_id = btp_subaccount.build_code.id
   app_name      = "sdm-web"
   plan_name     = "build-code"
-  depends_on    = [btp_subaccount_entitlement.sdm-web]
+  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.sdm-web]
 }
 
 # ------------------------------------------------------------------------------------------------------
