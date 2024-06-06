@@ -55,75 +55,6 @@ resource "btp_subaccount_environment_instance" "cf" {
 # SERVICES
 # ------------------------------------------------------------------------------------------------------
 #
-# ------------------------------------------------------------------------------------------------------
-# Setup sdm
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "sdm" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "sdm"
-  plan_name     = "build-code"
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup mobile-services
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "mobile_services" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "mobile-services"
-  plan_name     = "build-code"
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup cloud-logging
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "cloud_logging" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "cloud-logging"
-  plan_name     = "build-code"
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup alert-notification
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "alert_notification" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "alert-notification"
-  plan_name     = "build-code"
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup transport
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "transport" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "transport"
-  plan_name     = "standard"
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup autoscaler
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "autoscaler" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "autoscaler"
-  plan_name     = "standard"
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup feature-flags
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "feature_flags" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "feature-flags"
-  plan_name     = "standard"
-}
 
 # ------------------------------------------------------------------------------------------------------
 # Setup cicd-service (not running in CF environment)
@@ -288,10 +219,18 @@ resource "btp_subaccount_subscription" "sdm-web" {
 # ------------------------------------------------------------------------------------------------------
 resource "local_file" "output_vars_step1" {
   content       = <<-EOT
-  cf_api_endpoint = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
-  cf_org_id       = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
-  cf_org_name     = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
-  admins          = ${jsonencode(var.admins)}
+  globalaccount     = "${var.globalaccount}"
+  cli_server_url    = ${jsonencode(var.cli_server_url)}
+
+  subaccount_id     = "${btp_subaccount.build_code.id}"
+
+  cf_api_endpoint   = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
+  cf_org_id         = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
+  cf_org_name       = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
+
+  identity_provider = "${var.identity_provider}"
+
+  admins            = ${jsonencode(var.admins)}
   EOT
   filename = "../step2/terraform.tfvars"
 }

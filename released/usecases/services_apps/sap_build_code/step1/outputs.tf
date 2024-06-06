@@ -18,3 +18,8 @@ output "admins" {
   value       = var.admins
   description = "The admins of the Cloudfoundry ORG."
 }
+
+output "identity_provider" {
+  value       = var.identity_provider
+  description = "The identity provider for the users"
+}
