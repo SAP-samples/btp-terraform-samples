@@ -95,8 +95,8 @@ variable "entitlements" {
   ]
 }
 
-variable "kyma_instance" { 
-    type = object({
+variable "kyma_instance" {
+  type = object({
     name            = string
     region          = string
     machine_type    = string
@@ -105,7 +105,7 @@ variable "kyma_instance" {
     createtimeout   = string
     updatetimeout   = string
     deletetimeout   = string
-  }) 
+  })
   description = "Your Kyma environment configuration"
 }
 
