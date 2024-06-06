@@ -77,7 +77,7 @@ resource "btp_subaccount_service_instance" "cicd_service" {
   subaccount_id  = btp_subaccount.build_code.id
   serviceplan_id = data.btp_subaccount_service_plan.cicd_service.id
   name           = "default_cicd-service"
-  depends_on     = [btp_subaccount_entitlement.cicd_service, btp_subaccount_environment_instance.cf]
+  depends_on     = [btp_subaccount_entitlement.cicd_service]
 }
 
 # Create service key
@@ -350,7 +350,7 @@ resource "btp_subaccount_role_collection_assignment" "build_code_developer" {
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection "Subaccount Administrator"
 # ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_role_collection_assignment" "build_code_developer" {
+resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
   for_each             = toset("${var.subaccount_admins}")
   subaccount_id        = btp_subaccount.build_code.id
   role_collection_name = "Subaccount Administrator"

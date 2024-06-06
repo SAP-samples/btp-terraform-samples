@@ -1,12 +1,4 @@
 # ------------------------------------------------------------------------------------------------------
-# Your BTP user credentials (you can also provide them as environment variables)
-# ------------------------------------------------------------------------------------------------------
-#BTP_USERNAME="your.email@test.com"
-# ------------------------------------------------------------------------------------------------------
-# Comment out the next line if you want to provide the password here instead of typing it in the console (not recommended for security reasons)
-#BTP_PASSWORD="xxxxx"
-
-# ------------------------------------------------------------------------------------------------------
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
@@ -16,11 +8,19 @@ globalaccount = "xxxxxxxx-xxxxxxx-xxxxxxx-xxxxxxxx-xxxxxx"
 cli_server_url = null
 
 # Region for your subaccount
-region               = "us10"
-#cf_environment_label = "cf-us10"
+region = "us10"
 
 # Name of your sub account
-subaccount_name = "SAP Build Code TF setup"
+subaccount_name = "SAP Build Code - quick account setup"
 
-# The admin users
-subaccount_admins = ["jane.doe@test.com", "your.email@test.com"]
+# ------------------------------------------------------------------------------------------------------
+# USER ROLES
+# ------------------------------------------------------------------------------------------------------
+subaccount_admins     = ["another.user@test.com"]
+
+cf_org_admins         = ["another.user@test.com"]
+cf_space_manager      = ["another.user@test.com", "you@test.com"]
+cf_space_developer    = ["another.user@test.com", "you@test.com"]
+
+build_code_admins     = ["another.user@test.com", "you@test.com"]
+build_code_developers = ["another.user@test.com", "you@test.com"]
