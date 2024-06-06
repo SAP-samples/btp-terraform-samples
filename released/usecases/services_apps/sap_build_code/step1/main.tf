@@ -291,6 +291,7 @@ resource "local_file" "output_vars_step1" {
   cf_api_endpoint = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
   cf_org_id       = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
   cf_org_name     = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
+  admins          = ${jsonencode(var.admins)}
   EOT
-  filename = "../step2/step1.tfvars"
+  filename = "../step2/terraform.tfvars"
 }

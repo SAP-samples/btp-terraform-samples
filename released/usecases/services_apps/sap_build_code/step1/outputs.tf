@@ -13,3 +13,8 @@ output "cf_org_name" {
   description = "The Cloudfoundry ORG name."
 
 }
+
+output "admins" {
+  value       = var.admins
+  description = "The admins of the Cloudfoundry ORG."
+}
