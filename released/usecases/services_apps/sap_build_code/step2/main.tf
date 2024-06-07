@@ -6,7 +6,6 @@ resource "cloudfoundry_space" "dev" {
   org  = var.cf_org_id
 }
 
-
 # ------------------------------------------------------------------------------------------------------
 # SETUP ALL SERVICES FOR CF USAGE
 # ------------------------------------------------------------------------------------------------------
@@ -30,7 +29,7 @@ resource "cloudfoundry_service_instance" "sdm" {
   space        = cloudfoundry_space.dev.id
   type         = "managed"
   service_plan = data.cloudfoundry_service.sdm.service_plans["build-code"]
-  depends_on   = [cloudfoundry_space_role.space_manager, btp_subaccount_entitlement.sdm, cloudfoundry_org_role.organization_manager]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.sdm]
 }
 # Create service key
 resource "random_id" "service_key_sdm" {
@@ -62,7 +61,7 @@ resource "cloudfoundry_service_instance" "mobile_services" {
   space        = cloudfoundry_space.dev.id
   type         = "managed"
   service_plan = data.cloudfoundry_service.mobile_services.service_plans["build-code"]
-  depends_on   = [cloudfoundry_space_role.space_manager, btp_subaccount_entitlement.mobile_services, cloudfoundry_org_role.organization_manager]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.mobile_services]
 }
 # Create service key
 resource "random_id" "service_key_mobile_services" {
@@ -93,7 +92,7 @@ resource "cloudfoundry_service_instance" "cloud_logging" {
   space        = cloudfoundry_space.dev.id
   type         = "managed"
   service_plan = data.cloudfoundry_service.cloud_logging.service_plans["build-code"]
-  depends_on   = [cloudfoundry_space_role.space_manager, btp_subaccount_entitlement.cloud_logging, cloudfoundry_org_role.organization_manager]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.cloud_logging]
 }
 # Create service key
 resource "random_id" "service_key_cloud_logging" {
@@ -124,7 +123,7 @@ resource "cloudfoundry_service_instance" "alert_notification" {
   space        = cloudfoundry_space.dev.id
   type         = "managed"
   service_plan = data.cloudfoundry_service.alert_notification.service_plans["build-code"]
-  depends_on   = [cloudfoundry_space_role.space_manager, btp_subaccount_entitlement.alert_notification, cloudfoundry_org_role.organization_manager]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.alert_notification]
 }
 # Create service key
 resource "random_id" "service_key_alert_notification" {
@@ -157,7 +156,7 @@ resource "cloudfoundry_service_instance" "transport" {
   space        = cloudfoundry_space.dev.id
   type         = "managed"
   service_plan = data.cloudfoundry_service.transport.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.space_manager, btp_subaccount_entitlement.transport, cloudfoundry_org_role.organization_manager]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport]
 }
 # Create service key
 resource "random_id" "service_key_transport" {
@@ -188,7 +187,7 @@ resource "cloudfoundry_service_instance" "autoscaler" {
   space        = cloudfoundry_space.dev.id
   type         = "managed"
   service_plan = data.cloudfoundry_service.autoscaler.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.space_manager, btp_subaccount_entitlement.autoscaler]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.autoscaler]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -210,7 +209,7 @@ resource "cloudfoundry_service_instance" "feature_flags" {
   space        = cloudfoundry_space.dev.id
   type         = "managed"
   service_plan = data.cloudfoundry_service.feature_flags.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.space_manager, btp_subaccount_entitlement.feature_flags, cloudfoundry_org_role.organization_manager]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.feature_flags]
 }
 # Create service key
 resource "random_id" "service_key_feature_flags" {

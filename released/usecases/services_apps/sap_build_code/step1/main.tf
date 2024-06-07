@@ -265,7 +265,6 @@ resource "btp_subaccount_subscription" "sdm-web" {
 # Get all available subaccount roles
 data "btp_subaccount_roles" "all" {
   subaccount_id = btp_subaccount.build_code.id
-
   depends_on    = [btp_subaccount_subscription.alm_ts, btp_subaccount_subscription.build_code, btp_subaccount_subscription.cicd_app, btp_subaccount_subscription.sap_launchpad, btp_subaccount_subscription.sapappstudio, btp_subaccount_subscription.feature_flags_dashboard, btp_subaccount_subscription.sdm-web]
 }
 # ------------------------------------------------------------------------------------------------------
