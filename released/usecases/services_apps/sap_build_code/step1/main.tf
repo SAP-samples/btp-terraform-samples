@@ -72,7 +72,9 @@ resource "btp_subaccount_service_instance" "cicd_service" {
   subaccount_id  = btp_subaccount.build_code.id
   serviceplan_id = data.btp_subaccount_service_plan.cicd_service.id
   name           = "default_cicd-service"
-  depends_on     = [btp_subaccount_entitlement.cicd_service, data.btp_subaccount_service_plan.cicd_service]
+  # Subscription to the cicd-app subscription is required for creating the service instance
+  # See as well https://help.sap.com/docs/continuous-integration-and-delivery/sap-continuous-integration-and-delivery/optional-enabling-api-usage?language=en-US
+  depends_on     = [btp_subaccount_subscription.cicd_app]
 }
 # Create service key
 resource "random_id" "service_key_cicd_service" {
@@ -113,6 +115,7 @@ resource "btp_subaccount_service_instance" "destination" {
       subaccount = {
         existing_destinations_policy = "update"
         destinations = [
+          # This is the destination to the cicd-service binding
           {
             Description                = "[Do not delete] SAP Continuous Integration and Delivery"
             Type                       = "HTTP"
