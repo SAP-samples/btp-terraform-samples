@@ -18,7 +18,7 @@ variable "subaccount_name" {
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.sap.hana.ondemand.com"
+  default     = "https://cli.btp.cloud.sap"
 }
 
 variable "region" {
