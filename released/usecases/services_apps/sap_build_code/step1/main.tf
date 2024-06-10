@@ -294,7 +294,7 @@ resource "btp_subaccount_role_collection_assignment" "build_code_administrator" 
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection "Build Code Developer"
 # ------------------------------------------------------------------------------------------------------
-Create role collection "Build Code Developer"  
+# Create role collection "Build Code Developer"  
 resource "btp_subaccount_role_collection" "build_code_developer" {
   subaccount_id = btp_subaccount.build_code.id
   name          = "Build Code Developer"
