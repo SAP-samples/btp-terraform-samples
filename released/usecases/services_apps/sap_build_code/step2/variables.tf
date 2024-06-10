@@ -16,6 +16,7 @@ variable "subaccount_id" {
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
+  default     = "https://cpcli.cf.sap.hana.ondemand.com"
 }
 
 # The CF Org ID from the Cloud Foundry environment instance
