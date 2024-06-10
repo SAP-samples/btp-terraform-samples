@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     cloudfoundry = {
-      source = "SAP/cloudfoundry"
+      source  = "SAP/cloudfoundry"
       version = "0.2.1-beta"
     }
     btp = {
@@ -18,5 +18,5 @@ provider "btp" {
 
 
 provider "cloudfoundry" {
-  api_url =  var.cf_api_endpoint
+  api_url = var.cf_api_endpoint
 }

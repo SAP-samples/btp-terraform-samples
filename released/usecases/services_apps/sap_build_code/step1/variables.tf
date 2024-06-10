@@ -110,5 +110,5 @@ variable "identity_provider" {
   type        = string
   description = "The identity provider for the subaccount."
   default     = "sap.ids"
-  
+
 }
