@@ -14,17 +14,17 @@ output "subaccount_id" {
 }
 
 output "cf_api_endpoint" {
-  value       = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
+  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]
   description = "The Global Account subdomain"
 }
 
 output "cf_org_id" {
-  value       = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
+  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]
   description = "The Global Account subdomain"
 }
 
 output "cf_org_name" {
-  value       = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
+  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]
   description = "The Global Account subdomain"
 }
 
