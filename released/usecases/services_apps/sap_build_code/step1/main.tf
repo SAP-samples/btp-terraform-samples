@@ -17,29 +17,18 @@ resource "btp_subaccount" "build_code" {
 # ------------------------------------------------------------------------------------------------------
 # CLOUDFOUNDRY PREPARATION
 # ------------------------------------------------------------------------------------------------------
+#
 # Fetch all available environments for the subaccount
 data "btp_subaccount_environments" "all" {
   subaccount_id = btp_subaccount.build_code.id
 }
-
-# Take the landscape label from the first CF environment if no environment label is provided
-# resource "null_resource" "cache_target_environment" {
-#   triggers = {
-#     label = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
-#   }
-
-#   lifecycle {
-#     ignore_changes = all
-#   }
-# }
-
+# ------------------------------------------------------------------------------------------------------
 # Take the landscape label from the first CF environment if no environment label is provided
 # (this replaces the previous null_resource)
+# ------------------------------------------------------------------------------------------------------
 resource "terraform_data" "replacement" {
   input = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
-
-
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
 # ------------------------------------------------------------------------------------------------------
