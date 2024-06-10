@@ -19,5 +19,5 @@
 You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
 
 ```bash
-terraform destroy
+terraform destroy -var-file="step1.tfvars" -var-file="sample.tfvars" 
 ```

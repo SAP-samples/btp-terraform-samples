@@ -45,12 +45,36 @@ To deploy the resources you must:
    terraform apply -var-file="sample.tfvars"
    ```
 
-6. You'll notice, that a `.env` file has been created, containing some environment variables that you can use for your genAI experiments.
+6. The outputs of this `step1` will be needed for the `step2` of this use case. In case you want to create a file with the content of the variables, you can add another resource into the `main.tf` file, that looks like this:
+
+   ```terraform
+   resource "local_file" "output_vars_step1" {
+      content  = <<-EOT
+      globalaccount      = "${var.globalaccount}"
+      cli_server_url     = ${jsonencode(var.cli_server_url)}
+
+      subaccount_id      = "${btp_subaccount.build_code.id}"
+
+      cf_api_endpoint    = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
+      cf_org_id          = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
+      cf_org_name        = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
+
+      identity_provider  = "${var.identity_provider}"
+
+      cf_org_admins      = ${jsonencode(var.cf_org_admins)}
+      cf_space_developer = ${jsonencode(var.cf_space_developer)}
+      cf_space_manager   = ${jsonencode(var.cf_space_manager)}
+      EOT
+      filename = "../step2/terraform.tfvars"
+   }
+   ```
+
+This will create a `terraform.tfvars` file in the `step2` folder. 
 
 ## In the end
 
 You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
 
 ```bash
-terraform destroy
+terraform destroy -var-file="sample.tfvars"
 ```
