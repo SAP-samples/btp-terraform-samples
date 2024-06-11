@@ -39,62 +39,6 @@ variable "subaccount_service_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-
-
-###
-# Entitlements
-###
-variable "entitlements" {
-  type = list(object({
-    service_name = string
-    plan_name    = string
-    type         = string
-  }))
-  description = "The list of entitlements that shall be added to the subaccount."
-  default = [
-    {
-      service_name = "destination"
-      plan_name    = "lite",
-      type         = "service"
-    },
-    {
-      service_name = "xsuaa"
-      plan_name    = "application",
-      type         = "service"
-    },
-    {
-      service_name = "integrationsuite"
-      plan_name    = "enterprise_agreement",
-      type         = "app"
-    },
-    {
-      service_name = "sap-build-apps"
-      plan_name    = "standard"
-      type         = "service"
-    },
-    {
-      service_name = "process-automation"
-      plan_name    = "standard",
-      type         = "app"
-    },
-    {
-      service_name = "process-automation-service"
-      plan_name    = "standard",
-      type         = "service"
-    },
-    {
-      service_name = "apimanagement-apiportal"
-      plan_name    = "apiportal-apiaccess",
-      type         = "service"
-    },
-    {
-      service_name = "apimanagement-devportal"
-      plan_name    = "devportal-apiaccess",
-      type         = "service"
-    }
-  ]
-}
-
 variable "kyma_instance" {
   type = object({
     name            = string
@@ -107,58 +51,14 @@ variable "kyma_instance" {
     deletetimeout   = string
   })
   description = "Your Kyma environment configuration"
+  default = {
+  name            = "my-kyma-environment"
+  region          = "europe-west3"
+  machine_type    = "mx5.xlarge"
+  auto_scaler_min = 3
+  auto_scaler_max = 20
+  createtimeout   = "1h"
+  updatetimeout   = "35m"
+  deletetimeout   = "1h"
 }
-
-variable "conn_dest_admin" {
-  type        = list(string)
-  description = "Connectivity and Destination Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "int_provisioner" {
-  type        = list(string)
-  description = "Integration Provisioner"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "users_BuildAppsAdmin" {
-  type        = list(string)
-  description = "Defines the colleagues who have the role of 'BuildAppsAdmin' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "users_BuildAppsDeveloper" {
-  type        = list(string)
-  description = "Defines the colleagues who have the role of 'BuildAppsDeveloper' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "users_RegistryAdmin" {
-  type        = list(string)
-  description = "Defines the colleagues who have the role of 'RegistryAdmin' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "users_RegistryDeveloper" {
-  type        = list(string)
-  description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "ProcessAutomationAdmin" {
-  type        = list(string)
-  description = "Defines the users who have the role of ProcessAutomationAdmin in SAP Build Process Automation"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "ProcessAutomationDeveloper" {
-  type        = list(string)
-  description = "Defines the users who have the role of ProcessAutomationDeveloper in SAP Build Process Automation"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "ProcessAutomationParticipant" {
-  type        = list(string)
-  description = "Defines the users who have the role of ProcessAutomationParticipant in SAP Build Process Automation"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }

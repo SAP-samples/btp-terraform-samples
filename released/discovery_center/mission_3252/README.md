@@ -25,6 +25,7 @@ To deploy the resources you must:
    export BTP_PASSWORD=<your_password>
    ```
 Alternativelly set:
+
     ```bash
     export BTP_ENABLE_SSO=true
     ```
