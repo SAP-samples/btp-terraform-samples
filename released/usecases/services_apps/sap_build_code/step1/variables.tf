@@ -23,7 +23,7 @@ variable "cli_server_url" {
 
 variable "region" {
   type        = string
-  description = "The region where the sub account shall be created in."
+  description = "The region where the subaccount shall be created in."
   default     = "us10"
 }
 
