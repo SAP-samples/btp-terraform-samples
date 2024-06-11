@@ -52,13 +52,13 @@ variable "kyma_instance" {
   })
   description = "Your Kyma environment configuration"
   default = {
-  name            = "my-kyma-environment"
-  region          = "europe-west3"
-  machine_type    = "mx5.xlarge"
-  auto_scaler_min = 3
-  auto_scaler_max = 20
-  createtimeout   = "1h"
-  updatetimeout   = "35m"
-  deletetimeout   = "1h"
-}
+    name            = "my-kyma-environment"
+    region          = "europe-west3"
+    machine_type    = "mx5.xlarge"
+    auto_scaler_min = 3
+    auto_scaler_max = 20
+    createtimeout   = "1h"
+    updatetimeout   = "35m"
+    deletetimeout   = "1h"
+  }
 }
