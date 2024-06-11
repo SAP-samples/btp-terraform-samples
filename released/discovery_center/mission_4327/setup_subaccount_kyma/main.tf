@@ -1,8 +1,10 @@
 ###############################################################################################
 # Setup of names in accordance to naming convention
 ###############################################################################################
+resource "random_uuid" "uuid" {}
+
 locals {
-  random_uuid               = uuid()
+  random_uuid               = random_uuid.uuid.result
   project_subaccount_domain = "btp-developers-guide${local.random_uuid}"
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
@@ -18,14 +20,14 @@ resource "btp_subaccount" "project" {
 # Add entitlement for Kymaruntime
 #########################################
 resource "btp_subaccount_entitlement" "kymaruntime" {
-  subaccount_id = "${btp_subaccount.project.id}"
-  service_name = "kymaruntime"
-  plan_name    = var.kyma_plan_name
-  amount       = 1
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "kymaruntime"
+  plan_name     = var.kyma_plan_name
+  amount        = 1
 }
 data "btp_whoami" "me" {}
 resource "btp_subaccount_environment_instance" "kymaruntime" {
-  subaccount_id = "${btp_subaccount.project.id}"
+  subaccount_id = btp_subaccount.project.id
 
   name             = var.kyma_cluster_name
   environment_type = "kyma"
@@ -109,24 +111,24 @@ resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
 # Create HANA entitlement subscription
 ######################################################################
 resource "btp_subaccount_entitlement" "hana-cloud" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana-cloud"
-  plan_name        = var.hana-cloud_plan_name
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana-cloud"
+  plan_name     = var.hana-cloud_plan_name
 }
 # Enable HANA Cloud Tools
 resource "btp_subaccount_entitlement" "hana-cloud-tools" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana-cloud-tools"
-  plan_name        = "tools"
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana-cloud-tools"
+  plan_name     = "tools"
 }
 resource "btp_subaccount_subscription" "hana-cloud-tools" {
-  subaccount_id    = btp_subaccount.project.id
-  app_name         = "hana-cloud-tools"
-  plan_name        = "tools"
-  depends_on       = [btp_subaccount_entitlement.hana-cloud-tools]
+  subaccount_id = btp_subaccount.project.id
+  app_name      = "hana-cloud-tools"
+  plan_name     = "tools"
+  depends_on    = [btp_subaccount_entitlement.hana-cloud-tools]
 }
 resource "btp_subaccount_entitlement" "hana-hdi-shared" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana"
-  plan_name        = "hdi-shared"
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana"
+  plan_name     = "hdi-shared"
 }

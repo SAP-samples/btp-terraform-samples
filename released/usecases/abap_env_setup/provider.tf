@@ -3,7 +3,7 @@ terraform {
   required_providers {
     btp = {
       source  = "sap/btp"
-      version = "~> 1.3.0"
+      version = "~> 1.4.0"
     }
     cloudfoundry = {
       source  = "cloudfoundry-community/cloudfoundry"
@@ -16,8 +16,7 @@ terraform {
 # Please checkout documentation on how best to authenticate against SAP BTP
 # via the Terraform provider for SAP BTP
 provider "btp" {
-  globalaccount  = var.globalaccount
-  #cli_server_url = "https://canary.cli.btp.int.sap"
+  globalaccount = var.globalaccount
 }
 
 # This will only work if we know the region in advance

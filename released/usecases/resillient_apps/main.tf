@@ -1,8 +1,10 @@
 ###############################################################################################
 # Setup of names in accordance to naming convention
 ###############################################################################################
+resource "random_uuid" "uuid" {}
+
 locals {
-  random_uuid               = uuid()
+  random_uuid               = random_uuid.uuid.result
   project_subaccount_domain = "resillientapp-tf-sap-ms-${local.random_uuid}"
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
@@ -131,7 +133,7 @@ module "create_cf_service_instance_ems" {
     {
       "emname" : "tfe",
       "namespace" : "tfe/bpem/em",
-      "version" : "~> 1.3.0",
+      "version" : "~> 1.4.0",
       "resources" : {
         "units" : "10"
       },

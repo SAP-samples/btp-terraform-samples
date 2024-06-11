@@ -5,7 +5,7 @@
 globalaccount = "youraccount"
 custom_idp    = "abcde1234.accounts.ondemand.com"
 # Region for your subaccount
-region        = "us10"
+region = "us10"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration

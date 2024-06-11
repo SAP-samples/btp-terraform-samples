@@ -143,13 +143,13 @@ And you know the drill:
 
     <img width="600px" src="assets/ex5_3a.png" alt="terraform plan output for service instance">
 
-2. Apply the Terraform configuration to create the subaccount:
+2. Apply the Terraform configuration to create the service instance:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation of the subaccount. Type `yes` and press `Enter` to continue. You should see the following output:
+    You will be prompted to confirm the creation of the service instance. Type `yes` and press `Enter` to continue. You should see the following output:
 
     <img width="600px" src="assets/ex5_3b.png" alt="terraform apply output for service instance">
 

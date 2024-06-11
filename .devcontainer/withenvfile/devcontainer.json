@@ -18,6 +18,7 @@
 	"hostRequirements": {
 		"memory": "4gb"
 	},
+	"postCreateCommand": "bash ./.devcontainer/scripts/install-xdg.sh",
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	"remoteUser": "vscode",

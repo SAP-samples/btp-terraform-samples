@@ -1,17 +1,13 @@
 ###############################################################################################
-# Setup of names in accordance to naming convention
+# Generating random ID for subdomain
 ###############################################################################################
-locals {
-  random_uuid               = uuid()
-  project_subaccount_domain = "btp-developers-guide${local.random_uuid}"
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
-}
+resource "random_uuid" "uuid" {}
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
+  subdomain = "btp-gp${random_uuid.uuid.result}"
   region    = lower(var.region)
 }
 data "btp_whoami" "me" {}
@@ -52,6 +48,37 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
 ######################################################################
 resource "time_sleep" "wait_a_few_seconds" {
   create_duration = "30s"
+}
+
+######################################################################
+# Create Cloudfoundry space
+######################################################################
+
+output "org_id" {
+  value = btp_subaccount_environment_instance.cloudfoundry.platform_id
+
+}
+
+resource "cloudfoundry_org_role" "my_role" {
+  for_each = var.cf_org_user
+  username = each.value
+  type     = "organization_user"
+  org      = btp_subaccount_environment_instance.cloudfoundry.platform_id
+}
+
+# Create Space
+resource "cloudfoundry_space" "team_space" {
+  depends_on = [cloudfoundry_org_role.my_role]
+  name       = var.space_name
+  org        = btp_subaccount_environment_instance.cloudfoundry.platform_id
+}
+
+resource "cloudfoundry_space_role" "space_role" {
+  depends_on = [cloudfoundry_org_role.my_role]
+  for_each   = var.cf_space_manager
+  username   = each.value
+  type       = "space_manager"
+  space      = cloudfoundry_space.team_space.id
 }
 
 ######################################################################
@@ -106,24 +133,24 @@ resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
 # Create HANA entitlement subscription
 ######################################################################
 resource "btp_subaccount_entitlement" "hana-cloud" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana-cloud"
-  plan_name        = var.hana-cloud_plan_name
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana-cloud"
+  plan_name     = var.hana-cloud_plan_name
 }
 # Enable HANA Cloud Tools
 resource "btp_subaccount_entitlement" "hana-cloud-tools" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana-cloud-tools"
-  plan_name        = "tools"
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana-cloud-tools"
+  plan_name     = "tools"
 }
 resource "btp_subaccount_subscription" "hana-cloud-tools" {
-  subaccount_id    = btp_subaccount.project.id
-  app_name         = "hana-cloud-tools"
-  plan_name        = "tools"
-  depends_on       = [btp_subaccount_entitlement.hana-cloud-tools]
+  subaccount_id = btp_subaccount.project.id
+  app_name      = "hana-cloud-tools"
+  plan_name     = "tools"
+  depends_on    = [btp_subaccount_entitlement.hana-cloud-tools]
 }
 resource "btp_subaccount_entitlement" "hana-hdi-shared" {
-  subaccount_id    = btp_subaccount.project.id
-  service_name     = "hana"
-  plan_name        = "hdi-shared"
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana"
+  plan_name     = "hdi-shared"
 }
