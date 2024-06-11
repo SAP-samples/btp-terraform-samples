@@ -67,7 +67,7 @@ variable "cf_space_developer" {
   # add validation to check if admins contains a list of valid email addresses
   validation {
     condition     = length([for email in var.cf_space_developer : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developer)
-    error_message = "Please enter a valid email address for the admins."
+    error_message = "Please enter a valid email address for the CF space developers."
   }
 }
 
