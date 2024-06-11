@@ -26,6 +26,7 @@ To deploy the resources you must:
    ```
 Alternativelly set:
 
+    
     ```bash
     export BTP_ENABLE_SSO=true
     ```
