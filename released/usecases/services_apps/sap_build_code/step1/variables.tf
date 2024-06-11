@@ -78,7 +78,7 @@ variable "build_code_admins" {
   # add validation to check if admins contains a list of valid email addresses
   validation {
     condition     = length([for email in var.build_code_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.build_code_admins)
-    error_message = "Please enter a valid email address for the admins."
+    error_message = "Please enter a valid email address for the Build Code admins."
   }
 }
 variable "build_code_developers" {
