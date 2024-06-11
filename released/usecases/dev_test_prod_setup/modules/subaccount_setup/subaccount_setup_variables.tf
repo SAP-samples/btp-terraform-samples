@@ -175,3 +175,16 @@ variable "entitlements" {
     }
   ]
 }
+
+variable "cf_environment_label" {
+  type        = string
+  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
+  default     = ""
+}
+
+variable "identity_provider" {
+  type        = string
+  description = "The identity provider for the subaccount."
+  default     = "sap.ids"
+
+}
