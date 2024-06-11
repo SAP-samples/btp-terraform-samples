@@ -38,7 +38,6 @@ variable "subaccount_admins" {
   }
 }
 
-
 variable "cf_org_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to a CF org as administrators."
@@ -104,4 +103,10 @@ variable "identity_provider" {
   description = "The identity provider for the subaccount."
   default     = "sap.ids"
 
+}
+
+variable "create_tfvars_file_for_step2" {
+  type        = bool
+  description = "Switch to enable the creation of the tfvars file for step 2."
+  default     = false
 }

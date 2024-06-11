@@ -2,15 +2,14 @@
 
 ## Overview
 
-This script shows how to create a SAP BTP subaccount with the `SAP AI Core` service deployed
+This script shows how to create a SAP BTP subaccount with `SAP Build Code` deployed.
 
 ## Content of setup
 
-The setup comprises the following resources:
+The setup comprises the following resources that are split into `step1` and `step2`:
 
 - Creation of a SAP BTP subaccount
-- Entitlement of the SAP AI Core service
-- Entitlement and setup of SAP HANA Cloud (incl. hana cloud tools)
+- Entitlement of all services and app subscrptions
 - Role collection assignments to users
 
 ## Deploying the resources
@@ -45,31 +44,9 @@ To deploy the resources you must:
    terraform apply -var-file="sample.tfvars"
    ```
 
-6. The outputs of this `step1` will be needed for the `step2` of this use case. In case you want to create a file with the content of the variables, you can add another resource into the `main.tf` file, that looks like this:
+6. The outputs of this `step1` will be needed for the `step2` of this use case. 
 
-   ```terraform
-   resource "local_file" "output_vars_step1" {
-      content  = <<-EOT
-      globalaccount      = "${var.globalaccount}"
-      cli_server_url     = ${jsonencode(var.cli_server_url)}
-
-      subaccount_id      = "${btp_subaccount.build_code.id}"
-
-      cf_api_endpoint    = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
-      cf_org_id          = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
-      cf_org_name        = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
-
-      identity_provider  = "${var.identity_provider}"
-
-      cf_org_admins      = ${jsonencode(var.cf_org_admins)}
-      cf_space_developer = ${jsonencode(var.cf_space_developer)}
-      cf_space_manager   = ${jsonencode(var.cf_space_manager)}
-      EOT
-      filename = "../step2/terraform.tfvars"
-   }
-   ```
-
-This will create a `terraform.tfvars` file in the `step2` folder. 
+In case you want to create a file with the content of the variables, you should set the variable `create_tfvars_file_for_step2` to `true`. This will create a `terraform.tfvars` file in the `step2` folder. 
 
 ## In the end
 

@@ -327,3 +327,28 @@ resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
   user_name            = each.value
   depends_on           = [btp_subaccount.build_code]
 }
+
+# ------------------------------------------------------------------------------------------------------
+# Create tfvars file for step 2 (if variable `create_tfvars_file_for_step2` is set to true)
+# ------------------------------------------------------------------------------------------------------
+resource "local_file" "output_vars_step1" {
+  count    = var.create_tfvars_file_for_step2 ? 1 : 0
+  content  = <<-EOT
+      globalaccount        = "${var.globalaccount}"
+      cli_server_url       = ${jsonencode(var.cli_server_url)}
+
+      subaccount_id        = "${btp_subaccount.build_code.id}"
+
+      cf_api_endpoint      = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
+      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
+      cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
+
+      identity_provider    = "${var.identity_provider}"
+
+      cf_org_admins        = ${jsonencode(var.cf_org_admins)}
+      cf_space_developer   = ${jsonencode(var.cf_space_developer)}
+      cf_space_manager     = ${jsonencode(var.cf_space_manager)}
+
+      EOT
+  filename = "../step2/terraform.tfvars"
+}
