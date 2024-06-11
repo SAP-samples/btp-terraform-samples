@@ -59,16 +59,36 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 # ------------------------------------------------------------------------------------------------------
 # Creation of Cloud Foundry environment
 # ------------------------------------------------------------------------------------------------------
-module "cloudfoundry_environment" {
-  source = "../../../../modules/environment/cloudfoundry/envinstance_cf"
 
-  subaccount_id           = btp_subaccount.project.id
-  instance_name           = local.project_subaccount_cf_org
-  cf_org_name             = local.project_subaccount_cf_org
-  cf_org_managers         = var.emergency_admins
-  cf_org_billing_managers = var.emergency_admins
-  cf_org_auditors         = var.emergency_admins
+# ------------------------------------------------------------------------------------------------------
+# CLOUDFOUNDRY PREPARATION
+# ------------------------------------------------------------------------------------------------------
+#
+# Fetch all available environments for the subaccount
+data "btp_subaccount_environments" "all" {
+  subaccount_id = btp_subaccount.project.id
+}
+# ------------------------------------------------------------------------------------------------------
+# Take the landscape label from the first CF environment if no environment label is provided
+# (this replaces the previous null_resource)
+# ------------------------------------------------------------------------------------------------------
+resource "terraform_data" "replacement" {
+  input = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+}
+# ------------------------------------------------------------------------------------------------------
+# Create the Cloud Foundry environment instance
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_environment_instance" "cf" {
+  subaccount_id    = btp_subaccount.project.id
+  name             = local.project_subaccount_cf_org
+  environment_type = "cloudfoundry"
+  service_name     = "cloudfoundry"
+  plan_name        = "standard"
+  landscape_label  = terraform_data.replacement.output
 
+  parameters = jsonencode({
+    instance_name = local.project_subaccount_cf_org
+  })
 }
 
 # ------------------------------------------------------------------------------------------------------
