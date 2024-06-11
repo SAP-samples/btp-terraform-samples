@@ -41,7 +41,6 @@ resource "cloudfoundry_service_credential_binding" "sdm" {
   service_instance = cloudfoundry_service_instance.sdm.id
 }
 
-
 # ------------------------------------------------------------------------------------------------------
 # Setup mobile-services
 # ------------------------------------------------------------------------------------------------------
@@ -134,8 +133,6 @@ resource "cloudfoundry_service_credential_binding" "alert_notification" {
   name             = join("_", ["defaultKey", random_id.service_key_alert_notification.hex])
   service_instance = cloudfoundry_service_instance.alert_notification.id
 }
-
-
 
 # ------------------------------------------------------------------------------------------------------
 # Setup transport

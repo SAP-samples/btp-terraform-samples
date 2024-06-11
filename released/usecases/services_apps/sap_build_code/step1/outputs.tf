@@ -37,10 +37,12 @@ output "cf_org_admins" {
   value       = var.cf_org_admins
   description = "The Global Account subdomain"
 }
+
 output "cf_space_developer" {
   value       = var.cf_space_developer
   description = "The Global Account subdomain"
 }
+
 output "cf_space_manager" {
   value       = var.cf_space_manager
   description = "The Global Account subdomain"

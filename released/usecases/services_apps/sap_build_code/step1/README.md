@@ -1,4 +1,4 @@
-# Setting up a sub account with the SAP AI Core service deployed
+# Setting up a subaccount with the SAP Build Code deployed - Step 1
 
 ## Overview
 
@@ -17,7 +17,6 @@ The setup comprises the following resources that are split into `step1` and `ste
 To deploy the resources you must:
 
 1. Change the variables in the `sample.tfvars` file to meet your requirements
-
 
 2. Export the variables for user name and password
 
@@ -44,9 +43,7 @@ To deploy the resources you must:
    terraform apply -var-file="sample.tfvars"
    ```
 
-6. The outputs of this `step1` will be needed for the `step2` of this use case. 
-
-In case you want to create a file with the content of the variables, you should set the variable `create_tfvars_file_for_step2` to `true`. This will create a `terraform.tfvars` file in the `step2` folder. 
+6. The outputs of this `step1` will be needed for the `step2` of this use case. In case you want to create a file with the content of the variables, you should set the variable `create_tfvars_file_for_step2` to `true`. This will create a `terraform.tfvars` file in the `step2` folder.
 
 ## In the end
 

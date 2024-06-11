@@ -71,7 +71,6 @@ variable "cf_space_developer" {
   }
 }
 
-
 # The identity provider for the subaccount
 variable "identity_provider" {
   type        = string
