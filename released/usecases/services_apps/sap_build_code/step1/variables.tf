@@ -45,7 +45,7 @@ variable "cf_org_admins" {
   # add validation to check if admins contains a list of valid email addresses
   validation {
     condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
-    error_message = "Please enter a valid email address for the admins."
+    error_message = "Please enter a valid email address for the CF Org admins."
   }
 }
 
