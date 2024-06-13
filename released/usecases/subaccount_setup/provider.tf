@@ -6,17 +6,18 @@ terraform {
       version = "~> 1.4.0"
     }
     cloudfoundry = {
-      source  = "cloudfoundry-community/cloudfoundry"
-      version = "0.53.1"
+      source  = "SAP/cloudfoundry"
+      version = "0.2.1-beta"
     }
   }
-
 }
 
 # Please checkout documentation on how best to authenticate against SAP BTP
 # via the Terraform provider for SAP BTP
 provider "btp" {
-  globalaccount = "<YOUR GLOBALACCOUNT SUBDOMAIN>"
+  globalaccount = "terraformintcanary"
+  cli_server_url = "https://canary.cli.btp.int.sap"
+
 }
 
 provider "cloudfoundry" {

@@ -48,5 +48,14 @@ variable "stage" {
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "us10"
+  default     = "eu12"
+}
+variable "cf_org_user" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
+}
+# CLI server
+variable "cli_server_url" {
+  type        = string
+  description = "The BTP CLI server URL."
 }
