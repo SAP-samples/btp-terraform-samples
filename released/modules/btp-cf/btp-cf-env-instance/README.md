@@ -10,4 +10,4 @@ This module is executing the following tasks:
 
 The following things need to be available before calling this:
 - subaccount needs to exist
-- subaacount needs to be entitled for service `cloudfoundry` with plan `standard`
+- description = "Defines the colleagues who are added to the Cloud Foundry organization as users."

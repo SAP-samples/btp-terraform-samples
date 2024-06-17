@@ -36,5 +36,5 @@ variable "cf_org_name" {
 
 variable "cf_org_user" {
   type        = set(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
+  description = "subaacount needs to be entitled for service `cloudfoundry` with the plan you want to use. Default is `standard`"
 }
