@@ -38,3 +38,18 @@ variable "cf_org_user" {
   type        = set(string)
   description = "Defines the colleagues who are added to the Cloud Foundry organization as users."
 }
+
+variable "cf_org_managers" {
+  type        = set(string)
+  description = "List of Cloud Foundry org managers."
+}
+
+variable "cf_org_billing_managers" {
+  type        = set(string)
+  description = "List of Cloud Foundry org billing managers."
+}
+
+variable "cf_org_auditors" {
+  type        = set(string)
+  description = "List of Cloud Foundry org auditors."
+}

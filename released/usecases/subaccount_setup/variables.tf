@@ -11,7 +11,8 @@ variable "subaccount_name" {
     error_message = "Provide a valid project account name."
   }
 }
-
+###
+# CloudFoundry Org Setup
 variable "cf_org_name" {
   type        = string
   description = "Defines to which organisation the project account shall belong to."
@@ -30,6 +31,26 @@ variable "cf_org_name" {
   }
 }
 
+variable "cf_org_user" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to the Cloud Foundry organization as users."
+}
+
+variable "cf_org_managers" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to the Cloud Foundry organization as org managers."
+}
+
+variable "cf_org_billing_managers" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to the Cloud Foundry organization as org billing managers."
+}
+
+variable "cf_org_auditors" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to the Cloud Foundry organization as org auditors."
+}
+
 variable "stage" {
   type        = string
   description = "The stage/tier the account will be used for."
@@ -40,7 +61,6 @@ variable "stage" {
     error_message = "Select a valid stage for the project account."
   }
 }
-
 
 ###
 # BTP ACCOUNT
