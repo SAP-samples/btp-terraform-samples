@@ -53,6 +53,7 @@ resource "btp_subaccount_environment_instance" "cf" {
     delete = "30m"
   }
 }
+
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry org users
 # ------------------------------------------------------------------------------------------------------
@@ -60,5 +61,26 @@ resource "cloudfoundry_org_role" "org_role" {
   for_each = var.cf_org_user
   username = each.value
   type     = "organization_user"
+  org      = btp_subaccount_environment_instance.cf.platform_id
+}
+
+resource "cloudfoundry_org_role" "manager_role" {
+  for_each = var.cf_org_managers
+  username = each.value
+  type     = "organization_manager"
+  org      = btp_subaccount_environment_instance.cf.platform_id
+}
+
+resource "cloudfoundry_org_role" "auditor_role" {
+  for_each = var.cf_org_auditors
+  username = each.value
+  type     = "organization_auditor"
+  org      = btp_subaccount_environment_instance.cf.platform_id
+}
+
+resource "cloudfoundry_org_role" "billing_role" {
+  for_each = var.cf_org_billing_managers
+  username = each.value
+  type     = "organization_auditor"
   org      = btp_subaccount_environment_instance.cf.platform_id
 }

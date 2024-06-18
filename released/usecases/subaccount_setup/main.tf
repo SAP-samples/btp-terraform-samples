@@ -20,11 +20,12 @@ resource "btp_subaccount" "project" {
 # Creation of Cloud Foundry environment
 ###
 module "cloudfoundry_environment" {
-  source = "../../modules/environment/cloudfoundry/envinstance_cf"
+  source = "../../modules/btp-cf/btp-cf-env-instance"
 
   subaccount_id           = btp_subaccount.project.id
   instance_name           = local.project_subaccount_cf_org
   cf_org_name             = local.project_subaccount_cf_org
+  cf_org_user             = []
   cf_org_managers         = []
   cf_org_billing_managers = []
   cf_org_auditors         = []
