@@ -1,0 +1,92 @@
+
+variable "cloudfoundry_api_url" {
+  type        = string
+  description = "The API endpoint of the Cloud Foundry environment."
+}
+
+variable "cf_org_id" {
+  type        = string
+  description = "The Cloud Foundry landscape (format example eu10-004)."
+}
+
+variable "origin" {
+  type        = string
+  description = "The identity provider for the UAA user."
+  default     = "sap.ids"
+}
+
+variable "cf_org_managers" {
+  type        = list(string)
+  description = "List of Cloud Foundry org managers."
+  default     = []
+}
+
+variable "cf_org_billing_managers" {
+  type        = list(string)
+  description = "List of Cloud Foundry org billing managers."
+  default     = []
+}
+
+variable "cf_org_auditors" {
+  type        = list(string)
+  description = "List of Cloud Foundry org auditors."
+  default     = []
+}
+
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
+}
+
+variable "cf_space_managers" {
+  type        = list(string)
+  description = "List of managers for the Cloud Foundry space."
+  default     = []
+}
+
+variable "cf_space_developers" {
+  type        = list(string)
+  description = "List of developers for the Cloud Foundry space."
+  default     = []
+}
+
+variable "cf_space_auditors" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space auditors."
+  default     = []
+}
+
+variable "abap_sid" {
+  type        = string
+  description = "The system ID (SID) of the ABAP system."
+}
+
+variable "abap_si_plan" {
+  type        = string
+  description = "Plan for the service instance of ABAP."
+  default     = "standard"
+}
+
+variable "abap_admin_email" {
+  type        = string
+  description = "Email of the ABAP Administrator."
+}
+
+variable "abap_is_development_allowed" {
+  type        = bool
+  description = "Flag to define if development on the ABAP system is allowed."
+  default     = true
+}
+
+variable "abap_compute_unit_quota" {
+  type        = number
+  description = "The amount of ABAP compute units to be assigned to the subaccount."
+  default     = 1
+}
+
+variable "hana_compute_unit_quota" {
+  type        = number
+  description = "The amount of ABAP compute units to be assigned to the subaccount."
+  default     = 2
+}

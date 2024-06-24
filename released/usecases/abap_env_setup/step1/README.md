@@ -1,28 +1,20 @@
-# Sample Setup of an ABAP Environment on SAP BTP
+# Sample Setup of an ABAP Environment on SAP BTP - Step 1
 
 ## Overview
 
 This directory contains the setup of an ABAP environment from scratch namely a new subaccount including the relevant entitlements, a Cloud Foundry environment and a Cloud Foundry space. 
 
-The process is done in two steps:
+This directory contains the configuration the first step of the setup namely:
 
-1. In the directory `step1` the following resources are created:
-   - a new subaccount
-   - the entitlements for the ABAP environment
-   - the subscription to the ABAP web access
-   - the Cloud Foundry environment
-   - The trust setup to the custom IdP 
-
-2. In the directory `step2` the following resources are created:
-   - the assignment of Cloud FOundry org roles
-   - a new Cloud Foundry space
-   - the assignment of Cloud Foundry space roles
-   - the ABAP environment (service instance)
-   - the service keys for the ABAP environment (ADT, Communication arrangrement `SAP_COM_0193`)   
+- a new subaccount
+- the entitlements for the ABAP environment
+- the subscription to the ABAP web access
+- the Cloud Foundry environment
+- The trust setup to the custom IdP 
 
 ## Deploying the resources
 
-To deploy the resources you must navigate into the `step1` and `step2` directories and execute the following commands:
+To deploy the resources of step 1 execute the following commands:
 
 1. Initialize your workspace:
 
