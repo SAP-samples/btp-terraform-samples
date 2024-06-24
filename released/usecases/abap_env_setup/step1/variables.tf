@@ -49,7 +49,7 @@ variable "hana_compute_unit_quota" {
   default     = 2
 }
 
-#variable "custom_idp" {
-#  type        = string
-#  description = "Name of custom IDP to be used for the subaccount"
-#}
+variable "custom_idp" {
+  type        = string
+  description = "Name of custom IDP to be used for the subaccount"
+}

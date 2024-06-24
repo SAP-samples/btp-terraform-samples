@@ -94,7 +94,7 @@ resource "btp_subaccount_environment_instance" "cf_abap" {
 ###
 # Setup Trust Configuration to Custom IdP
 ###
-#resource "btp_subaccount_trust_configuration" "subaccount_trust_abap" {
-#  subaccount_id     = btp_subaccount.abap_subaccount.id
-#  identity_provider = var.custom_idp
-#}
+resource "btp_subaccount_trust_configuration" "subaccount_trust_abap" {
+  subaccount_id     = btp_subaccount.abap_subaccount.id
+  identity_provider = var.custom_idp
+}
