@@ -3,7 +3,7 @@ variable "globalaccount" {
   description = "The global account subdomain."
 }
 
-variable "project_name" {
+variable "subaccount_prefix" {
   type        = string
   description = "The prefix for the subaccount name and subdomain."
 }
@@ -14,20 +14,21 @@ variable "region" {
   default     = "eu10"
 }
 
-variable "cf_landscape" {
+variable "cf_plan_name" {
+  type        = string
+  description = "Desired service plan for the Cloud Foundry environment instance."
+  default     = "standard"
+}
+
+variable "cf_landscape_label" {
   type        = string
   description = "The Cloud Foundry landscape (format example eu10-004)."
-  default     = "eu10-004"
+  default     = ""
 }
 
 variable "abap_sid" {
   type        = string
   description = "The system ID (SID) of the ABAP system."
-}
-
-variable "abap_admin_email" {
-  type        = string
-  description = "Email of the ABAP Administrator."
 }
 
 variable "abap_si_plan" {
@@ -48,32 +49,7 @@ variable "hana_compute_unit_quota" {
   default     = 2
 }
 
-variable "abap_is_development_allowed" {
-  type        = bool
-  description = "Flag to define if development on the ABAP system is allowed."
-  default     = true
-}
-
 #variable "custom_idp" {
 #  type        = string
 #  description = "Name of custom IDP to be used for the subaccount"
 #}
-
-variable "cf_space_name" {
-  type        = string
-  description = "The name of the Cloud Foundry space."
-  default     = "dev"
-}
-
-variable "cf_space_developers" {
-  type        = list(string)
-  description = "List of developers for the Cloud Foundry space."
-  default     = []
-}
-
-variable "cf_space_managers" {
-  type        = list(string)
-  description = "List of managers for the Cloud Foundry space."
-  default     = []
-}
-
