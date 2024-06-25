@@ -1,10 +1,10 @@
 
-variable "cloudfoundry_api_url" {
+variable "cf_api_url" {
   type        = string
   description = "The API endpoint of the Cloud Foundry environment."
 }
 
-variable "cloudfoundry_org_id" {
+variable "cf_org_id" {
   type        = string
   description = "The Cloud Foundry landscape (format example eu10-004)."
 }
@@ -71,6 +71,13 @@ variable "abap_si_plan" {
 variable "abap_admin_email" {
   type        = string
   description = "Email of the ABAP Administrator."
+  default     = ""
+}
+
+variable "abap_admin" {
+  type        = list(string)
+  description = "Email of the ABAP Administrator."
+  default     = []
 }
 
 variable "abap_is_development_allowed" {

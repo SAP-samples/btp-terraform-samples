@@ -1,10 +1,13 @@
 ###
 # Setup of names based on variables
 ###
+resource "random_uuid" "uuid" {}
+
 locals {
-  subaccount_name   = "${var.subaccount_prefix}-${var.abap_sid}"
-  subaccount_domain = lower("${var.subaccount_prefix}-${var.abap_sid}")
-  subaccount_cf_org = "CF-${var.subaccount_prefix}-${var.abap_sid}"
+  random_uuid         = random_uuid.uuid.result
+  subaccount_domain   = lower("${var.subaccount_prefix}-${var.abap_sid}-${local.random_uuid}")
+  subaccount_name     = var.subaccount_name != "" ? var.subaccount_name : "${var.subaccount_prefix}-${var.abap_sid}"
+  subaccount_cf_org   = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 
 ###
@@ -97,4 +100,31 @@ resource "btp_subaccount_environment_instance" "cf_abap" {
 resource "btp_subaccount_trust_configuration" "subaccount_trust_abap" {
   subaccount_id     = btp_subaccount.abap_subaccount.id
   identity_provider = var.custom_idp
+}
+
+resource "local_file" "output_vars_step1" {
+  count    = var.create_tfvars_file_for_next_stage ? 1 : 0
+  content  = <<-EOT
+      origin               = "${var.origin}"
+
+      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cf_abap.labels)["API Endpoint"]}"
+      cf_org_id            = "${btp_subaccount_environment_instance.cf_abap.platform_id}"
+
+      cf_org_auditors             = ${jsonencode(var.cf_org_auditors)}
+      cf_org_billing_managers     = ${jsonencode(var.cf_org_billing_managers)}
+      cf_org_managers             = ${jsonencode(var.cf_org_managers)}
+      cf_space_auditors           = ${jsonencode(var.cf_space_auditors)}
+      cf_space_developers         = ${jsonencode(var.cf_space_developers)}
+      cf_space_managers           = ${jsonencode(var.cf_space_managers)}
+
+      abap_sid                    = "${var.abap_sid}"
+      abap_si_plan                = "${var.abap_si_plan}"
+      abap_compute_unit_quota     = ${jsonencode(var.abap_compute_unit_quota)}
+      hana_compute_unit_quota     = ${jsonencode(var.hana_compute_unit_quota)}
+      abap_admin_email            = "${var.abap_admin_email}"
+      abap_admin                  = ${jsonencode(var.abap_admin)}
+      abap_is_development_allowed = ${var.abap_is_development_allowed}
+
+      EOT
+  filename = "../step2/terraform.tfvars"
 }

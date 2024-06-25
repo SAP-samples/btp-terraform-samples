@@ -3,6 +3,7 @@
 ###
 locals {
   abap_service_instance_name = "abap-${var.abap_sid}"
+  abap_admin_email           = var.abap_admin_email != "" ? var.abap_admin_email : var.abap_admin[0]
 }
 
 ###
@@ -82,7 +83,7 @@ resource "cloudfoundry_service_instance" "abap_si" {
   service_plan = data.cloudfoundry_service.abap_service_plans.service_plans[var.abap_si_plan]
   type         = "managed"
   parameters = jsonencode({
-    admin_email              = "${var.abap_admin_email}"
+    admin_email              = "${local.abap_admin_email}"
     is_development_allowed   = "${var.abap_is_development_allowed}"
     sapsystemname            = "${var.abap_sid}"
     size_of_runtime          = "${var.abap_compute_unit_quota}"
