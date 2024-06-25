@@ -58,17 +58,21 @@ resource "btp_subaccount_environment_instance" "cf" {
 # Create the Cloud Foundry org users
 # ------------------------------------------------------------------------------------------------------
 resource "cloudfoundry_org_role" "org_role" {
-  for_each = var.cf_org_user
-  username = each.value
-  type     = "organization_user"
-  org      = btp_subaccount_environment_instance.cf.platform_id
+  for_each   = var.cf_org_admins
+  username   = each.value
+  type       = "organization_user"
+  org        = btp_subaccount_environment_instance.cf.platform_id
+  origin     = var.origin
+  depends_on = [btp_subaccount_environment_instance.cf]
 }
 
 resource "cloudfoundry_org_role" "manager_role" {
-  for_each = var.cf_org_managers
-  username = each.value
-  type     = "organization_manager"
-  org      = btp_subaccount_environment_instance.cf.platform_id
+  for_each   = var.cf_org_admins
+  username   = each.value
+  type       = "organization_manager"
+  org        = btp_subaccount_environment_instance.cf.platform_id
+  origin     = var.origin
+  depends_on = [cloudfoundry_org_role.org_role]
 }
 
 resource "cloudfoundry_org_role" "auditor_role" {
@@ -84,5 +88,47 @@ resource "cloudfoundry_org_role" "billing_role" {
   type     = "organization_auditor"
   org      = btp_subaccount_environment_instance.cf.platform_id
 }
+
+# ------------------------------------------------------------------------------------------------------
+# Create the Cloud Foundry space
+# ------------------------------------------------------------------------------------------------------
+resource "cloudfoundry_space" "space" {
+  depends_on = [btp_subaccount_environment_instance.cf]
+  name       = var.space_name
+  org        = btp_subaccount_environment_instance.cf.platform_id
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Create the CF users
+# ------------------------------------------------------------------------------------------------------
+resource "cloudfoundry_space_role" "manager" {
+  for_each   = var.cf_space_managers
+  username   = each.value
+  type       = "space_manager"
+  space      = cloudfoundry_space.space.id
+  origin     = var.origin
+  depends_on = [cloudfoundry_org_role.manager_role]
+}
+
+
+resource "cloudfoundry_space_role" "developer" {
+  for_each   = var.cf_space_developers
+  username   = each.value
+  type       = "space_developer"
+  space      = cloudfoundry_space.space.id
+  origin     = var.origin
+  depends_on = [cloudfoundry_org_role.manager_role]
+}
+
+resource "cloudfoundry_space_role" "auditor" {
+  for_each   = var.cf_space_auditors
+  username   = each.value
+  type       = "space_auditor"
+  space      = cloudfoundry_space.space.id
+  origin     = var.origin
+  depends_on = [cloudfoundry_org_role.manager_role]
+}
+
+
 
 
