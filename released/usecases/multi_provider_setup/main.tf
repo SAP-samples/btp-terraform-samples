@@ -21,7 +21,7 @@ resource "btp_subaccount_entitlement" "entitlement-taskcenter" {
 # Create Cloud Foundry environment
 ###
 module "cloudfoundry_environment" {
-  source = "../../modules/btp-cf/btp-cf-org-space"
+  source                  = "../../modules/btp-cf/btp-cf-org-space"
   subaccount_id           = btp_subaccount.subaccount.id
   instance_name           = var.cloudfoundry_org_name
   cf_org_name             = var.cloudfoundry_org_name

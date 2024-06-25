@@ -72,7 +72,7 @@ variable "space_name" {
   description = "The name of the cloud foundry org."
   default     = "tf-cforg"
 }
- 
+
 variable "cf_space_managers" {
   type        = set(string)
   description = "The list of users that shall be CF space managers."
