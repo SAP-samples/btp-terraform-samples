@@ -13,7 +13,7 @@ terraform {
 }
 
 provider "btp" {
-  globalaccount = "terraformintprod"
+  globalaccount = "<YOUR GLOBALACCOUNT SUBDOMAIN>"
 }
 
 // Configuration is described in https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs

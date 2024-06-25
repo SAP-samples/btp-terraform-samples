@@ -1,8 +1,8 @@
 # see documentation at https://developer.hashicorp.com/terraform/language/values/variables#assigning-values-to-root-module-variables
-origin              = "sap.ids"
-cf_org_admins       = ["vipin.vijaykumar@sap.com"]
-cf_space_managers   = ["vipin.vijaykumar@sap.com"]
-cf_space_developers = ["vipin.vijaykumar@sap.com"]
-cf_space_auditors   = ["vipin.vijaykumar@sap.com"]
+origin              = "Name of the Identity provider"
+cf_org_admins       = ["john.doe@test.com"]
+cf_space_managers   = ["john.doe@test.com"]
+cf_space_developers = ["john.doe@test.com"]
+cf_space_auditors   = ["john.doe@test.com"]
 subaccount_admins             = ["john.doe@test.com"]
 subaccount_service_admins     = ["john.doe@test.com"]
