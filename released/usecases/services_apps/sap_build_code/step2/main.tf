@@ -231,7 +231,7 @@ resource "cloudfoundry_org_role" "organization_user" {
   username = each.value
   type     = "organization_user"
   org      = var.cf_org_id
-  origin   = var.identity_provider
+  origin   = var.custom_idp
 }
 # Define Org Manager role
 resource "cloudfoundry_org_role" "organization_manager" {
@@ -239,7 +239,7 @@ resource "cloudfoundry_org_role" "organization_manager" {
   username   = each.value
   type       = "organization_manager"
   org        = var.cf_org_id
-  origin     = var.identity_provider
+  origin     = var.custom_idp
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 

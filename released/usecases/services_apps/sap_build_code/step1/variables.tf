@@ -40,7 +40,7 @@ variable "subaccount_admins" {
 
 variable "cf_org_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to a CF org as administrators."
+  description = "List of users to set as Cloudfoundry org administrators."
 
   # add validation to check if admins contains a list of valid email addresses
   validation {
@@ -73,7 +73,7 @@ variable "cf_space_developer" {
 
 variable "build_code_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to a CF space as space developer."
+  description = "Defines the colleagues who are admins for SAP Build Code."
 
   # add validation to check if admins contains a list of valid email addresses
   validation {
@@ -83,7 +83,7 @@ variable "build_code_admins" {
 }
 variable "build_code_developers" {
   type        = list(string)
-  description = "Defines the colleagues who are added to a CF space as space developer."
+  description = "Defines the colleagues who are developers for SAP Build Code."
 
   # add validation to check if admins contains a list of valid email addresses
   validation {
@@ -98,9 +98,9 @@ variable "cf_environment_label" {
   default     = ""
 }
 
-variable "identity_provider" {
+variable "custom_idp" {
   type        = string
-  description = "The identity provider for the subaccount."
+  description = "The custom identity provider for the subaccount."
   default     = "sap.ids"
 
 }
