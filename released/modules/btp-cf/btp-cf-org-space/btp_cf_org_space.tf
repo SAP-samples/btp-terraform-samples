@@ -58,20 +58,20 @@ resource "btp_subaccount_environment_instance" "cf" {
 # Create the Cloud Foundry org users
 # ------------------------------------------------------------------------------------------------------
 resource "cloudfoundry_org_role" "org_role" {
-  for_each = var.cf_org_admins
-  username = each.value
-  type     = "organization_user"
-  org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = var.origin
+  for_each   = var.cf_org_admins
+  username   = each.value
+  type       = "organization_user"
+  org        = btp_subaccount_environment_instance.cf.platform_id
+  origin     = var.origin
   depends_on = [btp_subaccount_environment_instance.cf]
 }
 
 resource "cloudfoundry_org_role" "manager_role" {
-  for_each = var.cf_org_admins
-  username = each.value
-  type     = "organization_manager"
-  org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = var.origin
+  for_each   = var.cf_org_admins
+  username   = each.value
+  type       = "organization_manager"
+  org        = btp_subaccount_environment_instance.cf.platform_id
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.org_role]
 }
 
@@ -116,7 +116,7 @@ resource "cloudfoundry_space_role" "developer" {
   username   = each.value
   type       = "space_developer"
   space      = cloudfoundry_space.space.id
-  origin     = var.origin 
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.manager_role]
 }
 
