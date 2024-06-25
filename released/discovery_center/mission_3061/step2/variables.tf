@@ -4,7 +4,7 @@ variable "cloudfoundry_api_url" {
   description = "The API endpoint of the Cloud Foundry environment."
 }
 
-variable "cf_org_id" {
+variable "cloudfoundry_org_id" {
   type        = string
   description = "The Cloud Foundry landscape (format example eu10-004)."
 }
