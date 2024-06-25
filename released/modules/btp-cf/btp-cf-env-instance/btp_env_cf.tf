@@ -62,7 +62,6 @@ resource "cloudfoundry_org_role" "org_role" {
   username = each.value
   type     = "organization_user"
   org      = btp_subaccount_environment_instance.cf.platform_id
-  origin   = "sap.ids"
 }
 
 resource "cloudfoundry_org_role" "manager_role" {
