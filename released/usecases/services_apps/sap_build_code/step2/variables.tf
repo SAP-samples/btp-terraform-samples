@@ -9,14 +9,14 @@ variable "globalaccount" {
 # The subaccount id
 variable "subaccount_id" {
   type        = string
-  description = "The subaccount id."
+  description = "The Global Account subdomain id."
 }
 
 # The BTP CLI server URL
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.sap.hana.ondemand.com"
+  default     = "https://cli.btp.cloud.sap"
 }
 
 # The CF Org ID from the Cloud Foundry environment instance
@@ -72,8 +72,8 @@ variable "cf_space_developer" {
 }
 
 # The identity provider for the subaccount
-variable "identity_provider" {
+variable "custom_idp" {
   type        = string
-  description = "The identity provider for the subaccount."
+  description = "The custom identity provider for the subaccount."
   default     = "sap.ids"
 }
