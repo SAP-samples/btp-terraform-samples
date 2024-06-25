@@ -62,17 +62,28 @@ variable "cloudfoundry_space_name" {
 ###
 # User and Roles for subaccount and Cloud Foundry
 ###
-variable "cloudfoundry_space_managers" {
-  type        = list(string)
+variable "cf_org_admins" {
+  type        = set(string)
+  description = "The List of usres that shall be CF Org users"
+}
+
+variable "space_name" {
+  type        = string
+  description = "The name of the cloud foundry org."
+  default     = "tf-cforg"
+}
+ 
+variable "cf_space_managers" {
+  type        = set(string)
   description = "The list of users that shall be CF space managers."
 }
 
-variable "cloudfoundry_space_developers" {
+variable "cf_space_developers" {
   type        = list(string)
   description = "The list of users that shall be CF space developers."
 }
 
-variable "cloudfoundry_space_auditors" {
+variable "cf_space_auditors" {
   type        = list(string)
   description = "The list of users that shall be CF space auditors."
 }
@@ -85,4 +96,9 @@ variable "subaccount_admins" {
 variable "subaccount_service_admins" {
   type        = set(string)
   description = "The list of users that shall be subaccount admins."
+}
+
+variable "origin" {
+  type        = string
+  description = "The identity provider for the UAA user"
 }
