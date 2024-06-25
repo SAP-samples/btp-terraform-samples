@@ -25,10 +25,10 @@ module "cloudfoundry_environment" {
   subaccount_id           = btp_subaccount.project.id
   instance_name           = local.project_subaccount_cf_org
   cf_org_name             = local.project_subaccount_cf_org
-  cf_org_user             = []
-  cf_org_managers         = []
-  cf_org_billing_managers = []
-  cf_org_auditors         = []
+  cf_org_user             = var.cf_org_user
+  cf_org_managers         = var.cf_org_managers
+  cf_org_billing_managers = var.cf_org_billing_managers
+  cf_org_auditors         = var.cf_org_auditors
 }
 
 ###
