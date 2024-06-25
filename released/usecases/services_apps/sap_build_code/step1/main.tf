@@ -343,7 +343,7 @@ resource "local_file" "output_vars_step1" {
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
 
-      identity_provider    = "${var.custom_idp}"
+      custom_idp           = "${var.custom_idp}"
 
       cf_org_admins        = ${jsonencode(var.cf_org_admins)}
       cf_space_developer   = ${jsonencode(var.cf_space_developer)}
