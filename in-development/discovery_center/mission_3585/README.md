@@ -2,7 +2,7 @@
 
 ## Overview
 
-This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Setup for SAP S/4HANA side-by-side UI Extensions on SAP Business Technology Platform](https://discovery-center.cloud.sap/missiondetail/3239)
+This sample shows how to set up your SAP BTP account for the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/missiondetail/3585/)
 
 ## Content of setup
 
@@ -13,7 +13,7 @@ The setup comprises the following resources:
 - Entitlements of services
    * SAP Business Application Studio
    * SAP Build Work Zone, standard edition
-   * Continous Integration & Delivery - optional
+   * Continous Integration & Delivery - Optional
   
 - Subscriptions to applications
 - Role collection assignments to users
@@ -30,7 +30,7 @@ To deploy the resources you must:
    user_email = "<Email address of your BTP user>"
    password = "<Password of your BTP user>"
    ```
-   as an alternative you can set this credentials also as environment variables
+   as an alternative you can set these credentials also as environment variables
    
    ```bash
    export user_email ='<Email address of your BTP user>'
@@ -39,9 +39,9 @@ To deploy the resources you must:
 
 3. Change the variables in the `sample.tfvars` file to meet your requirements
 
-   > The minimal set of parameters you should specify (beside user_email and password) is globalaccount (i.e. its subdomain) and the used custom_idp and all user assignments
+   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
 
-   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
+   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
 
 
 4. Initialize your workspace:
