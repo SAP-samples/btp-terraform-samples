@@ -9,5 +9,5 @@ terraform {
 
 # This will only work if we know the region in advance
 provider "cloudfoundry" {
-  api_url = var.cloudfoundry_api_url
+  api_url = var.cf_api_url
 }
