@@ -60,7 +60,7 @@ resource "cloudfoundry_service_credential_binding" "sap-taskcenter" {
 }
 
 resource "btp_subaccount_service_binding" "taskcenter" {
-  subaccount_id       = local.subaccount_id.id
+  subaccount_id       = var.subaccount_id
   service_instance_id = cloudfoundry_service_instance.si_taskcenter.id
   name                = join("_", ["defaultKey", random_id.service_key_stc.hex])
   depends_on          = [btp_subaccount_service_instance.taskcenter]
@@ -71,21 +71,21 @@ resource "btp_subaccount_service_binding" "taskcenter" {
 ###############################################################################################
 # Entitle subaccount for usage of service destination
 resource "btp_subaccount_entitlement" "destination" {
-  subaccount_id = btp_subaccount.project.id
+  subaccount_id = var.subaccount_id
   service_name  = "destination"
   plan_name     = "lite"
 }
 
 # Get serviceplan_id for stc-service with plan_name "default"
 data "btp_subaccount_service_plan" "destination" {
-  subaccount_id = btp_subaccount.project.id
+  subaccount_id = var.subaccount_id
   offering_name = "destination"
   name          = "lite"
   depends_on    = [btp_subaccount_entitlement.destination]
 }
 # Create service instance
 resource "btp_subaccount_service_instance" "destination" {
-  subaccount_id  = btp_subaccount.project.id
+  subaccount_id  = var.subaccount_id
   serviceplan_id = data.btp_subaccount_service_plan.destination.id
   name           = "destination"
   depends_on     = [data.btp_subaccount_service_plan.destination]
