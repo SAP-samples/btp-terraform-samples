@@ -3,7 +3,7 @@
 ###############################################################################################
 resource "cloudfoundry_space" "space" {
   name = var.cf_space_name
-  org  = var.cf_org_id#
+  org  = var.cf_org_id #
 }
 
 ###############################################################################################
@@ -39,7 +39,7 @@ resource "cloudfoundry_service_instance" "si_taskcenter" {
   type         = "managed"
   space        = cloudfoundry_space.space.id
   service_plan = data.cloudfoundry_service.srvc_taskcenter.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.cfsr_space_manager, cloudfoundry_space_role.cfsr_space_developer]
+  depends_on   = [cloudfoundry_space_role.cf_space_manager, cloudfoundry_space_role.cf_space_developer]
   parameters = jsonencode({
     "authorities" : [],
     "defaultCollectionQueryFilter" : "own"
@@ -89,17 +89,17 @@ resource "btp_subaccount_service_instance" "destination" {
         existing_destinations_policy = "update"
         destinations = [
           {
-            Description                = "[Do not delete] SAP Task Center - Dummy destination"
-            Type                       = "HTTP"
-#            clientId                   = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["clientid"]}"
-#            clientSecret               = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["clientsecret"]}"
+            Description = "[Do not delete] SAP Task Center - Dummy destination"
+            Type        = "HTTP"
+            #            clientId                   = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["clientid"]}"
+            #            clientSecret               = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["clientsecret"]}"
             "HTML5.DynamicDestination" = true
             Authentication             = "OAuth2JWTBearer"
             Name                       = "stc-destination"
-#            tokenServiceURL            = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["url"]}"
-            ProxyType                  = "Internet"
-#            URL                        = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter.credentials)["url"]}"
-            tokenServiceURLType        = "Dedicated"
+            #            tokenServiceURL            = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["url"]}"
+            ProxyType = "Internet"
+            #            URL                        = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter.credentials)["url"]}"
+            tokenServiceURLType = "Dedicated"
           }
         ]
       }
