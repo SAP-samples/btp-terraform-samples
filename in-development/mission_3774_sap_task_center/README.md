@@ -2,7 +2,8 @@
 
 ## Overview
 
-This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Keep the Core Clean Using SAP Build Apps with SAP S/4HANA](https://discovery-center.cloud.sap/index.html#/missiondetail/3774/)
+This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Establish a Central Inbox with SAP Task Center](https://discovery-center.cloud.sap/index.html#/missiondetail/3774/)
+
 
 ## Content of setup
 
@@ -11,7 +12,7 @@ The setup comprises the following resources:
 - Creation of the SAP BTP subaccount
 - Entitlements of services
 - Subscriptions to applications
-- Creation of service instances
+- Creation of service instance
 - Role collection assignments to users
 
 ## Deploying the resources
@@ -27,11 +28,17 @@ To deploy the resources you must:
    export BTP_PASSWORD=<your_password>
    ```
 
-2. Change the variables in the `common_sample.tfvars` file to meet your requirements
+2. Set the environment variables CF_USERNAME and CF_PASSWORD to pass credentials to the CF provider to authenticate and interact with your CF environment. 
+
+   ```bash
+   export CF_USER=<your_username>
+   export CF_PASSWORD=<your_password>
+   ```
+
+3. Change the variables in the `common_sample.tfvars` file to meet your requirements
 
    > The minimal set of parameters you should specify (beside user_email and password) is globalaccount (i.e. its subdomain) and the used custom_idp.
 
-3. Switch to the `1_main_config` folder
 
 4. Change the variables in `sample.tfvars` file to meet your requirements
 
