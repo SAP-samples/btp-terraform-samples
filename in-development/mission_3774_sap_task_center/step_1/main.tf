@@ -53,42 +53,6 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   })
 }
 
-###############################################################################################
-# Create the Cloud Foundry space
-###############################################################################################
-resource "cloudfoundry_space" "space" {
-  name = var.cf_space_name
-  org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
-}
-
-###############################################################################################
-# assign user as space manager
-###############################################################################################
-resource "cloudfoundry_space_role" "cfsr_space_manager" {
-  username = var.cfsr_space_manager
-  type     = "space_manager"
-  space    = cloudfoundry_space.space.id
-  origin   = "sap.ids"
-}
-
-
-###############################################################################################
-# assign user as space developer
-###############################################################################################
-resource "cloudfoundry_space_role" "cfsr_space_developer" {
-  username = var.cfsr_space_developer
-  type     = "space_developer"
-  space    = cloudfoundry_space.space.id
-  origin   = "sap.ids"
-}
-
-###############################################################################################
-# Artificial timeout for entitlement propagation to CF Marketplace
-###############################################################################################
-#resource "time_sleep" "wait_a_few_seconds" {
-#  depends_on      = [resource.cloudfoundry_space.space]
-#  create_duration = "30s"
-#}
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Workzone, standard edition
