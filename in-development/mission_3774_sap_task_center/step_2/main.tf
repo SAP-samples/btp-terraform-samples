@@ -63,7 +63,7 @@ resource "btp_subaccount_service_binding" "taskcenter" {
   subaccount_id       = var.subaccount_id
   service_instance_id = cloudfoundry_service_instance.si_taskcenter.id
   name                = join("_", ["defaultKey", random_id.service_key_stc.hex])
-  depends_on          = [btp_subaccount_service_instance.taskcenter]
+  depends_on          = [cloudfoundry_service_instance.si_taskcenter]
 }
 
 ###############################################################################################
@@ -99,14 +99,14 @@ resource "btp_subaccount_service_instance" "destination" {
           {
             Description                = "[Do not delete] SAP Task Center - Dummy destination"
             Type                       = "HTTP"
-            clientId                   = "${jsondecode(btp_subaccount_service_binding.cicd_service.credentials)["uaa"]["clientid"]}"
-            clientSecret               = "${jsondecode(btp_subaccount_service_binding.cicd_service.credentials)["uaa"]["clientsecret"]}"
+            clientId                   = "${jsondecode(btp_subaccount_service_binding.taskcenter.credentials)["uaa"]["clientid"]}"
+            clientSecret               = "${jsondecode(btp_subaccount_service_binding.taskcenter.credentials)["uaa"]["clientsecret"]}"
             "HTML5.DynamicDestination" = true
             Authentication             = "OAuth2JWTBearer"
             Name                       = "stc-destination"
-            tokenServiceURL            = "${jsondecode(btp_subaccount_service_binding.cicd_service.credentials)["uaa"]["url"]}"
+            tokenServiceURL            = "${jsondecode(btp_subaccount_service_binding.taskcenter.credentials)["uaa"]["url"]}"
             ProxyType                  = "Internet"
-            URL                        = "${jsondecode(btp_subaccount_service_binding.cicd_service.credentials)["url"]}"
+            URL                        = "${jsondecode(btp_subaccount_service_binding.taskcenter.credentials)["url"]}"
             tokenServiceURLType        = "Dedicated"
           }
         ]
