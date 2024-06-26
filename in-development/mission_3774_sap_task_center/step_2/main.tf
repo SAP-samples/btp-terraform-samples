@@ -56,13 +56,13 @@ resource "random_id" "service_key_stc" {
 resource "cloudfoundry_service_credential_binding" "sap-taskcenter" {
   type             = "key"
   name             = join("_", ["defaultKey", random_id.service_key_stc.hex])
-  service_instance = cloudfoundry_service_instance.sdm.id
+  service_instance = cloudfoundry_service_instance.si_taskcenter.id
 }
 
 resource "btp_subaccount_service_binding" "taskcenter" {
   subaccount_id       = btp_subaccount.project.id
   service_instance_id = btp_subaccount_service_instance.taskcenter.id
-  name                = join("_", ["defaultKey", random_id.service_key_cicd_service.hex])
+  name                = join("_", ["defaultKey", random_id.service_key_stc.hex])
   depends_on          = [btp_subaccount_service_instance.taskcenter]
 }
 
