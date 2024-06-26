@@ -14,7 +14,6 @@ The setup comprises the following resources:
    * SAP Business Application Studio
    * SAP Build Work Zone, standard edition
    * Continous Integration & Delivery - Optional
-  
 - Subscriptions to applications
 - Role collection assignments to users
 
