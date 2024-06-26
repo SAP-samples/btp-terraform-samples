@@ -8,7 +8,6 @@ locals {
   project_subaccount_domain = lower(replace("mission-3774-${local.random_uuid}", "_", "-"))
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
-
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
@@ -26,7 +25,6 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
 }
-
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account service administrators
 # ------------------------------------------------------------------------------------------------------
@@ -36,8 +34,6 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
 }
-
-
 ######################################################################
 # Creation of Cloud Foundry environment
 ######################################################################
@@ -52,8 +48,6 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
     instance_name = local.project_subaccount_cf_org
   })
 }
-
-
 ###############################################################################################
 # Prepare and setup app: SAP Build Workzone, standard edition
 ###############################################################################################
@@ -64,7 +58,6 @@ resource "btp_subaccount_entitlement" "build_workzone" {
   plan_name     = var.service_plan__build_workzone
   amount        = var.service_plan__build_workzone == "free" ? 1 : null
 }
-
 # Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
 resource "btp_subaccount_subscription" "build_workzone" {
   subaccount_id = btp_subaccount.project.id
@@ -72,7 +65,6 @@ resource "btp_subaccount_subscription" "build_workzone" {
   plan_name     = var.service_plan__build_workzone
   depends_on    = [btp_subaccount_entitlement.build_workzone]
 }
-
 ###############################################################################################
 # Prepare and setup app: SAP Task Center
 ###############################################################################################
@@ -82,7 +74,6 @@ resource "btp_subaccount_entitlement" "taskcenter" {
   service_name  = local.service_name__sap_task_center
   plan_name     = "standard"
 }
-
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as launchpad administrators
 # ------------------------------------------------------------------------------------------------------
