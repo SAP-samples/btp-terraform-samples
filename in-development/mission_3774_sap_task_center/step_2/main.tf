@@ -24,7 +24,6 @@ resource "cloudfoundry_space_role" "cfsr_space_developer" {
   username = var.cfsr_space_developer
   type     = "space_developer"
   space    = cloudfoundry_space.space.id
-  origin   = "sap.ids"
 }
 
 ###############################################################################################
