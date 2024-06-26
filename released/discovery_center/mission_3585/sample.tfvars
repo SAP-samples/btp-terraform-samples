@@ -1,32 +1,28 @@
-#################################
-# IDP configuration
-#################################
-custom_idp = ""
+# ------------------------------------------------------------------------------------------------------
+# Provider configuration
+# ------------------------------------------------------------------------------------------------------
+# Your global account subdomain
+globalaccount = "xxxxxxxx-xxxxxxx-xxxxxxx-xxxxxxxx-xxxxxx"
 
-#################################cd
-# Account settings
-#################################
-globalaccount   = "<your global account id>"
-region          = "us10"
-subaccount_name = "Mission-3239"
-org             = "team1"
-cf_space        = "dev"
-# a valid Cloud Foundry URL - please check which are available for your global account
-cf_url = "https://api.cf.us10.hana.ondemand.com"
+# The CLI server URL (needs to be set to null if you are using the default CLI server)
+cli_server_url = null
 
-#################################
-# User Configuration
-#################################
-admins     = ["jane.doe@test.com", "john.doe@test.com"]
-developers = ["carl.tester@test.com"]
+# Region for your subaccount
+region = "us10"
 
+# Name of your sub account
+subaccount_name = "SAP Discovery Center Mission 3585"
 
+# ------------------------------------------------------------------------------------------------------
+# USER ROLES
+# ------------------------------------------------------------------------------------------------------
+subaccount_admins  = ["another.user@test.com"]
+cf_org_admins      = ["another.user@test.com"]
 
+launchpad_admins = ["another.user@test.com", "you@test.com"]
 
-#################################
-# Service Plans
-# as an alternativ you could also choose the "free" plans
-#################################
-build_workzone_service_plan = "standard"
-bas_service_plan            = "standard-edition"
-cicd_service_plan           = "default"
+cicd_admins     = ["another.user@test.com", "you@test.com"]
+cicd_developers = ["another.user@test.com", "you@test.com"]
+
+bas_admins     = ["another.user@test.com", "you@test.com"]
+bas_developers = ["another.user@test.com", "you@test.com"]
