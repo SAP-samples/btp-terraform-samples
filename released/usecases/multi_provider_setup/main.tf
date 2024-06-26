@@ -21,31 +21,23 @@ resource "btp_subaccount_entitlement" "entitlement-taskcenter" {
 # Create Cloud Foundry environment
 ###
 module "cloudfoundry_environment" {
-  source = "../../modules/environment/cloudfoundry/envinstance_cf"
-
+  source                  = "../../modules/btp-cf/btp-cf-org-space"
   subaccount_id           = btp_subaccount.subaccount.id
   instance_name           = var.cloudfoundry_org_name
   cf_org_name             = var.cloudfoundry_org_name
-  cf_org_managers         = []
+  cf_org_admins           = var.cf_org_admins
+  cf_org_managers         = var.cf_org_admins
   cf_org_billing_managers = []
   cf_org_auditors         = []
-}
-
-###
-# Create Cloud Foundry space and assign users
-###
-module "cloudfoundry_space" {
-  source              = "../../modules/environment/cloudfoundry/space_cf"
-  cf_org_id           = module.cloudfoundry_environment.cf_org_id
-  name                = var.cloudfoundry_space_name
-  cf_space_managers   = var.cloudfoundry_space_managers
-  cf_space_developers = var.cloudfoundry_space_developers
-  cf_space_auditors   = var.cloudfoundry_space_auditors
+  space_name              = var.space_name
+  cf_org_id               = module.cloudfoundry_environment.cf_org_id
+  cf_space_managers       = var.cf_space_managers
+  cf_space_developers     = var.cf_space_developers
+  origin                  = var.origin
 }
 
 ###
 # Assign the subaccount roles to the users
-###
 resource "btp_subaccount_role_collection_assignment" "subaccount-administrators" {
   subaccount_id        = btp_subaccount.subaccount.id
   role_collection_name = "Subaccount Administrator"

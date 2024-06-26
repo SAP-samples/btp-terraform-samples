@@ -10,7 +10,7 @@ variable "entitlements" {
   description = "The list of entitlements that shall be added to the subaccount."
 }
 
-variable kyma_instance { type = object({
+variable "kyma_instance" { type = object({
   name            = string
   region          = string
   machine_type    = string
@@ -19,7 +19,7 @@ variable kyma_instance { type = object({
   createtimeout   = string
   updatetimeout   = string
   deletetimeout   = string
-})}
+}) }
 
 variable "conn_dest_admin" {
   type        = list(string)
@@ -57,17 +57,17 @@ variable "users_RegistryDeveloper" {
 }
 
 variable "ProcessAutomationAdmin" {
-  type    = list(string)
+  type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationAdmin in SAP Build Process Automation"
 }
 
 variable "ProcessAutomationDeveloper" {
-  type    = list(string)
+  type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationDeveloper in SAP Build Process Automation"
 }
 
 variable "ProcessAutomationParticipant" {
-  type    = list(string)
+  type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationParticipant in SAP Build Process Automation"
 }
 
