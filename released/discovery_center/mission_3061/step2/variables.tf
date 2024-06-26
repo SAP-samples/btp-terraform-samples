@@ -1,10 +1,10 @@
 
-variable "cloudfoundry_api_url" {
+variable "cf_api_url" {
   type        = string
   description = "The API endpoint of the Cloud Foundry environment."
 }
 
-variable "cloudfoundry_org_id" {
+variable "cf_org_id" {
   type        = string
   description = "The Cloud Foundry landscape (format example eu10-004)."
 }
@@ -60,6 +60,11 @@ variable "cf_space_auditors" {
 variable "abap_sid" {
   type        = string
   description = "The system ID (SID) of the ABAP system."
+
+  validation {
+    condition     = regex("^[A-Z][A-Z0-9]{2}$", var.abap_sid)
+    error_message = "Please provide a valid system ID (SID). It must consist of exactly three alphanumeric characters. Only uppercase letters are allowed. The first character must be a letter (not a digit). The ID does not have to be technically unique."
+  }
 }
 
 variable "abap_si_plan" {
