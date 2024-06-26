@@ -96,7 +96,7 @@ variable "cf_password" {
   default     = ""
 }
 
-variable "cfsr_space_manager" {
+variable "cf_space_manager" {
   type        = string
   description = "Defines the user who are added as space manager."
   default     = "john.doe@test.com"
