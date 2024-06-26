@@ -27,11 +27,16 @@ To deploy the resources you must:
    export BTP_PASSWORD=<your_password>
    ```
 
-2. Change the variables in the `common_sample.tfvars` file to meet your requirements
+2. Set the environment variables CF_USERNAME and CF_PASSWORD to pass credentials to the CF provider to authenticate and interact with your CF environment. 
+
+   ```bash
+   export CF_USER=<your_username>
+   export CF_PASSWORD=<your_password>
+   ```
+
+3. Change the variables in the `common_sample.tfvars` file to meet your requirements
 
    > The minimal set of parameters you should specify (beside user_email and password) is globalaccount (i.e. its subdomain) and the used custom_idp.
-
-3. Switch to the `1_main_config` folder
 
 4. Change the variables in `sample.tfvars` file to meet your requirements
 

@@ -1,3 +1,6 @@
+###
+# Define the required providers for this module
+###
 terraform {
   required_providers {
     btp = {
@@ -9,10 +12,10 @@ terraform {
     }
   }
 }
-# Please checkout documentation on how best to authenticate against SAP BTP
-# via the Terraform provider for SAP BTP
 provider "btp" {
   globalaccount  = var.globalaccount
   cli_server_url = var.cli_server_url
-
+}
+provider "cloudfoundry" {
+  api_url  = "https://api.cf.us10.hana.ondemand.com/"
 }

@@ -1,23 +1,22 @@
-# ------------------------------------------------------------------------------------------------------
+###############################################################################################
 # Setup of names in accordance to naming convention
-# ------------------------------------------------------------------------------------------------------
+###############################################################################################
 resource "random_uuid" "uuid" {}
 
 locals {
   random_uuid               = random_uuid.uuid.result
-  project_subaccount_domain = "discoverycenter-tf-sap-ms-${local.random_uuid}"
+  project_subaccount_domain = lower(replace("mission-3774-${local.random_uuid}", "_", "-"))
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
 
-# ------------------------------------------------------------------------------------------------------
+###############################################################################################
 # Creation of subaccount
-# ------------------------------------------------------------------------------------------------------
+###############################################################################################
 resource "btp_subaccount" "project" {
   name      = var.subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
 }
-
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account administrators
 # ------------------------------------------------------------------------------------------------------
@@ -38,19 +37,19 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
   user_name            = each.value
 }
 
-###############################################################################################
-# Creates a cloud foundry environment in a given account
-###############################################################################################
-// and the dedicted target landscape cf-us10
+
+######################################################################
+# Creation of Cloud Foundry environment
+######################################################################
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = btp_subaccount.project.id
-  name             = var.cf_org_name
+  name             = local.project_subaccount_cf_org
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
-  landscape_label  = null_resource.cache_target_environment.triggers.label
   plan_name        = "standard"
+  landscape_label  = var.cf_environment_label
   parameters = jsonencode({
-    instance_name = var.cf_org_name
+    instance_name = local.project_subaccount_cf_org
   })
 }
 
@@ -86,17 +85,17 @@ resource "cloudfoundry_space_role" "cfsr_space_developer" {
 ###############################################################################################
 # Artificial timeout for entitlement propagation to CF Marketplace
 ###############################################################################################
-resource "time_sleep" "wait_a_few_seconds" {
-  depends_on      = [resource.cloudfoundry_space.space]
-  create_duration = "30s"
-}
+#resource "time_sleep" "wait_a_few_seconds" {
+#  depends_on      = [resource.cloudfoundry_space.space]
+#  create_duration = "30s"
+#}
 
 ###############################################################################################
 # Prepare and setup app: SAP Build Workzone, standard edition
 ###############################################################################################
 # Entitle subaccount for usage of app  destination SAP Build Workzone, standard edition
 resource "btp_subaccount_entitlement" "build_workzone" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = btp_subaccount.project.id
   service_name  = local.service_name__build_workzone
   plan_name     = var.service_plan__build_workzone
   amount        = var.service_plan__build_workzone == "free" ? 1 : null
@@ -104,7 +103,7 @@ resource "btp_subaccount_entitlement" "build_workzone" {
 
 # Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
 resource "btp_subaccount_subscription" "build_workzone" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = btp_subaccount.project.id
   app_name      = local.service_name__build_workzone
   plan_name     = var.service_plan__build_workzone
   depends_on    = [btp_subaccount_entitlement.build_workzone]
@@ -113,22 +112,20 @@ resource "btp_subaccount_subscription" "build_workzone" {
 ###############################################################################################
 # Prepare and setup app: SAP Task Center
 ###############################################################################################
-
-// Create service instance for taskcenter (one-inbox-service)
-data "cloudfoundry_service" "srvc_taskcenter" {
-  name       = "one-inbox-service"
-  depends_on = [time_sleep.wait_a_few_seconds]
+# Entitle subaccount for usage of app  destination SAP Task Center
+resource "btp_subaccount_entitlement" "taskcenter" {
+  subaccount_id = btp_subaccount.project.id
+  service_name  = local.service_name__sap_task_center
+  plan_name     = "standard"
 }
 
-resource "cloudfoundry_service_instance" "si_taskcenter" {
-  name         = "sap-taskcenter"
-  type         = "managed"
-  space        = cloudfoundry_space.space.id
-  service_plan = data.cloudfoundry_service.srvc_taskcenter.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.cfsr_space_admin, cloudfoundry_space_role.cfsr_space_developer]
-  parameters = jsonencode({
-	              "authorities": [],
-                "defaultCollectionQueryFilter": "own"
-
-  })
+# ------------------------------------------------------------------------------------------------------
+# Assignment of users as launchpad administrators
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "launchpad-admins" {
+  for_each             = toset("${var.launchpad_admins}")
+  subaccount_id        = btp_subaccount.project.id
+  role_collection_name = "Launchpad_Admin"
+  user_name            = each.value
+  depends_on           = [btp_subaccount_subscription.build_workzone]
 }

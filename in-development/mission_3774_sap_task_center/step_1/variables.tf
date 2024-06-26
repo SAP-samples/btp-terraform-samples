@@ -1,13 +1,12 @@
 ######################################################################
 # Customer account setup
 ######################################################################
-# subaccount
 variable "globalaccount" {
   type        = string
-  description = "The globalaccount subdomain."
+  description = "Defines the global account"
   default     = "yourglobalaccount"
 }
-# CLI server URL
+
 variable "cli_server_url" {
   type        = string
   description = "Defines the CLI server URL"
@@ -19,6 +18,11 @@ variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
   default     = "UC - Establish a Central Inbox with SAP Task Center"
+}
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
 }
 # Region
 variable "region" {
@@ -40,6 +44,12 @@ variable "subaccount_admins" {
 }
 
 variable "subaccount_service_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "launchpad_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
@@ -71,7 +81,19 @@ variable "cf_org_name" {
 variable "cf_space_name" {
   type        = string
   description = "Name of the Cloud Foundry space."
-  default     = "DEV"
+  default     = "dev"
+}
+
+variable "cf_username" {
+  type        = string
+  description = "CF User Name"
+  default     = ""
+}
+
+variable "cf_password" {
+  type        = string
+  description = "CF Password"
+  default     = ""
 }
 
 variable "cfsr_space_manager" {
@@ -84,4 +106,14 @@ variable "cfsr_space_developer" {
   type        = string
   description = "Defines the user who are added as space developer."
   default     = "john.doe@test.com"
+}
+
+variable "service_plan__build_workzone" {
+  type        = string
+  description = "The plan for build_workzone subscription"
+  default     = "free"
+  validation {
+    condition     = contains(["free", "standard"], var.service_plan__build_workzone)
+    error_message = "Invalid value for service_plan__build_workzone. Only 'free' and 'standard' are allowed."
+  }
 }
