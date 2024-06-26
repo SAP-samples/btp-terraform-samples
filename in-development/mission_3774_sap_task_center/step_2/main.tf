@@ -9,7 +9,7 @@ resource "cloudfoundry_space" "space" {
 ###############################################################################################
 # assign user as space manager
 ###############################################################################################
-resource "cloudfoundry_space_role" "cfsr_space_manager" {
+resource "cloudfoundry_space_role" "cf_space_manager" {
   username = var.cf_space_manager
   type     = "space_manager"
   space    = cloudfoundry_space.space.id
@@ -20,7 +20,7 @@ resource "cloudfoundry_space_role" "cfsr_space_manager" {
 ###############################################################################################
 # assign user as space developer
 ###############################################################################################
-resource "cloudfoundry_space_role" "cfsr_space_developer" {
+resource "cloudfoundry_space_role" "cf_space_developer" {
   username = var.cf_space_developer
   type     = "space_developer"
   space    = cloudfoundry_space.space.id
