@@ -62,7 +62,7 @@ variable "abap_sid" {
   description = "The system ID (SID) of the ABAP system."
 
   validation {
-    condition     = regex("^[A-Z][A-Z0-9]{2}$", var.abap_sid)
+    condition     = can(regex("^[A-Z][A-Z0-9]{2}$", var.abap_sid))
     error_message = "Please provide a valid system ID (SID). It must consist of exactly three alphanumeric characters. Only uppercase letters are allowed. The first character must be a letter (not a digit). The ID does not have to be technically unique."
   }
 }
