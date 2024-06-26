@@ -1,223 +1,208 @@
-###############################################################################################
-# Setup subaccount domain and the CF org (to ensure uniqueness in BTP global account)
-###############################################################################################
-locals {
-  project_subaccount_domain = lower("${var.subaccount_name}-${var.org}")
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
+# ------------------------------------------------------------------------------------------------------
+# Subaccount setup for DC mission 3585
+# ------------------------------------------------------------------------------------------------------
+# Setup subaccount domain (to ensure uniqueness in BTP global account)
+resource "random_id" "subaccount_domain_suffix" {
+  byte_length = 12
 }
-
-
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
-###############################################################################################
-resource "btp_subaccount" "create_subaccount" {
-  count = var.subaccount_id == "" ? 1 : 0
-
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount" "dc_mission" {
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
+  subdomain = join("-", ["dc-mission-3585", random_id.subaccount_domain_suffix.hex])
   region    = lower(var.region)
 }
 
-data "btp_subaccount" "project" {
-  id = var.subaccount_id != "" ? var.subaccount_id : btp_subaccount.create_subaccount[0].id
-}
-
-
+# ------------------------------------------------------------------------------------------------------
+# CLOUDFOUNDRY PREPARATION
+# ------------------------------------------------------------------------------------------------------
+#
+# Fetch all available environments for the subaccount
 data "btp_subaccount_environments" "all" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = btp_subaccount.dc_mission.id
 }
-
-
-###############################################################################################
-# Assign custom IDP to sub account
-###############################################################################################
-resource "btp_subaccount_trust_configuration" "fully_customized" {
-  count             = var.custom_idp == "" ? 0 : 1
-  subaccount_id     = data.btp_subaccount.project.id
-  identity_provider = var.custom_idp
-}
-
-
-###############################################################################################
-# Creation of Cloud Foundry environment
-###############################################################################################
-
-
 # ------------------------------------------------------------------------------------------------------
 # Take the landscape label from the first CF environment if no environment label is provided
+# (this replaces the previous null_resource)
 # ------------------------------------------------------------------------------------------------------
-resource "null_resource" "cache_target_environment" {
-  triggers = {
-    label = length(var.environment_label) > 0 ? var.environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
-  }
-
-  lifecycle {
-    ignore_changes = all
-  }
+resource "terraform_data" "replacement" {
+  input = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
-
+# ------------------------------------------------------------------------------------------------------
+# Create the Cloud Foundry environment instance
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_environment_instance" "cf" {
-  subaccount_id    = data.btp_subaccount.project.id
-  name             = local.project_subaccount_cf_org
+  subaccount_id    = btp_subaccount.dc_mission.id
+  name             = "cf-${random_id.subaccount_domain_suffix.hex}"
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  = null_resource.cache_target_environment.triggers.label
+  landscape_label  = terraform_data.replacement.output
 
   parameters = jsonencode({
-    instance_name = local.project_subaccount_cf_org
+    instance_name = "cf-${random_id.subaccount_domain_suffix.hex}"
   })
 }
 
-resource "cloudfoundry_org_role" "manager" {
-  for_each   = toset(var.admins)
-  username   = each.value
-  type       = "organization_manager"
-  org        = btp_subaccount_environment_instance.cf.platform_id
-  origin     = var.origin
-  depends_on = [btp_subaccount_environment_instance.cf]
+# ------------------------------------------------------------------------------------------------------
+# SERVICES
+# ------------------------------------------------------------------------------------------------------
+#
+# ------------------------------------------------------------------------------------------------------
+# Setup cicd-service (not running in CF environment)
+# ------------------------------------------------------------------------------------------------------
+# Entitle 
+resource "btp_subaccount_entitlement" "cicd_service" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "cicd-service"
+  plan_name     = "default"
+}
+# Get serviceplan_id for cicd-service with plan_name "default"
+data "btp_subaccount_service_plan" "cicd_service" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  offering_name = "cicd-service"
+  name          = "default"
+  depends_on    = [btp_subaccount_entitlement.cicd_service]
+}
+# Create service instance
+resource "btp_subaccount_service_instance" "cicd_service" {
+  subaccount_id  = btp_subaccount.dc_mission.id
+  serviceplan_id = data.btp_subaccount_service_plan.cicd_service.id
+  name           = "default_cicd-service"
+  # Subscription to the cicd-app subscription is required for creating the service instance
+  # See as well https://help.sap.com/docs/continuous-integration-and-delivery/sap-continuous-integration-and-delivery/optional-enabling-api-usage?language=en-US
+  depends_on = [btp_subaccount_subscription.cicd_app]
 }
 
-resource "cloudfoundry_org_role" "user" {
-  for_each = toset(var.developers)
-  username = each.value
-  type     = "organization_user"
-  org      = btp_subaccount_environment_instance.cf.platform_id
-  #origin = btp_subaccount_trust_configuration.simple.origin
-  origin     = var.origin
-  depends_on = [btp_subaccount_environment_instance.cf]
-}
-resource "cloudfoundry_org_role" "user_admins" {
-  for_each = toset(var.admins)
-  username = each.value
-  type     = "organization_user"
-  org      = btp_subaccount_environment_instance.cf.platform_id
-  #origin = btp_subaccount_trust_configuration.simple.origin
-  origin     = var.origin
-  depends_on = [btp_subaccount_environment_instance.cf]
-}
-
-
-###############################################################################################
-# Prepare and setup app: SAP Build Workzone, standard edition
-###############################################################################################
-# Entitle subaccount for usage of app  destination SAP Build Workzone, standard edition
-resource "btp_subaccount_entitlement" "build_workzone" {
-  subaccount_id = data.btp_subaccount.project.id
-  service_name  = "SAPLaunchpad"
-  plan_name     = var.build_workzone_service_plan
-}
-
-# Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
-resource "btp_subaccount_subscription" "build_workzone" {
-  subaccount_id = data.btp_subaccount.project.id
-  app_name      = "SAPLaunchpad"
-  plan_name     = var.build_workzone_service_plan
-  depends_on    = [btp_subaccount_entitlement.build_workzone]
-}
-
-
-###############################################################################################
-# Prepare and setup app: SAP Business Application Studio
-###############################################################################################
-# Entitle subaccount for usage of app  destination SAP Business Application Studio
-resource "btp_subaccount_entitlement" "bas" {
-  subaccount_id = data.btp_subaccount.project.id
+# ------------------------------------------------------------------------------------------------------
+# APP SUBSCRIPTIONS
+# ------------------------------------------------------------------------------------------------------
+#
+# ------------------------------------------------------------------------------------------------------
+# Setup sapappstudio
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "sapappstudio" {
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "sapappstudio"
-  plan_name     = var.bas_service_plan
+  plan_name     = "standard-edition"
 }
-
-# Create app subscription to SAP Business Application Studio (depends on entitlement)
-resource "btp_subaccount_subscription" "bas" {
-  subaccount_id = data.btp_subaccount.project.id
+# Subscribe (depends on subscription of standard-edition)
+resource "btp_subaccount_subscription" "sapappstudio" {
+  subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "sapappstudio"
-  plan_name     = var.bas_service_plan
-  depends_on    = [btp_subaccount_entitlement.bas]
+  plan_name     = "standard-edition"
+  depends_on    = [btp_subaccount_entitlement.sapappstudio]
 }
 
+# ------------------------------------------------------------------------------------------------------
+# Setup SAPLaunchpad (SAP Build Work Zone, standard edition)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "sap_launchpad" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "SAPLaunchpad"
+  plan_name     = "standard"
+}
+# Subscribe
+resource "btp_subaccount_subscription" "sap_launchpad" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  app_name      = "SAPLaunchpad"
+  plan_name     = "standard"
+  depends_on    = [btp_subaccount_entitlement.sap_launchpad]
+}
 
-
-###############################################################################################
-# Prepare and setup app: Continous Integration & Delivery
-###############################################################################################
-# Entitle subaccount for usage of app  destination Continous Integration & Delivery
-resource "btp_subaccount_entitlement" "cicd" {
-  subaccount_id = data.btp_subaccount.project.id
+# ------------------------------------------------------------------------------------------------------
+# Setup cicd-app (Continuous Integration & Delivery)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "cicd_app" {
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "cicd-app"
-  plan_name     = var.cicd_service_plan
+  plan_name     = "default"
 }
-
-# Create app subscription to SAP Business Application Studio (depends on entitlement)
-resource "btp_subaccount_subscription" "cicd" {
-  subaccount_id = data.btp_subaccount.project.id
+# Subscribe
+resource "btp_subaccount_subscription" "cicd_app" {
+  subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "cicd-app"
-  plan_name     = var.cicd_service_plan
-  depends_on    = [btp_subaccount_entitlement.cicd]
+  plan_name     = "default"
+  depends_on    = [btp_subaccount_entitlement.cicd_app]
 }
 
-
-
-###############################################################################################
-# Assign User to role collections
-###############################################################################################
-# Assignment of admins to the sub account as sub account administrators
-resource "btp_subaccount_role_collection_assignment" "subaccount_admins" {
-  for_each             = toset("${var.admins}")
-  subaccount_id        = data.btp_subaccount.project.id
-  role_collection_name = "Subaccount Administrator"
-  user_name            = each.value
+# ------------------------------------------------------------------------------------------------------
+#  USERS AND ROLES
+# ------------------------------------------------------------------------------------------------------
+#
+# Get all available subaccount roles
+data "btp_subaccount_roles" "all" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  depends_on    = [btp_subaccount_subscription.sap_launchpad, btp_subaccount_subscription.sapappstudio, btp_subaccount_subscription.cicd_app]
 }
 
-# Assignment of developers to the sub account as sub account views
-resource "btp_subaccount_role_collection_assignment" "subaccount_viewer" {
-  for_each             = toset("${var.admins}")
-  subaccount_id        = data.btp_subaccount.project.id
-  role_collection_name = "Subaccount Viewer"
-  user_name            = each.value
-}
-# Assign users to Role Collection: Launchpad_Admin
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "Launchpad_Admin"
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
-  for_each             = toset("${var.admins}")
-  subaccount_id        = data.btp_subaccount.project.id
+  for_each             = toset("${var.launchpad_admins}")
+  subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Launchpad_Admin"
   user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.build_workzone]
+  depends_on           = [btp_subaccount_subscription.sap_launchpad]
 }
 
-# Assign users to Role Collection: Business_Application_Studio_Administrator
-resource "btp_subaccount_role_collection_assignment" "bas_admin" {
-  for_each             = toset("${var.admins}")
-  subaccount_id        = data.btp_subaccount.project.id
+
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "Subaccount Administrator"
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
+  for_each             = toset("${var.subaccount_admins}")
+  subaccount_id        = btp_subaccount.dc_mission.id
+  role_collection_name = "Subaccount Administrator"
+  user_name            = each.value
+  depends_on           = [btp_subaccount.dc_mission]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "Business_Application_Studio_Administrator"
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "bas_admins" {
+  for_each             = toset("${var.bas_admins}")
+  subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Business_Application_Studio_Administrator"
   user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.bas]
+  depends_on           = [btp_subaccount_subscription.sapappstudio]
 }
 
-# Assign users to Role Collection: Business_Application_Studio_Developer
-resource "btp_subaccount_role_collection_assignment" "bas_dev" {
-  for_each             = toset("${var.developers}")
-  subaccount_id        = data.btp_subaccount.project.id
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "Business_Application_Studio_Developer"
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "bas_developer" {
+  for_each             = toset("${var.bas_developers}")
+  subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Business_Application_Studio_Developer"
   user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.bas]
+  depends_on           = [btp_subaccount_subscription.sapappstudio]
 }
 
-
-# Assign users to Role Collection: CICD Service Administrator
-resource "btp_subaccount_role_collection_assignment" "cicd_admin" {
-  for_each             = toset("${var.admins}")
-  subaccount_id        = data.btp_subaccount.project.id
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "CICD Service Administrator"
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "cicd_admins" {
+  for_each             = toset("${var.cicd_admins}")
+  subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "CICD Service Administrator"
   user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.cicd]
+  depends_on           = [btp_subaccount_subscription.cicd_app]
 }
 
-# Assign users to Role Collection: CICD Service Developer
-resource "btp_subaccount_role_collection_assignment" "cicd_dev" {
-  for_each             = toset("${var.developers}")
-  subaccount_id        = data.btp_subaccount.project.id
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "CICD Service Developer"
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "cicd_developers" {
+  for_each             = toset("${var.cicd_developers}")
+  subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "CICD Service Developer"
   user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.cicd]
+  depends_on           = [btp_subaccount_subscription.cicd_app]
 }
-
