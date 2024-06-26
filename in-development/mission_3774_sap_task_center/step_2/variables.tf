@@ -74,6 +74,11 @@ variable "environment_label" {
   default     = "cf-us10"
 }
 
+variable "cf_org_id" {
+  type        = string
+  description = "The Cloud Foundry Org ID from the Cloud Foundry environment instance."
+}
+
 variable "cf_org_name" {
   type        = string
   description = "Name of the Cloud Foundry org."
@@ -89,18 +94,6 @@ variable "cf_space_name" {
   type        = string
   description = "Name of the Cloud Foundry space."
   default     = "dev"
-}
-
-variable "cf_username" {
-  type        = string
-  description = "CF User Name"
-  default     = ""
-}
-
-variable "cf_password" {
-  type        = string
-  description = "CF Password"
-  default     = ""
 }
 
 variable "cf_space_manager" {

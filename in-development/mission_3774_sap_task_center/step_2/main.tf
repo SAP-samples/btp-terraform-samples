@@ -3,7 +3,7 @@
 ###############################################################################################
 resource "cloudfoundry_space" "space" {
   name = var.cf_space_name
-  org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
+   org  = var.cf_org_id
 }
 
 ###############################################################################################
@@ -60,8 +60,8 @@ resource "cloudfoundry_service_credential_binding" "sap-taskcenter" {
 }
 
 resource "btp_subaccount_service_binding" "taskcenter" {
-  subaccount_id       = btp_subaccount.project.id
-  service_instance_id = btp_subaccount_service_instance.taskcenter.id
+  subaccount_id       = local.subaccount_id.id
+  service_instance_id = cloudfoundry_service_instance.si_taskcenter.id
   name                = join("_", ["defaultKey", random_id.service_key_stc.hex])
   depends_on          = [btp_subaccount_service_instance.taskcenter]
 }
