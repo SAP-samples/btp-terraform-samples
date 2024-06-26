@@ -13,5 +13,5 @@ cf_environment_label = "cf_environment_label"
 
 subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
 subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
-custom_idp                = "you custom idp"
+custom_idp                = "your custom idp"
 launchpad_admins          = ["jane.doe@test.com", "john.doe@test.com"]
