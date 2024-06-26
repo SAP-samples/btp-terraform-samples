@@ -109,7 +109,7 @@ variable "cf_space_manager" {
   default     = "john.doe@test.com"
 }
 
-variable "cfsr_space_developer" {
+variable "cf_space_developer" {
   type        = string
   description = "Defines the user who are added as space developer."
   default     = "john.doe@test.com"
