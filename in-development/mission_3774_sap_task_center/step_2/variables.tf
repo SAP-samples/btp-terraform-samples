@@ -13,6 +13,13 @@ variable "cli_server_url" {
   default     = "https://cli.btp.cloud.sap"
 }
 
+variable "cf_api_url" {
+  type        = string
+  description = "Defines the CLI server URL"
+  default     = "https://api.cf.us10.hana.ondemand.com/"
+}
+
+
 # subaccount
 variable "subaccount_name" {
   type        = string

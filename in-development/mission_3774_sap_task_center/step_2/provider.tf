@@ -17,5 +17,5 @@ provider "btp" {
   cli_server_url = var.cli_server_url
 }
 provider "cloudfoundry" {
-  api_url  = "https://api.cf.us10.hana.ondemand.com/"
+  api_url  = var.cf_api_url
 }
