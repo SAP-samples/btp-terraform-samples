@@ -15,7 +15,6 @@ terraform {
 provider "btp" {
   globalaccount  = var.globalaccount
   cli_server_url = var.cli_server_url
-#  password       = var.password
 }
 provider "cloudfoundry" {
   api_url  = "https://api.cf.us10.hana.ondemand.com/"
