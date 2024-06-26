@@ -53,3 +53,8 @@ variable "hana_compute_unit_quota" {
   description = "The amount of ABAP compute units to be assigned to the subaccount."
   default     = 2
 }
+
+variable "custom_idp" {
+  type        = string
+  description = "Name of custom IDP to be used for the subaccount"
+}
