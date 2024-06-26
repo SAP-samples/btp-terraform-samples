@@ -3,7 +3,7 @@
 ###############################################################################################
 resource "cloudfoundry_space" "space" {
   name = var.cf_space_name
-  org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
+  org  = var.cf_org_id#
 }
 
 ###############################################################################################
@@ -27,27 +27,11 @@ resource "cloudfoundry_space_role" "cfsr_space_developer" {
 }
 
 ###############################################################################################
-# Artificial timeout for entitlement propagation to CF Marketplace
-###############################################################################################
-#resource "time_sleep" "wait_a_few_seconds" {
-#  depends_on      = [resource.cloudfoundry_space.space]
-#  create_duration = "30s"
-#}
-
-###############################################################################################
-# Create the Cloud Foundry space
-###############################################################################################
-resource "cloudfoundry_space" "space" {
-  name = var.cf_space_name
-  org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
-}
-
-###############################################################################################
 # Create service instance for taskcenter (one-inbox-service)
 ###############################################################################################
 data "cloudfoundry_service" "srvc_taskcenter" {
-  name       = "one-inbox-service"
- # depends_on = [time_sleep.wait_a_few_seconds]
+  name = "one-inbox-service"
+  # depends_on = [time_sleep.wait_a_few_seconds]
 }
 
 resource "cloudfoundry_service_instance" "si_taskcenter" {
@@ -55,10 +39,10 @@ resource "cloudfoundry_service_instance" "si_taskcenter" {
   type         = "managed"
   space        = cloudfoundry_space.space.id
   service_plan = data.cloudfoundry_service.srvc_taskcenter.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.cf_space_manager, cloudfoundry_space_role.cf_space_developer]
+  depends_on   = [cloudfoundry_space_role.cfsr_space_manager, cloudfoundry_space_role.cfsr_space_developer]
   parameters = jsonencode({
-	              "authorities": [],
-                "defaultCollectionQueryFilter": "own"
+    "authorities" : [],
+    "defaultCollectionQueryFilter" : "own"
 
   })
 }
@@ -72,14 +56,7 @@ resource "random_id" "service_key_stc" {
 resource "cloudfoundry_service_credential_binding" "sap-taskcenter" {
   type             = "key"
   name             = join("_", ["defaultKey", random_id.service_key_stc.hex])
-  service_instance = cloudfoundry_service_instance.sdm.id
-}
-
-resource "btp_subaccount_service_binding" "taskcenter" {
-  subaccount_id       = btp_subaccount.project.id
-  service_instance_id = btp_subaccount_service_instance.taskcenter.id
-  name                = join("_", ["defaultKey", random_id.service_key_cicd_service.hex])
-  depends_on          = [btp_subaccount_service_instance.taskcenter]
+  service_instance = cloudfoundry_service_instance.si_taskcenter.id
 }
 
 ###############################################################################################
@@ -87,21 +64,21 @@ resource "btp_subaccount_service_binding" "taskcenter" {
 ###############################################################################################
 # Entitle subaccount for usage of service destination
 resource "btp_subaccount_entitlement" "destination" {
-  subaccount_id = btp_subaccount.project.id
+  subaccount_id = var.subaccount_id
   service_name  = "destination"
   plan_name     = "lite"
 }
 
 # Get serviceplan_id for stc-service with plan_name "default"
 data "btp_subaccount_service_plan" "destination" {
-  subaccount_id = btp_subaccount.project.id
+  subaccount_id = var.subaccount_id
   offering_name = "destination"
   name          = "lite"
   depends_on    = [btp_subaccount_entitlement.destination]
 }
 # Create service instance
 resource "btp_subaccount_service_instance" "destination" {
-  subaccount_id  = btp_subaccount.project.id
+  subaccount_id  = var.subaccount_id
   serviceplan_id = data.btp_subaccount_service_plan.destination.id
   name           = "destination"
   depends_on     = [data.btp_subaccount_service_plan.destination]
@@ -111,18 +88,17 @@ resource "btp_subaccount_service_instance" "destination" {
       subaccount = {
         existing_destinations_policy = "update"
         destinations = [
-          # This is the destination to the cicd-service binding
           {
             Description                = "[Do not delete] SAP Task Center - Dummy destination"
             Type                       = "HTTP"
-            clientId                   = "${jsondecode(btp_subaccount_service_binding.cicd_service.credentials)["uaa"]["clientid"]}"
-            clientSecret               = "${jsondecode(btp_subaccount_service_binding.cicd_service.credentials)["uaa"]["clientsecret"]}"
+#            clientId                   = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["clientid"]}"
+#            clientSecret               = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["clientsecret"]}"
             "HTML5.DynamicDestination" = true
             Authentication             = "OAuth2JWTBearer"
             Name                       = "stc-destination"
-            tokenServiceURL            = "${jsondecode(btp_subaccount_service_binding.cicd_service.credentials)["uaa"]["url"]}"
+#            tokenServiceURL            = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter)["uaa"]["url"]}"
             ProxyType                  = "Internet"
-            URL                        = "${jsondecode(btp_subaccount_service_binding.cicd_service.credentials)["url"]}"
+#            URL                        = "${jsondecode(cloudfoundry_service_credential_binding.sap-taskcenter.credentials)["url"]}"
             tokenServiceURLType        = "Dedicated"
           }
         ]

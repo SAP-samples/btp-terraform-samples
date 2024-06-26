@@ -85,22 +85,15 @@ variable "cf_org_name" {
   }
 }
 
+variable "cf_org_id" {
+  type        = string
+  description = "ID of the Cloud Foundry org."
+}
+
 variable "cf_space_name" {
   type        = string
   description = "Name of the Cloud Foundry space."
   default     = "dev"
-}
-
-variable "cf_username" {
-  type        = string
-  description = "CF User Name"
-  default     = ""
-}
-
-variable "cf_password" {
-  type        = string
-  description = "CF Password"
-  default     = ""
 }
 
 variable "cf_space_manager" {
