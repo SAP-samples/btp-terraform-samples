@@ -22,8 +22,3 @@ output "cf_landscape_label" {
   value       = btp_subaccount_environment_instance.cloudfoundry.platform_id
   description = "The landscape label of the Cloud Foundry environment."
 }
-
-output "cf_space_name" {
-value       = cloudfoundry_space.space.name
-description = "The name of the Cloud Foundry space."
-}
