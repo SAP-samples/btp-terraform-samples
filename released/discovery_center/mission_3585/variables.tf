@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain where the sub account shall be created."

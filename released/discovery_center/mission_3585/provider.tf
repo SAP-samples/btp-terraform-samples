@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 terraform {
   required_providers {
     btp = {
