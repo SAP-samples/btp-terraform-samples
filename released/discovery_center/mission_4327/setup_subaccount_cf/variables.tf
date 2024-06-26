@@ -37,7 +37,7 @@ variable "cf_org_name" {
 }
 
 variable "cf_org_user" {
-    type        = set(string)
+  type        = set(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
@@ -125,19 +125,19 @@ variable "entitlements" {
 }
 # Plan_name update
 variable "bas_plan_name" {
-description = "BAS plan"
-type = string
-default = "free-tier"
+  description = "BAS plan"
+  type        = string
+  default     = "free-tier"
 }
 
 variable "build_workzone_plan_name" {
-description = "Build Workzone plan"
-type = string
-default = "free-tier"
+  description = "Build Workzone plan"
+  type        = string
+  default     = "free-tier"
 }
 
 variable "hana-cloud_plan_name" {
-description = "hana-cloud plan"
-type = string
-default = "free"
+  description = "hana-cloud plan"
+  type        = string
+  default     = "free"
 }

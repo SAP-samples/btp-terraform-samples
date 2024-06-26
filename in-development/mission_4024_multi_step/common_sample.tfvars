@@ -1,9 +1,9 @@
 #################################
 # Provider configuration
 #################################
-custom_idp                     = "<<tenand id>>.accounts.ondemand.com"
+custom_idp = "<<tenand id>>.accounts.ondemand.com"
 
 #################################
 # Account settings
 #################################
-globalaccount                  = "<<globalaccount subdomain>>"
+globalaccount = "<<globalaccount subdomain>>"

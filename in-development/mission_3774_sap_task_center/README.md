@@ -4,6 +4,7 @@
 
 This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Establish a Central Inbox with SAP Task Center](https://discovery-center.cloud.sap/index.html#/missiondetail/3774/)
 
+
 ## Content of setup
 
 The setup comprises the following resources:
@@ -37,6 +38,7 @@ To deploy the resources you must:
 3. Change the variables in the `common_sample.tfvars` file to meet your requirements
 
    > The minimal set of parameters you should specify (beside user_email and password) is globalaccount (i.e. its subdomain) and the used custom_idp.
+
 
 4. Change the variables in `sample.tfvars` file to meet your requirements
 

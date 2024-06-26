@@ -18,5 +18,5 @@ provider "btp" {
 // doesn't work for regions with multiple CF environments, e.g. eu10
 // (https://help.sap.com/docs/btp/sap-business-technology-platform/regions)
 provider "cloudfoundry" {
-  api_url  = "https://api.cf.${var.region}.hana.ondemand.com"
+  api_url = "https://api.cf.${var.region}.hana.ondemand.com"
 }

@@ -58,7 +58,7 @@ resource "btp_subaccount_service_instance" "hana_cloud" {
   name           = "my-hana-cloud-instance"
   depends_on     = [btp_subaccount_entitlement.hana_cloud]
   parameters = jsonencode(
-    { 
+    {
       "data" : {
         "memory" : 32,
         "edition" : "cloud",

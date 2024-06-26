@@ -8,12 +8,17 @@ output "subaccount_name" {
   description = "The name of the project subaccount."
 }
 
-output "cloudfoundry_org_name" {
-  value       = local.project_subaccount_cf_org
-  description = "The name of the cloudfoundry org connected to the project account."
+output "cloudfoundry_org_id" {
+  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]
+  description = "The ID of the cloudfoundry org connected to the project account."
 }
 
-output "cloudfoundry_org_id" {
-  value       = module.cloudfoundry_environment.cf_org_id
-  description = "The ID of the cloudfoundry org connected to the project account."
+output "cloudfoundry_api_endpoint" {
+  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]
+  description = "The Global Account subdomain"
+}
+
+output "cloudfoundry_org_name" {
+  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]
+  description = "The Global Account subdomain"
 }
