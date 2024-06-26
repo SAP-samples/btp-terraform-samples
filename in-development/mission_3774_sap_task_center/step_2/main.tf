@@ -10,7 +10,7 @@ resource "cloudfoundry_space" "space" {
 # assign user as space manager
 ###############################################################################################
 resource "cloudfoundry_space_role" "cfsr_space_manager" {
-  username = var.cfsr_space_manager
+  username = var.cf_space_manager
   type     = "space_manager"
   space    = cloudfoundry_space.space.id
   origin   = "sap.ids"
@@ -21,7 +21,7 @@ resource "cloudfoundry_space_role" "cfsr_space_manager" {
 # assign user as space developer
 ###############################################################################################
 resource "cloudfoundry_space_role" "cfsr_space_developer" {
-  username = var.cfsr_space_developer
+  username = var.cf_space_developer
   type     = "space_developer"
   space    = cloudfoundry_space.space.id
 }
@@ -55,7 +55,7 @@ resource "cloudfoundry_service_instance" "si_taskcenter" {
   type         = "managed"
   space        = cloudfoundry_space.space.id
   service_plan = data.cloudfoundry_service.srvc_taskcenter.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.cfsr_space_manager, cloudfoundry_space_role.cfsr_space_developer]
+  depends_on   = [cloudfoundry_space_role.cf_space_manager, cloudfoundry_space_role.cf_space_developer]
   parameters = jsonencode({
 	              "authorities": [],
                 "defaultCollectionQueryFilter": "own"

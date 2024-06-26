@@ -78,36 +78,6 @@ variable "cf_org_name" {
   }
 }
 
-variable "cf_space_name" {
-  type        = string
-  description = "Name of the Cloud Foundry space."
-  default     = "dev"
-}
-
-variable "cf_username" {
-  type        = string
-  description = "CF User Name"
-  default     = ""
-}
-
-variable "cf_password" {
-  type        = string
-  description = "CF Password"
-  default     = ""
-}
-
-variable "cfsr_space_manager" {
-  type        = string
-  description = "Defines the user who are added as space manager."
-  default     = "john.doe@test.com"
-}
-
-variable "cfsr_space_developer" {
-  type        = string
-  description = "Defines the user who are added as space developer."
-  default     = "john.doe@test.com"
-}
-
 variable "service_plan__build_workzone" {
   type        = string
   description = "The plan for build_workzone subscription"
