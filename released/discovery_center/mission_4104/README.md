@@ -21,39 +21,35 @@ Make sure that you are familiar with SAP BTP and know both the [Get Started with
 
 To deploy the resources you must:
 
-1. Create a file `secret.auto.tfvars` and maintain the credentials for the BTP provider
-
-   ```hcl
-   user_email = "<Email address of your BTP user>"
-   password = "<Password of your BTP user>"
-   ```
-   as an alternative you can set these credentials also as environment variables
+1. Set your credentials as environment variables
    
    ```bash
-   export user_email ='<Email address of your BTP user>'
-   export password ='<Password of your BTP user>'
+   export BTP_USERNAME ='<Email address of your BTP user>'
+   export BTP_PASSWORD ='<Password of your BTP user>'
+   export CF_USER ='<Email address of your BTP user>'
+   export CF_PASSWORD ='<Password of your BTP user>'
    ```
 
-3. Change the variables in the `sample.tfvars` file to meet your requirements
+2. Change the variables in the `sample.tfvars` file to meet your requirements
 
    > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
 
 
-4. Initialize your workspace:
+3. Initialize your workspace:
 
    ```bash
    terraform init
    ```
 
-5. You can check what Terraform plans to apply based on your configuration:
+4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
    terraform plan -var-file="sample.tfvars"
    ```
 
-6. Apply your configuration to provision the resources:
+5. Apply your configuration to provision the resources:
 
    ```bash
    terraform apply -var-file="sample.tfvars"
