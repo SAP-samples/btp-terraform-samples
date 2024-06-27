@@ -63,12 +63,6 @@ resource "btp_subaccount_service_instance" "datasphere" {
 #  USERS AND ROLES
 # ------------------------------------------------------------------------------------------------------
 #
-# Get all available subaccount roles
-data "btp_subaccount_roles" "all" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  depends_on    = [btp_subaccount_service_instance.datasphere]
-}
-
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection "Subaccount Administrator"
 # ------------------------------------------------------------------------------------------------------
