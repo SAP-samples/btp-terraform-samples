@@ -1,12 +1,12 @@
 # ------------------------------------------------------------------------------------------------------
-# Subaccount setup for DC mission 4108
+# Subaccount setup for DC mission 4104
 # ------------------------------------------------------------------------------------------------------
 # Setup subaccount domain (to ensure uniqueness in BTP global account)
 resource "random_uuid" "subaccount_domain_suffix" {}
 
 locals {
   random_uuid               = random_uuid.subaccount_domain_suffix.result
-  project_subaccount_domain = lower(replace("dcmission-4108-${local.random_uuid}", "_", "-"))
+  project_subaccount_domain = lower(replace("dcmission-4104-${local.random_uuid}", "_", "-"))
 }
 
 # ------------------------------------------------------------------------------------------------------
