@@ -47,9 +47,9 @@ resource "btp_subaccount_service_instance" "datasphere" {
   parameters = jsonencode(
     {
       "first_name" : "${var.qas_datasphere_first_name}",
-      "last_name"  : "${var.qas_datasphere_last_name}",
-      "email"      : "${var.qas_datasphere_email}",
-      "host_name"  : "${var.qas_datasphere_host_name}",
+      "last_name" : "${var.qas_datasphere_last_name}",
+      "email" : "${var.qas_datasphere_email}",
+      "host_name" : "${var.qas_datasphere_host_name}",
     }
   )
   timeouts = {
