@@ -31,7 +31,6 @@ resource "cloudfoundry_space_role" "cf_space_developer" {
 ###############################################################################################
 data "cloudfoundry_service" "srvc_taskcenter" {
   name = "one-inbox-service"
-  # depends_on = [time_sleep.wait_a_few_seconds]
 }
 
 resource "cloudfoundry_service_instance" "si_taskcenter" {
@@ -43,19 +42,17 @@ resource "cloudfoundry_service_instance" "si_taskcenter" {
   parameters = jsonencode({
     "authorities" : [],
     "defaultCollectionQueryFilter" : "own"
-
   })
 }
 
 ###############################################################################################
 # Create service key
 ###############################################################################################
-resource "random_id" "service_key_stc" {
-  byte_length = 12
-}
+resource "random_uuid" "service_key_stc" {}
+
 resource "cloudfoundry_service_credential_binding" "sap-taskcenter" {
   type             = "key"
-  name             = join("_", ["defaultKey", random_id.service_key_stc.hex])
+  name             = join("_", ["defaultKey", random_uuid.service_key_stc.hex])
   service_instance = cloudfoundry_service_instance.si_taskcenter.id
 }
 

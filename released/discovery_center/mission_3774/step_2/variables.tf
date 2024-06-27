@@ -90,22 +90,37 @@ variable "cf_org_name" {
   }
 }
 
-variable "cf_space_name" {
-  type        = string
-  description = "Name of the Cloud Foundry space."
-  default     = "dev"
+variable "cf_org_admins" {
+  type        = list(string)
+  description = "List of users to set as Cloudfoundry org administrators."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
+    error_message = "Please enter a valid email address for the CF Org admins."
+  }
 }
 
 variable "cf_space_manager" {
-  type        = string
-  description = "Defines the user who are added as space manager."
-  default     = "john.doe@test.com"
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF space as space manager."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_manager : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_manager)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
 
 variable "cf_space_developer" {
-  type        = string
-  description = "Defines the user who are added as space developer."
-  default     = "john.doe@test.com"
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF space as space developer."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_developer : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developer)
+    error_message = "Please enter a valid email address for the CF space developers."
+  }
 }
 
 variable "service_plan__build_workzone" {

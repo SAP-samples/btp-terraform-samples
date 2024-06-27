@@ -3,22 +3,17 @@ output "subaccount_id" {
   description = "The ID of the subaccount."
 }
 
-output "cf_org_name" {
-  value       = local.project_subaccount_cf_org
-  description = "The name of the project subaccount."
+output "cf_api_endpoint" {
+  value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]
+  description = "The Cloudfoundry API endpoint."
 }
 
 output "cf_org_id" {
-  value       = btp_subaccount_environment_instance.cloudfoundry.landscape_label
-  description = "The ID of the Cloud Foundry environment."
+  value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]
+  description = "The Cloudfoundry org id."
 }
 
-output "cf_api_endpoint" {
-  value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]
-  description = "API endpoint of the Cloud Foundry environment."
-}
-
-output "cf_landscape_label" {
-  value       = btp_subaccount_environment_instance.cloudfoundry.platform_id
-  description = "The landscape label of the Cloud Foundry environment."
+output "cf_org_name" {
+  value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]
+  description = "The Cloudfoundry org name."
 }

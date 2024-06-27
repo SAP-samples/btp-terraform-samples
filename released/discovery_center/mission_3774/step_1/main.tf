@@ -1,19 +1,20 @@
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Setup of names in accordance to naming convention
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 resource "random_uuid" "uuid" {}
 
 locals {
   random_uuid               = random_uuid.uuid.result
-  project_subaccount_domain = lower(replace("mission-3774-${local.random_uuid}", "_", "-"))
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
+  subaccount_domain = lower(replace("mission-3774-${local.random_uuid}", "_", "-"))
+  subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
-###############################################################################################
+
+# ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount" "dc_mission" {
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
+  subdomain = local.subaccount_domain
   region    = lower(var.region)
 }
 # ------------------------------------------------------------------------------------------------------
@@ -56,30 +57,31 @@ resource "terraform_data" "replacement" {
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = btp_subaccount.dc_mission.id
-  name             = local.project_subaccount_cf_org
+  name             = local.subaccount_cf_org
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
   landscape_label  = terraform_data.replacement.output
   parameters = jsonencode({
-    instance_name = local.project_subaccount_cf_org
+    instance_name = local.subaccount_cf_org
   })
 }
+
 ###############################################################################################
 # Prepare and setup app: SAP Build Workzone, standard edition
 ###############################################################################################
 # Entitle subaccount for usage of app  destination SAP Build Workzone, standard edition
 resource "btp_subaccount_entitlement" "build_workzone" {
   subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = local.service_name__build_workzone
-  plan_name     = var.service_plan__build_workzone
-  amount        = var.service_plan__build_workzone == "free" ? 1 : null
+  service_name  = "SAPLaunchpad"
+  plan_name     = var.qas_service_plan__build_workzone
+  amount        = var.qas_service_plan__build_workzone == "free" ? 1 : null
 }
 # Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
 resource "btp_subaccount_subscription" "build_workzone" {
   subaccount_id = btp_subaccount.dc_mission.id
-  app_name      = local.service_name__build_workzone
-  plan_name     = var.service_plan__build_workzone
+  app_name      = "SAPLaunchpad"
+  plan_name     = var.qas_service_plan__build_workzone
   depends_on    = [btp_subaccount_entitlement.build_workzone]
 }
 ###############################################################################################
@@ -88,7 +90,7 @@ resource "btp_subaccount_subscription" "build_workzone" {
 # Entitle subaccount for usage of app  destination SAP Task Center
 resource "btp_subaccount_entitlement" "taskcenter" {
   subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = local.service_name__sap_task_center
+  service_name  = "one-inbox-service"
   plan_name     = "standard"
 }
 # ------------------------------------------------------------------------------------------------------
@@ -100,4 +102,30 @@ resource "btp_subaccount_role_collection_assignment" "launchpad-admins" {
   role_collection_name = "Launchpad_Admin"
   user_name            = each.value
   depends_on           = [btp_subaccount_subscription.build_workzone]
+}
+
+
+# ------------------------------------------------------------------------------------------------------
+# Create tfvars file for step 2 (if variable `create_tfvars_file_for_step2` is set to true)
+# ------------------------------------------------------------------------------------------------------
+resource "local_file" "output_vars_step1" {
+  count    = var.create_tfvars_file_for_step2 ? 1 : 0
+  content  = <<-EOT
+      globalaccount        = "${var.globalaccount}"
+      cli_server_url       = ${jsonencode(var.cli_server_url)}
+
+      subaccount_id        = "${btp_subaccount.dc_mission.id}"
+
+      cf_api_endpoint      = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
+      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
+      cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
+
+      custom_idp           = "${var.custom_idp}"
+
+      cf_org_admins        = ${jsonencode(var.cf_org_admins)}
+      cf_space_developer   = ${jsonencode(var.cf_space_developer)}
+      cf_space_manager     = ${jsonencode(var.cf_space_manager)}
+
+      EOT
+  filename = "../step2/terraform.tfvars"
 }

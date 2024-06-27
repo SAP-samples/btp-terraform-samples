@@ -35,7 +35,6 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
   user_name            = each.value
 }
 
-
 # ------------------------------------------------------------------------------------------------------
 # CLOUDFOUNDRY PREPARATION
 # ------------------------------------------------------------------------------------------------------
