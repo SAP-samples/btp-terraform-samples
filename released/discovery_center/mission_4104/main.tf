@@ -53,9 +53,9 @@ resource "btp_subaccount_service_instance" "datasphere" {
     }
   )
   timeouts = {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
+    create = "90m"
+    update = "90m"
+    delete = "90m"
   }
 }
 
