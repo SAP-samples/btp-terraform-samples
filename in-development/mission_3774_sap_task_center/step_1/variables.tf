@@ -30,12 +30,6 @@ variable "region" {
   description = "The region where the project account shall be created in."
   default     = "us10"
 }
-# Cloudfoundry environment label
-variable "cf_environment_label" {
-  type        = string
-  description = "The Cloudfoundry environment label"
-  default     = "cf-us10"
-}
 
 variable "subaccount_admins" {
   type        = list(string)
@@ -61,10 +55,9 @@ variable "custom_idp" {
   default     = ""
 }
 
-variable "environment_label" {
+variable "cf_environment_label" {
   type        = string
   description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
-  default     = "cf-us10"
 }
 
 variable "cf_org_name" {

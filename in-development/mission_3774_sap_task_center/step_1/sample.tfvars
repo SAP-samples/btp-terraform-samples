@@ -5,7 +5,6 @@
 globalaccount        = "yourglobalaccount"
 region               = "datacenter"
 subaccount_name      = "subaccount_name"
-cf_environment_label = "cf_environment_label"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)

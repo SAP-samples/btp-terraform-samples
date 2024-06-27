@@ -1,6 +1,6 @@
 output "subaccount_id" {
-  value       = btp_subaccount.project.id
-  description = "The ID of the project subaccount."
+  value       = btp_subaccount.dc_mission.id
+  description = "The ID of the subaccount."
 }
 
 output "cf_org_name" {
