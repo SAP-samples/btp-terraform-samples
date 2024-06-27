@@ -21,6 +21,11 @@ variable "cli_server_url" {
   default     = "https://cli.btp.cloud.sap"
 }
 
+variable "cf_api_endpoint" {
+  type        = string
+  description = "The Cloud Foundry API endpoint from the Cloud Foundry environment instance."
+}
+
 variable "region" {
   type        = string
   description = "The region where the subaccount shall be created in."

@@ -4,7 +4,7 @@
 resource "random_uuid" "uuid" {}
 
 locals {
-  random_uuid               = random_uuid.uuid.result
+  random_uuid       = random_uuid.uuid.result
   subaccount_domain = lower(replace("mission-3774-${local.random_uuid}", "_", "-"))
   subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
@@ -65,6 +65,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   parameters = jsonencode({
     instance_name = local.subaccount_cf_org
   })
+  depends_on = [btp_subaccount_subscription.build_workzone]
 }
 
 ###############################################################################################
@@ -117,14 +118,17 @@ resource "local_file" "output_vars_step1" {
       subaccount_id        = "${btp_subaccount.dc_mission.id}"
 
       cf_api_endpoint      = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
+
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
 
       custom_idp           = "${var.custom_idp}"
 
+      cf_space_name        = "${var.cf_space_name}"
+
       cf_org_admins        = ${jsonencode(var.cf_org_admins)}
-      cf_space_developer   = ${jsonencode(var.cf_space_developer)}
-      cf_space_manager     = ${jsonencode(var.cf_space_manager)}
+      cf_space_developers  = ${jsonencode(var.cf_space_developers)}
+      cf_space_managers    = ${jsonencode(var.cf_space_managers)}
 
       EOT
   filename = "../step2/terraform.tfvars"

@@ -6,24 +6,52 @@ resource "cloudfoundry_space" "space" {
   org  = var.cf_org_id #
 }
 
-###############################################################################################
-# assign user as space manager
-###############################################################################################
-resource "cloudfoundry_space_role" "cf_space_manager" {
-  username = var.cf_space_manager
-  type     = "space_manager"
-  space    = cloudfoundry_space.space.id
-  origin   = "sap.ids"
+
+# ------------------------------------------------------------------------------------------------------
+#  USERS AND ROLES
+# ------------------------------------------------------------------------------------------------------
+#
+# ------------------------------------------------------------------------------------------------------
+# Assign CF Org roles to the admin users
+# ------------------------------------------------------------------------------------------------------
+# Define Org User role
+resource "cloudfoundry_org_role" "organization_user" {
+  for_each = toset("${var.cf_org_admins}")
+  username = each.value
+  type     = "organization_user"
+  org      = var.cf_org_id
+  origin   = var.custom_idp
+}
+# Define Org Manager role
+resource "cloudfoundry_org_role" "organization_manager" {
+  for_each   = toset("${var.cf_org_admins}")
+  username   = each.value
+  type       = "organization_manager"
+  org        = var.cf_org_id
+  origin     = var.custom_idp
+  depends_on = [cloudfoundry_org_role.organization_user]
 }
 
-
-###############################################################################################
-# assign user as space developer
-###############################################################################################
-resource "cloudfoundry_space_role" "cf_space_developer" {
-  username = var.cf_space_developer
-  type     = "space_developer"
-  space    = cloudfoundry_space.space.id
+# ------------------------------------------------------------------------------------------------------
+# Assign CF space roles to the users
+# ------------------------------------------------------------------------------------------------------
+# Define Space Manager role
+resource "cloudfoundry_space_role" "space_managers" {
+  for_each   = toset("${var.cf_space_managers}")
+  username   = each.value
+  type       = "space_manager"
+  space      = cloudfoundry_space.space.id
+  origin     = var.custom_idp
+  depends_on = [cloudfoundry_org_role.organization_manager]
+}
+# Define Space Developer role
+resource "cloudfoundry_space_role" "space_developers" {
+  for_each   = toset("${var.cf_space_developers}")
+  username   = each.value
+  type       = "space_developer"
+  space      = cloudfoundry_space.space.id
+  origin     = var.custom_idp
+  depends_on = [cloudfoundry_org_role.organization_manager]
 }
 
 ###############################################################################################
@@ -38,7 +66,7 @@ resource "cloudfoundry_service_instance" "si_taskcenter" {
   type         = "managed"
   space        = cloudfoundry_space.space.id
   service_plan = data.cloudfoundry_service.srvc_taskcenter.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.cf_space_manager, cloudfoundry_space_role.cf_space_developer]
+  depends_on   = [cloudfoundry_space_role.space_managers, cloudfoundry_space_role.space_developers]
   parameters = jsonencode({
     "authorities" : [],
     "defaultCollectionQueryFilter" : "own"
@@ -52,7 +80,7 @@ resource "random_uuid" "service_key_stc" {}
 
 resource "cloudfoundry_service_credential_binding" "sap-taskcenter" {
   type             = "key"
-  name             = join("_", ["defaultKey", random_uuid.service_key_stc.hex])
+  name             = join("_", ["defaultKey", random_uuid.service_key_stc.result])
   service_instance = cloudfoundry_service_instance.si_taskcenter.id
 }
 

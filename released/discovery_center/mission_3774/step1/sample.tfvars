@@ -15,9 +15,9 @@ qas_service_plan__build_workzone = "free"
 subaccount_admins         = ["another.user@test.com"]
 subaccount_service_admins = ["another.user@test.com"]
 
-cf_org_admins      = ["another.user@test.com"]
-cf_space_manager   = ["another.user@test.com", "you@test.com"]
-cf_space_developer = ["another.user@test.com", "you@test.com"]
+cf_org_admins       = ["another.user@test.com"]
+cf_space_managers   = ["another.user@test.com", "you@test.com"]
+cf_space_developers = ["another.user@test.com", "you@test.com"]
 
-custom_idp       = "your custom idp"
+custom_idp       = "sap.ids"
 launchpad_admins = ["another.user@test.com", "you@test.com"]
