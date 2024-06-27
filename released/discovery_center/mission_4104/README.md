@@ -1,8 +1,8 @@
-# Discovery Center mission - Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App
+# SAP Discovery Center mission - Get Started with SAP Datasphere
 
 ## Overview
 
-This sample shows how to set up your SAP BTP account for the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/missiondetail/3585/)
+This terraform script shows how to set up your SAP Dataspehre tenant for the SAP Discovery Center Mission - [Get Started with SAP Datasphere](https://discovery-center.cloud.sap/missiondetail/4104/4329/)
 
 ## Content of setup
 
@@ -11,9 +11,7 @@ The setup comprises the following resources:
 - Creation of the SAP BTP subaccount
 - Enablement of Cloudfoundry Environment - [see available regions and endpoints](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-available-for-cloud-foundry-environment)
 - Entitlements of services
-   * SAP Business Application Studio
-   * SAP Build Work Zone, standard edition
-   * Continous Integration & Delivery - Optional
+   * SAP Datasphere
 - Subscriptions to applications
 - Role collection assignments to users
 
