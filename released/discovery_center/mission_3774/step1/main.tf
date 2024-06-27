@@ -21,7 +21,7 @@ resource "btp_subaccount" "dc_mission" {
 # Assignment of users as sub account administrators
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
-  for_each             = toset("${var.subaccount_admins}")
+  for_each             = toset(var.subaccount_admins)
   subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
@@ -30,7 +30,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
 # Assignment of users as sub account service administrators
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins" {
-  for_each             = toset("${var.subaccount_service_admins}")
+  for_each             = toset(var.subaccount_service_admins)
   subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
@@ -98,13 +98,12 @@ resource "btp_subaccount_entitlement" "taskcenter" {
 # Assignment of users as launchpad administrators
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "launchpad-admins" {
-  for_each             = toset("${var.launchpad_admins}")
+  for_each             = toset(var.launchpad_admins)
   subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Launchpad_Admin"
   user_name            = each.value
   depends_on           = [btp_subaccount_subscription.build_workzone]
 }
-
 
 # ------------------------------------------------------------------------------------------------------
 # Create tfvars file for step 2 (if variable `create_tfvars_file_for_step2` is set to true)

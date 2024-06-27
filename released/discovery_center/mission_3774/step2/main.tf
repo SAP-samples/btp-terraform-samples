@@ -1,11 +1,10 @@
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry space
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 resource "cloudfoundry_space" "space" {
   name = var.cf_space_name
   org  = var.cf_org_id #
 }
-
 
 # ------------------------------------------------------------------------------------------------------
 #  USERS AND ROLES
@@ -37,7 +36,7 @@ resource "cloudfoundry_org_role" "organization_manager" {
 # ------------------------------------------------------------------------------------------------------
 # Define Space Manager role
 resource "cloudfoundry_space_role" "space_managers" {
-  for_each   = toset("${var.cf_space_managers}")
+  for_each   = toset(var.cf_space_managers)
   username   = each.value
   type       = "space_manager"
   space      = cloudfoundry_space.space.id
@@ -46,7 +45,7 @@ resource "cloudfoundry_space_role" "space_managers" {
 }
 # Define Space Developer role
 resource "cloudfoundry_space_role" "space_developers" {
-  for_each   = toset("${var.cf_space_developers}")
+  for_each   = toset(var.cf_space_developers)
   username   = each.value
   type       = "space_developer"
   space      = cloudfoundry_space.space.id
@@ -54,9 +53,9 @@ resource "cloudfoundry_space_role" "space_developers" {
   depends_on = [cloudfoundry_org_role.organization_manager]
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create service instance for taskcenter (one-inbox-service)
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 data "cloudfoundry_service" "srvc_taskcenter" {
   name = "one-inbox-service"
 }
@@ -73,9 +72,9 @@ resource "cloudfoundry_service_instance" "si_taskcenter" {
   })
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create service key
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 resource "random_uuid" "service_key_stc" {}
 
 resource "cloudfoundry_service_credential_binding" "sap-taskcenter" {
@@ -84,16 +83,15 @@ resource "cloudfoundry_service_credential_binding" "sap-taskcenter" {
   service_instance = cloudfoundry_service_instance.si_taskcenter.id
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Prepare and setup service: destination
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Entitle subaccount for usage of service destination
 resource "btp_subaccount_entitlement" "destination" {
   subaccount_id = var.subaccount_id
   service_name  = "destination"
   plan_name     = "lite"
 }
-
 # Get serviceplan_id for stc-service with plan_name "default"
 data "btp_subaccount_service_plan" "destination" {
   subaccount_id = var.subaccount_id
