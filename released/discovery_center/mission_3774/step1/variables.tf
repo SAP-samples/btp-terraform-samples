@@ -52,6 +52,12 @@ variable "launchpad_admins" {
 variable "custom_idp" {
   type        = string
   description = "Defines the custom IdP"
+  default     = null
+}
+
+variable "origin" {
+  type        = string
+  description = "Defines the origin of the custom idp"
   default     = "sap.ids"
 }
 

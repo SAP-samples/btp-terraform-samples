@@ -17,6 +17,17 @@ resource "btp_subaccount" "dc_mission" {
   subdomain = local.subaccount_domain
   region    = lower(var.region)
 }
+
+# ------------------------------------------------------------------------------------------------------
+# Assign custom IDP to sub account (if custom_idp is set)
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_trust_configuration" "fully_customized" {
+  # Only create trust configuration if custom_idp has been set 
+  count             = var.custom_idp == null ? 1 : 0
+  subaccount_id     = btp_subaccount.dc_mission.id
+  identity_provider = var.custom_idp
+}
+
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account administrators
 # ------------------------------------------------------------------------------------------------------
@@ -122,6 +133,7 @@ resource "local_file" "output_vars_step1" {
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
 
       custom_idp           = "${var.custom_idp}"
+      origin               = "${var.origin}"
 
       cf_space_name        = "${var.cf_space_name}"
 
