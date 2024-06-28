@@ -81,7 +81,7 @@ variable "origin_key" {
   # but are normally set to "sap.ids", "sap.default" or "sap.custom"
 }
 
-variable "cf_environment_label" {
+variable "cf_landscape_label" {
   type        = string
   description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
   default     = ""
