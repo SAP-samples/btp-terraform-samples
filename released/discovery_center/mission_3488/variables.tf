@@ -35,6 +35,7 @@ variable "subaccount_admins" {
 variable "custom_idp" {
   type        = string
   description = "The custom identity provider for the subaccount."
+  default     = ""
 }
 
 variable "qas_sac_first_name" {

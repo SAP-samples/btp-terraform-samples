@@ -20,12 +20,12 @@ resource "btp_subaccount" "dc_mission" {
 # ------------------------------------------------------------------------------------------------------
 # Assign custom IDP to sub account (if custom_idp is set)
 # ------------------------------------------------------------------------------------------------------
-# resource "btp_subaccount_trust_configuration" "fully_customized" {
-#   # Only create trust configuration if custom_idp has been set 
-#   count             = var.custom_idp == null ? 1 : 0
-#   subaccount_id     = btp_subaccount.dc_mission.id
-#   identity_provider = var.custom_idp
-# }
+resource "btp_subaccount_trust_configuration" "fully_customized" {
+  # Only create trust configuration if custom_idp has been set 
+  count             = var.custom_idp == "" ? 0 : 1
+  subaccount_id     = btp_subaccount.dc_mission.id
+  identity_provider = var.custom_idp
+}
 
 # ------------------------------------------------------------------------------------------------------
 # SERVICES
@@ -46,14 +46,14 @@ resource "btp_subaccount_subscription" "sac" {
   plan_name     = "default"
   depends_on    = [btp_subaccount_entitlement.sac]
 
-  parameters = jsonencode(
-    {
-      "first_name" : "${var.qas_sac_first_name}",
-      "last_name" : "${var.qas_sac_last_name}",
-      "email" : "${var.qas_sac_email}",
-      "host_name" : "${var.qas_sac_host_name}",
-    }
-  )
+  # parameters = jsonencode(
+  #   {
+  #     "first_name" : "${var.qas_sac_first_name}",
+  #     "last_name" : "${var.qas_sac_last_name}",
+  #     "email" : "${var.qas_sac_email}",
+  #     "host_name" : "${var.qas_sac_host_name}",
+  #   }
+  # )
 }
 
 
