@@ -5,9 +5,9 @@
 resource "random_uuid" "subaccount_domain_suffix" {}
 
 locals {
-  random_uuid               = random_uuid.subaccount_domain_suffix.result
-  subaccount_domain = lower(replace("dcmission-4104-${local.random_uuid}", "_", "-"))
-  subaccount_cf_org = substr(replace("cf-${local.random_uuid}", "-", ""), 0, 32)
+  random_uuid       = random_uuid.subaccount_domain_suffix.result
+  subaccount_domain = lower(replace("mission-3808-${local.random_uuid}", "_", "-"))
+  subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -17,6 +17,16 @@ resource "btp_subaccount" "dc_mission" {
   name      = var.subaccount_name
   subdomain = local.subaccount_domain
   region    = lower(var.region)
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Assign custom IDP to sub account (if custom_idp is set)
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_trust_configuration" "fully_customized" {
+  # Only create trust configuration if custom_idp has been set 
+  count             = var.custom_idp == "" ? 0 : 1
+  subaccount_id     = btp_subaccount.dc_mission.id
+  identity_provider = var.custom_idp
 }
 
 
@@ -38,7 +48,7 @@ resource "terraform_data" "replacement" {
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
 # ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_environment_instance" "cf" {
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = btp_subaccount.dc_mission.id
   name             = local.subaccount_cf_org
   environment_type = "cloudfoundry"
@@ -127,4 +137,33 @@ resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
   user_name            = each.value
   # origin               = var.custom_idp
   depends_on = [btp_subaccount.dc_mission]
+}
+
+
+# ------------------------------------------------------------------------------------------------------
+# Create tfvars file for step 2 (if variable `create_tfvars_file_for_step2` is set to true)
+# ------------------------------------------------------------------------------------------------------
+resource "local_file" "output_vars_step1" {
+  count    = var.create_tfvars_file_for_step2 ? 1 : 0
+  content  = <<-EOT
+      globalaccount        = "${var.globalaccount}"
+      cli_server_url       = ${jsonencode(var.cli_server_url)}
+
+      subaccount_id        = "${btp_subaccount.dc_mission.id}"
+
+      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
+
+      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
+      cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
+
+      origin_key           = "${var.origin_key}"
+
+      cf_space_name        = "${var.cf_space_name}"
+
+      cf_org_admins        = ${jsonencode(var.cf_org_admins)}
+      cf_space_developers  = ${jsonencode(var.cf_space_developers)}
+      cf_space_managers    = ${jsonencode(var.cf_space_managers)}
+
+      EOT
+  filename = "../step2/terraform.tfvars"
 }

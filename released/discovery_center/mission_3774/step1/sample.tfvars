@@ -6,7 +6,7 @@ globalaccount   = "yourglobalaccount"
 region          = "datacenter"
 subaccount_name = "subaccount_name"
 
-qas_service_plan__build_workzone = "free"
+service_plan__build_workzone = "free"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
