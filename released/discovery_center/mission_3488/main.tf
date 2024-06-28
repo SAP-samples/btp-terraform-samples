@@ -36,13 +36,13 @@ resource "btp_subaccount" "dc_mission" {
 # Entitle 
 resource "btp_subaccount_entitlement" "sac" {
   subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = "sap-analytics-cloud-osb"
-  plan_name     = "production"
+  service_name  = "sap-analytics-cloud"
+  plan_name     = "default"
 }
-# Get serviceplan_id for sap-analytics-cloud-osb with plan_name "default"
+# Get serviceplan_id for sap-analytics-cloud with plan_name "default"
 data "btp_subaccount_service_plan" "sac" {
   subaccount_id = btp_subaccount.dc_mission.id
-  offering_name = "analytics-cloud-osb"
+  offering_name = "sap-analytics-cloud"
   name          = "default"
   depends_on    = [btp_subaccount_entitlement.sac]
 }
