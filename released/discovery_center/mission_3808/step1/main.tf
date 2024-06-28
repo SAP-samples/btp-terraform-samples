@@ -121,7 +121,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
   subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
-  depends_on = [btp_subaccount.dc_mission]
+  depends_on           = [btp_subaccount.dc_mission]
 }
 
 
