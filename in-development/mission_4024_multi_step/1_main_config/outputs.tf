@@ -3,7 +3,7 @@ output "subaccount_id" {
   description = "The ID of the project subaccount."
 }
 
-output "sap_build_app_subscription_url" {
+output "sap_build_apps_subscription_url" {
   value       = btp_subaccount_subscription.sap-build-apps_standard.subscription_url
-  description = "The subscription_url of build app."
+  description = "SAP Build Apps subscription URL."
 }

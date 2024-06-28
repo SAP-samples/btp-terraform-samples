@@ -2,16 +2,19 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "yourglobalaccount"
-region               = "datacenter"
-subaccount_name      = "subaccount_name"
-cf_environment_label = "cf_environment_label"
+globalaccount = "xxxxxxxx-xxxxxxx-xxxxxxx-xxxxxxxx-xxxxxx"
+
+# The CLI server URL (needs to be set to null if you are using the default CLI server)
+cli_server_url = null
+
+# Region for your subaccount
+region = "us20"
+
+# Name of your sub account
+subaccount_name = "SAP Discovery Center Mission 4104"
 
 # ------------------------------------------------------------------------------------------------------
-# Project specific configuration (please adapt!)
+# USER ROLES
 # ------------------------------------------------------------------------------------------------------
+subaccount_admins = ["another.user@test.com"]
 
-subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
-subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
-custom_idp                = "your custom idp"
-launchpad_admins          = ["jane.doe@test.com", "john.doe@test.com"]
