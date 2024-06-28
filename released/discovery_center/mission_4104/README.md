@@ -2,7 +2,7 @@
 
 ## Overview
 
-This terraform script shows how to set up your SAP Dataspehre tenant for the SAP Discovery Center Mission - [Get Started with SAP Datasphere](https://discovery-center.cloud.sap/missiondetail/4104/4329/)
+This terraform script demonstrates how to set up your SAP Datasphere tenant for the SAP Discovery Center Mission - [Get Started with SAP Datasphere](https://discovery-center.cloud.sap/missiondetail/4104/4329/)
 
 ## Content of setup
 
@@ -12,7 +12,7 @@ The setup comprises the following resources:
 - Enablement of Cloudfoundry Environment - [see available regions and endpoints](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-available-for-cloud-foundry-environment)
 - Entitlements of services
    * SAP Datasphere
-- Subscriptions to applications
+- Subscription to the service
 - Role collection assignments to users
 
 ## Deploying the resources
