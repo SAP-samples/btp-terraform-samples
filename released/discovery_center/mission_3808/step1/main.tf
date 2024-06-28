@@ -43,7 +43,7 @@ data "btp_subaccount_environments" "all" {
 # (this replaces the previous null_resource)
 # ------------------------------------------------------------------------------------------------------
 resource "terraform_data" "replacement" {
-  input = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+  input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
