@@ -23,7 +23,7 @@ resource "btp_subaccount" "dc_mission" {
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_trust_configuration" "fully_customized" {
   # Only create trust configuration if custom_idp has been set 
-  count             = var.custom_idp == null ? 1 : 0
+  count             = var.custom_idp == "" ? 0 : 1
   subaccount_id     = btp_subaccount.dc_mission.id
   identity_provider = var.custom_idp
 }
@@ -132,7 +132,6 @@ resource "local_file" "output_vars_step1" {
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
 
-      custom_idp           = "${var.custom_idp}"
       origin_key           = "${var.origin_key}"
 
       cf_space_name        = "${var.cf_space_name}"

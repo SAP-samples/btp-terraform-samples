@@ -89,11 +89,6 @@ variable "launchpad_admins" {
   }
 }
 
-variable "custom_idp" {
-  type        = string
-  description = "Defines the custom IdP"
-}
-
 variable "origin_key" {
   type        = string
   description = "Defines the origin key of the identity provider"
