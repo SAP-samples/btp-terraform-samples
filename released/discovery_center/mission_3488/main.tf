@@ -46,14 +46,14 @@ resource "btp_subaccount_subscription" "sac" {
   plan_name     = "default"
   depends_on    = [btp_subaccount_entitlement.sac]
 
-  # parameters = jsonencode(
-  #   {
-  #     "first_name" : "${var.qas_sac_first_name}",
-  #     "last_name" : "${var.qas_sac_last_name}",
-  #     "email" : "${var.qas_sac_email}",
-  #     "host_name" : "${var.qas_sac_host_name}",
-  #   }
-  # )
+  parameters = jsonencode(
+    {
+      "first_name" : "${var.qas_sac_first_name}",
+      "last_name" : "${var.qas_sac_last_name}",
+      "email" : "${var.qas_sac_email}",
+      "host_name" : "${var.qas_sac_host_name}",
+    }
+  )
 }
 
 
