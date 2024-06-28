@@ -98,20 +98,20 @@ resource "btp_subaccount_entitlement" "sapcloudalmapis" {
   plan_name     = "standard"
   amount        = 1
 }
-# Get serviceplan_id for SAPCloudALMAPIs with plan_name "standard"
-data "btp_subaccount_service_plan" "sapcloudalmapis" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  offering_name = "SAPCloudALMAPIs"
-  name          = "standard"
-  depends_on    = [btp_subaccount_entitlement.sapcloudalmapis]
-}
-# Create service instance
-resource "btp_subaccount_service_instance" "sapcloudalmapis" {
-  subaccount_id  = btp_subaccount.dc_mission.id
-  serviceplan_id = data.btp_subaccount_service_plan.sapcloudalmapis.id
-  name           = "standard_sapcloudalmapis"
-  depends_on     = [btp_subaccount_entitlement.sapcloudalmapis, btp_subaccount_environment_instance.cf]
-}
+# # Get serviceplan_id for SAPCloudALMAPIs with plan_name "standard"
+# data "btp_subaccount_service_plan" "sapcloudalmapis" {
+#   subaccount_id = btp_subaccount.dc_mission.id
+#   offering_name = "SAPCloudALMAPIs"
+#   name          = "standard"
+#   depends_on    = [btp_subaccount_entitlement.sapcloudalmapis]
+# }
+# # Create service instance
+# resource "btp_subaccount_service_instance" "sapcloudalmapis" {
+#   subaccount_id  = btp_subaccount.dc_mission.id
+#   serviceplan_id = data.btp_subaccount_service_plan.sapcloudalmapis.id
+#   name           = "standard_sapcloudalmapis"
+#   depends_on     = [btp_subaccount_entitlement.sapcloudalmapis, btp_subaccount_environment_instance.cf]
+# }
 
 # ------------------------------------------------------------------------------------------------------
 #  USERS AND ROLES
