@@ -70,7 +70,7 @@ variable "launchpad_admins" {
 variable "custom_idp" {
   type        = string
   description = "Defines the custom IdP"
-  default = ""
+  default     = ""
 }
 
 variable "origin_key" {
