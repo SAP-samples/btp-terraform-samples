@@ -10,7 +10,6 @@ The setup comprises the following resources:
 
 - Creation of the SAP BTP subaccount
 - Entitlements of services
-   * SAP Datasphere
 - Subscriptions to applications
 - Role collection assignments to users
 
