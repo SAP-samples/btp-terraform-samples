@@ -57,18 +57,36 @@ variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.subaccount_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_admins)
+    error_message = "Please enter a valid email address."
+  }  
 }
 
 variable "subaccount_service_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.subaccount_service_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_service_admins)
+    error_message = "Please enter a valid email address."
+  }  
 }
 
 variable "launchpad_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.launchpad_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.launchpad_admins)
+    error_message = "Please enter a valid email address."
+  }  
 }
 
 variable "custom_idp" {
@@ -79,6 +97,8 @@ variable "custom_idp" {
 variable "origin_key" {
   type        = string
   description = "Defines the origin key of the identity provider"
+  # The value for the origin_key can be defined
+  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
   default     = "sap.ids"
 }
 
