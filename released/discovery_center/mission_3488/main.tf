@@ -36,14 +36,14 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 # Entitle 
 resource "btp_subaccount_entitlement" "sac" {
   subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = "sap-analytics-cloud"
-  plan_name     = "default"
+  service_name  = "analytics-planning-osb"
+  plan_name     = "free"
 }
 
 resource "btp_subaccount_subscription" "sac" {
   subaccount_id = btp_subaccount.dc_mission.id
-  app_name      = "sap-analytics-cloud"
-  plan_name     = "default"
+  app_name      = "analytics-planning-osb"
+  plan_name     = "free"
   depends_on    = [btp_subaccount_entitlement.sac]
 
   parameters = jsonencode(
