@@ -55,9 +55,9 @@ variable "custom_idp" {
   default     = null
 }
 
-variable "origin" {
+variable "origin_key" {
   type        = string
-  description = "Defines the origin of the custom idp"
+  description = "Defines the origin key of the identity provider"
   default     = "sap.ids"
 }
 

@@ -133,7 +133,7 @@ resource "local_file" "output_vars_step1" {
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
 
       custom_idp           = "${var.custom_idp}"
-      origin               = "${var.origin}"
+      origin_key           = "${var.origin_key}"
 
       cf_space_name        = "${var.cf_space_name}"
 
