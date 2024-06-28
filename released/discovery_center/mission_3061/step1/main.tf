@@ -25,20 +25,20 @@ resource "btp_subaccount" "abap_subaccount" {
 ###
 resource "btp_subaccount_entitlement" "abap__service_instance_plan" {
   subaccount_id = btp_subaccount.abap_subaccount.id
-  service_name  = "abap"
-  plan_name     = var.abap_si_plan
+  service_name  = local.service_name__abap
+  plan_name     = var.service_plan__abap
 }
 
 resource "btp_subaccount_entitlement" "abap__abap_compute_unit" {
   subaccount_id = btp_subaccount.abap_subaccount.id
-  service_name  = "abap"
+  service_name  = local.service_name__abap
   plan_name     = "abap_compute_unit"
   amount        = var.abap_compute_unit_quota
 }
 
 resource "btp_subaccount_entitlement" "abap__hana_compute_unit" {
   subaccount_id = btp_subaccount.abap_subaccount.id
-  service_name  = "abap"
+  service_name  = local.service_name__abap
   plan_name     = "hana_compute_unit"
   amount        = var.hana_compute_unit_quota
 }
@@ -118,7 +118,7 @@ resource "local_file" "output_vars_step1" {
       cf_space_managers           = ${jsonencode(var.cf_space_managers)}
 
       abap_sid                    = "${var.abap_sid}"
-      abap_si_plan                = "${var.abap_si_plan}"
+      service_plan__abap          = "${var.service_plan__abap}"
       abap_compute_unit_quota     = ${jsonencode(var.abap_compute_unit_quota)}
       hana_compute_unit_quota     = ${jsonencode(var.hana_compute_unit_quota)}
       abap_admin_email            = "${var.abap_admin_email}"

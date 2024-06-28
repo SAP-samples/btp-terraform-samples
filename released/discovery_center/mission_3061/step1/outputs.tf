@@ -83,8 +83,8 @@ output "cf_space_auditors" {
   description = "The list of Cloud Foundry space auditors."
 }
 
-output "abap_si_plan" {
-  value       = var.abap_si_plan
+output "service_plan__abap" {
+  value       = var.service_plan__abap
   description = "Plan for the service instance of ABAP."
 }
 
