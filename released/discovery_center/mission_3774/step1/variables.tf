@@ -81,7 +81,7 @@ variable "origin_key" {
   # but are normally set to "sap.ids", "sap.default" or "sap.custom"
 }
 
-variable "cf_environment_label" {
+variable "cf_landscape_label" {
   type        = string
   description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
   default     = ""
@@ -143,12 +143,12 @@ variable "cf_space_developers" {
   }
 }
 
-variable "qas_service_plan__build_workzone" {
+variable "service_plan__build_workzone" {
   type        = string
   description = "The plan for build_workzone subscription"
   default     = "free"
   validation {
-    condition     = contains(["free", "standard"], var.qas_service_plan__build_workzone)
+    condition     = contains(["free", "standard"], var.service_plan__build_workzone)
     error_message = "Invalid value for qas_service_plan__build_workzone. Only 'free' and 'standard' are allowed."
   }
 }

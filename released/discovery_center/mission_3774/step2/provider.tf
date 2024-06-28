@@ -17,5 +17,5 @@ provider "btp" {
   cli_server_url = var.cli_server_url
 }
 provider "cloudfoundry" {
-  api_url = var.cf_api_endpoint
+  api_url = var.cf_api_url
 }

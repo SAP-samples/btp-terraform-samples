@@ -13,7 +13,7 @@ variable "cli_server_url" {
   default     = "https://cli.btp.cloud.sap"
 }
 
-variable "cf_api_endpoint" {
+variable "cf_api_url" {
   type        = string
   description = "The Cloud Foundry API endpoint from the Cloud Foundry environment instance."
 }
@@ -30,64 +30,12 @@ variable "cf_space_name" {
 }
 
 # subaccount
-variable "subaccount_name" {
-  type        = string
-  description = "The subaccount name."
-  default     = "UC - Establish a Central Inbox with SAP Task Center"
-}
 variable "subaccount_id" {
   type        = string
   description = "The subaccount ID."
   default     = ""
 }
-# Region
-variable "region" {
-  type        = string
-  description = "The region where the project account shall be created in."
-  default     = "us10"
-}
-# Cloudfoundry environment label
-variable "cf_environment_label" {
-  type        = string
-  description = "The Cloudfoundry environment label"
-  default     = "cf-us10"
-}
 
-variable "subaccount_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.subaccount_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_admins)
-    error_message = "Please enter a valid email address."
-  }
-}
-
-variable "subaccount_service_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.subaccount_service_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_service_admins)
-    error_message = "Please enter a valid email address."
-  }
-}
-
-variable "launchpad_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.launchpad_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.launchpad_admins)
-    error_message = "Please enter a valid email address."
-  }
-}
 
 variable "origin_key" {
   type        = string
@@ -97,26 +45,9 @@ variable "origin_key" {
   # but are normally set to "sap.ids", "sap.default" or "sap.custom"
 }
 
-variable "environment_label" {
-  type        = string
-  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
-  default     = "cf-us10"
-}
-
 variable "cf_org_id" {
   type        = string
   description = "The Cloud Foundry Org ID from the Cloud Foundry environment instance."
-}
-
-variable "cf_org_name" {
-  type        = string
-  description = "Name of the Cloud Foundry org."
-  default     = "mission-3774-sap-task-center"
-
-  validation {
-    condition     = can(regex("^.{1,255}$", var.cf_org_name))
-    error_message = "The Cloud Foundry org name must not be emtpy and not exceed 255 characters."
-  }
 }
 
 variable "cf_org_admins" {
@@ -149,15 +80,5 @@ variable "cf_space_developers" {
   validation {
     condition     = length([for email in var.cf_space_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developers)
     error_message = "Please enter a valid email address for the CF space developers."
-  }
-}
-
-variable "service_plan__build_workzone" {
-  type        = string
-  description = "The plan for build_workzone subscription"
-  default     = "free"
-  validation {
-    condition     = contains(["free", "standard"], var.service_plan__build_workzone)
-    error_message = "Invalid value for service_plan__build_workzone. Only 'free' and 'standard' are allowed."
   }
 }
