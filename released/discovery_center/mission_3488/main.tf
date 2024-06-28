@@ -31,7 +31,7 @@ resource "btp_subaccount" "dc_mission" {
 # SERVICES
 # ------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------
-# Setup sap-analytics-cloud-osb (not running in CF environment)
+# Setup sap-analytics-cloud
 # ------------------------------------------------------------------------------------------------------
 # Entitle 
 resource "btp_subaccount_entitlement" "sac" {
@@ -39,19 +39,13 @@ resource "btp_subaccount_entitlement" "sac" {
   service_name  = "sap-analytics-cloud"
   plan_name     = "default"
 }
-# Get serviceplan_id for sap-analytics-cloud with plan_name "default"
-data "btp_subaccount_service_plan" "sac" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  offering_name = "sap-analytics-cloud"
-  name          = "default"
-  depends_on    = [btp_subaccount_entitlement.sac]
-}
 
-# Create service instance
-resource "btp_subaccount_service_instance" "sac" {
-  subaccount_id  = btp_subaccount.dc_mission.id
-  serviceplan_id = data.btp_subaccount_service_plan.sac.id
-  name           = "default_sac"
+resource "btp_subaccount_subscription" "sac" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  app_name      = "sap-analytics-cloud"
+  plan_name     = "default"
+  depends_on    = [btp_subaccount_entitlement.sac]
+
   parameters = jsonencode(
     {
       "first_name" : "${var.qas_sac_first_name}",
@@ -60,12 +54,8 @@ resource "btp_subaccount_service_instance" "sac" {
       "host_name" : "${var.qas_sac_host_name}",
     }
   )
-  timeouts = {
-    create = "90m"
-    update = "90m"
-    delete = "90m"
-  }
 }
+
 
 # ------------------------------------------------------------------------------------------------------
 #  USERS AND ROLES
