@@ -65,11 +65,11 @@ resource "cloudfoundry_service_instance" "si_taskcenter" {
   type         = "managed"
   space        = cloudfoundry_space.space.id
   service_plan = data.cloudfoundry_service.srvc_taskcenter.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.space_managers, cloudfoundry_space_role.space_developers]
   parameters = jsonencode({
     "authorities" : [],
     "defaultCollectionQueryFilter" : "own"
   })
+  depends_on = [cloudfoundry_space_role.space_managers, cloudfoundry_space_role.space_developers]
 }
 
 # ------------------------------------------------------------------------------------------------------

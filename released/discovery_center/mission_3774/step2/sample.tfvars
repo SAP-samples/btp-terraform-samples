@@ -1,20 +1,16 @@
 # ------------------------------------------------------------------------------------------------------
-# Provider configuration
+# Provider configuration (this file will be either created automatically in step 1 or manually in step 2)
 # ------------------------------------------------------------------------------------------------------
-# Your global account subdomain
-globalaccount        = "yourglobalaccount"
-region               = "datacenter"
-subaccount_name      = "subaccount_name"
-cf_environment_label = "cf_environment_label"
-cf_api_url           = "cf api url"
+globalaccount  = "yourglobalaccount"
+cli_server_url = "https://cli.btp.cloud.sap"
+subaccount_id  = "yoursubacountid"
+origin_key     = "sap.ids"
 
-# ------------------------------------------------------------------------------------------------------
-# Project specific configuration (please adapt!)
-# ------------------------------------------------------------------------------------------------------
+cf_api_endpoint = "https://api.cf.us10.hana.ondemand.com"
+cf_org_id       = "your_cf_org_id"
+cf_org_name     = "your_cf_org_name"
+cf_space_name   = "dev"
 
-cfsr_space_manager        = "john.doe@test.com"
-subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
-subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
-cfsr_space_developer      = "john.doe@test.com"
-custom_idp                = "caias.accounts.ondemand.com"
-launchpad_admins          = ["jane.doe@test.com", "john.doe@test.com"]
+cf_org_admins       = ["another.user@test.com"]
+cf_space_developers = ["another.user@test.com", "you@test.com"]
+cf_space_managers   = ["another.user@test.com", "you@test.com"]
