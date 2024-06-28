@@ -18,7 +18,7 @@ subaccount_name = "SAP Discovery Center Mission 3808"
 # ------------------------------------------------------------------------------------------------------
 # USER ROLES
 # ------------------------------------------------------------------------------------------------------
-subaccount_admins = ["another.user@test.com"]
+subaccount_admins         = ["another.user@test.com"]
 subaccount_service_admins = ["another.user@test.com"]
 
 cf_org_admins       = ["another.user@test.com"]
