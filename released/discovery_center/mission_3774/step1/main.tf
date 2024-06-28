@@ -61,7 +61,7 @@ data "btp_subaccount_environments" "all" {
 # (this replaces the previous null_resource)
 # ------------------------------------------------------------------------------------------------------
 resource "terraform_data" "replacement" {
-  input = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+  input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
 # ------------------------------------------------------------------------------------------------------
 # Creation of Cloud Foundry environment
@@ -85,15 +85,15 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
 # Entitle subaccount for usage of app  destination SAP Build Workzone, standard edition
 resource "btp_subaccount_entitlement" "build_workzone" {
   subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = "SAPLaunchpad"
-  plan_name     = var.qas_service_plan__build_workzone
-  amount        = var.qas_service_plan__build_workzone == "free" ? 1 : null
+  service_name  = local.service_name__build_workzone
+  plan_name     = var.service_plan__build_workzone
+  amount        = var.service_plan__build_workzone == "free" ? 1 : null
 }
 # Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
 resource "btp_subaccount_subscription" "build_workzone" {
   subaccount_id = btp_subaccount.dc_mission.id
-  app_name      = "SAPLaunchpad"
-  plan_name     = var.qas_service_plan__build_workzone
+  app_name      = local.service_name__build_workzone
+  plan_name     = var.service_plan__build_workzone
   depends_on    = [btp_subaccount_entitlement.build_workzone]
 }
 ###############################################################################################
@@ -127,7 +127,7 @@ resource "local_file" "output_vars_step1" {
 
       subaccount_id        = "${btp_subaccount.dc_mission.id}"
 
-      cf_api_endpoint      = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
+      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
 
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"

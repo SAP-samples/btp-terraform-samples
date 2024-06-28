@@ -143,12 +143,12 @@ variable "cf_space_developers" {
   }
 }
 
-variable "qas_service_plan__build_workzone" {
+variable "service_plan__build_workzone" {
   type        = string
   description = "The plan for build_workzone subscription"
   default     = "free"
   validation {
-    condition     = contains(["free", "standard"], var.qas_service_plan__build_workzone)
+    condition     = contains(["free", "standard"], var.service_plan__build_workzone)
     error_message = "Invalid value for qas_service_plan__build_workzone. Only 'free' and 'standard' are allowed."
   }
 }
