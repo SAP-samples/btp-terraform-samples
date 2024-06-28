@@ -62,7 +62,7 @@ variable "subaccount_admins" {
   validation {
     condition     = length([for email in var.subaccount_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_admins)
     error_message = "Please enter a valid email address."
-  }  
+  }
 }
 
 variable "subaccount_service_admins" {
@@ -74,7 +74,7 @@ variable "subaccount_service_admins" {
   validation {
     condition     = length([for email in var.subaccount_service_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_service_admins)
     error_message = "Please enter a valid email address."
-  }  
+  }
 }
 
 variable "launchpad_admins" {
@@ -86,7 +86,7 @@ variable "launchpad_admins" {
   validation {
     condition     = length([for email in var.launchpad_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.launchpad_admins)
     error_message = "Please enter a valid email address."
-  }  
+  }
 }
 
 variable "custom_idp" {
@@ -97,9 +97,9 @@ variable "custom_idp" {
 variable "origin_key" {
   type        = string
   description = "Defines the origin key of the identity provider"
+  default     = "sap.ids"
   # The value for the origin_key can be defined
   # but are normally set to "sap.ids", "sap.default" or "sap.custom"
-  default     = "sap.ids"
 }
 
 variable "environment_label" {
