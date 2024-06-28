@@ -6,7 +6,7 @@ terraform {
     }
     cloudfoundry = {
       source  = "SAP/cloudfoundry"
-      version = "0.1.0-beta"
+      version = "0.2.1-beta"
     }
   }
 }
