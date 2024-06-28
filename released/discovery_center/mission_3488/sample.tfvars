@@ -8,7 +8,7 @@ globalaccount = "xxxxxxxx-xxxxxxx-xxxxxxx-xxxxxxxx-xxxxxx"
 cli_server_url = null
 
 # Region for your subaccount
-region = "eu10"
+region = "eu11"
 
 # Name of your sub account
 subaccount_name = "SAP Discovery Center Mission 3488"
