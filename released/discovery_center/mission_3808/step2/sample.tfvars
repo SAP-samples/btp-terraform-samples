@@ -6,7 +6,7 @@ cli_server_url = "https://cli.btp.cloud.sap"
 subaccount_id  = "yoursubacountid"
 origin_key     = "sap.ids"
 
-cf_api_endpoint = "https://api.cf.us10.hana.ondemand.com"
+cf_api_url      = "https://api.cf.us10.hana.ondemand.com"
 cf_org_id       = "your_cf_org_id"
 cf_org_name     = "your_cf_org_name"
 cf_space_name   = "dev"
