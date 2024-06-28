@@ -2,16 +2,22 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "yourglobalaccount"
-region               = "datacenter"
-subaccount_name      = "subaccount_name"
-cf_environment_label = "cf_environment_label"
+globalaccount   = "yourglobalaccount"
+region          = "datacenter"
+subaccount_name = "subaccount_name"
+
+qas_service_plan__build_workzone = "free"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
 
-subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
-subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
-custom_idp                = "your custom idp"
-launchpad_admins          = ["jane.doe@test.com", "john.doe@test.com"]
+subaccount_admins         = ["another.user@test.com"]
+subaccount_service_admins = ["another.user@test.com"]
+
+cf_org_admins       = ["another.user@test.com"]
+cf_space_managers   = ["another.user@test.com", "you@test.com"]
+cf_space_developers = ["another.user@test.com", "you@test.com"]
+
+custom_idp       = "sap.ids"
+launchpad_admins = ["another.user@test.com", "you@test.com"]
