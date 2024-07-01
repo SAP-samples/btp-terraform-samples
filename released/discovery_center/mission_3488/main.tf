@@ -37,23 +37,30 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 resource "btp_subaccount_entitlement" "sac" {
   subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "analytics-planning-osb"
-  plan_name     = "free"
+  plan_name     = "production"
 }
 
-resource "btp_subaccount_subscription" "sac" {
+data "btp_subaccount_service_plan" "sac" {
   subaccount_id = btp_subaccount.dc_mission.id
-  app_name      = "analytics-planning-osb"
-  plan_name     = "free"
+  offering_name = "analytics-planning-osb"
+  name          = "production"  
   depends_on    = [btp_subaccount_entitlement.sac]
+}
 
+
+resource "btp_subaccount_service_instance" "sac" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  name      = "service_analytics-planning-osb"
+  serviceplan_id = data.btp_subaccount_service_plan.sac.id
   parameters = jsonencode(
     {
-      "first_name" : "${var.qas_sac_first_name}",
-      "last_name" : "${var.qas_sac_last_name}",
-      "email" : "${var.qas_sac_email}",
-      "host_name" : "${var.qas_sac_host_name}",
+      "first_name" : "${var.sac_first_name}",
+      "last_name" : "${var.sac_last_name}",
+      "email" : "${var.sac_email}",
+      "host_name" : "${var.sac_host_name}",
     }
   )
+  depends_on = [ btp_subaccount_entitlement.sac ]
 }
 
 

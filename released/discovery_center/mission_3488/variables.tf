@@ -38,22 +38,22 @@ variable "custom_idp" {
   default     = ""
 }
 
-variable "qas_sac_first_name" {
+variable "sac_first_name" {
   type        = string
   description = "The first name of the QAS SAP Analytics Cloud user."
 }
 
-variable "qas_sac_last_name" {
+variable "sac_last_name" {
   type        = string
   description = "The last name of the QAS SAP Analytics Cloud user."
 }
 
-variable "qas_sac_email" {
+variable "sac_email" {
   type        = string
   description = "The email of the QAS SAP Analytics Cloud user."
 }
 
-variable "qas_sac_host_name" {
+variable "sac_host_name" {
   type        = string
   description = "The host name for the SAP Analytics Cloud service instance."
 }
