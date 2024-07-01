@@ -27,7 +27,7 @@ data "btp_subaccount_environments" "all" {
 # (this replaces the previous null_resource)
 # ------------------------------------------------------------------------------------------------------
 resource "terraform_data" "replacement" {
-  input = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+  input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
@@ -43,6 +43,18 @@ resource "btp_subaccount_environment_instance" "cf" {
   parameters = jsonencode({
     instance_name = "cf-${random_id.subaccount_domain_suffix.hex}"
   })
+}
+
+###############################################################################################
+# Prepare CF
+###############################################################################################
+# Entitle subaccount for usage of cf runtime
+
+resource "btp_subaccount_entitlement" "cf_runtime" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "APPLICATION_RUNTIME"
+  plan_name     = "MEMORY"
+  amount        = 1
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -205,4 +217,25 @@ resource "btp_subaccount_role_collection_assignment" "cicd_developers" {
   role_collection_name = "CICD Service Developer"
   user_name            = each.value
   depends_on           = [btp_subaccount_subscription.cicd_app]
+}
+
+
+# ------------------------------------------------------------------------------------------------------
+# Create tfvars file for step 2 (if variable `create_tfvars_file_for_step2` is set to true)
+# ------------------------------------------------------------------------------------------------------
+resource "local_file" "output_vars_step1" {
+  count    = var.create_tfvars_file_for_next_step ? 1 : 0
+  content  = <<-EOT
+      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
+
+      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
+
+      cf_origin            = "${var.cf_origin}"
+
+      cf_space_name        = "${var.cf_space_name}"
+
+      cf_org_admins        = ${jsonencode(var.cf_org_admins)}
+
+      EOT
+  filename = "../step2/terraform.tfvars"
 }

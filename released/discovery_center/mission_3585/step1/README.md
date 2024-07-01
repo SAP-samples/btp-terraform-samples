@@ -1,8 +1,8 @@
-# Discovery Center mission - Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App
+# Discovery Center mission - Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App (Step 1)
 
 ## Overview
 
-This sample shows how to set up your SAP BTP account for the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/missiondetail/3585/)
+Step 1 of this sample shows how to set up your SAP BTP account for the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/missiondetail/3585/)
 
 ## Content of setup
 
@@ -23,25 +23,20 @@ Make sure that you are familiar with SAP BTP and know both the [Get Started with
 
 To deploy the resources you must:
 
-1. Create a file `secret.auto.tfvars` and maintain the credentials for the BTP provider
+1. Set the environment variables BTP_USERNAME and BTP_PASSWORD to pass credentials to the BTP provider to authenticate and interact with your BTP environments. 
 
-   ```hcl
-   user_email = "<Email address of your BTP user>"
-   password = "<Password of your BTP user>"
-   ```
-   as an alternative you can set these credentials also as environment variables
-   
    ```bash
-   export user_email ='<Email address of your BTP user>'
-   export password ='<Password of your BTP user>'
+   export BTP_USERNAME=<your_username>
+   export BTP_PASSWORD=<your_password>
    ```
 
-3. Change the variables in the `sample.tfvars` file to meet your requirements
+2. Change the variables in the `sample.tfvars` file to meet your requirements
 
-   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
+   > The minimal set of parameters you should specify (besides user email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
 
+3. The outputs of this `step1` will be needed for the `step2` of this use case. In case you want to create a file with the content of the variables, you should set the variable `create_tfvars_file_for_next_step` to `true`. This will create a `terraform.tfvars` file in the `step2` folder.
 
 4. Initialize your workspace:
 
@@ -60,3 +55,11 @@ To deploy the resources you must:
    ```bash
    terraform apply -var-file="sample.tfvars"
    ```
+
+## When finished
+
+You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
+
+```bash
+terraform destroy -var-file="sample.tfvars"
+```
