@@ -115,7 +115,7 @@ variable "cf_landscape_label" {
 variable "cf_space_name" {
   type        = string
   description = "The Cloud Foundry space name to use"
-  default     = "DEV"
+  default     = "dev"
 }
 
 variable "custom_idp" {
