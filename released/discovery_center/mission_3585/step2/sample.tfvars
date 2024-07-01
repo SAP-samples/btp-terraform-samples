@@ -7,4 +7,4 @@ cf_api_url    = "https://api.cf.us10.hana.ondemand.com"
 cf_org_id     = "your_cf_org_id"
 cf_space_name = "dev"
 
-cf_org_admins       = ["another.user@test.com"]
+cf_org_admins = ["another.user@test.com"]

@@ -3,11 +3,6 @@ output "globalaccount" {
   description = "The Global Account subdomain."
 }
 
-output "cli_server_url" {
-  value       = var.cli_server_url
-  description = "The BTP CLI server URL."
-}
-
 output "subaccount_id" {
   value       = btp_subaccount.dc_mission.id
   description = "The Global Account subdomain id."
