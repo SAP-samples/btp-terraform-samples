@@ -43,14 +43,14 @@ resource "btp_subaccount_entitlement" "sac" {
 data "btp_subaccount_service_plan" "sac" {
   subaccount_id = btp_subaccount.dc_mission.id
   offering_name = "analytics-planning-osb"
-  name          = "production"  
+  name          = "production"
   depends_on    = [btp_subaccount_entitlement.sac]
 }
 
 
 resource "btp_subaccount_service_instance" "sac" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  name      = "service_analytics-planning-osb"
+  subaccount_id  = btp_subaccount.dc_mission.id
+  name           = "service_analytics-planning-osb"
   serviceplan_id = data.btp_subaccount_service_plan.sac.id
   parameters = jsonencode(
     {
@@ -60,7 +60,7 @@ resource "btp_subaccount_service_instance" "sac" {
       "host_name" : "${var.sac_host_name}",
     }
   )
-  depends_on = [ btp_subaccount_entitlement.sac ]
+  depends_on = [btp_subaccount_entitlement.sac]
 }
 
 
