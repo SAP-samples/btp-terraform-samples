@@ -45,6 +45,18 @@ resource "btp_subaccount_environment_instance" "cf" {
   })
 }
 
+###############################################################################################
+# Prepare CF
+###############################################################################################
+# Entitle subaccount for usage of cf runtime
+
+resource "btp_subaccount_entitlement" "cf_runtime" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "APPLICATION_RUNTIME"
+  plan_name     = "MEMORY"
+  amount        = 1
+}
+
 # ------------------------------------------------------------------------------------------------------
 # SERVICES
 # ------------------------------------------------------------------------------------------------------
