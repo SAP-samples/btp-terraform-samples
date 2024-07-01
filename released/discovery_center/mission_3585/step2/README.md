@@ -17,7 +17,7 @@ Make sure that you are familiar with SAP BTP and know both the [Get Started with
 
 To deploy the resources you must:
 
-1. Set the environment variables CF_USER and CF_PASSWORD to pass credentials to the Cloud Foundry provider to authenticate and interact with your BTP environments. 
+1. Set the environment variables CF_USER and CF_PASSWORD to pass credentials to the Cloud Foundry provider to authenticate and interact with your Cloud Foundry environment instance. 
 
    ```bash
    export CF_USER=<your_username>
