@@ -26,3 +26,6 @@ cicd_developers = ["another.user@test.com", "you@test.com"]
 
 bas_admins     = ["another.user@test.com", "you@test.com"]
 bas_developers = ["another.user@test.com", "you@test.com"]
+
+# Create variables file for step 2 (disabled by default)
+create_tfvars_file_for_next_step = true
