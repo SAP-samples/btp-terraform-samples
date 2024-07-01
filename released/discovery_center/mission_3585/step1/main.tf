@@ -226,11 +226,11 @@ resource "btp_subaccount_role_collection_assignment" "cicd_developers" {
 resource "local_file" "output_vars_step1" {
   count    = var.create_tfvars_file_for_next_step ? 1 : 0
   content  = <<-EOT
-      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
+      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
 
-      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
+      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
 
-      cf_origin           = "${var.cf_origin}"
+      cf_origin            = "${var.cf_origin}"
 
       cf_space_name        = "${var.cf_space_name}"
 
