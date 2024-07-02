@@ -1,0 +1,57 @@
+name: DC Mission - tfvars check
+
+on:
+    pull_request:
+      types:
+        - opened
+        - reopened
+        - synchronize
+        - ready_for_review
+      paths:
+        - 'released/discovery_center/**'
+
+
+jobs:
+    terraform-console-validate:
+      name: Validate Consistency of tfvar files
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v3
+          with:
+            terraform_wrapper: false
+        
+        - name: Get changed directories
+          id: changed-dirs
+          uses: tj-actions/changed-files@v44
+          with:
+              dir_names: 'true'
+        
+        - name: Validate Terraform tfvars
+          if: steps.changed-dirs.outputs.any_changed == 'true'
+          env:
+            ALL_CHANGED_FILES: ${{ steps.changed-dirs.outputs.all_changed_files }}
+          shell: bash
+          run: |
+              EXIT_CODE=0
+              for dir in ${ALL_CHANGED_FILES}; do
+                if [[ $dir == *"step"* ]]; then
+                  echo "Validating Terraform tfvars files in $dir"
+                  cd $dir
+                  terraform init -backend=false || EXIT_CODE=$?
+                  echo '"test"' | terraform console -var-file sample.tfvars > validatetfvars.txt
+                  if [[ $(<validatetfvars.txt) != '"test"' ]]; then 
+                    echo "sample.tfvars does not match variables.tf";
+                    EXIT_CODE=1; 
+                  else 
+                    echo "sample.tfvars matches variables.tf"; 
+                  fi
+                  rm -rf ".terraform/"
+                  rm -rf validatetfvars.txt
+                fi
+              cd ${{ github.workspace }}  
+              done
+              exit $EXIT_CODE
