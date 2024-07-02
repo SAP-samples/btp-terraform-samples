@@ -13,7 +13,7 @@ resource "cloudfoundry_org_role" "org_managers" {
   for_each = toset("${var.cf_org_managers}")
   username = each.value
   type     = "organization_manager"
-  org      = var.cloudfoundry_org_id
+  org      = var.cf_org_id
   origin   = var.origin
 }
 
@@ -22,7 +22,7 @@ resource "cloudfoundry_org_role" "billing_managers" {
   for_each = toset("${var.cf_org_billing_managers}")
   username = each.value
   type     = "organization_billing_manager"
-  org      = var.cloudfoundry_org_id
+  org      = var.cf_org_id
   origin   = var.origin
 }
 
@@ -30,7 +30,7 @@ resource "cloudfoundry_org_role" "org_auditors" {
   for_each = toset("${var.cf_org_auditors}")
   username = each.value
   type     = "organization_auditor"
-  org      = var.cloudfoundry_org_id
+  org      = var.cf_org_id
   origin   = var.origin
 }
 
@@ -40,7 +40,7 @@ resource "cloudfoundry_org_role" "org_auditors" {
 ###
 resource "cloudfoundry_space" "abap_space" {
   name = var.cf_space_name
-  org  = var.cloudfoundry_org_id
+  org  = var.cf_org_id
 }
 
 ###

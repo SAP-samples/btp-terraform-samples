@@ -1,13 +1,15 @@
+###
+# Define the required providers for this module
+###
 terraform {
   required_providers {
     cloudfoundry = {
-      source  = "sap/cloudfoundry"
+      source  = "SAP/cloudfoundry"
       version = "0.2.1-beta"
     }
   }
 }
 
-# This will only work if we know the region in advance
 provider "cloudfoundry" {
   api_url = var.cf_api_url
 }

@@ -1,6 +1,17 @@
 ###
-# Customer account setup
+# BTP ACCOUNT
 ###
+variable "globalaccount" {
+  type        = string
+  description = "The global account subdomain."
+}
+
+variable "region" {
+  type        = string
+  description = "The region where the project account shall be created in."
+  default     = "us10"
+}
+
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
@@ -11,6 +22,7 @@ variable "subaccount_name" {
     error_message = "Provide a valid project account name."
   }
 }
+
 ###
 # CloudFoundry Org Setup
 variable "cf_org_name" {
@@ -31,26 +43,6 @@ variable "cf_org_name" {
   }
 }
 
-variable "cf_org_user" {
-  type        = set(string)
-  description = "Defines the colleagues who are added to the Cloud Foundry organization as users."
-}
-
-variable "cf_org_managers" {
-  type        = set(string)
-  description = "Defines the colleagues who are added to the Cloud Foundry organization as org managers."
-}
-
-variable "cf_org_billing_managers" {
-  type        = set(string)
-  description = "Defines the colleagues who are added to the Cloud Foundry organization as org billing managers."
-}
-
-variable "cf_org_auditors" {
-  type        = set(string)
-  description = "Defines the colleagues who are added to the Cloud Foundry organization as org auditors."
-}
-
 variable "stage" {
   type        = string
   description = "The stage/tier the account will be used for."
@@ -62,11 +54,26 @@ variable "stage" {
   }
 }
 
-###
-# BTP ACCOUNT
-###
-variable "region" {
-  type        = string
-  description = "The region where the project account shall be created in."
-  default     = "us10"
+variable "cf_org_user" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to the Cloud Foundry organization as users."
+  default     = []
+}
+
+variable "cf_org_managers" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to the Cloud Foundry organization as org managers."
+  default     = []
+}
+
+variable "cf_org_billing_managers" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to the Cloud Foundry organization as org billing managers."
+  default     = []
+}
+
+variable "cf_org_auditors" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to the Cloud Foundry organization as org auditors."
+  default     = []
 }
