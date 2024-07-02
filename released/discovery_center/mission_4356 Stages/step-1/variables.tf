@@ -41,6 +41,7 @@ variable "cli_server_url" {
   default     = "https://cpcli.cf.eu10.hana.ondemand.com"
 }
 
+# subaccount variables
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
