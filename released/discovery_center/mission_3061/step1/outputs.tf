@@ -39,7 +39,7 @@ output "abap_sid" {
 }
 
 output "abap_compute_unit_quota" {
-  value = var.abap_compute_unit_quota
+  value       = var.abap_compute_unit_quota
   description = "The amount of ABAP compute units to be assigned to the subaccount."
 }
 

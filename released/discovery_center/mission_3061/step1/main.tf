@@ -4,11 +4,11 @@
 resource "random_uuid" "uuid" {}
 
 locals {
-  random_uuid         = random_uuid.uuid.result
-  subaccount_domain   = lower("${var.subaccount_prefix}-${var.abap_sid}-${local.random_uuid}")
-  subaccount_name     = var.subaccount_name != "" ? var.subaccount_name : "${var.subaccount_prefix}-${var.abap_sid}"
-  subaccount_cf_org   = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
-  abap_admin_email    = var.abap_admin_email != "" ? var.abap_admin_email : (length(var.qas_abap_admin) > 0 ? var.qas_abap_admin[0] : "")
+  random_uuid       = random_uuid.uuid.result
+  subaccount_domain = lower("${var.subaccount_prefix}-${var.abap_sid}-${local.random_uuid}")
+  subaccount_name   = var.subaccount_name != "" ? var.subaccount_name : "${var.subaccount_prefix}-${var.abap_sid}"
+  subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
+  abap_admin_email  = var.abap_admin_email != "" ? var.abap_admin_email : (length(var.qas_abap_admin) > 0 ? var.qas_abap_admin[0] : "")
 }
 
 ###
