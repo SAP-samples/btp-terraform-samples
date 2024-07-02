@@ -8,6 +8,7 @@ locals {
   subaccount_domain   = lower("${var.subaccount_prefix}-${var.abap_sid}-${local.random_uuid}")
   subaccount_name     = var.subaccount_name != "" ? var.subaccount_name : "${var.subaccount_prefix}-${var.abap_sid}"
   subaccount_cf_org   = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
+  abap_admin_email    = var.abap_admin_email != "" ? var.abap_admin_email : (length(var.qas_abap_admin) > 0 ? var.qas_abap_admin[0] : "")
 }
 
 ###
@@ -121,8 +122,7 @@ resource "local_file" "output_vars_step1" {
       service_plan__abap          = "${var.service_plan__abap}"
       abap_compute_unit_quota     = ${jsonencode(var.abap_compute_unit_quota)}
       hana_compute_unit_quota     = ${jsonencode(var.hana_compute_unit_quota)}
-      abap_admin_email            = "${var.abap_admin_email}"
-      abap_admin                  = ${jsonencode(var.abap_admin)}
+      abap_admin_email            = "${local.abap_admin_email}"
       abap_is_development_allowed = ${var.abap_is_development_allowed}
 
       EOT

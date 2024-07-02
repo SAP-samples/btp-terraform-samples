@@ -152,12 +152,6 @@ variable "abap_admin_email" {
   default     = ""
 }
 
-variable "abap_admin" {
-  type        = list(string)
-  description = "Email of the ABAP Administrator."
-  default     = []
-}
-
 variable "abap_is_development_allowed" {
   type        = bool
   description = "Flag to define if development on the ABAP system is allowed."
@@ -179,4 +173,10 @@ variable "create_tfvars_file_for_next_stage" {
   type        = bool
   description = "Switch to enable the creation of the tfvars file for the next step."
   default     = false
+}
+
+variable "qas_abap_admin" {
+  type        = list(string)
+  description = "Email of the ABAP Administrator."
+  default     = []
 }

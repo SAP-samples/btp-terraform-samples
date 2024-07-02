@@ -115,12 +115,6 @@ variable "abap_admin_email" {
   default     = ""
 }
 
-variable "abap_admin" {
-  type        = list(string)
-  description = "Email of the ABAP Administrator."
-  default     = []
-}
-
 variable "abap_is_development_allowed" {
   type        = bool
   description = "Flag to define if development on the ABAP system is allowed."
