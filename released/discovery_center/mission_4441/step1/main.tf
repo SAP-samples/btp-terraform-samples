@@ -27,7 +27,7 @@ data "btp_subaccount_environments" "all" {
 # (this replaces the previous null_resource)
 # ------------------------------------------------------------------------------------------------------
 resource "terraform_data" "replacement" {
-  input = length(var.cf_environment_label) > 0 ? var.cf_environment_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+  input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
@@ -206,23 +206,6 @@ resource "btp_subaccount_subscription" "cicd_app" {
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Setup alm-ts (Cloud Transport Management)
-# ------------------------------------------------------------------------------------------------------
-# Entitle
-resource "btp_subaccount_entitlement" "alm_ts" {
-  subaccount_id = btp_subaccount.build_code.id
-  service_name  = "alm-ts"
-  plan_name     = "build-code"
-}
-# Subscribe
-resource "btp_subaccount_subscription" "alm_ts" {
-  subaccount_id = btp_subaccount.build_code.id
-  app_name      = "alm-ts"
-  plan_name     = "build-code"
-  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.alm_ts]
-}
-
-# ------------------------------------------------------------------------------------------------------
 # Setup feature-flags-dashboard (Feature Flags Service)
 # ------------------------------------------------------------------------------------------------------
 # Entitle
@@ -263,7 +246,7 @@ resource "btp_subaccount_subscription" "sdm-web" {
 # Get all available subaccount roles
 data "btp_subaccount_roles" "all" {
   subaccount_id = btp_subaccount.build_code.id
-  depends_on    = [btp_subaccount_subscription.alm_ts, btp_subaccount_subscription.build_code, btp_subaccount_subscription.cicd_app, btp_subaccount_subscription.sap_launchpad, btp_subaccount_subscription.sapappstudio, btp_subaccount_subscription.feature_flags_dashboard, btp_subaccount_subscription.sdm-web]
+  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_subscription.cicd_app, btp_subaccount_subscription.sap_launchpad, btp_subaccount_subscription.sapappstudio, btp_subaccount_subscription.feature_flags_dashboard, btp_subaccount_subscription.sdm-web]
 }
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection for Build Code Administrator
@@ -339,7 +322,7 @@ resource "local_file" "output_vars_step1" {
 
       subaccount_id        = "${btp_subaccount.build_code.id}"
 
-      cf_api_endpoint      = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
+      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
 
