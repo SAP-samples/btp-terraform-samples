@@ -46,15 +46,30 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 }
 
 ######################################################################
+# Extract list of CF landscape labels from environments
+######################################################################
+data "btp_subaccount_environments" "all" {
+  subaccount_id = data.btp_subaccount.project.id
+}
+
+locals {
+  cf_landscape_labels = [
+    for env in data.btp_subaccount_environments.all.values : env.landscape_label
+    if env.environment_type == "cloudfoundry"
+  ]
+}
+
+
+######################################################################
 # Creation of Cloud Foundry environment
 ######################################################################
-resource "btp_subaccount_environment_instance" "cf" {
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = data.btp_subaccount.project.id
-  name             = local.project_subaccount_cf_org
+  name             = var.cf_org_name
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  = var.cf_environment_label
+  landscape_label  =local.cf_landscape_labels[0]
   parameters = jsonencode({
     instance_name = local.project_subaccount_cf_org
   })

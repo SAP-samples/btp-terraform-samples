@@ -20,6 +20,14 @@ variable "subaccount_name" {
   description = "The subaccount name."
   default     = "UC - Deliver Connected Experiences with a single view of Material Availability"
 }
+
+# cf org name
+variable "cf_org_name" {
+  type        = string
+  description = "Cloud Foundry Org Name"
+  default     = "cloud-foundry"
+}
+
 # Region
 variable "region" {
   type        = string
