@@ -1,29 +1,40 @@
-# Setting up a subaccount with the SAP Build Code deployed - Step 1
+# Discovery Center Mission: Get Started with SAP Build Code and Joule using Generative AI (4441)
 
 ## Overview
 
-This script shows how to create a SAP BTP subaccount with `SAP Build Code` deployed.
+This sample shows how to create a landscape for the Discovery Center Mission - [Get Started with SAP Build Code and Joule using Generative AI](https://discovery-center.cloud.sap/missiondetail/4441/)
 
 ## Content of setup
 
-The setup comprises the following resources that are split into `step1` and `step2`:
+The setup comprises the following resources:
 
-- Creation of a SAP BTP subaccount
-- Entitlement of all services and app subscrptions
+- Creation of the SAP BTP subaccount
+- Entitlements of services
+- Subscriptions to applications
 - Role collection assignments to users
+- Management of users and roles on org and space level
 
 ## Deploying the resources
 
+Make sure that you are familiar with SAP BTP and know both the [Get Started with btp-terraform-samples](https://github.com/SAP-samples/btp-terraform-samples/blob/main/GET_STARTED.md) and the [Get Started with the Terraform Provider for BTP](https://developers.sap.com/tutorials/btp-terraform-get-started.html)
+
 To deploy the resources you must:
 
-1. Change the variables in the `sample.tfvars` file to meet your requirements
-
-2. Export the variables for user name and password
-
+1. Set your credentials as environment variables
+   
    ```bash
-   export BTP_USERNAME='<Email address of your BTP user>'
-   export BTP_PASSWORD='<Password of your BTP user>'
+   export BTP_USERNAME ='<Email address of your BTP user>'
+   export BTP_PASSWORD ='<Password of your BTP user>'
+   export CF_USER ='<Email address of your BTP user>'
+   export BTP_PASSWORD ='<Password of your BTP user>'   
    ```
+
+2. Change the variables in the `sample.tfvars` file to meet your requirements
+
+   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
+
+   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
+
 
 3. Initialize your workspace:
 
@@ -42,8 +53,7 @@ To deploy the resources you must:
    ```bash
    terraform apply -var-file="sample.tfvars"
    ```
-
-6. The outputs of this `step1` will be needed for the `step2` of this use case. In case you want to create a file with the content of the variables, you should set the variable `create_tfvars_file_for_step2` to `true`. This will create a `terraform.tfvars` file in the `step2` folder.
+   ```
 
 ## In the end
 
