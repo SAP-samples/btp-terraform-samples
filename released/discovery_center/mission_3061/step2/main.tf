@@ -77,6 +77,7 @@ data "cloudfoundry_service" "abap_service_plans" {
 }
 
 resource "cloudfoundry_service_instance" "abap_si" {
+  depends_on = [ cloudfoundry_space_role.space_managers, cloudfoundry_space_role.space_developers ]
   name         = local.abap_service_instance_name
   space        = cloudfoundry_space.abap_space.id
   service_plan = data.cloudfoundry_service.abap_service_plans.service_plans[var.service_plan__abap]
