@@ -13,6 +13,13 @@ variable "subaccount_name" {
   description = "The subaccount name."
   default     = "DC Mission 4033 - Create simple, connected digital experiences with API-based integration"
 }
+
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
+}
+
 # Region
 variable "region" {
   type        = string
@@ -29,17 +36,48 @@ variable "cli_server_url" {
 
 variable "subaccount_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  description = "Defines the colleagues who are added to each subaccount as Subaccount administrators."
 }
 
 variable "subaccount_service_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  description = "Defines the colleagues who are added to each subaccount as Subaccount service administrators."
 }
 
+variable "emergency_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to each subaccount as Subaccount service administrators."
+}
 
+variable "service_plan__sap_build_apps" {
+  type        = string
+  description = "The plan for SAP Build Apps subscription"
+  default     = "free"
+  validation {
+    condition     = contains(["free", "standard", "partner"], var.service_plan__sap_build_apps)
+    error_message = "Invalid value for service_plan__sap_build_apps. Only 'free', 'standard' and 'partner' are allowed."
+  }
+}
+
+variable "service_plan__sap_process_automation" {
+  type        = string
+  description = "The plan for SAP Build Process Automation"
+  default     = "standard"
+  validation {
+    condition     = contains(["standard", "advanced-user"], var.service_plan__sap_process_automation)
+    error_message = "Invalid value for service_plan__sap_process_automation. Only 'standard' and 'advanced-user' are allowed."
+  }
+}
+
+variable "service_plan__sap_integration_suite" {
+  type        = string
+  description = "The plan for SAP Integration Suite"
+  default     = "enterprise_agreement"
+  validation {
+    condition     = contains(["enterprise_agreement"], var.service_plan__sap_integration_suite)
+    error_message = "Invalid value for service_plan__sap_integration_suite. Only 'enterprise_agreement' are allowed."
+  }
+}
 
 ###
 # Entitlements
@@ -61,21 +99,6 @@ variable "entitlements" {
       service_name = "xsuaa"
       plan_name    = "application",
       type         = "service"
-    },
-    {
-      service_name = "integrationsuite"
-      plan_name    = "enterprise_agreement",
-      type         = "app"
-    },
-    {
-      service_name = "sap-build-apps"
-      plan_name    = "standard"
-      type         = "service"
-    },
-    {
-      service_name = "process-automation"
-      plan_name    = "standard",
-      type         = "app"
     },
     {
       service_name = "process-automation-service"
@@ -169,16 +192,4 @@ variable "ProcessAutomationParticipant" {
   type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationParticipant in SAP Build Process Automation"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "username" {
-  description = "BTP username"
-  type        = string
-  sensitive   = false
-}
-
-variable "password" {
-  description = "BTP user password"
-  type        = string
-  sensitive   = true
 }

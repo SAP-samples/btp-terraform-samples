@@ -45,7 +45,7 @@ To deploy the resources you must:
 5. Apply your configuration to provision the resources:
 
    ```bash
-   terraform apply -var-file="sample.tfvars"
+   terraform apply -var-file="samples.tfvars"
    ```
 
 ## In the end
