@@ -55,7 +55,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 # Checkout https://github.com/SAP-samples/btp-service-metadata/blob/main/v0/developer/aicore.json for 
 # available plans and their region availability 
 resource "btp_subaccount_entitlement" "ai_core" {
-  subaccount_id = var.dc_mission.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "aicore"
   plan_name     = var.ai_core_plan_name
 }
@@ -167,8 +167,3 @@ resource "btp_subaccount_service_binding" "hana_cloud" {
   name                = "hana-cloud-key"
 }
 
-
-resource "local_file" "env_file" {
-  content  = join("\n", [module.ai_setup.ai_core_envs, module.hana_cloud_setup.hana_cloud_envs])
-  filename = ".env"
-}

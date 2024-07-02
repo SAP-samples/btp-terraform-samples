@@ -1,31 +1,34 @@
-# Setting up a sub account with the SAP AI Core service deployed
+# Discovery Center Mission: Develop a CAP-based (multitenant) application using GenAI and RAG (4371)
 
 ## Overview
 
-This script shows how to create a SAP BTP subaccount with the `SAP AI Core` service deployed
+This sample shows how to create a landscape for the Discovery Center Mission - [Develop a CAP-based (multitenant) application using GenAI and RAG](https://discovery-center.cloud.sap/missiondetail/4371/)
 
 ## Content of setup
 
 The setup comprises the following resources:
 
-- Creation of a SAP BTP subaccount
-- Entitlement of the SAP AI Core service
-- Entitlement and setup of SAP HANA Cloud (incl. hana cloud tools)
+- Creation of the SAP BTP subaccount
+- Entitlements of services
+- Subscriptions to applications
 - Role collection assignments to users
+- Management of users and roles on org and space level
 
 ## Deploying the resources
 
 To deploy the resources you must:
 
-1. Change the variables in the `sample.tfvars` file to meet your requirements
+1. Create a file `secret.auto.tfvars` and maintain the credentials for the BTP and CF provider
 
-
-2. Export the variables for user name and password
-
-   ```bash
-   export BTP_USERNAME='<Email address of your BTP user>'
-   export BTP_PASSWORD='<Password of your BTP user>'
+   ```hcl
+   username = "<Email address of your BTP user>"
+   password = "<Password of your BTP user>"
    ```
+
+2. Change the variables in the `samples.tfvars` file to meet your requirements
+
+   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
+
 
 3. Initialize your workspace:
 
@@ -45,12 +48,10 @@ To deploy the resources you must:
    terraform apply -var-file="sample.tfvars"
    ```
 
-6. You'll notice, that a `.env` file has been created, containing some environment variables that you can use for your genAI experiments.
-
 ## In the end
 
 You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
 
 ```bash
-terraform destroy
+terraform destroy -var-file="sample.tfvars"
 ```

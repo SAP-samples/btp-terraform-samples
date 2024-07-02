@@ -24,12 +24,6 @@ variable "subaccount_id" {
   description = "The subaccount ID."
   default     = ""
 }
-# Region
-variable "region" {
-  type        = string
-  description = "The region where the project account shall be created in."
-  default     = "us10"
-}
 
 variable "subaccount_admins" {
   type        = list(string)
@@ -54,6 +48,20 @@ variable "subaccount_service_admins" {
     error_message = "Please enter a valid email address for the CF space managers."
   }
 }
+
+variable "region" {
+  type        = string
+  description = "The region where the sub account shall be created in."
+  default     = "us10"
+
+  # Checkout https://github.com/SAP-samples/btp-service-metadata/blob/main/v0/developer/aicore.json for the latest list of regions
+  # supported by the AI Core service with the "extended" service plan.
+  validation {
+    condition     = contains(["ap10", "eu10", "eu11", "eu20", "eu30", "jp10", "us10", "us21", "us30"], var.region)
+    error_message = "Please enter a valid region for the sub account. Checkout https://github.com/SAP-samples/btp-service-metadata/blob/main/v0/developer/aicore.json for regions providing the AI Core service."
+  }
+}
+
 
 variable "hana_cloud_admins" {
   type        = list(string)
@@ -142,15 +150,3 @@ variable "target_ai_core_model" {
   }
 }
 
-variable "region" {
-  type        = string
-  description = "The region where the sub account shall be created in."
-  default     = "us10"
-
-  # Checkout https://github.com/SAP-samples/btp-service-metadata/blob/main/v0/developer/aicore.json for the latest list of regions
-  # supported by the AI Core service.
-  validation {
-    condition     = contains(["ap10", "eu10", "eu11", "eu20", "eu30", "jp10", "us10", "us21", "us30"], var.region)
-    error_message = "Please enter a valid region for the sub account. Checkout https://github.com/SAP-samples/btp-service-metadata/blob/main/v0/developer/aicore.json for regions providing the AI Core service."
-  }
-}
