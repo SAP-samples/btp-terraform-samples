@@ -6,7 +6,7 @@ This directory contains the setup of an ABAP environment from scratch namely a n
 
 This directory contains the configuration for the second step of the setup namely:
 
-- the assignment of Cloud FOundry org roles
+- the assignment of Cloud Foundry org roles
 - a new Cloud Foundry space
 - the assignment of Cloud Foundry space roles
 - the ABAP environment (service instance)
