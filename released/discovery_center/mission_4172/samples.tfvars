@@ -1,22 +1,27 @@
-# ------------------------------------------------------------------------------------------------------
-# Provider configuration
-# ------------------------------------------------------------------------------------------------------
-# Your global account subdomain
-globalaccount        = "youraccount"
-region               = "us10"
-subaccount_name      = "Discovery Center mission - build Events-to-Business actions"
-cf_environment_label = "cf-us10"
-custom_idp           = "abcde1234.accounts.ondemand.com"
+globalaccount   = "myglobalaccount"
+region          = "us10"
+subaccount_name = "Discovery Center mission - Build Events-to-Business actions"
+cf_org_name     = "cf-environment"
 
-# ------------------------------------------------------------------------------------------------------
-# Project specific configuration (please adapt!)
-# ------------------------------------------------------------------------------------------------------
-subaccount_admins         = ["jane.doe@test.com", "john.doe@test.com"]
-subaccount_service_admins = ["jane.doe@test.com", "john.doe@test.com"]
+subaccount_admins         = ["john.doe@sap.com"]
+subaccount_service_admins = ["john.doe@sap.com"]
 
-advanced_event_mesh_admin = "jane.doe@test.com"
+appstudio_developers = ["john.doe@sap.com"]
+appstudio_admins      = ["john.doe@sap.com"]
+cloudconnector_admins = ["john.doe@sap.com"]
+conn_dest_admins      = ["john.doe@sap.com"]
 
-appstudio_developers = ["jane.doe@test.com", "john.doe@test.com"]
-appstudio_admin      = ["jane.doe@test.com", "john.doe@test.com"]
-cloudconnector_admin = ["jane.doe@test.com", "john.doe@test.com"]
-conn_dest_admin      = ["jane.doe@test.com", "john.doe@test.com"]
+cf_space_developers = ["john.doe@sap.com"]
+cf_space_managers   = ["john.doe@sap.com"]
+cf_org_admins       = ["john.doe@sap.com"]
+cf_org_users        = ["john.doe@sap.com"]
+
+hana_system_password = "Abc12345"
+hana_cloud_admins    = ["john.doe@sap.com"]
+
+process_automation_admins       = ["john.doe@sap.com"]
+process_automation_developers   = ["john.doe@sap.com"]
+process_automation_participants = ["john.doe@sap.com"]
+
+event_mesh_admins     = ["john.doe@sap.com"]
+event_mesh_developers = ["john.doe@sap.com"]
