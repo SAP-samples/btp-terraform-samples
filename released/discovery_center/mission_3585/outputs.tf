@@ -3,19 +3,19 @@ output "globalaccount" {
   description = "The Global Account subdomain."
 }
 
+output "cli_server_url" {
+  value       = var.cli_server_url
+  description = "The BTP CLI server URL."
+}
+
 output "subaccount_id" {
   value       = btp_subaccount.dc_mission.id
   description = "The Global Account subdomain id."
 }
 
-output "cf_api_url" {
+output "cf_api_endpoint" {
   value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]
   description = "The Cloudfoundry API endpoint."
-}
-
-output "cf_landscape_label" {
-  value       = terraform_data.replacement.output
-  description = "The Cloudfoundry landscape label."
 }
 
 output "cf_org_id" {
