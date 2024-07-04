@@ -12,7 +12,7 @@ subaccount_name = "SAP Discovery Center Mission 4371"
 
 subaccount_admins         = ["another.user@test.com"]
 subaccount_service_admins = ["another.user@test.com"]
-hana_cloud_admins         = ["thomas.ziegert@sap.com", "rui.nogueira@sap.com"]
+hana_cloud_admins         = ["another.user@test.com", "you@test.com"]
 
 custom_idp = "sap.ids"
 
