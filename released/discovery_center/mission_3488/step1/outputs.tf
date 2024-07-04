@@ -1,11 +1,6 @@
 output "subaccount_id" {
-  value       = btp_subaccount.sac_subaccount.id
+  value       = btp_subaccount.dc_mission.id
   description = "The ID of the subaccount."
-}
-
-output "subaccount_name" {
-  value       = btp_subaccount.sac_subaccount.id
-  description = "The name of the subaccount."
 }
 
 output "cf_org_name" {

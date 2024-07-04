@@ -13,9 +13,9 @@ locals {
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
 # ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount" "sac_subaccount" {
-  name      = local.subaccount_name
-  subdomain = local.subaccount_domain
+resource "btp_subaccount" "dc_mission" {
+  name      = var.subaccount_name
+  subdomain = join("-", ["dc-mission-3488", random_uuid.uuid.result])
   region    = lower(var.region)
 }
 
@@ -24,7 +24,7 @@ resource "btp_subaccount" "sac_subaccount" {
 # Assignment of basic entitlements for an SAC setup
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_entitlement" "sac__service_instance_plan" {
-  subaccount_id = btp_subaccount.sac_subaccount.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = local.service_name__sac
   plan_name     = var.service_plan__sac
 }
@@ -36,7 +36,7 @@ resource "btp_subaccount_entitlement" "sac__service_instance_plan" {
 
 # Fetch all available environments for the subaccount
 data "btp_subaccount_environments" "all" {
-  subaccount_id = btp_subaccount.sac_subaccount.id
+  subaccount_id = btp_subaccount.dc_mission.id
 }
 
 # Take the landscape label from the first CF environment if no environment label is provided
@@ -46,7 +46,7 @@ resource "terraform_data" "replacement" {
 
 # Create the Cloud Foundry environment instance
 resource "btp_subaccount_environment_instance" "cf_sac" {
-  subaccount_id    = btp_subaccount.sac_subaccount.id
+  subaccount_id    = btp_subaccount.dc_mission.id
   name             = local.subaccount_cf_org
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
@@ -76,10 +76,10 @@ resource "local_file" "output_vars_step1" {
 
       service_plan__sac          = "${var.service_plan__sac}"
 
-     sac_param_first_name = ${var.sac_param_first_name}
-     sac_param_last_name  = ${var.sac_param_last_name}
-     sac_param_email      = ${var.sac_param_email}
-     sac_param_host_name  = ${var.sac_param_host_name}
+     sac_param_first_name = "${var.sac_param_first_name}"
+     sac_param_last_name  = "${var.sac_param_last_name}"
+     sac_param_email      = "${var.sac_param_email}"
+     sac_param_host_name  = "${var.sac_param_host_name}"
      
      sac_param_number_of_business_intelligence_licenses = ${var.sac_param_number_of_business_intelligence_licenses}
      sac_param_number_of_professional_licenses          = ${var.sac_param_number_of_professional_licenses}
