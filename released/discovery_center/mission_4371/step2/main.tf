@@ -1,6 +1,6 @@
-###
+# ------------------------------------------------------------------------------------------------------
 # Assignment of Cloud Foundry org roles 
-###
+# ------------------------------------------------------------------------------------------------------
 resource "cloudfoundry_org_role" "org_managers" {
   for_each = toset("${var.cf_org_managers}")
   username = each.value
@@ -8,7 +8,6 @@ resource "cloudfoundry_org_role" "org_managers" {
   org      = var.cf_org_id
   origin   = var.origin
 }
-
 
 resource "cloudfoundry_org_role" "billing_managers" {
   for_each = toset("${var.cf_org_billing_managers}")
@@ -26,18 +25,17 @@ resource "cloudfoundry_org_role" "org_auditors" {
   origin   = var.origin
 }
 
-
-###
+# ------------------------------------------------------------------------------------------------------
 # Creation of Cloud Foundry space
-###
+# ------------------------------------------------------------------------------------------------------
 resource "cloudfoundry_space" "sac_space" {
   name = var.cf_space_name
   org  = var.cf_org_id
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Assignment of Cloud Foundry org roles 
-###
+# ------------------------------------------------------------------------------------------------------
 resource "cloudfoundry_space_role" "space_managers" {
   for_each = toset("${var.cf_space_managers}")
   username = each.value
@@ -62,9 +60,9 @@ resource "cloudfoundry_space_role" "space_auditors" {
   origin   = var.origin
 }
 
-###
-# Creation of service instance for ABAP
-###
+# ------------------------------------------------------------------------------------------------------
+# Creation of service instance for SAP Analytics Bloud
+# ------------------------------------------------------------------------------------------------------
 data "cloudfoundry_service" "sac_service_plans" {
   name = local.service_name__sac
 }
@@ -84,7 +82,6 @@ resource "cloudfoundry_service_instance" "sac_si" {
     "number_of_business_intelligence_licenses" : var.sac_param_number_of_business_intelligence_licenses,
     "number_of_planning_professional_licenses" : var.sac_param_number_of_professional_licenses,
     "number_of_planning_standard_licenses" : var.sac_param_number_of_business_standard_licenses
-
   })
   timeouts = {
     create = "2h"

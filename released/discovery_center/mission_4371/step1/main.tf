@@ -1,6 +1,6 @@
-###
+# ------------------------------------------------------------------------------------------------------
 # Setup of names based on variables
-###
+# ------------------------------------------------------------------------------------------------------
 resource "random_uuid" "uuid" {}
 
 locals {
@@ -10,9 +10,9 @@ locals {
   subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
-###
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount" "sac_subaccount" {
   name      = local.subaccount_name
   subdomain = local.subaccount_domain
@@ -20,9 +20,9 @@ resource "btp_subaccount" "sac_subaccount" {
 }
 
 
-###
-# Assignment of basic entitlements for a SAC setup
-###
+# ------------------------------------------------------------------------------------------------------
+# Assignment of basic entitlements for an SAC setup
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_entitlement" "sac__service_instance_plan" {
   subaccount_id = btp_subaccount.sac_subaccount.id
   service_name  = local.service_name__sac
@@ -30,9 +30,9 @@ resource "btp_subaccount_entitlement" "sac__service_instance_plan" {
 }
 
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Creation of Cloud Foundry environment
-###
+# ------------------------------------------------------------------------------------------------------
 
 # Fetch all available environments for the subaccount
 data "btp_subaccount_environments" "all" {
