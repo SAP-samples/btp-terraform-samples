@@ -69,7 +69,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  =local.cf_landscape_labels[0]
+  landscape_label  = local.cf_landscape_labels[0]
   parameters = jsonencode({
     instance_name = local.project_subaccount_cf_org
   })
@@ -244,7 +244,7 @@ resource "btp_subaccount_subscription" "event_mesh_application" {
   subaccount_id = data.btp_subaccount.project.id
   app_name      = "enterprise-messaging-hub"
   plan_name     = "standard"
-  depends_on = [btp_subaccount_entitlement.event_mesh_application]
+  depends_on    = [btp_subaccount_entitlement.event_mesh_application]
 }
 
 resource "btp_subaccount_role_collection_assignment" "event_mesh_admin" {
@@ -313,7 +313,7 @@ data "btp_subaccount_roles" "all" {
 resource "btp_subaccount_role_collection" "alm_ts_admin" {
   subaccount_id = data.btp_subaccount.project.id
   name          = "TMS Admin"
-  depends_on = [ data.btp_subaccount_roles.all ]
+  depends_on    = [data.btp_subaccount_roles.all]
   roles = [
     for role in data.btp_subaccount_roles.all.values : {
       name                 = role.name

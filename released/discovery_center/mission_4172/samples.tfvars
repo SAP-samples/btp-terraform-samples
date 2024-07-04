@@ -6,7 +6,7 @@ cf_org_name     = "cf-environment"
 subaccount_admins         = ["john.doe@sap.com"]
 subaccount_service_admins = ["john.doe@sap.com"]
 
-appstudio_developers = ["john.doe@sap.com"]
+appstudio_developers  = ["john.doe@sap.com"]
 appstudio_admins      = ["john.doe@sap.com"]
 cloudconnector_admins = ["john.doe@sap.com"]
 conn_dest_admins      = ["john.doe@sap.com"]

@@ -69,7 +69,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  =local.cf_landscape_labels[0]
+  landscape_label  = local.cf_landscape_labels[0]
   parameters = jsonencode({
     instance_name = local.project_subaccount_cf_org
   })
@@ -99,7 +99,7 @@ resource "btp_subaccount_entitlement" "sap_integration_suite" {
 
 data "btp_subaccount_subscriptions" "all" {
   subaccount_id = data.btp_subaccount.project.id
-  depends_on = [ btp_subaccount_entitlement.sap_integration_suite ]
+  depends_on    = [btp_subaccount_entitlement.sap_integration_suite]
 }
 
 resource "btp_subaccount_subscription" "sap_integration_suite" {
