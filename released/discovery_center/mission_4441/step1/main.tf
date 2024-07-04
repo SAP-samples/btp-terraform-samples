@@ -2,25 +2,33 @@
 # SUBACCOUNT SETUP
 # ------------------------------------------------------------------------------------------------------
 # Setup subaccount domain (to ensure uniqueness in BTP global account)
-resource "random_id" "subaccount_domain_suffix" {
-  byte_length = 12
-}
+resource "random_uuid" "uuid" {}
+
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
 # ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount" "build_code" {
+resource "btp_subaccount" "dc_mission" {
   name      = var.subaccount_name
-  subdomain = join("-", ["sap-build-code", random_id.subaccount_domain_suffix.hex])
+  subdomain = join("-", ["dc-mission-4441", random_uuid.uuid.result])
   region    = lower(var.region)
 }
 
+# ------------------------------------------------------------------------------------------------------
+# Assign custom IDP to sub account (if custom_idp is set)
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_trust_configuration" "fully_customized" {
+  # Only create trust configuration if custom_idp has been set 
+  count             = var.custom_idp == "" ? 0 : 1
+  subaccount_id     = btp_subaccount.dc_mission.id
+  identity_provider = var.custom_idp
+}
 # ------------------------------------------------------------------------------------------------------
 # CLOUDFOUNDRY PREPARATION
 # ------------------------------------------------------------------------------------------------------
 #
 # Fetch all available environments for the subaccount
 data "btp_subaccount_environments" "all" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
 }
 # ------------------------------------------------------------------------------------------------------
 # Take the landscape label from the first CF environment if no environment label is provided
@@ -32,16 +40,16 @@ resource "terraform_data" "replacement" {
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
 # ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_environment_instance" "cf" {
-  subaccount_id    = btp_subaccount.build_code.id
-  name             = "cf-${random_id.subaccount_domain_suffix.hex}"
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
+  subaccount_id    = btp_subaccount.dc_mission.id
+  name             = "cf-${random_uuid.uuid.result}"
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
   landscape_label  = terraform_data.replacement.output
 
   parameters = jsonencode({
-    instance_name = "cf-${random_id.subaccount_domain_suffix.hex}"
+    instance_name = "cf-${random_uuid.uuid.result}"
   })
 }
 
@@ -54,20 +62,20 @@ resource "btp_subaccount_environment_instance" "cf" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle 
 resource "btp_subaccount_entitlement" "cicd_service" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "cicd-service"
   plan_name     = "default"
 }
 # Get serviceplan_id for cicd-service with plan_name "default"
 data "btp_subaccount_service_plan" "cicd_service" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   offering_name = "cicd-service"
   name          = "default"
   depends_on    = [btp_subaccount_entitlement.cicd_service]
 }
 # Create service instance
 resource "btp_subaccount_service_instance" "cicd_service" {
-  subaccount_id  = btp_subaccount.build_code.id
+  subaccount_id  = btp_subaccount.dc_mission.id
   serviceplan_id = data.btp_subaccount_service_plan.cicd_service.id
   name           = "default_cicd-service"
   # Subscription to the cicd-app subscription is required for creating the service instance
@@ -75,13 +83,11 @@ resource "btp_subaccount_service_instance" "cicd_service" {
   depends_on = [btp_subaccount_subscription.cicd_app]
 }
 # Create service key
-resource "random_id" "service_key_cicd_service" {
-  byte_length = 12
-}
+resource "random_uuid" "service_key_cicd_service" {}
 resource "btp_subaccount_service_binding" "cicd_service" {
-  subaccount_id       = btp_subaccount.build_code.id
+  subaccount_id       = btp_subaccount.dc_mission.id
   service_instance_id = btp_subaccount_service_instance.cicd_service.id
-  name                = join("_", ["defaultKey", random_id.service_key_cicd_service.hex])
+  name                = join("_", ["defaultKey", random_uuid.service_key_cicd_service.result])
   depends_on          = [btp_subaccount_service_instance.cicd_service]
 }
 
@@ -90,20 +96,20 @@ resource "btp_subaccount_service_binding" "cicd_service" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle 
 resource "btp_subaccount_entitlement" "destination" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "destination"
   plan_name     = "lite"
 }
 # Get serviceplan_id for cicd-service with plan_name "default"
 data "btp_subaccount_service_plan" "destination" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   offering_name = "destination"
   name          = "lite"
   depends_on    = [btp_subaccount_entitlement.destination]
 }
 # Create service instance
 resource "btp_subaccount_service_instance" "destination" {
-  subaccount_id  = btp_subaccount.build_code.id
+  subaccount_id  = btp_subaccount.dc_mission.id
   serviceplan_id = data.btp_subaccount_service_plan.destination.id
   name           = "destination"
   depends_on     = [btp_subaccount_service_binding.cicd_service, data.btp_subaccount_service_plan.destination]
@@ -142,13 +148,13 @@ resource "btp_subaccount_service_instance" "destination" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "build_code" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "build-code"
   plan_name     = "standard"
 }
 # Subscribe
 resource "btp_subaccount_subscription" "build_code" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "build-code"
   plan_name     = "standard"
   depends_on    = [btp_subaccount_entitlement.build_code]
@@ -159,13 +165,13 @@ resource "btp_subaccount_subscription" "build_code" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "sapappstudio" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "sapappstudio"
   plan_name     = "build-code"
 }
 # Subscribe (depends on subscription of build-code)
 resource "btp_subaccount_subscription" "sapappstudio" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "sapappstudio"
   plan_name     = "build-code"
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.sapappstudio]
@@ -176,13 +182,13 @@ resource "btp_subaccount_subscription" "sapappstudio" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "sap_launchpad" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "SAPLaunchpad"
   plan_name     = "standard"
 }
 # Subscribe
 resource "btp_subaccount_subscription" "sap_launchpad" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "SAPLaunchpad"
   plan_name     = "standard"
   depends_on    = [btp_subaccount_entitlement.sap_launchpad]
@@ -193,13 +199,13 @@ resource "btp_subaccount_subscription" "sap_launchpad" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "cicd_app" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "cicd-app"
   plan_name     = "build-code"
 }
 # Subscribe
 resource "btp_subaccount_subscription" "cicd_app" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "cicd-app"
   plan_name     = "build-code"
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.cicd_app]
@@ -210,13 +216,13 @@ resource "btp_subaccount_subscription" "cicd_app" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "feature_flags_dashboard" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "feature-flags-dashboard"
   plan_name     = "dashboard"
 }
 # Subscribe
 resource "btp_subaccount_subscription" "feature_flags_dashboard" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "feature-flags-dashboard"
   plan_name     = "dashboard"
   depends_on    = [btp_subaccount_entitlement.feature_flags_dashboard]
@@ -227,13 +233,13 @@ resource "btp_subaccount_subscription" "feature_flags_dashboard" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "sdm-web" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "sdm-web"
   plan_name     = "build-code"
 }
 # Subscribe
 resource "btp_subaccount_subscription" "sdm-web" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "sdm-web"
   plan_name     = "build-code"
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.sdm-web]
@@ -245,7 +251,7 @@ resource "btp_subaccount_subscription" "sdm-web" {
 #
 # Get all available subaccount roles
 data "btp_subaccount_roles" "all" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_subscription.cicd_app, btp_subaccount_subscription.sap_launchpad, btp_subaccount_subscription.sapappstudio, btp_subaccount_subscription.feature_flags_dashboard, btp_subaccount_subscription.sdm-web]
 }
 # ------------------------------------------------------------------------------------------------------
@@ -253,7 +259,7 @@ data "btp_subaccount_roles" "all" {
 # ------------------------------------------------------------------------------------------------------
 # Assign roles to the role collection "Build Code Administrator"
 resource "btp_subaccount_role_collection" "build_code_administrator" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   name          = "Build Code Administrator"
   description   = "The role collection for an administrator on SAP Build Code"
 
@@ -268,7 +274,7 @@ resource "btp_subaccount_role_collection" "build_code_administrator" {
 # Assign users to the role collection "Build Code Administrator"
 resource "btp_subaccount_role_collection_assignment" "build_code_administrator" {
   for_each             = toset("${var.build_code_admins}")
-  subaccount_id        = btp_subaccount.build_code.id
+  subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Build Code Administrator"
   user_name            = each.value
   depends_on           = [btp_subaccount_role_collection.build_code_administrator]
@@ -279,7 +285,7 @@ resource "btp_subaccount_role_collection_assignment" "build_code_administrator" 
 # ------------------------------------------------------------------------------------------------------
 # Create role collection "Build Code Developer"  
 resource "btp_subaccount_role_collection" "build_code_developer" {
-  subaccount_id = btp_subaccount.build_code.id
+  subaccount_id = btp_subaccount.dc_mission.id
   name          = "Build Code Developer"
   description   = "The role collection for a developer on SAP Build Code"
 
@@ -294,7 +300,7 @@ resource "btp_subaccount_role_collection" "build_code_developer" {
 # Assign users to the role collection "Build Code Developer"
 resource "btp_subaccount_role_collection_assignment" "build_code_developer" {
   for_each             = toset("${var.build_code_developers}")
-  subaccount_id        = btp_subaccount.build_code.id
+  subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Build Code Developer"
   user_name            = each.value
   depends_on           = [btp_subaccount_role_collection.build_code_developer]
@@ -305,10 +311,10 @@ resource "btp_subaccount_role_collection_assignment" "build_code_developer" {
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
   for_each             = toset("${var.subaccount_admins}")
-  subaccount_id        = btp_subaccount.build_code.id
+  subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
-  depends_on           = [btp_subaccount.build_code]
+  depends_on           = [btp_subaccount.dc_mission]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -320,17 +326,21 @@ resource "local_file" "output_vars_step1" {
       globalaccount        = "${var.globalaccount}"
       cli_server_url       = ${jsonencode(var.cli_server_url)}
 
-      subaccount_id        = "${btp_subaccount.build_code.id}"
+      subaccount_id        = "${btp_subaccount.dc_mission.id}"
 
-      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]}"
-      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]}"
-      cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]}"
+      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
 
-      custom_idp           = "${var.custom_idp}"
+      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
+      cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
+
+      origin_key           = "${var.origin_key}"
+
+      cf_space_name        = "${var.cf_space_name}"
 
       cf_org_admins        = ${jsonencode(var.cf_org_admins)}
-      cf_space_developer   = ${jsonencode(var.cf_space_developer)}
-      cf_space_manager     = ${jsonencode(var.cf_space_manager)}
+      cf_space_developers  = ${jsonencode(var.cf_space_developers)}
+      cf_space_managers    = ${jsonencode(var.cf_space_managers)}
+
 
       EOT
   filename = "../step2/terraform.tfvars"

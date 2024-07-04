@@ -3,12 +3,6 @@ variable "globalaccount" {
   description = "The globalaccount subdomain where the sub account shall be created."
 }
 
-variable "setup_ai_launchpad" {
-  type        = bool
-  description = "Switch to enable the setup of the AI Launchpad."
-  default     = true
-}
-
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
@@ -19,6 +13,23 @@ variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
   default     = "https://cli.btp.cloud.sap"
+}
+
+variable "custom_idp" {
+  type        = string
+  description = "Defines the custom IdP"
+  default     = ""
+}
+
+variable "cf_space_name" {
+  type        = string
+  description = "Name of the Cloud Foundry space."
+  default     = "dev"
+
+  validation {
+    condition     = can(regex("^.{1,255}$", var.cf_space_name))
+    error_message = "The Cloud Foundry space name must not be emtpy and not exceed 255 characters."
+  }
 }
 
 variable "region" {
@@ -61,27 +72,29 @@ variable "cf_org_admins" {
   }
 }
 
-variable "cf_space_manager" {
+variable "cf_space_managers" {
   type        = list(string)
   description = "Defines the colleagues who are added to a CF space as space manager."
 
   # add validation to check if admins contains a list of valid email addresses
   validation {
-    condition     = length([for email in var.cf_space_manager : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_manager)
+    condition     = length([for email in var.cf_space_managers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_managers)
     error_message = "Please enter a valid email address for the CF space managers."
   }
 }
 
-variable "cf_space_developer" {
+variable "cf_space_developers" {
   type        = list(string)
   description = "Defines the colleagues who are added to a CF space as space developer."
 
   # add validation to check if admins contains a list of valid email addresses
   validation {
-    condition     = length([for email in var.cf_space_developer : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developer)
+    condition     = length([for email in var.cf_space_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developers)
     error_message = "Please enter a valid email address for the CF space developers."
   }
 }
+
+
 
 variable "build_code_admins" {
   type        = list(string)
@@ -110,11 +123,12 @@ variable "cf_landscape_label" {
   default     = ""
 }
 
-variable "custom_idp" {
+variable "origin_key" {
   type        = string
-  description = "The custom identity provider for the subaccount."
+  description = "Defines the origin key of the identity provider"
   default     = "sap.ids"
-
+  # The value for the origin_key can be defined
+  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
 }
 
 variable "create_tfvars_file_for_step2" {

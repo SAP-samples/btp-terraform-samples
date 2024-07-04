@@ -18,7 +18,6 @@ resource "btp_subaccount_entitlement" "sdm" {
   service_name  = "sdm"
   plan_name     = "build-code"
 }
-
 # Create the service instance
 data "cloudfoundry_service" "sdm" {
   name       = "sdm"
@@ -32,12 +31,10 @@ resource "cloudfoundry_service_instance" "sdm" {
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.sdm]
 }
 # Create service key
-resource "random_id" "service_key_sdm" {
-  byte_length = 12
-}
+resource "random_uuid" "service_key_sdm" {}
 resource "cloudfoundry_service_credential_binding" "sdm" {
   type             = "key"
-  name             = join("_", ["defaultKey", random_id.service_key_sdm.hex])
+  name             = join("_", ["defaultKey", random_uuid.service_key_sdm.result])
   service_instance = cloudfoundry_service_instance.sdm.id
 }
 
@@ -63,12 +60,10 @@ resource "cloudfoundry_service_instance" "mobile_services" {
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.mobile_services]
 }
 # Create service key
-resource "random_id" "service_key_mobile_services" {
-  byte_length = 12
-}
+resource "random_uuid" "service_key_mobile_services" {}
 resource "cloudfoundry_service_credential_binding" "mobile_services" {
   type             = "key"
-  name             = join("_", ["defaultKey", random_id.service_key_mobile_services.hex])
+  name             = join("_", ["defaultKey", random_uuid.service_key_mobile_services.result])
   service_instance = cloudfoundry_service_instance.mobile_services.id
 }
 
@@ -94,12 +89,10 @@ resource "cloudfoundry_service_instance" "cloud_logging" {
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.cloud_logging]
 }
 # Create service key
-resource "random_id" "service_key_cloud_logging" {
-  byte_length = 12
-}
+resource "random_uuid" "service_key_cloud_logging" {}
 resource "cloudfoundry_service_credential_binding" "cloud_logging" {
   type             = "key"
-  name             = join("_", ["defaultKey", random_id.service_key_cloud_logging.hex])
+  name             = join("_", ["defaultKey", random_uuid.service_key_cloud_logging.result])
   service_instance = cloudfoundry_service_instance.cloud_logging.id
 }
 
@@ -125,12 +118,10 @@ resource "cloudfoundry_service_instance" "alert_notification" {
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.alert_notification]
 }
 # Create service key
-resource "random_id" "service_key_alert_notification" {
-  byte_length = 12
-}
+resource "random_uuid" "service_key_alert_notification" {}
 resource "cloudfoundry_service_credential_binding" "alert_notification" {
   type             = "key"
-  name             = join("_", ["defaultKey", random_id.service_key_alert_notification.hex])
+  name             = join("_", ["defaultKey", random_uuid.service_key_alert_notification.result])
   service_instance = cloudfoundry_service_instance.alert_notification.id
 }
 
@@ -156,12 +147,10 @@ resource "cloudfoundry_service_instance" "transport" {
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport]
 }
 # Create service key
-resource "random_id" "service_key_transport" {
-  byte_length = 12
-}
+resource "random_uuid" "service_key_transport" {}
 resource "cloudfoundry_service_credential_binding" "transport" {
   type             = "key"
-  name             = join("_", ["defaultKey", random_id.service_key_transport.hex])
+  name             = join("_", ["defaultKey", random_uuid.service_key_transport.result])
   service_instance = cloudfoundry_service_instance.transport.id
 }
 
@@ -174,11 +163,11 @@ resource "btp_subaccount_entitlement" "autoscaler" {
   service_name  = "autoscaler"
   plan_name     = "standard"
 }
-# Create the service instance
 data "cloudfoundry_service" "autoscaler" {
   name       = "autoscaler"
   depends_on = [btp_subaccount_entitlement.autoscaler]
 }
+# Create the service instance
 resource "cloudfoundry_service_instance" "autoscaler" {
   name         = "default_autoscaler"
   space        = cloudfoundry_space.dev.id
@@ -209,12 +198,10 @@ resource "cloudfoundry_service_instance" "feature_flags" {
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.feature_flags]
 }
 # Create service key
-resource "random_id" "service_key_feature_flags" {
-  byte_length = 12
-}
+resource "random_uuid" "service_key_feature_flags" {}
 resource "cloudfoundry_service_credential_binding" "feature_flags" {
   type             = "key"
-  name             = join("_", ["defaultKey", random_id.service_key_feature_flags.hex])
+  name             = join("_", ["defaultKey", random_uuid.service_key_feature_flags.result])
   service_instance = cloudfoundry_service_instance.feature_flags.id
 }
 
@@ -231,7 +218,7 @@ resource "cloudfoundry_org_role" "organization_user" {
   username = each.value
   type     = "organization_user"
   org      = var.cf_org_id
-  origin   = var.custom_idp
+  origin   = var.origin_key
 }
 # Define Org Manager role
 resource "cloudfoundry_org_role" "organization_manager" {
@@ -239,7 +226,7 @@ resource "cloudfoundry_org_role" "organization_manager" {
   username   = each.value
   type       = "organization_manager"
   org        = var.cf_org_id
-  origin     = var.custom_idp
+  origin     = var.origin_key
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 
@@ -248,19 +235,21 @@ resource "cloudfoundry_org_role" "organization_manager" {
 # ------------------------------------------------------------------------------------------------------
 # Define Space Manager role
 resource "cloudfoundry_space_role" "space_manager" {
-  for_each = toset("${var.cf_space_manager}")
+  for_each = toset(var.cf_space_managers)
 
   username   = each.value
   type       = "space_manager"
   space      = cloudfoundry_space.dev.id
+  origin     = var.origin_key
   depends_on = [cloudfoundry_org_role.organization_manager]
 }
 # Define Space Developer role
 resource "cloudfoundry_space_role" "space_developer" {
-  for_each = toset("${var.cf_space_manager}")
+  for_each = toset(var.cf_space_managers)
 
   username   = each.value
   type       = "space_developer"
   space      = cloudfoundry_space.dev.id
+  origin     = var.origin_key
   depends_on = [cloudfoundry_org_role.organization_manager]
 }

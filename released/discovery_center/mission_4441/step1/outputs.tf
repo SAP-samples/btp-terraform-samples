@@ -9,22 +9,22 @@ output "cli_server_url" {
 }
 
 output "subaccount_id" {
-  value       = btp_subaccount.build_code.id
+  value       = btp_subaccount.dc_mission.id
   description = "The Global Account subdomain id."
 }
 
 output "cf_api_endpoint" {
-  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["API Endpoint"]
+  value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]
   description = "The Cloudfoundry API endpoint."
 }
 
 output "cf_org_id" {
-  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["Org ID"]
+  value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]
   description = "The Cloudfoundry org id."
 }
 
 output "cf_org_name" {
-  value       = jsondecode(btp_subaccount_environment_instance.cf.labels)["Org Name"]
+  value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]
   description = "The Cloudfoundry org name."
 }
 
@@ -38,12 +38,12 @@ output "cf_org_admins" {
   description = "List of users to set as Cloudfoundry org administrators."
 }
 
-output "cf_space_developer" {
-  value       = var.cf_space_developer
+output "cf_space_developers" {
+  value       = var.cf_space_developers
   description = "List of users to set as Cloudfoundry space developers."
 }
 
-output "cf_space_manager" {
-  value       = var.cf_space_manager
+output "cf_space_managers" {
+  value       = var.cf_space_managers
   description = "List of users to set as Cloudfoundry space managers."
 }

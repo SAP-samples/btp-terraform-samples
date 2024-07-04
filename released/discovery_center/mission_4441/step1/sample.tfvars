@@ -11,7 +11,7 @@ cli_server_url = null
 region = "us10"
 
 # Name of your sub account
-subaccount_name = "SAP Build Code - quick account setup"
+subaccount_name = "SAP Discovery Center Mission 4441 (SAP Build Code)"
 
 # ------------------------------------------------------------------------------------------------------
 # Create tfvars file for the step 2
