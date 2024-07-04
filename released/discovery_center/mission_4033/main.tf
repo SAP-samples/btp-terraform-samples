@@ -30,14 +30,14 @@ data "btp_subaccount" "project" {
 # Assignment of emergency admins to the sub account as sub account administrators
 ###############################################################################################
 resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
-  for_each             = toset("${var.subaccount_admins}")
+  for_each             = toset(var.subaccount_admins)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
 }
 
 resource "btp_subaccount_role_collection_assignment" "subaccount_service_admin" {
-  for_each             = toset("${var.subaccount_service_admins}")
+  for_each             = toset(var.subaccount_service_admins)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
@@ -132,7 +132,7 @@ resource "btp_subaccount_entitlement" "genentitlements" {
 
 resource "btp_subaccount_role_collection_assignment" "conn_dest_admn" {
   depends_on           = [btp_subaccount_entitlement.genentitlements]
-  for_each             = toset(var.conn_dest_admin)
+  for_each             = toset(var.conn_dest_admins)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Connectivity and Destination Administrator"
   user_name            = each.value
@@ -149,7 +149,7 @@ resource "btp_subaccount_entitlement" "sap_integration_suite" {
 
 data "btp_subaccount_subscriptions" "all" {
   subaccount_id = data.btp_subaccount.project.id
-  depends_on = [ btp_subaccount_entitlement.sap_integration_suite ]
+  depends_on    = [btp_subaccount_entitlement.sap_integration_suite]
 }
 
 resource "btp_subaccount_subscription" "sap_integration_suite" {
@@ -165,7 +165,7 @@ resource "btp_subaccount_subscription" "sap_integration_suite" {
 
 resource "btp_subaccount_role_collection_assignment" "int_prov" {
   depends_on           = [btp_subaccount_subscription.sap_integration_suite]
-  for_each             = toset(var.int_provisioner)
+  for_each             = toset(var.int_provisioners)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Integration_Provisioner"
   user_name            = each.value
@@ -191,7 +191,7 @@ resource "btp_subaccount_subscription" "build_process_automation" {
 
 resource "btp_subaccount_role_collection_assignment" "sbpa_admin" {
   depends_on           = [btp_subaccount_subscription.build_process_automation]
-  for_each             = toset(var.ProcessAutomationAdmin)
+  for_each             = toset(var.process_automation_admins)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "ProcessAutomationAdmin"
   user_name            = each.value
@@ -199,7 +199,7 @@ resource "btp_subaccount_role_collection_assignment" "sbpa_admin" {
 
 resource "btp_subaccount_role_collection_assignment" "sbpa_dev" {
   depends_on           = [btp_subaccount_subscription.build_process_automation]
-  for_each             = toset(var.ProcessAutomationAdmin)
+  for_each             = toset(var.process_automation_developers)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "ProcessAutomationAdmin"
   user_name            = each.value
@@ -207,7 +207,7 @@ resource "btp_subaccount_role_collection_assignment" "sbpa_dev" {
 
 resource "btp_subaccount_role_collection_assignment" "sbpa_part" {
   depends_on           = [btp_subaccount_subscription.build_process_automation]
-  for_each             = toset(var.ProcessAutomationParticipant)
+  for_each             = toset(var.process_automation_participants)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "ProcessAutomationParticipant"
   user_name            = each.value
@@ -258,7 +258,7 @@ resource "btp_subaccount_role_collection" "build_apps_BuildAppsAdmin" {
 # Assign users to the role collection
 resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsAdmin" {
   depends_on           = [btp_subaccount_role_collection.build_apps_BuildAppsAdmin]
-  for_each             = toset(var.users_BuildAppsAdmin)
+  for_each             = toset(var.users_buildApps_admins)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "BuildAppsAdmin"
   user_name            = each.value
@@ -284,7 +284,7 @@ resource "btp_subaccount_role_collection" "build_apps_BuildAppsDeveloper" {
 # Assign users to the role collection
 resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsDeveloper" {
   depends_on           = [btp_subaccount_role_collection.build_apps_BuildAppsDeveloper]
-  for_each             = toset(var.users_BuildAppsDeveloper)
+  for_each             = toset(var.users_buildApps_developers)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "BuildAppsDeveloper"
   user_name            = each.value
@@ -310,7 +310,7 @@ resource "btp_subaccount_role_collection" "build_apps_RegistryAdmin" {
 # Assign users to the role collection
 resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryAdmin" {
   depends_on           = [btp_subaccount_role_collection.build_apps_RegistryAdmin]
-  for_each             = toset(var.users_RegistryAdmin)
+  for_each             = toset(var.users_registry_admins)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "RegistryAdmin"
   user_name            = each.value
@@ -336,7 +336,7 @@ resource "btp_subaccount_role_collection" "build_apps_RegistryDeveloper" {
 # Assign users to the role collection
 resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryDeveloper" {
   depends_on           = [btp_subaccount_role_collection.build_apps_RegistryDeveloper]
-  for_each             = toset(var.users_RegistryDeveloper)
+  for_each             = toset(var.users_registry_developers)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "RegistryDeveloper"
   user_name            = each.value
