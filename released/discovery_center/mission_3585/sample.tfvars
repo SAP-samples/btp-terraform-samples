@@ -17,7 +17,6 @@ subaccount_name = "SAP Discovery Center Mission 3585"
 # USER ROLES
 # ------------------------------------------------------------------------------------------------------
 subaccount_admins = ["another.user@test.com"]
-cf_org_admins     = ["another.user@test.com"]
 
 launchpad_admins = ["another.user@test.com", "you@test.com"]
 
@@ -26,6 +25,3 @@ cicd_developers = ["another.user@test.com", "you@test.com"]
 
 bas_admins     = ["another.user@test.com", "you@test.com"]
 bas_developers = ["another.user@test.com", "you@test.com"]
-
-# Create variables file for step 2 (disabled by default)
-create_tfvars_file_for_next_step = true

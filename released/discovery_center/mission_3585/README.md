@@ -1,8 +1,8 @@
-# Discovery Center mission - Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App (Step 1)
+# Discovery Center mission - Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App
 
 ## Overview
 
-Step 1 of this sample shows how to set up your SAP BTP account for the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/missiondetail/3585/)
+This sample shows how to set up your SAP BTP account for the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/missiondetail/3585/)
 
 ## Content of setup
 
@@ -32,19 +32,18 @@ To deploy the resources you must:
 
 2. Change the variables in the `sample.tfvars` file to meet your requirements
 
-   > The minimal set of parameters you should specify (besides user email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
+   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
 
-3. The outputs of this `step1` will be needed for the `step2` of this use case. In case you want to create a file with the content of the variables, you should set the variable `create_tfvars_file_for_next_step` to `true`. This will create a `terraform.tfvars` file in the `step2` folder.
 
-4. Initialize your workspace:
+3. Initialize your workspace:
 
    ```bash
    terraform init
    ```
 
-5. You can check what Terraform plans to apply based on your configuration:
+4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
    terraform plan -var-file="sample.tfvars"
