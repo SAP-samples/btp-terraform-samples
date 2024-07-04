@@ -149,7 +149,7 @@ variable "service_plan__build_workzone" {
   default     = "free"
   validation {
     condition     = contains(["free", "standard"], var.service_plan__build_workzone)
-    error_message = "Invalid value for qas_service_plan__build_workzone. Only 'free' and 'standard' are allowed."
+    error_message = "Invalid value for service_plan__build_workzone. Only 'free' and 'standard' are allowed."
   }
 }
 

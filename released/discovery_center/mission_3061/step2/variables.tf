@@ -19,42 +19,78 @@ variable "cf_org_managers" {
   type        = list(string)
   description = "List of Cloud Foundry org managers."
   default     = []
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_org_managers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_managers)
+    error_message = "Please enter a valid email address for the Cloud Foundry org managers."
+  }
 }
 
 variable "cf_org_billing_managers" {
   type        = list(string)
   description = "List of Cloud Foundry org billing managers."
   default     = []
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_org_billing_managers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_billing_managers)
+    error_message = "Please enter a valid email address for the subaccount admins."
+  }
 }
 
 variable "cf_org_auditors" {
   type        = list(string)
   description = "List of Cloud Foundry org auditors."
   default     = []
-}
 
-variable "cf_space_name" {
-  type        = string
-  description = "The name of the Cloud Foundry space."
-  default     = "dev"
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_org_auditors : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_auditors)
+    error_message = "Please enter a valid email address for the subaccount admins."
+  }
 }
 
 variable "cf_space_managers" {
   type        = list(string)
   description = "List of managers for the Cloud Foundry space."
   default     = []
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_managers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_managers)
+    error_message = "Please enter a valid email address for the subaccount admins."
+  }
 }
 
 variable "cf_space_developers" {
   type        = list(string)
   description = "List of developers for the Cloud Foundry space."
   default     = []
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developers)
+    error_message = "Please enter a valid email address for the subaccount admins."
+  }
 }
 
 variable "cf_space_auditors" {
   type        = list(string)
   description = "The list of Cloud Foundry space auditors."
   default     = []
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_auditors : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_auditors)
+    error_message = "Please enter a valid email address for the subaccount admins."
+  }
+}
+
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
 }
 
 variable "abap_sid" {
@@ -67,7 +103,7 @@ variable "abap_sid" {
   }
 }
 
-variable "abap_si_plan" {
+variable "service_plan__abap" {
   type        = string
   description = "Plan for the service instance of ABAP."
   default     = "standard"
@@ -76,6 +112,7 @@ variable "abap_si_plan" {
 variable "abap_admin_email" {
   type        = string
   description = "Email of the ABAP Administrator."
+  default     = ""
 }
 
 variable "abap_is_development_allowed" {
