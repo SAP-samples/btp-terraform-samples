@@ -21,7 +21,6 @@ kyma_instance = {
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
-
 subaccount_admins               = ["another.user@test.com"]
 subaccount_service_admins       = ["another.user@test.com"]
 conn_dest_admins                = ["another.user@test.com"]
