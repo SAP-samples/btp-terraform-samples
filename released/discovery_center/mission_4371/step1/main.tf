@@ -6,6 +6,7 @@ resource "random_uuid" "uuid" {}
 locals {
   random_uuid       = random_uuid.uuid.result
   subaccount_domain = lower(replace("mission-4371-${local.random_uuid}", "_", "-"))
+  project_subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
@@ -14,16 +15,7 @@ resource "btp_subaccount" "dc_mission" {
   name      = var.subaccount_name
   subdomain = local.subaccount_domain
   region    = lower(var.region)
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Assign custom IDP to sub account (if custom_idp is set)
-# ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_trust_configuration" "fully_customized" {
-  # Only create trust configuration if custom_idp has been set 
-  count             = var.custom_idp == "" ? 0 : 1
-  subaccount_id     = btp_subaccount.dc_mission.id
-  identity_provider = var.custom_idp
+  usage     = "USED_FOR_PRODUCTION"
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -167,3 +159,52 @@ resource "btp_subaccount_service_binding" "hana_cloud" {
   name                = "hana-cloud-key"
 }
 
+
+# ------------------------------------------------------------------------------------------------------
+# Entitle subaccount for usage of SAP Cloud Management service for SAP BTP - cis
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_entitlement" "cis" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "cis"
+  plan_name     = "central"
+}
+
+######################################################################
+# Extract list of CF landscape labels from environments
+######################################################################
+data "btp_subaccount_environments" "all" {
+  subaccount_id = btp_subaccount.dc_mission.id
+}
+
+locals {
+  cf_landscape_labels = [
+    for env in data.btp_subaccount_environments.all.values : env.landscape_label
+    if env.environment_type == "cloudfoundry"
+  ]
+}
+
+
+######################################################################
+# Creation of Cloud Foundry environment
+######################################################################
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
+  subaccount_id    = btp_subaccount.dc_mission.id
+  name             = var.cf_org_name
+  environment_type = "cloudfoundry"
+  service_name     = "cloudfoundry"
+  plan_name        = "standard"
+  landscape_label  =local.cf_landscape_labels[0]
+  parameters = jsonencode({
+    instance_name = local.project_subaccount_cf_org
+  })
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Entitle subaccount for usage of SAP Credential Store - credstore
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_entitlement" "credstore" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "credstore"
+  plan_name     = var.credstore_plan_name
+  amount        = var.credstore_plan_name == "free" ? 1 : null
+}

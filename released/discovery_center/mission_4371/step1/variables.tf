@@ -81,13 +81,13 @@ variable "custom_idp" {
   default     = ""
 }
 
-variable "origin_key" {
-  type        = string
-  description = "Defines the origin key of the identity provider"
-  default     = "sap.ids"
-  # The value for the origin_key can be defined
-  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
-}
+# variable "origin" {
+#   type        = string
+#   description = "Defines the origin key of the identity provider"
+#   default     = "sap.ids"
+#   # The value for the origin_key can be defined
+#   # but are normally set to "sap.ids", "sap.default" or "sap.custom"
+# }
 
 
 variable "create_tfvars_file_for_step2" {
@@ -150,3 +150,20 @@ variable "target_ai_core_model" {
   }
 }
 
+# cf org name
+variable "cf_org_name" {
+  type        = string
+  description = "Cloud Foundry Org Name"
+  default     = "cloud-foundry"
+}
+
+# credential store
+variable "credstore_plan_name" {
+  type        = string
+  description = "The name of the Credential Store plan."
+  default     = "free"
+  validation {
+    condition     = contains(["free", "standard"], var.credstore_plan_name)
+    error_message = "Valid values for Credential Store plan are: free, standard."
+  }
+}
