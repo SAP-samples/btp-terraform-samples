@@ -1,12 +1,23 @@
+
 # ------------------------------------------------------------------------------------------------------
-# Assignment of Cloud Foundry org roles 
+# Assign CF Org roles to the admin users
 # ------------------------------------------------------------------------------------------------------
-resource "cloudfoundry_org_role" "org_managers" {
-  for_each = toset("${var.cf_org_managers}")
+# Define Org User role
+resource "cloudfoundry_org_role" "organization_user" {
+  for_each = toset("${var.cf_org_admins}")
+  username = each.value
+  type     = "organization_user"
+  org      = var.cf_org_id
+  origin   = var.origin
+}
+
+resource "cloudfoundry_org_role" "organization_manager" {
+  for_each = toset("${var.cf_org_admins}")
   username = each.value
   type     = "organization_manager"
   org      = var.cf_org_id
   origin   = var.origin
+  depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 resource "cloudfoundry_org_role" "billing_managers" {
@@ -15,6 +26,7 @@ resource "cloudfoundry_org_role" "billing_managers" {
   type     = "organization_billing_manager"
   org      = var.cf_org_id
   origin   = var.origin
+  depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 resource "cloudfoundry_org_role" "org_auditors" {
@@ -23,6 +35,7 @@ resource "cloudfoundry_org_role" "org_auditors" {
   type     = "organization_auditor"
   org      = var.cf_org_id
   origin   = var.origin
+  depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 # ------------------------------------------------------------------------------------------------------

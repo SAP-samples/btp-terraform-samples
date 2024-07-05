@@ -33,9 +33,9 @@ output "origin" {
   description = "The identity provider for the UAA user."
 }
 
-output "cf_org_managers" {
-  value       = var.cf_org_managers
-  description = "List of Cloud Foundry org managers."
+output "cf_org_admins" {
+  value       = var.cf_org_admins
+  description = "List of Cloud Foundry org admins."
 }
 
 output "cf_org_billing_managers" {

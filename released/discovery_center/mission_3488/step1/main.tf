@@ -62,19 +62,19 @@ resource "btp_subaccount_environment_instance" "cf_sac" {
 resource "local_file" "output_vars_step1" {
   count    = var.create_tfvars_file_for_next_stage ? 1 : 0
   content  = <<-EOT
-      origin               = "${var.origin}"
+     origin               = "${var.origin}"
 
-      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cf_sac.labels)["API Endpoint"]}"
-      cf_org_id            = "${btp_subaccount_environment_instance.cf_sac.platform_id}"
+     cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cf_sac.labels)["API Endpoint"]}"
+     cf_org_id            = "${btp_subaccount_environment_instance.cf_sac.platform_id}"
 
-      cf_org_auditors             = ${jsonencode(var.cf_org_auditors)}
-      cf_org_billing_managers     = ${jsonencode(var.cf_org_billing_managers)}
-      cf_org_managers             = ${jsonencode(var.cf_org_managers)}
-      cf_space_auditors           = ${jsonencode(var.cf_space_auditors)}
-      cf_space_developers         = ${jsonencode(var.cf_space_developers)}
-      cf_space_managers           = ${jsonencode(var.cf_space_managers)}
+     cf_org_auditors             = ${jsonencode(var.cf_org_auditors)}
+     cf_org_billing_managers     = ${jsonencode(var.cf_org_billing_managers)}
+     cf_org_admins               = ${jsonencode(var.cf_org_admins)}
+     cf_space_auditors           = ${jsonencode(var.cf_space_auditors)}
+     cf_space_developers         = ${jsonencode(var.cf_space_developers)}
+     cf_space_managers           = ${jsonencode(var.cf_space_managers)}
 
-      service_plan__sac          = "${var.service_plan__sac}"
+     service_plan__sac          = "${var.service_plan__sac}"
 
      sac_param_first_name = "${var.sac_param_first_name}"
      sac_param_last_name  = "${var.sac_param_last_name}"

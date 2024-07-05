@@ -17,7 +17,7 @@ cf_org_admins       = ["another.user@test.com"]
 cf_space_managers   = ["another.user@test.com", "you@test.com"]
 cf_space_developers = ["another.user@test.com", "you@test.com"]
 
-custom_idp = "sap.ids"
+custom_idp = ""
 
 create_tfvars_file_for_next_stage = true
 

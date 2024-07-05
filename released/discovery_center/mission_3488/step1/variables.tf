@@ -39,15 +39,14 @@ variable "cf_space_name" {
   default     = "dev"
 }
 
-variable "cf_org_managers" {
+variable "cf_org_admins" {
   type        = list(string)
-  description = "List of Cloud Foundry org managers."
-  default     = []
+  description = "List of users to set as Cloudfoundry org administrators."
 
   # add validation to check if admins contains a list of valid email addresses
   validation {
-    condition     = length([for email in var.cf_org_managers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_managers)
-    error_message = "Please enter a valid email address for the subaccount admins."
+    condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
+    error_message = "Please enter a valid email address for the CF Org admins."
   }
 }
 
