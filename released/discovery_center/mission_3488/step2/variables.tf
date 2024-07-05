@@ -122,7 +122,12 @@ variable "sac_param_email" {
 variable "sac_param_host_name" {
   type        = string
   description = "Host name of the SAC"
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9]", var.sac_param_host_name))
+    error_message = "Please enter a valid host name. Should only contain letters and numbers."
+  }
 }
+
 
 variable "sac_param_number_of_business_intelligence_licenses" {
   type        = number
