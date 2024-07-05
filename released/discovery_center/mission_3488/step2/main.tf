@@ -55,6 +55,7 @@ resource "cloudfoundry_space_role" "space_managers" {
   type     = "space_manager"
   space    = cloudfoundry_space.sac_space.id
   origin   = var.origin
+  depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 resource "cloudfoundry_space_role" "space_developers" {
@@ -63,6 +64,7 @@ resource "cloudfoundry_space_role" "space_developers" {
   type     = "space_developer"
   space    = cloudfoundry_space.sac_space.id
   origin   = var.origin
+  depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 resource "cloudfoundry_space_role" "space_auditors" {
@@ -71,6 +73,7 @@ resource "cloudfoundry_space_role" "space_auditors" {
   type     = "space_auditor"
   space    = cloudfoundry_space.sac_space.id
   origin   = var.origin
+  depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 # ------------------------------------------------------------------------------------------------------
