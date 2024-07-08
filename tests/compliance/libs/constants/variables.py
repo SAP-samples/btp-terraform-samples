@@ -7,7 +7,12 @@ CF_PROVIDER_MANDATORY_VARIABLES = ["cf_org_admins", "cf_org_name", "cf_space_dev
 QAS_STEP1_BTP_PROVIDER_MANDATORY_VARIABLES = ["cf_org_admins", "cf_org_name", "cf_space_developers", "cf_space_managers",
                                               "cf_space_name", "cli_server_url", "custom_idp", "globalaccount", "region", "subaccount_admins",
                                               "subaccount_service_admins", "subaccount_name", "subaccount_id", "cf_landscape_label", "origin"]
+QAS_STEP1_BTP_PROVIDER_MANDATORY_OUTPUTS = ["cf_org_admins", "cf_org_name", "cf_space_developers", "cf_space_managers",
+                                            "cf_space_name", "cf_landscape_label", "origin"]
+
+
 QAS_STEP2_BTP_PROVIDER_MANDATORY_VARIABLES = []
+
 
 QAS_STEP1_CF_PROVIDER_MANDATORY_VARIABLES = []
 QAS_STEP2_CF_PROVIDER_MANDATORY_VARIABLES = [
