@@ -1,13 +1,16 @@
-import re
-from pathlib import Path
-from typing import List
 from libs.constants.files_folders import FOLDER_SCRIPTS
 from libs.inspect import get_tf_definitions
 from libs.inspection.provider import TF_Provider
-from libs.io.files import write_string_to_file, get_folders
+from libs.io.files import get_folders
+import sys
 
 folder_to_scan = None
 
+# read the parameters
+if len(sys.argv) > 1:
+    folder_to_scan = sys.argv[1]
+else:
+    folder_to_scan = FOLDER_SCRIPTS
 
 # get all folders
 folders = get_folders(folder_to_scan)
@@ -35,5 +38,6 @@ for folder in folders:
             message_text += f"# - {finding.type} ({finding.provider} provider) '{finding.asset}'\n"
 
     print(message_text)
-    filename = Path(folder, "TF_compliance_TODO.txt")
-    write_string_to_file(string_data=message_text, file_path=filename)
+    # Store file in folder
+    # filename = Path(folder, "TF_compliance_TODO.txt")
+    # write_string_to_file(string_data=message_text, file_path=filename)

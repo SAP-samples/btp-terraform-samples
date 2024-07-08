@@ -11,7 +11,8 @@ class TF_Provider(ProviderDefinition):
     def __init__(self, folder, provider, tf_definitions):
         super().__init__(folder, tf_definitions)
 
-        self.mandatory_variables, self.mandatory_resources = determine_variables_and_resources(folder=folder, provider=provider)
+        self.mandatory_variables, self.mandatory_resources = determine_variables_and_resources(
+            folder=folder, provider=provider)
 
         # only execute if the provider is btp or cloudfoundry
         if provider in ["btp", "cloudfoundry"]:
@@ -27,10 +28,10 @@ class TF_Provider(ProviderDefinition):
             for variable in self.mandatory_variables:
                 if variable not in tf_definitions["variables"]:
                     finding = Finding(provider=provider,
-                                    folder=self.folder,
-                                    asset=variable,
-                                    type="variable not defined",
-                                    severity="error")
+                                      folder=self.folder,
+                                      asset=variable,
+                                      type="variable not defined",
+                                      severity="error")
                     self.findings.append(finding)
 
     def _check_resources_mandatory(self, provider, tf_definitions):
@@ -40,10 +41,10 @@ class TF_Provider(ProviderDefinition):
                 # check whether the resource is in the tf_definitions["managed_resources"] or in the tf_definitions["managed_resources"] split with a "."
                 if resource not in tf_definitions["managed_resources"] and not any([resource in managed_resource.split(".") for managed_resource in tf_definitions["managed_resources"]]):
                     finding = Finding(provider=provider,
-                                    folder=self.folder,
-                                    asset=resource,
-                                    type="resource not defined",
-                                    severity="error")
+                                      folder=self.folder,
+                                      asset=resource,
+                                      type="resource not defined",
+                                      severity="error")
                     self.findings.append(finding)
 
 
@@ -58,7 +59,6 @@ def determine_variables_and_resources(folder, provider):
         qas_two_step_approach = "step1"
     if "step2" in str(folder):
         qas_two_step_approach = "step2"
-
 
     if provider == "btp":
         if qas_two_step_approach is None:

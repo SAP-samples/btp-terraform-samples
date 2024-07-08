@@ -2,6 +2,6 @@
 from pathlib import Path
 
 # Folders
-ROOT = Path(__file__, "..", "..", "..", "..").resolve()
+ROOT = Path(__file__, "..", "..", "..", "..", "..").resolve()
 
-FOLDER_SCRIPTS = Path(ROOT, "tfscripts")
+FOLDER_SCRIPTS = Path(ROOT, "released", "discovery_center")
