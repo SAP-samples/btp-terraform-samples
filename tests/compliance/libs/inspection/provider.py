@@ -12,14 +12,15 @@ class TF_Provider(ProviderDefinition):
     def __init__(self, folder, provider, tf_definitions):
         super().__init__(folder, tf_definitions)
 
-        self.mandatory_variables, self.mandatory_resources = determine_variables_and_resources(
+        self.folder = folder
+        self.mandatory_variables, self.mandatory_resources, self.mandatory_outputs = determine_variables_and_resources(
             folder=folder, provider=provider)
 
         # only execute if the provider is btp or cloudfoundry
         if provider in ["btp", "cloudfoundry"]:
             self._check_variables_mandatory(provider, tf_definitions)
             self._check_resources_mandatory(provider, tf_definitions)
-            self.folder = folder
+            self._check_outputs_mandatory(provider, tf_definitions)
         else:
             self = None
 
@@ -45,6 +46,19 @@ class TF_Provider(ProviderDefinition):
                                       folder=self.folder,
                                       asset=resource,
                                       type="resource not defined",
+                                      severity="error")
+                    self.findings.append(finding)
+
+    def _check_outputs_mandatory(self, provider, tf_definitions):
+
+        if self.mandatory_outputs:
+            for output in self.mandatory_outputs:
+                # check if the outputs are in the tf_definitions["outputs"]
+                if output not in tf_definitions["outputs"]:
+                    finding = Finding(provider=provider,
+                                      folder=self.folder,
+                                      asset=output,
+                                      type="output not defined",
                                       severity="error")
                     self.findings.append(finding)
 
@@ -89,4 +103,4 @@ def determine_variables_and_resources(folder, provider):
                 variables = QAS_STEP2_CF_PROVIDER_MANDATORY_VARIABLES
                 return variables, resources, outputs
 
-    return None, None
+    return None, None, None
