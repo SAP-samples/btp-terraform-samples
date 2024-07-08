@@ -333,7 +333,7 @@ resource "local_file" "output_vars_step1" {
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
 
-      origin_key           = "${var.origin_key}"
+      origin               = "${var.origin}"
 
       cf_space_name        = "${var.cf_space_name}"
 

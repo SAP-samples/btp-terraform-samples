@@ -3,10 +3,16 @@ variable "globalaccount" {
   description = "The globalaccount subdomain where the sub account shall be created."
 }
 
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
+}
+
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "My SAP Build Apps subaccount."
+  default     = "My SAP Build Code subaccount."
 }
 
 variable "cli_server_url" {
@@ -20,6 +26,29 @@ variable "custom_idp" {
   description = "Defines the custom IdP"
   default     = ""
 }
+
+variable "origin" {
+  type        = string
+  description = "Defines the origin key of the identity provider"
+  default     = "sap.ids"
+  # The value for the origin_key can be defined
+  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
+}
+
+
+variable "cf_org_name" {
+  type        = string
+  description = "Name of the Cloud Foundry org."
+  default     = "mission-4441-sap-build-code"
+
+  validation {
+    condition     = can(regex("^.{1,255}$", var.cf_org_name))
+    error_message = "The Cloud Foundry org name must not be emtpy and not exceed 255 characters."
+  }
+}
+
+
+
 
 variable "cf_space_name" {
   type        = string

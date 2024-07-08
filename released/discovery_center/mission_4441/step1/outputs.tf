@@ -18,6 +18,12 @@ output "cf_api_endpoint" {
   description = "The Cloudfoundry API endpoint."
 }
 
+
+output "cf_landscape_label" {
+  value       = terraform_data.replacement.output
+  description = "The Cloudfoundry landscape label."
+}
+
 output "cf_org_id" {
   value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]
   description = "The Cloudfoundry org id."
