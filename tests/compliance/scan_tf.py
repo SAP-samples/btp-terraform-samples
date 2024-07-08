@@ -16,6 +16,8 @@ else:
 # get all folders
 folders = get_folders(folder_to_scan)
 
+found_findings = False
+
 # iterate through all folders
 for folder in folders:
     all_findings = []
@@ -28,17 +30,28 @@ for folder in folders:
         if len(result.findings) > 0:
             all_findings.extend(result.findings)
 
-    # loop through all findings and print them
-    message_text = "# " + "-" * 120 + "\n"
-    message_text += f"# Findings in {folder}\n"
-    message_text += "# " + "-" * 120 + "\n"
+    # exit the code with an error code if there are any findings
+    if len(all_findings) > 0:
+        # loop through all findings and print them
+        message_text = "# " + "-" * 120 + "\n"
+        message_text += f"# Findings in {folder}\n"
+        message_text += "# " + "-" * 120 + "\n"
 
-    for finding in all_findings:
-        # if the severity is error, print the finding in red
-        if finding.severity == "error":
-            message_text += f"# - {finding.type} ({finding.provider} provider) '{finding.asset}'\n"
+        for finding in all_findings:
+            # if the severity is error, print the finding in red
+            if finding.severity == "error":
+                message_text += f"# - {finding.type} ({finding.provider} provider) '{finding.asset}'\n"
+                # Set flag to indicate that findings were found
+                found_findings = True
 
-    print(message_text)
-    # Store file in folder
-    # filename = Path(folder, "TF_compliance_TODO.txt")
-    # write_string_to_file(string_data=message_text, file_path=filename)
+        print(message_text)
+        # Store file in folder
+        # filename = Path(folder, "TF_compliance_TODO.txt")
+        # write_string_to_file(string_data=message_text, file_path=filename)
+
+# exit the code with an error code if there are any findings
+if found_findings:
+    sys.exit(1)
+# exit the code with a success code if there are no findings
+else:
+    sys.exit(0)
