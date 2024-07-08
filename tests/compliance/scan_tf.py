@@ -6,10 +6,11 @@ import sys
 
 folder_to_scan = None
 
-# read the parameters
+# if a parameter is provided, use it as the folder to start scanning
 if len(sys.argv) > 1:
     folder_to_scan = sys.argv[1]
 else:
+    # Otherwise take the default folder defined in FOLDER_SCRIPTS
     folder_to_scan = FOLDER_SCRIPTS
 
 # get all folders
