@@ -29,7 +29,7 @@ data "btp_subaccount" "project" {
 # Assignment of emergency admins to the sub account as sub account administrators
 ###############################################################################################
 resource "btp_subaccount_role_collection_assignment" "subaccount_users" {
-  for_each             = toset(var.emergency_admins)
+  for_each             = toset("${var.emergency_admins}")
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value

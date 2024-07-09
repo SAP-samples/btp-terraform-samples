@@ -38,6 +38,13 @@ variable "region" {
   description = "The region where the project account shall be created in."
   default     = "us10"
 }
+
+variable "cf_org_name" {
+  type        = string
+  description = "The Cloud Foundry Org name from the Cloud Foundry environment instance."
+  default     = ""
+}
+
 # Cloudfoundry environment label
 variable "cf_landscape_label" {
   type        = string
@@ -54,5 +61,11 @@ variable "subaccount_admins" {
 variable "subaccount_service_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "business_process_automation_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added as administrators for the SAP Business Process Automation."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }

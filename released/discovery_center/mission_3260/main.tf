@@ -6,7 +6,7 @@ resource "random_uuid" "uuid" {}
 locals {
   random_uuid       = random_uuid.uuid.result
   subaccount_domain = lower(replace("mission-3260-${local.random_uuid}", "_", "-"))
-  subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
+  subaccount_cf_org = length(var.cf_org_name) > 0 ? var.cf_org_name : substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ resource "btp_subaccount_subscription" "bpa" {
 
 # Assign users to Role Collection: ProcessAutomationAdmin
 resource "btp_subaccount_role_collection_assignment" "bpa_admin" {
-  for_each             = toset(var.subaccount_service_admins)
+  for_each             = toset(var.business_process_automation_admins)
   subaccount_id        = btp_subaccount.dc_mission.id
   role_collection_name = "ProcessAutomationAdmin"
   user_name            = each.value
