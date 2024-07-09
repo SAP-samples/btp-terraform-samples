@@ -12,29 +12,29 @@ resource "cloudfoundry_org_role" "organization_user" {
 }
 
 resource "cloudfoundry_org_role" "organization_manager" {
-  for_each = toset("${var.cf_org_admins}")
-  username = each.value
-  type     = "organization_manager"
-  org      = var.cf_org_id
-  origin   = var.origin
+  for_each   = toset("${var.cf_org_admins}")
+  username   = each.value
+  type       = "organization_manager"
+  org        = var.cf_org_id
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 resource "cloudfoundry_org_role" "billing_managers" {
-  for_each = toset("${var.cf_org_billing_managers}")
-  username = each.value
-  type     = "organization_billing_manager"
-  org      = var.cf_org_id
-  origin   = var.origin
+  for_each   = toset("${var.cf_org_billing_managers}")
+  username   = each.value
+  type       = "organization_billing_manager"
+  org        = var.cf_org_id
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 resource "cloudfoundry_org_role" "org_auditors" {
-  for_each = toset("${var.cf_org_auditors}")
-  username = each.value
-  type     = "organization_auditor"
-  org      = var.cf_org_id
-  origin   = var.origin
+  for_each   = toset("${var.cf_org_auditors}")
+  username   = each.value
+  type       = "organization_auditor"
+  org        = var.cf_org_id
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 
@@ -50,29 +50,29 @@ resource "cloudfoundry_space" "sac_space" {
 # Assignment of Cloud Foundry org roles 
 # ------------------------------------------------------------------------------------------------------
 resource "cloudfoundry_space_role" "space_managers" {
-  for_each = toset("${var.cf_space_managers}")
-  username = each.value
-  type     = "space_manager"
-  space    = cloudfoundry_space.sac_space.id
-  origin   = var.origin
+  for_each   = toset("${var.cf_space_managers}")
+  username   = each.value
+  type       = "space_manager"
+  space      = cloudfoundry_space.sac_space.id
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 resource "cloudfoundry_space_role" "space_developers" {
-  for_each = toset("${var.cf_space_developers}")
-  username = each.value
-  type     = "space_developer"
-  space    = cloudfoundry_space.sac_space.id
-  origin   = var.origin
+  for_each   = toset("${var.cf_space_developers}")
+  username   = each.value
+  type       = "space_developer"
+  space      = cloudfoundry_space.sac_space.id
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 
 resource "cloudfoundry_space_role" "space_auditors" {
-  for_each = toset("${var.cf_space_auditors}")
-  username = each.value
-  type     = "space_auditor"
-  space    = cloudfoundry_space.sac_space.id
-  origin   = var.origin
+  for_each   = toset("${var.cf_space_auditors}")
+  username   = each.value
+  type       = "space_auditor"
+  space      = cloudfoundry_space.sac_space.id
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 

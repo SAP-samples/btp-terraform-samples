@@ -1,21 +1,24 @@
-# Sample Setup of an SAP Task Center on SAP BTP - Step 1
+# Discovery Center mission - Get started with Extended Planning and Analysis (xP&A)
 
 ## Overview
 
-This directory contains the setup of SAP Task Center from scratch namely a new subaccount including the relevant entitlements, a Cloud Foundry environment and a Cloud Foundry space. 
+This sample shows how to set up your SAP BTP account for the Discovery Center Mission - [Get started with Extended Planning and Analysis (xP&A)](https://discovery-center.cloud.sap/missiondetail/3488/)
 
-This directory contains the configuration the first step of the setup namely:
+## Content of setup
 
-- a new subaccount
-- the entitlements for SAP Task Center
-- the subscription for SAP Build Workzone, standard edition
-- the Cloud Foundry environment
-- The trust setup to the custom IdP
-- Assignment of users to the role collections
+The setup comprises the following resources:
+
+- Creation of the SAP BTP subaccount
+- Enablement of Cloudfoundry Environment - [see available regions and endpoints](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-available-for-cloud-foundry-environment)
+- Entitlements of services
+- Subscriptions to applications
+- Role collection assignments to users
 
 ## Deploying the resources
 
-To deploy the resources of step 1 execute the following commands:
+Make sure that you are familiar with SAP BTP and know both the [Get Started with btp-terraform-samples](https://github.com/SAP-samples/btp-terraform-samples/blob/main/GET_STARTED.md) and the [Get Started with the Terraform Provider for BTP](https://developers.sap.com/tutorials/btp-terraform-get-started.html)
+
+To deploy the resources execute the following commands:
 
 1. Initialize your workspace:
 
