@@ -81,15 +81,6 @@ variable "custom_idp" {
   default     = ""
 }
 
-# variable "origin" {
-#   type        = string
-#   description = "Defines the origin key of the identity provider"
-#   default     = "sap.ids"
-#   # The value for the origin_key can be defined
-#   # but are normally set to "sap.ids", "sap.default" or "sap.custom"
-# }
-
-
 variable "create_tfvars_file_for_step2" {
   type        = bool
   description = "Switch to enable the creation of the tfvars file for step 2."
@@ -147,5 +138,84 @@ variable "target_ai_core_model" {
       if contains(["gpt-35-turbo", "gpt-35-turbo-0125", "gpt-35-turbo-16k", "gpt-4", "gpt-4-32k", "text-embedding-ada-002", "gemini-1.0-pro", "text-bison", "chat-bison", "textembedding-gecko-multilingual", "textembedding-gecko", "tiiuae--falcon-40b-instruct"], o)
     ]) == length(var.target_ai_core_model)
     error_message = "Please enter a valid entry for the target_ai_core_model of the AI Core service. Valid values are: gpt-35-turbo, gpt-35-turbo-16k, gpt-4, gpt-4-32k, text-embedding-ada-002, tiiuae--falcon-40b-instruct."
+  }
+}
+
+variable "cf_api_url" {
+  type = string
+}
+
+variable "cf_landscape_label" {
+  type = string
+}
+
+variable "cf_org_id" {
+  type = string
+}
+
+variable "subaccount_id" {
+  type = string
+}
+
+variable "cf_space_developers" {
+  type        = list(string)
+  description = "CF Space developers"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  # add validation to check if CF Space developers contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developers)
+    error_message = "Please enter a valid email address for the CF Space developers."
+  }
+}
+
+variable "cf_space_managers" {
+  type        = list(string)
+  description = "CF Space managers"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  # add validation to check if CF Space managers contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_space_managers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_managers)
+    error_message = "Please enter a valid email address for the Cloud Connector Administrators."
+  }
+}
+
+variable "cf_org_admins" {
+  type        = list(string)
+  description = "CF Org Admins"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  # add validation to check if CF Org Admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
+    error_message = "Please enter a valid email address for the CF Org Admins."
+  }
+}
+
+variable "cf_org_users" {
+  type        = list(string)
+  description = "CF Org Users"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  # add validation to check if CF Org Users contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cf_org_users : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_users)
+    error_message = "Please enter a valid email address for the CF Org Users."
+  }
+}
+
+variable "origin" {
+  type        = string
+  description = "Defines the origin key of the identity provider"
+  default     = "sap.ids"
+  # The value for the origin_key can be defined
+  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
+}
+
+variable "cf_org_name" {
+  type        = string
+  description = "Name of the Cloud Foundry org."
+  default     = "mission-3774-sap-task-center"
+
+  validation {
+    condition     = can(regex("^.{1,255}$", var.cf_org_name))
+    error_message = "The Cloud Foundry org name must not be emtpy and not exceed 255 characters."
   }
 }

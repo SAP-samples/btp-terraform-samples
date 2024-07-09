@@ -1,17 +1,17 @@
 variable "cf_api_url" {
-    type = string
+  type = string
 }
 
 variable "cf_landscape_label" {
-    type = string
+  type = string
 }
 
 variable "cf_org_id" {
-    type = string
+  type = string
 }
 
 variable "subaccount_id" {
-    type = string
+  type = string
 }
 
 variable "cf_space_developers" {

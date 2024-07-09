@@ -2,8 +2,8 @@
 # Create space using CF provider
 ######################################################################
 resource "cloudfoundry_space" "dev" {
-  name      = "DEV"
-  org       = var.cf_org_id
+  name = "DEV"
+  org  = var.cf_org_id
 }
 
 ######################################################################
@@ -31,7 +31,7 @@ resource "cloudfoundry_space_role" "space_developer" {
   type     = "space_developer"
   space    = cloudfoundry_space.dev.id
   # origin    = var.origin
-  depends_on = [ cloudfoundry_org_role.organization_user, cloudfoundry_org_role.organization_manager ]
+  depends_on = [cloudfoundry_org_role.organization_user, cloudfoundry_org_role.organization_manager]
 }
 
 resource "cloudfoundry_space_role" "space_manager" {
@@ -40,5 +40,5 @@ resource "cloudfoundry_space_role" "space_manager" {
   type     = "space_manager"
   space    = cloudfoundry_space.dev.id
   # origin    = var.origin
-  depends_on = [ cloudfoundry_org_role.organization_user, cloudfoundry_org_role.organization_manager ]
+  depends_on = [cloudfoundry_org_role.organization_user, cloudfoundry_org_role.organization_manager]
 }

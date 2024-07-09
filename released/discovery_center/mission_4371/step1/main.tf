@@ -4,8 +4,8 @@
 resource "random_uuid" "uuid" {}
 
 locals {
-  random_uuid       = random_uuid.uuid.result
-  subaccount_domain = lower(replace("mission-4371-${local.random_uuid}", "_", "-"))
+  random_uuid               = random_uuid.uuid.result
+  subaccount_domain         = lower(replace("mission-4371-${local.random_uuid}", "_", "-"))
   project_subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 # ------------------------------------------------------------------------------------------------------
