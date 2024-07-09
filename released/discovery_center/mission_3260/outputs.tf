@@ -4,6 +4,6 @@ output "subaccount_id" {
 }
 
 output "org_id" {
-  value       = btp_subaccount_environment_instance.cloudfoundry
+  value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]
   description = "The Cloudfoundry org ID."
 }

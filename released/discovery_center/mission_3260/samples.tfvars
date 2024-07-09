@@ -2,9 +2,9 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount      = "youraccount"
-region             = "us10"
-subaccount_name    = "Discovery Center mission 3260 - build Events-to-Business actions"
+globalaccount   = "youraccount"
+region          = "us10"
+subaccount_name = "Discovery Center mission 3260 - build Events-to-Business actions"
 #cf_landscape_label = "cf-us10"
 #custom_idp         = "xxxx"
 
