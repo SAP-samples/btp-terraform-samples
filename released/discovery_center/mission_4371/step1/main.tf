@@ -6,6 +6,7 @@ resource "random_uuid" "uuid" {}
 locals {
   random_uuid       = random_uuid.uuid.result
   subaccount_domain = lower(replace("mission-4371-${local.random_uuid}", "_", "-"))
+  project_subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
@@ -14,16 +15,7 @@ resource "btp_subaccount" "dc_mission" {
   name      = var.subaccount_name
   subdomain = local.subaccount_domain
   region    = lower(var.region)
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Assign custom IDP to sub account (if custom_idp is set)
-# ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_trust_configuration" "fully_customized" {
-  # Only create trust configuration if custom_idp has been set 
-  count             = var.custom_idp == "" ? 0 : 1
-  subaccount_id     = btp_subaccount.dc_mission.id
-  identity_provider = var.custom_idp
+  usage     = "USED_FOR_PRODUCTION"
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -166,3 +158,4 @@ resource "btp_subaccount_service_binding" "hana_cloud" {
   service_instance_id = btp_subaccount_service_instance.hana_cloud.id
   name                = "hana-cloud-key"
 }
+
