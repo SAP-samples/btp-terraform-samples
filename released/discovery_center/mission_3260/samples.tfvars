@@ -11,6 +11,6 @@ subaccount_name = "Discovery Center mission 3260 - build Events-to-Business acti
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
-subaccount_admins         = ["another.user@test.com"]
-subaccount_service_admins = ["another.user@test.com"]
-business_process_automation_admins = = ["another.user@test.com", "you@test.com"]
+subaccount_admins                  = ["another.user@test.com"]
+subaccount_service_admins          = ["another.user@test.com"]
+business_process_automation_admins = ["another.user@test.com", "you@test.com"]

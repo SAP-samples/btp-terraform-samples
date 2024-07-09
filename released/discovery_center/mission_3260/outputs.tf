@@ -9,6 +9,6 @@ output "cf_org_id" {
 }
 
 output "bpa_url" {
-  value = btp_subaccount_subscription.bpa.subscription_url
+  value       = btp_subaccount_subscription.bpa.subscription_url
   description = "Subscription URL for SAP Business Process Automation"
 }
