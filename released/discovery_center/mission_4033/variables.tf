@@ -13,6 +13,13 @@ variable "subaccount_name" {
   description = "The subaccount name."
   default     = "DC Mission 4033 - Create simple, connected digital experiences with API-based integration"
 }
+
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
+}
+
 # Region
 variable "region" {
   type        = string
@@ -24,22 +31,48 @@ variable "region" {
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
+  default     = "https://cli.btp.cloud.sap"
 }
 
 variable "subaccount_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  description = "Defines the colleagues who are added to each subaccount as Subaccount administrators."
 }
 
 variable "subaccount_service_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  description = "Defines the colleagues who are added to each subaccount as Subaccount service administrators."
 }
 
+variable "service_plan__sap_build_apps" {
+  type        = string
+  description = "The plan for SAP Build Apps subscription"
+  default     = "free"
+  validation {
+    condition     = contains(["free", "standard", "partner"], var.service_plan__sap_build_apps)
+    error_message = "Invalid value for service_plan__sap_build_apps. Only 'free', 'standard' and 'partner' are allowed."
+  }
+}
 
+variable "service_plan__sap_process_automation" {
+  type        = string
+  description = "The plan for SAP Build Process Automation"
+  default     = "standard"
+  validation {
+    condition     = contains(["standard", "advanced-user"], var.service_plan__sap_process_automation)
+    error_message = "Invalid value for service_plan__sap_process_automation. Only 'standard' and 'advanced-user' are allowed."
+  }
+}
+
+variable "service_plan__sap_integration_suite" {
+  type        = string
+  description = "The plan for SAP Integration Suite"
+  default     = "enterprise_agreement"
+  validation {
+    condition     = contains(["enterprise_agreement"], var.service_plan__sap_integration_suite)
+    error_message = "Invalid value for service_plan__sap_integration_suite. Only 'enterprise_agreement' are allowed."
+  }
+}
 
 ###
 # Entitlements
@@ -61,21 +94,6 @@ variable "entitlements" {
       service_name = "xsuaa"
       plan_name    = "application",
       type         = "service"
-    },
-    {
-      service_name = "integrationsuite"
-      plan_name    = "enterprise_agreement",
-      type         = "app"
-    },
-    {
-      service_name = "sap-build-apps"
-      plan_name    = "standard"
-      type         = "service"
-    },
-    {
-      service_name = "process-automation"
-      plan_name    = "standard",
-      type         = "app"
     },
     {
       service_name = "process-automation-service"
@@ -106,16 +124,27 @@ variable "kyma_instance" { type = object({
   deletetimeout   = string
 }) }
 
-variable "conn_dest_admin" {
+variable "conn_dest_admins" {
   type        = list(string)
   description = "Connectivity and Destination Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.conn_dest_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.conn_dest_admins)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
 
-variable "int_provisioner" {
+variable "int_provisioners" {
   type        = list(string)
   description = "Integration Provisioner"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.int_provisioners : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.int_provisioners)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
+
 }
 
 variable "custom_idp" {
@@ -129,56 +158,80 @@ variable "custom_idp" {
   }
 }
 
-variable "users_BuildAppsAdmin" {
+variable "users_buildApps_admins" {
   type        = list(string)
   description = "Defines the colleagues who have the role of 'BuildAppsAdmin' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.users_buildApps_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.users_buildApps_admins)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
 
-variable "users_BuildAppsDeveloper" {
+variable "users_buildApps_developers" {
   type        = list(string)
   description = "Defines the colleagues who have the role of 'BuildAppsDeveloper' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.users_buildApps_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.users_buildApps_developers)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
 
-variable "users_RegistryAdmin" {
+variable "users_registry_admins" {
   type        = list(string)
   description = "Defines the colleagues who have the role of 'RegistryAdmin' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.users_registry_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.users_registry_admins)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
 
-variable "users_RegistryDeveloper" {
+variable "users_registry_developers" {
   type        = list(string)
   description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.users_registry_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.users_registry_developers)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
 
-variable "ProcessAutomationAdmin" {
+variable "process_automation_admins" {
   type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationAdmin in SAP Build Process Automation"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.process_automation_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_admins)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
 
-variable "ProcessAutomationDeveloper" {
+variable "process_automation_developers" {
   type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationDeveloper in SAP Build Process Automation"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.process_automation_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_developers)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
 
-variable "ProcessAutomationParticipant" {
+variable "process_automation_participants" {
   type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationParticipant in SAP Build Process Automation"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
 
-variable "username" {
-  description = "BTP username"
-  type        = string
-  sensitive   = false
-}
-
-variable "password" {
-  description = "BTP user password"
-  type        = string
-  sensitive   = true
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.process_automation_participants : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_participants)
+    error_message = "Please enter a valid email address for the CF space managers."
+  }
 }
