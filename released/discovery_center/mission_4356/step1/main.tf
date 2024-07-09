@@ -13,9 +13,16 @@ locals {
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
+  count = var.subaccount_id == "" ? 1 : 0
+
   name      = var.subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
+  usage     = "USED_FOR_PRODUCTION"
+}
+
+data "btp_subaccount" "project" {
+  id = var.subaccount_id != "" ? var.subaccount_id : btp_subaccount.project[0].id
 }
 
 ###############################################################################################
@@ -23,7 +30,7 @@ resource "btp_subaccount" "project" {
 ###############################################################################################
 resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
   for_each             = toset("${var.subaccount_admins}")
-  subaccount_id        = btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
 }
@@ -33,102 +40,137 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
 ###############################################################################################
 resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins" {
   for_each             = toset("${var.subaccount_service_admins}")
-  subaccount_id        = btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
 }
 
 ######################################################################
+# Extract list of CF landscape labels from environments
+######################################################################
+data "btp_subaccount_environments" "all" {
+  subaccount_id = data.btp_subaccount.project.id
+}
+
+locals {
+  cf_landscape_labels = [
+    for env in data.btp_subaccount_environments.all.values : env.landscape_label
+    if env.environment_type == "cloudfoundry"
+  ]
+}
+
+
+######################################################################
 # Creation of Cloud Foundry environment
 ######################################################################
-resource "btp_subaccount_environment_instance" "cf" {
-  subaccount_id    = btp_subaccount.project.id
-  name             = local.project_subaccount_cf_org
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
+  subaccount_id    = data.btp_subaccount.project.id
+  name             = var.cf_org_name
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  = var.cf_environment_label
+  landscape_label  = local.cf_landscape_labels[0]
   parameters = jsonencode({
     instance_name = local.project_subaccount_cf_org
   })
 }
 
 ######################################################################
-# Entitlement of all services
+# Entitlement of all general services
 ######################################################################
-resource "btp_subaccount_entitlement" "name" {
+resource "btp_subaccount_entitlement" "genentitlements" {
   for_each = {
     for index, entitlement in var.entitlements :
     index => entitlement
   }
-  subaccount_id = btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.project.id
   service_name  = each.value.service_name
   plan_name     = each.value.plan_name
 }
 
 ######################################################################
-# Create app subscriptions
+# Create app subscription to SAP Integration Suite
 ######################################################################
-data "btp_subaccount_subscriptions" "all" {
-  subaccount_id = btp_subaccount.project.id
-  depends_on    = [btp_subaccount_entitlement.name]
+resource "btp_subaccount_entitlement" "sap_integration_suite" {
+  subaccount_id = data.btp_subaccount.project.id
+  service_name  = local.service_name__sap_integration_suite
+  plan_name     = var.service_plan__sap_integration_suite
 }
 
-resource "btp_subaccount_subscription" "app" {
-  subaccount_id = btp_subaccount.project.id
-  for_each = {
-    for index, entitlement in var.entitlements :
-    index => entitlement if contains(["app"], entitlement.type)
-  }
+data "btp_subaccount_subscriptions" "all" {
+  subaccount_id = data.btp_subaccount.project.id
+  depends_on    = [btp_subaccount_entitlement.sap_integration_suite]
+}
+
+resource "btp_subaccount_subscription" "sap_integration_suite" {
+  subaccount_id = data.btp_subaccount.project.id
   app_name = [
     for subscription in data.btp_subaccount_subscriptions.all.values :
     subscription
-    if subscription.commercial_app_name == each.value.service_name
+    if subscription.commercial_app_name == local.service_name__sap_integration_suite
   ][0].app_name
-  plan_name  = each.value.plan_name
+  plan_name  = var.service_plan__sap_integration_suite
   depends_on = [data.btp_subaccount_subscriptions.all]
+}
+
+resource "btp_subaccount_role_collection_assignment" "int_prov" {
+  depends_on           = [btp_subaccount_subscription.sap_integration_suite]
+  for_each             = toset(var.int_provisioner)
+  subaccount_id        = data.btp_subaccount.project.id
+  role_collection_name = "Integration_Provisioner"
+  user_name            = each.value
+}
+
+# ######################################################################
+# # Create app subscription to SAP Business APplication Studio
+# ######################################################################
+
+resource "btp_subaccount_entitlement" "bas" {
+  subaccount_id = data.btp_subaccount.project.id
+  service_name  = local.service__sap_business_app_studio
+  plan_name     = var.service_plan__sap_business_app_studio
+}
+
+# Create app subscription to busineass applicaiton stuido
+resource "btp_subaccount_subscription" "bas" {
+  subaccount_id = data.btp_subaccount.project.id
+  app_name      = local.service__sap_business_app_studio
+  plan_name     = var.service_plan__sap_business_app_studio
+  depends_on    = [btp_subaccount_entitlement.bas]
+}
+
+resource "btp_subaccount_role_collection_assignment" "bas_dev" {
+  depends_on           = [btp_subaccount_subscription.bas]
+  for_each             = toset(var.appstudio_developers)
+  subaccount_id        = data.btp_subaccount.project.id
+  role_collection_name = "Business_Application_Studio_Developer"
+  user_name            = each.value
+}
+
+resource "btp_subaccount_role_collection_assignment" "bas_admn" {
+  depends_on           = [btp_subaccount_subscription.bas]
+  for_each             = toset(var.appstudio_admin)
+  subaccount_id        = data.btp_subaccount.project.id
+  role_collection_name = "Business_Application_Studio_Administrator"
+  user_name            = each.value
 }
 
 ######################################################################
 # Assign Role Collection
 ######################################################################
 
-resource "btp_subaccount_role_collection_assignment" "bas_dev" {
-  depends_on           = [btp_subaccount_subscription.app]
-  for_each             = toset(var.appstudio_developers)
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Business_Application_Studio_Developer"
-  user_name            = each.value
-}
-
-resource "btp_subaccount_role_collection_assignment" "bas_admn" {
-  depends_on           = [btp_subaccount_subscription.app]
-  for_each             = toset(var.appstudio_admin)
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Business_Application_Studio_Administrator"
-  user_name            = each.value
-}
-
 resource "btp_subaccount_role_collection_assignment" "cloud_conn_admn" {
-  depends_on           = [btp_subaccount_subscription.app]
+  depends_on           = [btp_subaccount_entitlement.genentitlements]
   for_each             = toset(var.cloudconnector_admin)
-  subaccount_id        = btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Cloud Connector Administrator"
   user_name            = each.value
 }
 
 resource "btp_subaccount_role_collection_assignment" "conn_dest_admn" {
-  depends_on           = [btp_subaccount_subscription.app]
+  depends_on           = [btp_subaccount_entitlement.genentitlements]
   for_each             = toset(var.conn_dest_admin)
-  subaccount_id        = btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Connectivity and Destination Administrator"
-  user_name            = each.value
-}
-
-resource "btp_subaccount_role_collection_assignment" "int_prov" {
-  depends_on           = [btp_subaccount_subscription.app]
-  for_each             = toset(var.int_provisioner)
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Integration_Provisioner"
   user_name            = each.value
 }

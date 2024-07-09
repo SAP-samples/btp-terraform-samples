@@ -1,8 +1,8 @@
-# Discovery Center Mission: Discovery Center mission - Deliver Connected Experiences with a single view of Material Availability
+# Discovery Center Mission: Enhance core ERP business processes with resilient applications on SAP BTP (3501)
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission - [Deliver Connected Experiences with a single view of Material Availability](https://discovery-center.cloud.sap/missiondetail/4356/)
+This sample shows how to create a landscape for the Discovery Center Mission - [Enhance core ERP business processes with resilient applications on SAP BTP](https://discovery-center.cloud.sap/missiondetail/3501/)
 
 ## Content of setup
 
@@ -30,4 +30,3 @@ To deploy the resources you must:
 4. Verify e.g., in BTP cockpit that a new subaccount with a integration suite, SAP Business Application Studio, CF environment instance and a CF space have been created.
 
 5. Clean up by running the destroy.sh script.
-
