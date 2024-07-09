@@ -1,8 +1,9 @@
 from libs.model.provider import TF_provider as ProviderDefinition
 from dataclasses import dataclass
-from libs.constants.variables import BTP_PROVIDER_MANDATORY_VARIABLES, BTP_PROVIDER_MANDATORY_RESOURCES, QAS_STEP1_BTP_PROVIDER_MANDATORY_VARIABLES, QAS_STEP2_BTP_PROVIDER_MANDATORY_VARIABLES
-from libs.constants.variables import CF_PROVIDER_MANDATORY_VARIABLES, CF_PROVIDER_MANDATORY_RESOURCES, QAS_STEP1_CF_PROVIDER_MANDATORY_VARIABLES, QAS_STEP2_CF_PROVIDER_MANDATORY_VARIABLES
 from libs.model.finding import Finding
+from libs.constants.variables import BTP_PROVIDER_MANDATORY_VARIABLES, QAS_STEP1_BTP_PROVIDER_MANDATORY_VARIABLES, QAS_STEP2_BTP_PROVIDER_MANDATORY_VARIABLES, CF_PROVIDER_MANDATORY_VARIABLES, QAS_STEP1_CF_PROVIDER_MANDATORY_VARIABLES, QAS_STEP2_CF_PROVIDER_MANDATORY_VARIABLES
+from libs.constants.resources import BTP_PROVIDER_MANDATORY_RESOURCES, CF_PROVIDER_MANDATORY_RESOURCES
+from libs.constants.outputs import QAS_STEP1_BTP_PROVIDER_MANDATORY_OUTPUTS
 
 
 @dataclass
@@ -11,14 +12,15 @@ class TF_Provider(ProviderDefinition):
     def __init__(self, folder, provider, tf_definitions):
         super().__init__(folder, tf_definitions)
 
-        self.mandatory_variables, self.mandatory_resources = determine_variables_and_resources(
+        self.folder = folder
+        self.mandatory_variables, self.mandatory_resources, self.mandatory_outputs = determine_variables_and_resources(
             folder=folder, provider=provider)
 
         # only execute if the provider is btp or cloudfoundry
         if provider in ["btp", "cloudfoundry"]:
             self._check_variables_mandatory(provider, tf_definitions)
             self._check_resources_mandatory(provider, tf_definitions)
-            self.folder = folder
+            self._check_outputs_mandatory(provider, tf_definitions)
         else:
             self = None
 
@@ -47,11 +49,25 @@ class TF_Provider(ProviderDefinition):
                                       severity="error")
                     self.findings.append(finding)
 
+    def _check_outputs_mandatory(self, provider, tf_definitions):
+
+        if self.mandatory_outputs:
+            for output in self.mandatory_outputs:
+                # check if the outputs are in the tf_definitions["outputs"]
+                if output not in tf_definitions["outputs"]:
+                    finding = Finding(provider=provider,
+                                      folder=self.folder,
+                                      asset=output,
+                                      type="output not defined",
+                                      severity="error")
+                    self.findings.append(finding)
+
 
 def determine_variables_and_resources(folder, provider):
 
     variables = None
     resources = None
+    outputs = None
 
     qas_two_step_approach = None
 
@@ -64,26 +80,27 @@ def determine_variables_and_resources(folder, provider):
         if qas_two_step_approach is None:
             variables = BTP_PROVIDER_MANDATORY_VARIABLES
             resources = BTP_PROVIDER_MANDATORY_RESOURCES
-            return variables, resources
+            return variables, resources, outputs
         else:
             if qas_two_step_approach == "step1":
                 variables = QAS_STEP1_BTP_PROVIDER_MANDATORY_VARIABLES
-                return variables, resources
+                outputs = QAS_STEP1_BTP_PROVIDER_MANDATORY_OUTPUTS
+                return variables, resources, outputs
             if qas_two_step_approach == "step2":
                 variables = QAS_STEP2_BTP_PROVIDER_MANDATORY_VARIABLES
-                return variables, resources
+                return variables, resources, outputs
 
     if provider == "cloudfoundry":
         if qas_two_step_approach is None:
             variables = CF_PROVIDER_MANDATORY_VARIABLES
             resources = CF_PROVIDER_MANDATORY_RESOURCES
-            return variables, resources
+            return variables, resources, outputs
         else:
             if qas_two_step_approach == "step1":
                 variables = QAS_STEP1_CF_PROVIDER_MANDATORY_VARIABLES
-                return variables, resources
+                return variables, resources, outputs
             if qas_two_step_approach == "step2":
                 variables = QAS_STEP2_CF_PROVIDER_MANDATORY_VARIABLES
-                return variables, resources
+                return variables, resources, outputs
 
-    return None, None
+    return None, None, None
