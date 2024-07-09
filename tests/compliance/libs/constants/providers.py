@@ -1,0 +1,2 @@
+PROVIDER_BTP = "btp"
+PROVIDER_CLOUDFOUNDRY = "cloudfoundry"
