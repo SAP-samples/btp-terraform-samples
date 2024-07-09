@@ -13,6 +13,13 @@ variable "subaccount_name" {
   description = "The subaccount name."
   default     = "UC - Build resilient BTP Apps"
 }
+
+variable "custom_idp" {
+  type        = string
+  description = "Defines the custom IdP"
+  default     = ""
+}
+
 # Region
 variable "region" {
   type        = string
@@ -20,10 +27,10 @@ variable "region" {
   default     = "us10"
 }
 # Cloudfoundry environment label
-variable "cf_environment_label" {
+variable "cf_landscape_label" {
   type        = string
-  description = "The Cloudfoundry environment label"
-  default     = "cf-us10"
+  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
+  default     = ""
 }
 
 variable "subaccount_admins" {
