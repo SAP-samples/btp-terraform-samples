@@ -14,6 +14,18 @@ variable "subaccount_name" {
   default     = "UC - Build resilient BTP Apps"
 }
 
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
+}
+
+variable "cli_server_url" {
+  type        = string
+  description = "Defines the CLI server URL"
+  default     = "https://cli.btp.cloud.sap"
+}
+
 variable "custom_idp" {
   type        = string
   description = "Defines the custom IdP"
