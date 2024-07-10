@@ -17,23 +17,45 @@ This script simplifies the majority of tasks in the [Discovery Center Mission](h
 
 ## Execution
 
-1. Copy the `samples.tfvars` to a file called `terraform.tfvars` and fill in the values for the variables. 
-2. To authenticate and enable interaction with your BTP environments, ensure you set the necessary environment variables BTP_USERNAME and BTP_PASSWORD
+1. Set the environment variables BTP_USERNAME and BTP_PASSWORD to pass credentials to the BTP provider to authenticate and interact with your BTP environments. 
 
     ```bash
     Mac & Linux 
         export BTP_USERNAME=<your_username>
         export BTP_PASSWORD=<your_password>
-        export CF_USER=<your_username>
-        export CF_PASSWORD=<your_password>
 
     Windows(PS) 
         $env:BTP_USERNAME=<your_username>
         $env:BTP_PASSWORD=<your_password>
-        $env:CF_USER=<your_username>
-        $env:CF_PASSWORD=<your_password>
     ```
 
-3. Execute a `terraform init` to initialize the terraform providers and modules.
-4. Execute a `terraform plan` to see what resources will be created.
-5. Execute a `terraform apply` to create the resources.
+2. Change the variables in the `samples.tfvars` file to meet your requirements
+
+   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
+
+
+3. Initialize your workspace:
+
+   ```bash
+   terraform init
+   ```
+
+4. You can check what Terraform plans to apply based on your configuration:
+
+   ```bash
+   terraform plan -var-file="samples.tfvars"
+   ```
+
+5. Apply your configuration to provision the resources:
+
+   ```bash
+   terraform apply -var-file="samples.tfvars"
+   ```
+
+## In the end
+
+You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
+
+```bash
+terraform destroy
+```
