@@ -141,20 +141,22 @@ variable "target_ai_core_model" {
   }
 }
 
-variable "cf_api_url" {
-  type = string
-}
-
 variable "cf_landscape_label" {
-  type = string
+  type        = string
+  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
+  default     = ""
 }
 
-variable "cf_org_id" {
-  type = string
-}
 
-variable "subaccount_id" {
-  type = string
+variable "cf_space_name" {
+  type        = string
+  description = "Name of the Cloud Foundry space."
+  default     = "dev"
+
+  validation {
+    condition     = can(regex("^.{1,255}$", var.cf_space_name))
+    error_message = "The Cloud Foundry space name must not be emtpy and not exceed 255 characters."
+  }
 }
 
 variable "cf_space_developers" {

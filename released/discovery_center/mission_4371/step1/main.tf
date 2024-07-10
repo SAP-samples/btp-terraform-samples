@@ -1,12 +1,13 @@
 # ------------------------------------------------------------------------------------------------------
-# Setup subaccount domain (to ensure uniqueness in BTP global account)
+# Setup of names in accordance to naming convention
 # ------------------------------------------------------------------------------------------------------
 resource "random_uuid" "uuid" {}
 
 locals {
-  random_uuid               = random_uuid.uuid.result
-  subaccount_domain         = lower(replace("mission-4371-${local.random_uuid}", "_", "-"))
-  project_subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
+  random_uuid       = random_uuid.uuid.result
+  subaccount_domain = lower(replace("mission-4356-${local.random_uuid}", "_", "-"))
+  # If a cf_org_name was defined by the user, take that as a subaccount_cf_org. Otherwise create it.
+  subaccount_cf_org = length(var.cf_org_name) > 0 ? var.cf_org_name : substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
@@ -159,3 +160,52 @@ resource "btp_subaccount_service_binding" "hana_cloud" {
   name                = "hana-cloud-key"
 }
 
+
+
+# ------------------------------------------------------------------------------------------------------
+# CLOUDFOUNDRY PREPARATION
+# ------------------------------------------------------------------------------------------------------
+#
+# Fetch all available environments for the subaccount
+data "btp_subaccount_environments" "all" {
+  subaccount_id = btp_subaccount.dc_mission.id
+}
+# ------------------------------------------------------------------------------------------------------
+# Take the landscape label from the first CF environment if no environment label is provided
+# (this replaces the previous null_resource)
+# ------------------------------------------------------------------------------------------------------
+resource "terraform_data" "replacement" {
+  input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+}
+# ------------------------------------------------------------------------------------------------------
+# Creation of Cloud Foundry environment
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
+  subaccount_id    = btp_subaccount.dc_mission.id
+  name             = local.subaccount_cf_org
+  environment_type = "cloudfoundry"
+  service_name     = "cloudfoundry"
+  plan_name        = "standard"
+  landscape_label  = terraform_data.replacement.output
+  parameters = jsonencode({
+    instance_name = local.subaccount_cf_org
+  })
+}
+# ------------------------------------------------------------------------------------------------------
+# Create tfvars file for step 2 (if variable `create_tfvars_file_for_step2` is set to true)
+# ------------------------------------------------------------------------------------------------------
+resource "local_file" "output_vars_step1" {
+  count    = var.create_tfvars_file_for_step2 ? 1 : 0
+  content  = <<-EOT
+      subaccount_id        = "${btp_subaccount.dc_mission.id}"
+      cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
+      cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
+      origin               = "${var.origin}"
+      cf_space_name        = "${var.cf_space_name}"
+      cf_org_admins        = ${jsonencode(var.cf_org_admins)}
+      cf_org_users         = ${jsonencode(var.cf_org_users)}
+      cf_space_developers  = ${jsonencode(var.cf_space_developers)}
+      cf_space_managers    = ${jsonencode(var.cf_space_managers)}
+      EOT
+  filename = "../step2/terraform.tfvars"
+}

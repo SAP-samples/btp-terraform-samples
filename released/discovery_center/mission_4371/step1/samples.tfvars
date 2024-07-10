@@ -5,24 +5,21 @@
 globalaccount   = "yourglobalaccount"
 region          = "us10"
 subaccount_name = "SAP Discovery Center Mission 4371"
-cf_org_name     = "cf-environment"
+custom_idp      = "sap.ids"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
 
-subaccount_admins         = ["john.doe@sap.com"]
-subaccount_service_admins = ["john.doe@sap.com"]
-hana_cloud_admins         = ["john.doe@sap.com"]
+# Don't add the user, that is executing the TF script to subaccount_admins or subaccount_service_admins!
+subaccount_admins         = ["another.user@test.com"]
+subaccount_service_admins = ["another.user@test.com"]
 
-custom_idp = "sap.ids"
+hana_cloud_admins         = ["another.user@test.com"]
+hana_system_password      = "Abc12345"
 
-hana_system_password = "Abc12345"
-
-cf_space_developers = ["john.doe@sap.com"]
-cf_space_managers   = ["john.doe@sap.com"]
-cf_org_admins       = ["john.doe@sap.com"]
-cf_org_users        = ["john.doe@sap.com"]
-
-event_mesh_admins     = ["john.doe@sap.com"]
-event_mesh_developers = ["john.doe@sap.com"]
+# Don't add the user, that is executing the TF script to cf_org_admins or cf_org_users!
+cf_org_admins       = ["another.user@test.com"]
+cf_org_users        = ["another.user@test.com"]
+cf_space_managers   = ["another.user@test.com", "you@test.com"]
+cf_space_developers = ["another.user@test.com", "you@test.com"]
