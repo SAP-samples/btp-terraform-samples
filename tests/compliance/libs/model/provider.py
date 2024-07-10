@@ -15,8 +15,8 @@ class TF_provider:
         forbidden_variables (list): A list of forbidden variables.
         required_resources (list): A list of required resources.
         forbidden_resources (list): A list of forbidden resources.
-        required_provider (str): The required provider.
-        required_version (str): The required version.
+        required_provider_source (str): The required provider source.
+        required_provider_version (str): The required persion version.
         findings (list[Finding]): A list of findings.
     """
     folder: Path
@@ -25,6 +25,6 @@ class TF_provider:
     forbidden_variables: list = field(default_factory=list)
     required_resources: list = field(default_factory=list)
     forbidden_resources: list = field(default_factory=list)
-    required_provider: str = None
-    required_version: str = None
+    required_provider_source: str = None
+    required_provider_version: str = None
     findings: list[Finding] = field(default_factory=list)
