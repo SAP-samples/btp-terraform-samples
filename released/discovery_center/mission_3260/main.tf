@@ -115,9 +115,9 @@ resource "btp_subaccount_role_collection_assignment" "sbpa_participants" {
 }
 
 resource "btp_subaccount_role_collection_assignment" "sbpa_developers" {
-  depends_on    = [btp_subaccount_subscription.build_process_automation]
-  for_each      = toset(var.process_automation_developers)
-  subaccount_id = data.btp_subaccount.dc_mission.id
+  depends_on           = [btp_subaccount_subscription.build_process_automation]
+  for_each             = toset(var.process_automation_developers)
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "ProcessAutomationDeveloper"
   user_name            = each.value
 }
