@@ -1,53 +1,62 @@
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Setup of names in accordance to naming convention
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 resource "random_uuid" "uuid" {}
 
 locals {
-  random_uuid               = random_uuid.uuid.result
-  project_subaccount_domain = "teched23-tf-sap-ms-${local.random_uuid}"
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
+  random_uuid       = random_uuid.uuid.result
+  subaccount_domain = lower(replace("mission-4038-${local.random_uuid}", "_", "-"))
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
-###############################################################################################
-resource "btp_subaccount" "project" {
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount" "dc_mission" {
+  count     = var.subaccount_id == "" ? 1 : 0
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
+  subdomain = local.subaccount_domain
   region    = lower(var.region)
+  usage     = "USED_FOR_PRODUCTION"
 }
 
-###############################################################################################
+data "btp_subaccount" "dc_mission" {
+  id = var.subaccount_id != "" ? var.subaccount_id : btp_subaccount.dc_mission[0].id
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Assign custom IDP to sub account (if custom_idp is set)
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_trust_configuration" "fully_customized" {
+  # Only create trust configuration if custom_idp has been set 
+  count             = var.custom_idp == "" ? 0 : 1
+  subaccount_id     = data.btp_subaccount.dc_mission.id
+  identity_provider = var.custom_idp
+}
+
+
+# ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account administrators
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
-  for_each             = toset("${var.subaccount_admins}")
+  for_each             = toset(var.subaccount_admins)
   subaccount_id        = btp_subaccount.project.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
 }
 
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account service administrators
-###############################################################################################
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins" {
-  for_each             = toset("${var.subaccount_service_admins}")
+  for_each             = toset(var.subaccount_service_admins)
   subaccount_id        = btp_subaccount.project.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
 }
 
-######################################################################
-# Add "sleep" resource for generic purposes
-######################################################################
-resource "time_sleep" "wait_a_few_seconds" {
-  create_duration = "30s"
-}
-
-######################################################################
+# ------------------------------------------------------------------------------------------------------
 # Entitlement of all services and apps
-######################################################################
+# ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_entitlement" "integrationsuite" {
   depends_on    = [time_sleep.wait_a_few_seconds]
   subaccount_id = btp_subaccount.project.id
@@ -59,9 +68,9 @@ resource "btp_subaccount_entitlement" "integrationsuite" {
   plan_name    = each.value.plan_name
 }
 
-######################################################################
+# ------------------------------------------------------------------------------------------------------
 # Create service subscriptions
-######################################################################
+# ------------------------------------------------------------------------------------------------------
 data "btp_subaccount_subscriptions" "all" {
   subaccount_id = btp_subaccount.project.id
   depends_on    = [btp_subaccount_entitlement.integrationsuite]

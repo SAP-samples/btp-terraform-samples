@@ -13,6 +13,14 @@ variable "subaccount_name" {
   description = "The subaccount name."
   default     = "DC Mission 4038 -  SAP Ariba Procurement Operations"
 }
+
+# subaccount id
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
+}
+
 # Region
 variable "region" {
   type        = string
@@ -27,6 +35,12 @@ variable "cli_server_url" {
   default     = "https://cpcli.cf.eu10.hana.ondemand.com"
 }
 
+variable "custom_idp" {
+  type        = string
+  description = "Defines the custom IdP"
+  default     = ""
+}
+
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
@@ -37,19 +51,6 @@ variable "subaccount_service_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "username" {
-  description = "BTP username"
-  type        = string
-  sensitive   = true
-
-}
-
-variable "password" {
-  description = "BTP user password"
-  type        = string
-  sensitive   = true
 }
 
 ###
