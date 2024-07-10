@@ -40,19 +40,6 @@ variable "region" {
   default     = "us10"
 }
 
-variable "cf_org_name" {
-  type        = string
-  description = "The Cloud Foundry Org name from the Cloud Foundry environment instance."
-  default     = ""
-}
-
-# Cloudfoundry environment label
-variable "cf_landscape_label" {
-  type        = string
-  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
-  default     = ""
-}
-
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
@@ -93,11 +80,3 @@ variable "process_automation_participants" {
   description = "Defines the users who have the role of ProcessAutomationParticipant in SAP Build Process Automation"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
-
-
-variable "business_process_automation_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added as administrators for the SAP Business Process Automation."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
