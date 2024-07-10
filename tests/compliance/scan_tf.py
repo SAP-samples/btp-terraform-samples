@@ -7,6 +7,7 @@ import sys
 folder_to_scan = None
 
 # if a parameter is provided, use it as the folder to start scanning
+# ideally use the full path as a paramemter
 if len(sys.argv) > 1:
     folder_to_scan = sys.argv[1]
 else:
