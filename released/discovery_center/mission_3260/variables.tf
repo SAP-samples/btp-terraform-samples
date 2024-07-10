@@ -40,12 +40,6 @@ variable "region" {
   default     = "us10"
 }
 
-variable "cli_server_url" {
-  type        = string
-  description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
-}
-
 variable "cf_org_name" {
   type        = string
   description = "The Cloud Foundry Org name from the Cloud Foundry environment instance."
@@ -77,6 +71,7 @@ variable "service_plan__sap_process_automation" {
   type        = string
   description = "The plan for SAP Build Process Automation"
   default     = "standard"
+
   validation {
     condition     = contains(["standard", "free"], var.service_plan__sap_process_automation)
     error_message = "Invalid value for service_plan__sap_process_automation. Only 'standard' and 'free' are allowed."
@@ -86,38 +81,20 @@ variable "service_plan__sap_process_automation" {
 variable "process_automation_admins" {
   type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationAdmin in SAP Build Process Automation"
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.process_automation_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_admins)
-    error_message = "Please enter a valid email address for the Process Automation Admins."
-  }
 }
 
 variable "process_automation_developers" {
   type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationDeveloper in SAP Build Process Automation"
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.process_automation_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_developers)
-    error_message = "Please enter a valid email address for the Process Automation Developers."
-  }
 }
 
 variable "process_automation_participants" {
   type        = list(string)
   description = "Defines the users who have the role of ProcessAutomationParticipant in SAP Build Process Automation"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.process_automation_participants : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_participants)
-    error_message = "Please enter a valid email address for the Process Automation Participants."
-  }
 }
 
-  
+
 variable "business_process_automation_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added as administrators for the SAP Business Process Automation."
