@@ -4,7 +4,7 @@
 resource "random_uuid" "uuid" {}
 
 locals {
-  random_uuid               = random_uuid.uuid.result
+  random_uuid       = random_uuid.uuid.result
   subaccount_domain = lower(replace("mission-4356-${local.random_uuid}", "_", "-"))
   # If a cf_org_name was defined by the user, take that as a subaccount_cf_org. Otherwise create it.
   subaccount_cf_org = length(var.cf_org_name) > 0 ? var.cf_org_name : substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
