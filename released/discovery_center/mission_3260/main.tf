@@ -4,26 +4,31 @@
 resource "random_uuid" "uuid" {}
 
 locals {
-  random_uuid               = random_uuid.uuid.result
-  project_subaccount_domain = "discoverycenter-tf-sap-ms-${local.random_uuid}"
-  project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
+  random_uuid       = random_uuid.uuid.result
+  subaccount_domain = "discoverycenter-tf-sap-ms-${local.random_uuid}"
 }
 
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
 # ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount" "project" {
+resource "btp_subaccount" "dc_mission" {
+  count = var.subaccount_id == "" ? 1 : 0
+
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
+  subdomain = local.subaccount_domain
   region    = lower(var.region)
+  usage     = "USED_FOR_PRODUCTION"
 }
 
+data "btp_subaccount" "dc_mission" {
+  id = var.subaccount_id != "" ? var.subaccount_id : btp_subaccount.dc_mission[0].id
+}
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account administrators
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
   for_each             = toset("${var.subaccount_admins}")
-  subaccount_id        = btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
 }
@@ -33,47 +38,48 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins" {
   for_each             = toset("${var.subaccount_service_admins}")
-  subaccount_id        = btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Creation of Cloud Foundry environment
-# ------------------------------------------------------------------------------------------------------
-module "cloudfoundry_environment" {
-  source                  = "../../modules/environment/cloudfoundry/envinstance_cf"
-  subaccount_id           = btp_subaccount.project.id
-  instance_name           = local.project_subaccount_cf_org
-  plan_name               = "standard"
-  cf_org_name             = local.project_subaccount_cf_org
-  cf_org_auditors         = []
-  cf_org_billing_managers = []
-  cf_org_managers         = []
-
-}
-
-# ------------------------------------------------------------------------------------------------------
 # Create service instance - SAP Build Process Automation service
 # ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_entitlement" "bpa" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "process-automation"
-  plan_name     = "free"
+resource "btp_subaccount_entitlement" "build_process_automation" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sap_process_automation
+  plan_name     = var.service_plan__sap_process_automation
 }
 
-resource "btp_subaccount_subscription" "bpa" {
-  subaccount_id = btp_subaccount.project.id
-  app_name      = "process-automation"
-  plan_name     = "free"
-  depends_on    = [btp_subaccount_entitlement.bpa]
+# Create app subscription to SAP Build Process Automation
+resource "btp_subaccount_subscription" "build_process_automation" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  app_name      = local.service_name__sap_process_automation
+  plan_name     = var.service_plan__sap_process_automation
+  depends_on    = [btp_subaccount_entitlement.build_process_automation]
 }
 
-# Assign users to Role Collection: ProcessAutomationAdmin
-resource "btp_subaccount_role_collection_assignment" "bpa_admin" {
-  for_each             = toset("${var.subaccount_service_admins}")
-  subaccount_id        = btp_subaccount.project.id
+resource "btp_subaccount_role_collection_assignment" "sbpa_admins" {
+  depends_on           = [btp_subaccount_subscription.build_process_automation]
+  for_each             = toset(var.process_automation_admins)
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "ProcessAutomationAdmin"
   user_name            = each.value
-  depends_on           = [btp_subaccount_subscription.bpa]
+}
+
+resource "btp_subaccount_role_collection_assignment" "sbpa_developers" {
+  depends_on           = [btp_subaccount_subscription.build_process_automation]
+  for_each             = toset(var.process_automation_developers)
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "ProcessAutomationAdmin"
+  user_name            = each.value
+}
+
+resource "btp_subaccount_role_collection_assignment" "sbpa_participants" {
+  depends_on           = [btp_subaccount_subscription.build_process_automation]
+  for_each             = toset(var.process_automation_participants)
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "ProcessAutomationParticipant"
+  user_name            = each.value
 }
