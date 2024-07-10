@@ -21,6 +21,18 @@ variable "subaccount_id" {
   default     = ""
 }
 
+variable "cli_server_url" {
+  type        = string
+  description = "Defines the CLI server URL"
+  default     = "https://cli.btp.cloud.sap"
+}
+
+variable "custom_idp" {
+  type        = string
+  description = "Defines the custom IdP"
+  default     = ""
+}
+
 # Region
 variable "region" {
   type        = string
@@ -28,11 +40,23 @@ variable "region" {
   default     = "us10"
 }
 
-# CLI server
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
   default     = "https://cpcli.cf.eu10.hana.ondemand.com"
+}
+
+variable "cf_org_name" {
+  type        = string
+  description = "The Cloud Foundry Org name from the Cloud Foundry environment instance."
+  default     = ""
+}
+
+# Cloudfoundry environment label
+variable "cf_landscape_label" {
+  type        = string
+  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
+  default     = ""
 }
 
 variable "subaccount_admins" {
@@ -47,8 +71,8 @@ variable "subaccount_service_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-# Process automation Variables
 
+# Process automation Variables
 variable "service_plan__sap_process_automation" {
   type        = string
   description = "The plan for SAP Build Process Automation"
@@ -92,3 +116,11 @@ variable "process_automation_participants" {
     error_message = "Please enter a valid email address for the Process Automation Participants."
   }
 }
+
+  
+variable "business_process_automation_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added as administrators for the SAP Business Process Automation."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+

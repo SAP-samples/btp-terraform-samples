@@ -4,7 +4,7 @@
 # Your global account subdomain
 globalaccount   = "youraccount"
 region          = "us10"
-subaccount_name = "Discovery Center mission - Process and approve your invoices with SAP Build Process Automation"
+subaccount_name = "Discovery Center mission 3260 - Process and approve your invoices with SAP Build Process Automation"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)

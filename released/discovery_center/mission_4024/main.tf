@@ -265,7 +265,7 @@ resource "btp_subaccount_entitlement" "destination" {
 
 # Assign users to Role Collection: Launchpad_Admin
 resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
-  for_each             = toset("${var.emergency_admins}")
+  for_each             = toset(var.emergency_admins)
   subaccount_id        = data.btp_subaccount.project.id
   role_collection_name = "Launchpad_Admin"
   user_name            = each.value
