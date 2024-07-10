@@ -27,7 +27,7 @@ data "btp_subaccount" "dc_mission" {
 # Assignment of users as sub account administrators
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
-  for_each             = toset("${var.subaccount_admins}")
+  for_each             = toset(var.subaccount_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
@@ -37,7 +37,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
 # Assignment of users as sub account service administrators
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins" {
-  for_each             = toset("${var.subaccount_service_admins}")
+  for_each             = toset(var.subaccount_service_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
