@@ -13,6 +13,14 @@ variable "subaccount_name" {
   description = "The subaccount name."
   default     = "DC Mission 4038 -  SAP Ariba Procurement Operations"
 }
+
+# subaccount id
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
+}
+
 # Region
 variable "region" {
   type        = string
@@ -24,7 +32,13 @@ variable "region" {
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
+  default     = "https://cli.btp.cloud.sap"
+}
+
+variable "custom_idp" {
+  type        = string
+  description = "Defines the custom IdP"
+  default     = ""
 }
 
 variable "subaccount_admins" {
@@ -39,34 +53,58 @@ variable "subaccount_service_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "username" {
-  description = "BTP username"
+# service plan datasphere
+variable "service_plan__sap_datasphere" {
   type        = string
-  sensitive   = true
-
+  description = "The service plan for the SAP Datasphere."
+  default     = "free"
+  validation {
+    condition     = contains(["free", "standard"], var.service_plan__sap_datasphere)
+    error_message = "Invalid value for service_plan__sap_datasphere. Only 'free' & 'standard' are allowed."
+  }
 }
 
-variable "password" {
-  description = "BTP user password"
+# Integration Suite
+variable "service_plan__sap_integration_suite" {
   type        = string
-  sensitive   = true
+  description = "The plan for SAP Integration Suite"
+  default     = "enterprise_agreement"
+  validation {
+    condition     = contains(["enterprise_agreement"], var.service_plan__sap_integration_suite)
+    error_message = "Invalid value for service_plan__sap_integration_suite. Only 'enterprise_agreement' are allowed."
+  }
 }
 
-###
-# Entitlements
-###
-variable "entitlements" {
-  type = list(object({
-    service_name = string
-    plan_name    = string
-    type         = string
-  }))
-  description = "The list of entitlements that shall be added to the subaccount."
-  default = [
-    {
-      service_name = "integrationsuite"
-      plan_name    = "enterprise_agreement",
-      type         = "app"
-    }
-  ]
+variable "int_provisioners" {
+  type        = list(string)
+  description = "Integration Provisioners"
+}
+
+# Datasphere User Info
+
+# first name
+variable "datasphere_admin_first_name" {
+  type        = string
+  description = "Datasphere Admin First Name"
+  default     = "first name"
+}
+
+# last name
+variable "datasphere_admin_last_name" {
+  type        = string
+  description = "Datasphere Admin Last Name"
+  default     = "last name"
+}
+
+# email
+variable "datasphere_admin_email" {
+  type        = string
+  description = "Datasphere Admin Email"
+}
+
+# host_name
+variable "datasphere_admin_host_name" {
+  type        = string
+  description = "Datasphere Admin Host Name"
+  default     = ""
 }

@@ -2,29 +2,23 @@
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission "Extract your Ariba Spend Data using SAP Integration Suite"
+This sample shows how to create a landscape for the Discovery Center Mission "Extract your Ariba Spend Data using SAP Integration Suite" - [Discovery Center Mission](https://discovery-center.cloud.sap/missiondetail/4038/),
 
-## Content of setup
-
-The setup comprises the following resources:
-
-- Creation of the SAP BTP subaccount
-- Entitlements of services
-- Subscriptions to applications
-- Role collection assignments to users
-- Creation of CF environments
-- Management of users and roles on org and space level
-
-## Deploying the resources
+##  Setup
 
 To deploy the resources you must:
 
-1. Create a file `secret.auto.tfvars` and maintain the credentials for the BTP and CF provider
+1. Set the environment variables BTP_USERNAME and BTP_PASSWORD to pass credentials to the BTP provider to authenticate and interact with your BTP environments. 
 
-   ```hcl
-   username = "<Email address of your BTP user>"
-   password = "<Password of your BTP user>"
-   ```
+    ```bash
+    Mac & Linux 
+        export BTP_USERNAME=<your_username>
+        export BTP_PASSWORD=<your_password>
+
+    Windows(PS) 
+        $env:BTP_USERNAME=<your_username>
+        $env:BTP_PASSWORD=<your_password>
+    ```
 
 2. Change the variables in the `samples.tfvars` file to meet your requirements
 
@@ -40,13 +34,13 @@ To deploy the resources you must:
 4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
-   terraform plan -var-file="sample.tfvars"
+   terraform plan -var-file="samples.tfvars"
    ```
 
 5. Apply your configuration to provision the resources:
 
    ```bash
-   terraform apply -var-file="sample.tfvars"
+   terraform apply -var-file="samples.tfvars"
    ```
 
 ## In the end

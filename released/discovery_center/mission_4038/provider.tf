@@ -5,10 +5,6 @@ terraform {
       source  = "sap/btp"
       version = "~> 1.4.0"
     }
-    cloudfoundry = {
-      source  = "cloudfoundry-community/cloudfoundry"
-      version = "0.53.1"
-    }
   }
 }
 
@@ -17,6 +13,4 @@ terraform {
 provider "btp" {
   globalaccount  = var.globalaccount
   cli_server_url = var.cli_server_url
-  username       = var.username
-  password       = var.password
 }
