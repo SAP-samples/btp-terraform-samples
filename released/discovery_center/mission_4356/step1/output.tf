@@ -9,7 +9,7 @@ output "cf_api_url" {
 }
 
 output "cf_landscape_label" {
-  value       = terraform_data.replacement.output
+  value       = terraform_data.cf_landscape_label.output
   description = "The Cloudfoundry landscape label."
 }
 
