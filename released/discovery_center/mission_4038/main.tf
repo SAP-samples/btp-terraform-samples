@@ -39,7 +39,7 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
   for_each             = toset(var.subaccount_admins)
-  subaccount_id        = btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
 }
@@ -49,46 +49,77 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins" {
   for_each             = toset(var.subaccount_service_admins)
-  subaccount_id        = btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Entitlement of all services and apps
+# Setup data-analytics-osb (not running in CF environment)
 # ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_entitlement" "integrationsuite" {
-  depends_on    = [time_sleep.wait_a_few_seconds]
-  subaccount_id = btp_subaccount.project.id
-  for_each = {
-    for index, entitlement in var.entitlements :
-    index => entitlement if contains(["app"], entitlement.type)
+# Entitle 
+resource "btp_subaccount_entitlement" "datasphere" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sap_datasphere
+  plan_name     = var.service_plan__sap_datasphere
+}
+# Get serviceplan_id for data-analytics-osb with plan_name "standard"
+data "btp_subaccount_service_plan" "datasphere" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  offering_name = local.service_name__sap_datasphere
+  name          = var.service_plan__sap_datasphere
+  depends_on    = [btp_subaccount_entitlement.datasphere]
+}
+
+# Create service instance
+resource "btp_subaccount_service_instance" "datasphere" {
+  subaccount_id  = data.btp_subaccount.dc_mission.id
+  serviceplan_id = data.btp_subaccount_service_plan.datasphere.id
+  name           = "datasphere_instance"
+  parameters = jsonencode(
+    {
+      "first_name" : "${var.datasphere_admin_first_name}",
+      "last_name" : "${var.datasphere_admin_last_name}",
+      "email" : "${var.datasphere_admin_email}",
+      "host_name" : "${var.datasphere_admin_host_name}",
+    }
+  )
+  timeouts = {
+    create = "90m"
+    update = "90m"
+    delete = "90m"
   }
-  service_name = each.value.service_name
-  plan_name    = each.value.plan_name
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Create service subscriptions
+# Create app subscription to SAP Integration Suite
 # ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_entitlement" "sap_integration_suite" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sap_integration_suite
+  plan_name     = var.service_plan__sap_integration_suite
+}
+
 data "btp_subaccount_subscriptions" "all" {
-  subaccount_id = btp_subaccount.project.id
-  depends_on    = [btp_subaccount_entitlement.integrationsuite]
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  depends_on    = [btp_subaccount_entitlement.sap_integration_suite]
 }
 
-resource "btp_subaccount_subscription" "app" {
-
-  subaccount_id = btp_subaccount.project.id
-  for_each = {
-    for index, entitlement in var.entitlements :
-    index => entitlement if contains(["app"], entitlement.type)
-  }
-
+resource "btp_subaccount_subscription" "sap_integration_suite" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
   app_name = [
-    for subscription in data.btp_subaccount_subscriptions.all.values : subscription
-    if subscription.commercial_app_name == each.value.service_name
+    for subscription in data.btp_subaccount_subscriptions.all.values :
+    subscription
+    if subscription.commercial_app_name == local.service_name__sap_integration_suite
   ][0].app_name
+  plan_name  = var.service_plan__sap_integration_suite
+  depends_on = [data.btp_subaccount_subscriptions.all]
+}
 
-  plan_name  = each.value.plan_name
-  depends_on = [data.btp_subaccount_subscriptions.all, btp_subaccount_entitlement.integrationsuite]
+resource "btp_subaccount_role_collection_assignment" "int_prov" {
+  depends_on           = [btp_subaccount_subscription.sap_integration_suite]
+  for_each             = toset(var.int_provisioners)
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "Integration_Provisioner"
+  user_name            = each.value
 }

@@ -53,21 +53,58 @@ variable "subaccount_service_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-###
-# Entitlements
-###
-variable "entitlements" {
-  type = list(object({
-    service_name = string
-    plan_name    = string
-    type         = string
-  }))
-  description = "The list of entitlements that shall be added to the subaccount."
-  default = [
-    {
-      service_name = "integrationsuite"
-      plan_name    = "enterprise_agreement",
-      type         = "app"
-    }
-  ]
+# service plan datasphere
+variable "service_plan__sap_datasphere" {
+  type        = string
+  description = "The service plan for the SAP Datasphere."
+  default     = "free"
+  validation {
+    condition     = contains(["free", "standard"], var.service_plan__sap_datasphere)
+    error_message = "Invalid value for service_plan__sap_datasphere. Only 'free' & 'standard' are allowed."
+  }
+}
+
+# Integration Suite
+variable "service_plan__sap_integration_suite" {
+  type        = string
+  description = "The plan for SAP Integration Suite"
+  default     = "enterprise_agreement"
+  validation {
+    condition     = contains(["enterprise_agreement"], var.service_plan__sap_integration_suite)
+    error_message = "Invalid value for service_plan__sap_integration_suite. Only 'enterprise_agreement' are allowed."
+  }
+}
+
+variable "int_provisioners" {
+  type        = list(string)
+  description = "Integration Provisioners"
+}
+
+# Datasphere User Info
+
+# first name
+variable "datasphere_admin_first_name" {
+  type        = string
+  description = "Datasphere Admin First Name"
+  default     = "first name"
+}
+
+# last name
+variable "datasphere_admin_last_name" {
+  type        = string
+  description = "Datasphere Admin Last Name"
+  default     = "last name"
+}
+
+# email
+variable "datasphere_admin_email" {
+  type        = string
+  description = "Datasphere Admin Email"
+}
+
+# host_name
+variable "datasphere_admin_host_name" {
+  type        = string
+  description = "Datasphere Admin Host Name"
+  default     = ""
 }
