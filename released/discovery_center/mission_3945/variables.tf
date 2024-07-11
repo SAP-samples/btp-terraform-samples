@@ -11,7 +11,7 @@ variable "globalaccount" {
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "DC Mission 43945"
+  default     = "DC Mission 3945"
 }
 
 # subaccount id
