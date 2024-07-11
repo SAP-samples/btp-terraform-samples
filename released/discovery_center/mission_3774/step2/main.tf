@@ -15,19 +15,20 @@ resource "cloudfoundry_space" "space" {
 # ------------------------------------------------------------------------------------------------------
 # Define Org User role
 resource "cloudfoundry_org_role" "organization_user" {
-  for_each = toset("${var.cf_org_admins}")
+  for_each = toset(var.cf_org_users)
   username = each.value
   type     = "organization_user"
   org      = var.cf_org_id
-  origin   = var.origin_key
+  origin   = var.origin
 }
+
 # Define Org Manager role
 resource "cloudfoundry_org_role" "organization_manager" {
-  for_each   = toset("${var.cf_org_admins}")
+  for_each   = toset(var.cf_org_admins)
   username   = each.value
   type       = "organization_manager"
   org        = var.cf_org_id
-  origin     = var.origin_key
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_user]
 }
 
@@ -40,7 +41,7 @@ resource "cloudfoundry_space_role" "space_managers" {
   username   = each.value
   type       = "space_manager"
   space      = cloudfoundry_space.space.id
-  origin     = var.origin_key
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_manager]
 }
 # Define Space Developer role
@@ -49,7 +50,7 @@ resource "cloudfoundry_space_role" "space_developers" {
   username   = each.value
   type       = "space_developer"
   space      = cloudfoundry_space.space.id
-  origin     = var.origin_key
+  origin     = var.origin
   depends_on = [cloudfoundry_org_role.organization_manager]
 }
 
