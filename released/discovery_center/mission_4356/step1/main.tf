@@ -56,9 +56,8 @@ data "btp_subaccount_environments" "all" {
 }
 # ------------------------------------------------------------------------------------------------------
 # Take the landscape label from the first CF environment if no environment label is provided
-# (this replaces the previous null_resource)
 # ------------------------------------------------------------------------------------------------------
-resource "terraform_data" "replacement" {
+resource "terraform_data" "cf_landscape_label" {
   input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
 
@@ -71,7 +70,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  = terraform_data.replacement.output
+  landscape_label  = terraform_data.cf_landscape_label.output
   parameters = jsonencode({
     instance_name = local.subaccount_cf_org
   })
