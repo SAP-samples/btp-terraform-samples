@@ -13,4 +13,4 @@ CF_PROVIDER_MANDATORY_VARIABLES = ["cf_org_admins", "cf_org_name", "cf_space_dev
                                    "cf_org_id", "cf_api_url", "cf_space_managers", "cf_space_name", "cli_server_url", "origin"]
 QAS_STEP1_CF_PROVIDER_MANDATORY_VARIABLES = []
 QAS_STEP2_CF_PROVIDER_MANDATORY_VARIABLES = [
-    "cf_api_url", "cf_landscape_label", "cf_org_id", "cf_org_name", "subaccount_id"]
+    "cf_api_url", "cf_org_id", "cf_org_name", "subaccount_id"]

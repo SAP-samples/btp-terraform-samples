@@ -4,6 +4,7 @@ from libs.model.finding import Finding
 from libs.constants.variables import BTP_PROVIDER_MANDATORY_VARIABLES, QAS_STEP1_BTP_PROVIDER_MANDATORY_VARIABLES, QAS_STEP2_BTP_PROVIDER_MANDATORY_VARIABLES, CF_PROVIDER_MANDATORY_VARIABLES, QAS_STEP1_CF_PROVIDER_MANDATORY_VARIABLES, QAS_STEP2_CF_PROVIDER_MANDATORY_VARIABLES
 from libs.constants.resources import BTP_PROVIDER_MANDATORY_RESOURCES, CF_PROVIDER_MANDATORY_RESOURCES
 from libs.constants.outputs import QAS_STEP1_BTP_PROVIDER_MANDATORY_OUTPUTS
+from libs.constants.providers import PROVIDER_BTP_REQUIRED_SOURCE, PROVIDER_BTP_REQUIRED_VERSION, PROVIDER_CLOUDFOUNDRY_REQUIRED_SOURCE, PROVIDER_CLOUDFOUNDRY_REQUIRED_VERSION
 
 
 @dataclass
@@ -21,6 +22,7 @@ class TF_Provider(ProviderDefinition):
             self._check_variables_mandatory(provider, tf_definitions)
             self._check_resources_mandatory(provider, tf_definitions)
             self._check_outputs_mandatory(provider, tf_definitions)
+            self._check_providers(provider, tf_definitions)
         else:
             self = None
 
@@ -59,6 +61,48 @@ class TF_Provider(ProviderDefinition):
                                       folder=self.folder,
                                       asset=output,
                                       type="output not defined",
+                                      severity="error")
+                    self.findings.append(finding)
+
+    def _check_providers(self, provider, tf_definitions):
+
+        # If there are required providers for the provider
+        if tf_definitions["required_providers"][provider]:
+
+            # ... and if there is a source defined
+            if tf_definitions["required_providers"][provider]["source"]:
+
+                # ... and if the source is not the required source for the provider
+                source = tf_definitions["required_providers"][provider]["source"]
+                # check if the source is not the required source
+                if (provider == "btp" and source not in PROVIDER_BTP_REQUIRED_SOURCE) or (provider == "cloudfoundry" and source not in PROVIDER_CLOUDFOUNDRY_REQUIRED_SOURCE):
+                    # ... then create a finding that the source is not the required source
+                    finding = Finding(provider=provider,
+                                      folder=self.folder,
+                                      asset=source,
+                                      type="provider source not correct",
+                                      severity="error")
+                    self.findings.append(finding)
+
+            else:
+                # ... then create a finding that the source is not defined
+                finding = Finding(provider=provider,
+                                  folder=self.folder,
+                                  asset="provider",
+                                  type="provider source not defined",
+                                  severity="error")
+                self.findings.append(finding)
+
+            # ... and if there are version constraints defined
+            if tf_definitions["required_providers"][provider].get("version_constraints"):
+                # ... and if the version constraints are not the required version for the provider
+                version_constraints = tf_definitions["required_providers"][provider]["version_constraints"]
+                # check if the list of version_constraints is not equal to the required version (which is a string)
+                if (provider == "btp" and PROVIDER_BTP_REQUIRED_VERSION not in version_constraints) or (provider == "cloudfoundry" and PROVIDER_CLOUDFOUNDRY_REQUIRED_VERSION not in version_constraints):
+                    finding = Finding(provider=provider,
+                                      folder=self.folder,
+                                      asset=version_constraints,
+                                      type="provider version not correct",
                                       severity="error")
                     self.findings.append(finding)
 
