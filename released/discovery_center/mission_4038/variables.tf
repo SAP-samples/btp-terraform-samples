@@ -32,7 +32,7 @@ variable "region" {
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
+  default     = "https://cli.btp.cloud.sap"
 }
 
 variable "custom_idp" {
