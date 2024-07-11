@@ -5,7 +5,7 @@ resource "random_uuid" "uuid" {}
 
 locals {
   random_uuid       = random_uuid.uuid.result
-  subaccount_domain = lower(replace("mission-3260-${local.random_uuid}", "_", "-"))
+  subaccount_domain = lower(replace("mission-4038-${local.random_uuid}", "_", "-"))
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -22,6 +22,7 @@ resource "btp_subaccount" "dc_mission" {
 data "btp_subaccount" "dc_mission" {
   id = var.subaccount_id != "" ? var.subaccount_id : btp_subaccount.dc_mission[0].id
 }
+
 # ------------------------------------------------------------------------------------------------------
 # Assign custom IDP to sub account (if custom_idp is set)
 # ------------------------------------------------------------------------------------------------------
@@ -31,6 +32,7 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
   subaccount_id     = data.btp_subaccount.dc_mission.id
   identity_provider = var.custom_idp
 }
+
 
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account administrators
@@ -53,49 +55,38 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Add Entitlement & Create Subscription - SAP Build Process Automation service
+# Setup data-analytics-osb (not running in CF environment)
 # ------------------------------------------------------------------------------------------------------
-
-# Add Entitlement
-resource "btp_subaccount_entitlement" "build_process_automation" {
+# Entitle 
+resource "btp_subaccount_entitlement" "datasphere" {
   subaccount_id = data.btp_subaccount.dc_mission.id
-  service_name  = local.service_name__sap_process_automation
-  plan_name     = var.service_plan__sap_process_automation
+  service_name  = local.service_name__sap_datasphere
+  plan_name     = var.service_plan__sap_datasphere
 }
-
-# Create app subscription to SAP Build Process Automation
-resource "btp_subaccount_subscription" "build_process_automation" {
+# Get serviceplan_id for data-analytics-osb with plan_name "standard"
+data "btp_subaccount_service_plan" "datasphere" {
   subaccount_id = data.btp_subaccount.dc_mission.id
-  app_name      = local.service_name__sap_process_automation
-  plan_name     = var.service_plan__sap_process_automation
-  depends_on    = [btp_subaccount_entitlement.build_process_automation]
+  offering_name = local.service_name__sap_datasphere
+  name          = var.service_plan__sap_datasphere
+  depends_on    = [btp_subaccount_entitlement.datasphere]
 }
 
-# ------------------------------------------------------------------------------------------------------
-# Assign Roles - SAP Build Process Automation service
-# ------------------------------------------------------------------------------------------------------
-
-# Assign users to Role Collection: ProcessAutomationAdmin
-resource "btp_subaccount_role_collection_assignment" "bpa_admins" {
-  depends_on           = [btp_subaccount_subscription.build_process_automation]
-  for_each             = toset(var.process_automation_admins)
-  subaccount_id        = data.btp_subaccount.dc_mission.id
-  role_collection_name = "ProcessAutomationAdmin"
-  user_name            = each.value
-}
-
-resource "btp_subaccount_role_collection_assignment" "sbpa_participants" {
-  depends_on           = [btp_subaccount_subscription.build_process_automation]
-  for_each             = toset(var.process_automation_participants)
-  subaccount_id        = data.btp_subaccount.dc_mission.id
-  role_collection_name = "ProcessAutomationParticipant"
-  user_name            = each.value
-}
-
-resource "btp_subaccount_role_collection_assignment" "sbpa_developers" {
-  depends_on           = [btp_subaccount_subscription.build_process_automation]
-  for_each             = toset(var.process_automation_developers)
-  subaccount_id        = data.btp_subaccount.dc_mission.id
-  role_collection_name = "ProcessAutomationDeveloper"
-  user_name            = each.value
+# Create service instance
+resource "btp_subaccount_service_instance" "datasphere" {
+  subaccount_id  = data.btp_subaccount.dc_mission.id
+  serviceplan_id = data.btp_subaccount_service_plan.datasphere.id
+  name           = "datasphere_instance"
+  parameters = jsonencode(
+    {
+      "first_name" : "${var.datasphere_admin_first_name}",
+      "last_name" : "${var.datasphere_admin_last_name}",
+      "email" : "${var.datasphere_admin_email}",
+      "host_name" : "${var.datasphere_admin_host_name}",
+    }
+  )
+  timeouts = {
+    create = "90m"
+    update = "90m"
+    delete = "90m"
+  }
 }

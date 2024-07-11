@@ -21,13 +21,47 @@ variable "subaccount_name" {
   default     = "UC - Deliver Connected Experiences with a single view of Material Availability"
 }
 
-# cf org name
-variable "cf_org_name" {
+variable "custom_idp" {
   type        = string
-  description = "Cloud Foundry Org Name"
-  default     = "cloud-foundry"
+  description = "Defines the custom IdP"
+  default     = ""
 }
 
+variable "origin" {
+  type        = string
+  description = "Defines the origin of the identity provider"
+  default     = "sap.ids"
+  # The value for the origin can be defined
+  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
+}
+
+variable "cf_space_name" {
+  type        = string
+  description = "Name of the Cloud Foundry space."
+  default     = "dev"
+
+  validation {
+    condition     = can(regex("^.{1,255}$", var.cf_space_name))
+    error_message = "The Cloud Foundry space name must not be emtpy and not exceed 255 characters."
+  }
+}
+
+variable "cf_landscape_label" {
+  type        = string
+  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
+  default     = ""
+}
+
+variable "cf_org_name" {
+  type        = string
+  description = "Name of the Cloud Foundry org."
+  default     = "mission-4356"
+
+  validation {
+    condition     = can(regex("^.{1,255}$", var.cf_org_name))
+    error_message = "The Cloud Foundry org name must not be emtpy and not exceed 255 characters."
+  }
+}
 # Region
 variable "region" {
   type        = string
@@ -82,9 +116,9 @@ variable "service_plan__sap_business_app_studio" {
   }
 }
 
-###
+# ------------------------------------------------------------------------------------------------------
 # Entitlements
-###
+# ------------------------------------------------------------------------------------------------------
 variable "entitlements" {
   type = list(object({
     service_name = string
@@ -122,33 +156,54 @@ variable "appstudio_developers" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "appstudio_admin" {
+variable "appstudio_admins" {
   type        = list(string)
   description = "Business Application Studio Administrator"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "cloudconnector_admin" {
+variable "cloudconnector_admins" {
   type        = list(string)
   description = "Cloud Connector Administrator"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "conn_dest_admin" {
+variable "conn_dest_admins" {
   type        = list(string)
   description = "Connectivity and Destination Administrator"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "int_provisioner" {
+variable "int_provisioners" {
   type        = list(string)
   description = "Integration Provisioner"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-# Cloudfoundry environment label
-variable "cf_environment_label" {
-  type        = string
-  description = "The Cloudfoundry environment label"
-  default     = "cf-us10"
+
+variable "cf_org_users" {
+  type        = list(string)
+  description = "CF Org Users"
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cf_org_admins" {
+  type        = list(string)
+  description = "List of users to set as Cloudfoundry org administrators."
+}
+
+variable "cf_space_managers" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF space as space manager."
+}
+
+variable "cf_space_developers" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to a CF space as space developer."
+}
+
+variable "create_tfvars_file_for_step2" {
+  type        = bool
+  description = "Switch to enable the creation of the tfvars file for step 2."
+  default     = false
 }
