@@ -1,43 +1,57 @@
-# Sample Setup of an SAP Task Center on SAP BTP - Step 1
+# SAP Discovery Center mission - Get started with Extended Planning and Analysis
 
 ## Overview
 
-This directory contains the setup of SAP Task Center from scratch namely a new subaccount including the relevant entitlements, a Cloud Foundry environment and a Cloud Foundry space. 
+This terraform script demonstrates how to set up your SAP Datasphere tenant for the SAP Discovery Center Mission - [Get started with Extended Planning and Analysis](https://discovery-center.cloud.sap/missiondetail/4104/3488/)
 
-This directory contains the configuration the first step of the setup namely:
+## Content of setup
 
-- a new subaccount
-- the entitlements for SAP Task Center
-- the subscription for SAP Build Workzone, standard edition
-- the Cloud Foundry environment
-- The trust setup to the custom IdP
-- Assignment of users to the role collections
+The setup comprises the following resources:
+
+- Creation of the SAP BTP subaccount
+- Enablement of Cloudfoundry Environment - [see available regions and endpoints](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-available-for-cloud-foundry-environment)
+- Entitlements of services
+   * SAP Analytics Cloud
+- Subscription to the service
+- Role collection assignments to users
 
 ## Deploying the resources
 
-To deploy the resources of step 1 execute the following commands:
+Make sure that you are familiar with SAP BTP and know both the [Get Started with btp-terraform-samples](https://github.com/SAP-samples/btp-terraform-samples/blob/main/GET_STARTED.md) and the [Get Started with the Terraform Provider for BTP](https://developers.sap.com/tutorials/btp-terraform-get-started.html)
 
-1. Initialize your workspace:
+To deploy the resources you must:
+
+1. Set your credentials as environment variables
+   
+   ```bash
+   export BTP_USERNAME ='<Email address of your BTP user>'
+   export BTP_PASSWORD ='<Password of your BTP user>'
+   ```
+
+2. Change the variables in the `sample.tfvars` file to meet your requirements
+
+   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
+
+   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
+
+
+3. Initialize your workspace:
 
    ```bash
    terraform init
    ```
 
-1. Assign the variable values in a `*.tfvars` file e.g., the global account subdomain
-
-1. You can check what Terraform plans to apply based on your configuration:
+4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
-   terraform plan -var-file="<name of your tfvars file>.tfvars" 
+   terraform plan -var-file="sample.tfvars"
    ```
 
-1. Apply your configuration to provision the resources:
+5. Apply your configuration to provision the resources:
 
    ```bash
-   terraform apply -var-file="<name of your tfvars file>.tfvars"
+   terraform apply -var-file="sample.tfvars"
    ```
-
-> **Note** - Some variables of the output of the first step are needed as input for the second step.
 
 ## When finished
 
