@@ -6,7 +6,6 @@ resource "random_uuid" "uuid" {}
 locals {
   random_uuid       = random_uuid.uuid.result
   subaccount_domain = lower(replace("mission-3260-${local.random_uuid}", "_", "-"))
-  subaccount_cf_org = length(var.cf_org_name) > 0 ? var.cf_org_name : substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -53,37 +52,11 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
   user_name            = each.value
 }
 
+# ------------------------------------------------------------------------------------------------------
+# Add Entitlement & Create Subscription - SAP Build Process Automation service
+# ------------------------------------------------------------------------------------------------------
 
-# ------------------------------------------------------------------------------------------------------
-# CLOUDFOUNDRY PREPARATION
-# ------------------------------------------------------------------------------------------------------
-# Fetch all available environments for the subaccount
-data "btp_subaccount_environments" "all" {
-  subaccount_id = data.btp_subaccount.dc_mission.id
-}
-# ------------------------------------------------------------------------------------------------------
-# Take the landscape label from the first CF environment if no environment label is provided
-# (this replaces the previous null_resource)
-# ------------------------------------------------------------------------------------------------------
-resource "terraform_data" "replacement" {
-  input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
-}
-
-resource "btp_subaccount_environment_instance" "cloudfoundry" {
-  subaccount_id    = data.btp_subaccount.dc_mission.id
-  name             = local.subaccount_cf_org
-  environment_type = "cloudfoundry"
-  service_name     = "cloudfoundry"
-  plan_name        = "standard"
-  landscape_label  = terraform_data.replacement.output
-  parameters = jsonencode({
-    instance_name = local.subaccount_cf_org
-  })
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Create service instance - SAP Build Process Automation service
-# ------------------------------------------------------------------------------------------------------
+# Add Entitlement
 resource "btp_subaccount_entitlement" "build_process_automation" {
   subaccount_id = data.btp_subaccount.dc_mission.id
   service_name  = local.service_name__sap_process_automation
@@ -98,8 +71,13 @@ resource "btp_subaccount_subscription" "build_process_automation" {
   depends_on    = [btp_subaccount_entitlement.build_process_automation]
 }
 
+# ------------------------------------------------------------------------------------------------------
+# Assign Roles - SAP Build Process Automation service
+# ------------------------------------------------------------------------------------------------------
+
 # Assign users to Role Collection: ProcessAutomationAdmin
-resource "btp_subaccount_role_collection_assignment" "bpa_admin" {
+resource "btp_subaccount_role_collection_assignment" "bpa_admins" {
+  depends_on           = [btp_subaccount_subscription.build_process_automation]
   for_each             = toset(var.process_automation_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "ProcessAutomationAdmin"
@@ -120,20 +98,4 @@ resource "btp_subaccount_role_collection_assignment" "sbpa_developers" {
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "ProcessAutomationDeveloper"
   user_name            = each.value
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Create service instance - SAP Build Process Automation service
-# ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_entitlement" "bpa" {
-  subaccount_id = data.btp_subaccount.dc_mission.id
-  service_name  = "process-automation"
-  plan_name     = "free"
-}
-
-resource "btp_subaccount_subscription" "bpa" {
-  subaccount_id = data.btp_subaccount.dc_mission.id
-  app_name      = "process-automation"
-  plan_name     = "free"
-  depends_on    = [btp_subaccount_entitlement.bpa]
 }
