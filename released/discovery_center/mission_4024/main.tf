@@ -12,7 +12,7 @@ locals {
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
-resource "btp_subaccount" "create_subaccount" {
+resource "btp_subaccount" "dc_mission" {
   count = var.subaccount_id == "" ? 1 : 0
 
   name      = var.subaccount_name
@@ -21,32 +21,42 @@ resource "btp_subaccount" "create_subaccount" {
   usage     = "USED_FOR_PRODUCTION"
 }
 
-data "btp_subaccount" "project" {
-  id = var.subaccount_id != "" ? var.subaccount_id : btp_subaccount.create_subaccount[0].id
+data "btp_subaccount" "dc_mission" {
+  id = var.subaccount_id != "" ? var.subaccount_id : btp_subaccount.dc_mission[0].id
 }
 
 ###############################################################################################
 # Assignment of emergency admins to the sub account as sub account administrators
 ###############################################################################################
-resource "btp_subaccount_role_collection_assignment" "subaccount_users" {
-  for_each             = toset("${var.emergency_admins}")
-  subaccount_id        = data.btp_subaccount.project.id
+resource "btp_subaccount_role_collection_assignment" "subaccount_admins" {
+  for_each             = toset(var.subaccount_admins)
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
 }
+# ------------------------------------------------------------------------------------------------------
+# Assignment of users as sub account service administrators
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins" {
+  for_each             = toset(var.subaccount_service_admins)
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "Subaccount Service Administrator"
+  user_name            = each.value
+}
 
-###############################################################################################
-# Assign custom IDP to sub account
-###############################################################################################
-resource "btp_subaccount_trust_configuration" "fully_customized" {
-  subaccount_id     = data.btp_subaccount.project.id
+# ------------------------------------------------------------------------------------------------------
+# Assign custom IDP to sub account (if custom_idp is set)
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_trust_configuration" "customized" {
+  # Only create trust configuration if custom_idp has been set 
+  subaccount_id     = data.btp_subaccount.dc_mission.id
   identity_provider = var.custom_idp != "" ? var.custom_idp : element(split("/", btp_subaccount_subscription.identity_instance[0].subscription_url), 2)
 }
 
 resource "btp_subaccount_entitlement" "identity" {
   count = var.custom_idp == "" ? 1 : 0
 
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   service_name  = "sap-identity-services-onboarding"
   plan_name     = "default"
 }
@@ -54,7 +64,7 @@ resource "btp_subaccount_entitlement" "identity" {
 resource "btp_subaccount_subscription" "identity_instance" {
   count = var.custom_idp == "" ? 1 : 0
 
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   app_name      = "sap-identity-services-onboarding"
   plan_name     = "default"
   parameters = jsonencode({
@@ -67,7 +77,7 @@ resource "btp_subaccount_subscription" "identity_instance" {
 ###############################################################################################
 # Entitle subaccount for usage of app  destination SAP Build Workzone, standard edition
 resource "btp_subaccount_entitlement" "build_workzone" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   service_name  = local.service_name__build_workzone
   plan_name     = var.service_plan__build_workzone
   amount        = var.service_plan__build_workzone == "free" ? 1 : null
@@ -75,7 +85,7 @@ resource "btp_subaccount_entitlement" "build_workzone" {
 
 # Create app subscription to SAP Build Workzone, standard edition (depends on entitlement)
 resource "btp_subaccount_subscription" "build_workzone" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   app_name      = local.service_name__build_workzone
   plan_name     = var.service_plan__build_workzone
   depends_on    = [btp_subaccount_entitlement.build_workzone]
@@ -86,16 +96,16 @@ resource "btp_subaccount_subscription" "build_workzone" {
 ###############################################################################################
 # Entitle subaccount for usage of SAP Build Apps
 resource "btp_subaccount_entitlement" "sap_build_apps" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   service_name  = local.service_name__sap_build_apps
   plan_name     = var.service_plan__sap_build_apps
   amount        = 1
-  depends_on    = [btp_subaccount_trust_configuration.fully_customized]
+  depends_on    = [btp_subaccount_trust_configuration.customized]
 }
 
 # Create a subscription to the SAP Build Apps
 resource "btp_subaccount_subscription" "sap-build-apps_standard" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   app_name      = "sap-appgyver-ee"
   plan_name     = var.service_plan__sap_build_apps
   depends_on    = [btp_subaccount_entitlement.sap_build_apps]
@@ -103,7 +113,7 @@ resource "btp_subaccount_subscription" "sap-build-apps_standard" {
 
 # Get all roles in the subaccount
 data "btp_subaccount_roles" "all" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   depends_on    = [btp_subaccount_subscription.sap-build-apps_standard]
 }
 
@@ -112,7 +122,7 @@ data "btp_subaccount_roles" "all" {
 ###############################################################################################
 # Create the role collection
 resource "btp_subaccount_role_collection" "build_apps_BuildAppsAdmin" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   name          = "BuildAppsAdmin"
 
   roles = [
@@ -127,10 +137,10 @@ resource "btp_subaccount_role_collection" "build_apps_BuildAppsAdmin" {
 resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsAdmin" {
   depends_on           = [btp_subaccount_role_collection.build_apps_BuildAppsAdmin]
   for_each             = toset(var.users_BuildAppsAdmin)
-  subaccount_id        = data.btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "BuildAppsAdmin"
   user_name            = each.value
-  origin               = btp_subaccount_trust_configuration.fully_customized.origin
+  origin               = btp_subaccount_trust_configuration.customized.origin
 }
 
 ###############################################################################################
@@ -138,7 +148,7 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsAdmin"
 ###############################################################################################
 # Create the role collection
 resource "btp_subaccount_role_collection" "build_apps_BuildAppsDeveloper" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   name          = "BuildAppsDeveloper"
 
   roles = [
@@ -153,10 +163,10 @@ resource "btp_subaccount_role_collection" "build_apps_BuildAppsDeveloper" {
 resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsDeveloper" {
   depends_on           = [btp_subaccount_role_collection.build_apps_BuildAppsDeveloper]
   for_each             = toset(var.users_BuildAppsDeveloper)
-  subaccount_id        = data.btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "BuildAppsDeveloper"
   user_name            = each.value
-  origin               = btp_subaccount_trust_configuration.fully_customized.origin
+  origin               = btp_subaccount_trust_configuration.customized.origin
 }
 
 ###############################################################################################
@@ -164,7 +174,7 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_BuildAppsDevelo
 ###############################################################################################
 # Create the role collection
 resource "btp_subaccount_role_collection" "build_apps_RegistryAdmin" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   name          = "RegistryAdmin"
 
   roles = [
@@ -179,10 +189,10 @@ resource "btp_subaccount_role_collection" "build_apps_RegistryAdmin" {
 resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryAdmin" {
   depends_on           = [btp_subaccount_role_collection.build_apps_RegistryAdmin]
   for_each             = toset(var.users_RegistryAdmin)
-  subaccount_id        = data.btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "RegistryAdmin"
   user_name            = each.value
-  origin               = btp_subaccount_trust_configuration.fully_customized.origin
+  origin               = btp_subaccount_trust_configuration.customized.origin
 }
 
 ###############################################################################################
@@ -190,7 +200,7 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryAdmin" 
 ###############################################################################################
 # Create the role collection
 resource "btp_subaccount_role_collection" "build_apps_RegistryDeveloper" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   name          = "RegistryDeveloper"
 
   roles = [
@@ -205,17 +215,17 @@ resource "btp_subaccount_role_collection" "build_apps_RegistryDeveloper" {
 resource "btp_subaccount_role_collection_assignment" "build_apps_RegistryDeveloper" {
   depends_on           = [btp_subaccount_role_collection.build_apps_RegistryDeveloper]
   for_each             = toset(var.users_RegistryDeveloper)
-  subaccount_id        = data.btp_subaccount.project.id
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "RegistryDeveloper"
   user_name            = each.value
-  origin               = btp_subaccount_trust_configuration.fully_customized.origin
+  origin               = btp_subaccount_trust_configuration.customized.origin
 }
 ###############################################################################################
 # Create destination for Visual Cloud Functions
 ###############################################################################################
 # Get plan for destination service
 data "btp_subaccount_service_plan" "by_name" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   name          = "lite"
   offering_name = "destination"
   depends_on    = [btp_subaccount_subscription.build_workzone]
@@ -223,12 +233,12 @@ data "btp_subaccount_service_plan" "by_name" {
 
 # Get subaccount data
 data "btp_subaccount" "subaccount" {
-  id = data.btp_subaccount.project.id
+  id = data.btp_subaccount.dc_mission.id
 }
 
 # Create the destination
 resource "btp_subaccount_service_instance" "vcf_destination" {
-  subaccount_id  = data.btp_subaccount.project.id
+  subaccount_id  = data.btp_subaccount.dc_mission.id
   serviceplan_id = data.btp_subaccount_service_plan.by_name.id
   name           = "SAP-Build-Apps-Runtime"
   parameters = jsonencode({
@@ -252,21 +262,20 @@ resource "btp_subaccount_service_instance" "vcf_destination" {
   })
 }
 
-
 ###############################################################################################
 # Prepare and setup service: destination
 ###############################################################################################
 # Entitle subaccount for usage of service destination
 resource "btp_subaccount_entitlement" "destination" {
-  subaccount_id = data.btp_subaccount.project.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   service_name  = "destination"
   plan_name     = "lite"
 }
 
 # Assign users to Role Collection: Launchpad_Admin
-resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
-  for_each             = toset("${var.emergency_admins}")
-  subaccount_id        = data.btp_subaccount.project.id
+resource "btp_subaccount_role_collection_assignment" "build_workzone_admin" {
+  for_each             = toset(var.build_workzone_admins)
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Launchpad_Admin"
   user_name            = each.value
   depends_on           = [btp_subaccount_subscription.build_workzone]
