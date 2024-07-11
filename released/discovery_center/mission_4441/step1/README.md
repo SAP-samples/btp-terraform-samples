@@ -26,7 +26,7 @@ To deploy the resources you must:
    export BTP_USERNAME ='<Email address of your BTP user>'
    export BTP_PASSWORD ='<Password of your BTP user>'
    export CF_USER ='<Email address of your BTP user>'
-   export BTP_PASSWORD ='<Password of your BTP user>'   
+   export CF_PASSWORD ='<Password of your BTP user>'   
    ```
 
 2. Change the variables in the `sample.tfvars` file to meet your requirements

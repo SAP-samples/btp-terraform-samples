@@ -13,9 +13,9 @@ output "subaccount_id" {
   description = "The Global Account subdomain id."
 }
 
-output "cf_api_endpoint" {
+output "cf_api_url" {
   value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]
-  description = "The Cloudfoundry API endpoint."
+  description = "The Cloudfoundry API URL."
 }
 
 
