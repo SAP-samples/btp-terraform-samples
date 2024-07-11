@@ -32,17 +32,6 @@ variable "subaccount_admins" {
   }
 }
 
-variable "cf_org_admins" {
-  type        = list(string)
-  description = "List of users to set as Cloudfoundry org administrators."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
-    error_message = "Please enter a valid email address for the CF Org admins."
-  }
-}
-
 variable "launchpad_admins" {
   type        = list(string)
   description = "Defines the colleagues who are Launchpad Admins."
@@ -96,12 +85,6 @@ variable "cicd_admins" {
     condition     = length([for email in var.cicd_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cicd_admins)
     error_message = "Please enter a valid email address."
   }
-}
-
-variable "cf_environment_label" {
-  type        = string
-  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
-  default     = ""
 }
 
 variable "custom_idp" {
