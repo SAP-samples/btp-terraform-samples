@@ -125,16 +125,13 @@ resource "local_file" "output_vars_step1" {
   content  = <<-EOT
       globalaccount        = "${var.globalaccount}"
       cli_server_url       = ${jsonencode(var.cli_server_url)}
-
       subaccount_id        = "${btp_subaccount.dc_mission.id}"
 
       cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
-
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
+      cf_space_name        = "${var.cf_space_name}"
 
       origin               = "${var.origin}"
-
-      cf_space_name        = "${var.cf_space_name}"
 
       cf_org_users         = ${jsonencode(var.cf_org_users)}
       cf_org_admins        = ${jsonencode(var.cf_org_admins)}
