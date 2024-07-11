@@ -20,5 +20,5 @@ datasphere_admin_first_name = "First Name"
 datasphere_admin_last_name  = "Last Name"
 datasphere_admin_email      = "jane.doe@test.com"
 
-service_plan__sap_datasphere        = "standard"
+service_plan__sap_datasphere = "standard"
 
