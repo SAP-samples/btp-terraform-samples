@@ -8,11 +8,6 @@ output "cf_api_url" {
   description = "The Cloudfoundry API endpoint."
 }
 
-output "cf_landscape_label" {
-  value       = terraform_data.replacement.output
-  description = "The Cloudfoundry landscape label."
-}
-
 output "cf_org_id" {
   value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]
   description = "The Cloudfoundry org id."
@@ -21,6 +16,11 @@ output "cf_org_id" {
 output "event_mesh_url" {
   value       = btp_subaccount_subscription.event_mesh_application.subscription_url
   description = "Event Mesh URL"
+}
+
+output "hana_tools_url" {
+  value       = btp_subaccount_subscription.hana_cloud_tools.subscription_url
+  description = "HANA Tools URL"
 }
 
 output "cf_org_name" {
