@@ -24,5 +24,5 @@ cf_space_managers   = ["another.user@test.com", "you@test.com"]
 cf_space_developers = ["another.user@test.com", "you@test.com"]
 
 # Event Mesh users
-event_mesh_admins = ["another.user@test.com", "you@test.com"]
+event_mesh_admins     = ["another.user@test.com", "you@test.com"]
 event_mesh_developers = ["another.user@test.com", "you@test.com"]
