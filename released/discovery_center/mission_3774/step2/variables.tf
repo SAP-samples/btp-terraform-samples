@@ -37,11 +37,11 @@ variable "subaccount_id" {
 }
 
 
-variable "origin_key" {
+variable "origin" {
   type        = string
-  description = "Defines the origin key of the identity provider"
+  description = "Defines the origin of the identity provider"
   default     = "sap.ids"
-  # The value for the origin_key can be defined
+  # The value for the origin can be defined
   # but are normally set to "sap.ids", "sap.default" or "sap.custom"
 }
 
@@ -50,35 +50,22 @@ variable "cf_org_id" {
   description = "The Cloud Foundry Org ID from the Cloud Foundry environment instance."
 }
 
+variable "cf_org_users" {
+  type        = list(string)
+  description = "List of users to set as Cloudfoundry org users (pre-requisite for assigning users to other cf_roles)."
+}
+
 variable "cf_org_admins" {
   type        = list(string)
   description = "List of users to set as Cloudfoundry org administrators."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
-    error_message = "Please enter a valid email address for the CF Org admins."
-  }
 }
 
 variable "cf_space_managers" {
   type        = list(string)
   description = "Defines the colleagues who are added to a CF space as space manager."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.cf_space_managers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_managers)
-    error_message = "Please enter a valid email address for the CF space managers."
-  }
 }
 
 variable "cf_space_developers" {
   type        = list(string)
   description = "Defines the colleagues who are added to a CF space as space developer."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.cf_space_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developers)
-    error_message = "Please enter a valid email address for the CF space developers."
-  }
 }

@@ -6,7 +6,8 @@ resource "random_uuid" "uuid" {}
 locals {
   random_uuid       = random_uuid.uuid.result
   subaccount_domain = lower(replace("mission-3774-${local.random_uuid}", "_", "-"))
-  subaccount_cf_org = substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
+  # If a cf_org_name was defined by the user, take that as a subaccount_cf_org. Otherwise create it.
+  subaccount_cf_org = length(var.cf_org_name) > 0 ? var.cf_org_name : substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -60,7 +61,7 @@ data "btp_subaccount_environments" "all" {
 # Take the landscape label from the first CF environment if no environment label is provided
 # (this replaces the previous null_resource)
 # ------------------------------------------------------------------------------------------------------
-resource "terraform_data" "replacement" {
+resource "terraform_data" "cf_landscape_label" {
   input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
 # ------------------------------------------------------------------------------------------------------
@@ -72,7 +73,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  = terraform_data.replacement.output
+  landscape_label  = terraform_data.cf_landscape_label.output
   parameters = jsonencode({
     instance_name = local.subaccount_cf_org
   })
@@ -124,18 +125,15 @@ resource "local_file" "output_vars_step1" {
   content  = <<-EOT
       globalaccount        = "${var.globalaccount}"
       cli_server_url       = ${jsonencode(var.cli_server_url)}
-
       subaccount_id        = "${btp_subaccount.dc_mission.id}"
 
       cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
-
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
-      cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
-
-      origin_key           = "${var.origin_key}"
-
       cf_space_name        = "${var.cf_space_name}"
 
+      origin               = "${var.origin}"
+
+      cf_org_users         = ${jsonencode(var.cf_org_users)}
       cf_org_admins        = ${jsonencode(var.cf_org_admins)}
       cf_space_developers  = ${jsonencode(var.cf_space_developers)}
       cf_space_managers    = ${jsonencode(var.cf_space_managers)}
