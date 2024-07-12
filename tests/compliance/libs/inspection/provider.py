@@ -75,7 +75,7 @@ class TF_Provider(ProviderDefinition):
                 # ... and if the source is not the required source for the provider
                 source = tf_definitions["required_providers"][provider]["source"]
                 # check if the source is not the required source
-                if (provider == "btp" and source not in PROVIDER_BTP_REQUIRED_SOURCE) or (provider == "cloudfoundry" and source not in PROVIDER_CLOUDFOUNDRY_REQUIRED_SOURCE):
+                if (provider == "btp" and source.lower() not in PROVIDER_BTP_REQUIRED_SOURCE.lower()) or (provider == "cloudfoundry" and source.lower() not in PROVIDER_CLOUDFOUNDRY_REQUIRED_SOURCE.lower()):
                     # ... then create a finding that the source is not the required source
                     finding = Finding(provider=provider,
                                       folder=self.folder,
