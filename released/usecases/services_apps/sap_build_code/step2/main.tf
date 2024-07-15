@@ -187,12 +187,12 @@ resource "cloudfoundry_service_instance" "cloud_logging" {
   space        = cloudfoundry_space.dev.id
   type         = "managed"
   service_plan = data.cloudfoundry_service.cloud_logging.service_plans["build-code"]
-  parameters  = jsonencode({
+  parameters = jsonencode({
     ingest_otlp = {
       enable = "true"
     }
   })
-  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.cloud_logging]
+  depends_on = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.cloud_logging]
 }
 # Create service key
 resource "random_id" "service_key_cloud_logging" {
