@@ -34,7 +34,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   # the instance shall be created using the parameter landscape label. 
   # available environments can be looked up using the btp_subaccount_environments datasource
   parameters = jsonencode({
-    instance_name = "my-cf-org-name"
+    instance_name = btp_subaccount.project.subdomain
   })
   timeouts = {
     create = "1h"
