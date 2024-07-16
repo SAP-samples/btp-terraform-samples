@@ -27,7 +27,7 @@ locals {
 # Creation of subaccount - if subaccount_id = ""
 ###############################################################################################
 resource "btp_subaccount" "create_subaccount" {
-  count = var.subaccount_id == "" ? 1 : 0
+  count     = var.subaccount_id == "" ? 1 : 0
   name      = var.subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
