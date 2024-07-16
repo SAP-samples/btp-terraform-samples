@@ -40,12 +40,19 @@ resource "terraform_data" "cf_landscape_label" {
 # ------------------------------------------------------------------------------------------------------
 # Create the Cloud Foundry environment instance
 # ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_entitlement" "cloudfoundry" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "cloudfoundry"
+  plan_name     = "build-code"
+  amount        = 1
+}
+
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = btp_subaccount.dc_mission.id
   name             = "cf-${random_uuid.uuid.result}"
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
-  plan_name        = "standard"
+  plan_name        = "build-code"
   landscape_label  = terraform_data.cf_landscape_label.output
 
   parameters = jsonencode({
@@ -151,6 +158,7 @@ resource "btp_subaccount_entitlement" "build_code" {
   subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "build-code"
   plan_name     = "standard"
+  amount        = 1
 }
 # Subscribe
 resource "btp_subaccount_subscription" "build_code" {
@@ -178,19 +186,19 @@ resource "btp_subaccount_subscription" "sapappstudio" {
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Setup SAPLaunchpad (SAP Build Work Zone, standard edition)
+# Setup SAPLaunchpad (SAP Build Work Zone, foundation edition)
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "sap_launchpad" {
   subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "SAPLaunchpad"
-  plan_name     = "standard"
+  plan_name     = "foundation"
 }
 # Subscribe
 resource "btp_subaccount_subscription" "sap_launchpad" {
   subaccount_id = btp_subaccount.dc_mission.id
   app_name      = "SAPLaunchpad"
-  plan_name     = "standard"
+  plan_name     = "foundation"
   depends_on    = [btp_subaccount_entitlement.sap_launchpad]
 }
 
@@ -212,20 +220,20 @@ resource "btp_subaccount_subscription" "cicd_app" {
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Setup feature-flags-dashboard (Feature Flags Service)
+# Setup alm-ts (Cloud Transport Management)
 # ------------------------------------------------------------------------------------------------------
 # Entitle
-resource "btp_subaccount_entitlement" "feature_flags_dashboard" {
+resource "btp_subaccount_entitlement" "alm_ts" {
   subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = "feature-flags-dashboard"
-  plan_name     = "dashboard"
+  service_name  = "alm-ts"
+  plan_name     = "build-code"
 }
 # Subscribe
-resource "btp_subaccount_subscription" "feature_flags_dashboard" {
+resource "btp_subaccount_subscription" "alm_ts" {
   subaccount_id = btp_subaccount.dc_mission.id
-  app_name      = "feature-flags-dashboard"
-  plan_name     = "dashboard"
-  depends_on    = [btp_subaccount_entitlement.feature_flags_dashboard]
+  app_name      = "alm-ts"
+  plan_name     = "build-code"
+  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.alm_ts]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -243,6 +251,23 @@ resource "btp_subaccount_subscription" "sdm-web" {
   app_name      = "sdm-web"
   plan_name     = "build-code"
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.sdm-web]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Setup feature-flags-dashboard (Feature Flags Service)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "feature_flags_dashboard" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "feature-flags-dashboard"
+  plan_name     = "dashboard"
+}
+# Subscribe
+resource "btp_subaccount_subscription" "feature_flags_dashboard" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  app_name      = "feature-flags-dashboard"
+  plan_name     = "dashboard"
+  depends_on    = [btp_subaccount_entitlement.feature_flags_dashboard]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -268,7 +293,7 @@ resource "btp_subaccount_role_collection" "build_code_administrator" {
       name                 = role.name
       role_template_app_id = role.app_id
       role_template_name   = role.role_template_name
-    } if contains(["Business_Application_Studio_Administrator", "Administrator", "FeatureFlags_Dashboard_Administrator", "RegistryAdmin"], role.role_template_name)
+    } if contains(["Business_Application_Studio_Administrator", "Administrator", "FeatureFlags_Dashboard_Administrator", "RegistryAdmin", "SDM_Admin", "SDM_BusinessAdmin", "SDM_MigrationAdmin", "SuperAdmin", "SDMWeb_Admin", "SDMWeb_Migration"], role.role_template_name)
   ]
 }
 # Assign users to the role collection "Build Code Administrator"
@@ -294,7 +319,7 @@ resource "btp_subaccount_role_collection" "build_code_developer" {
       name                 = role.name
       role_template_app_id = role.app_id
       role_template_name   = role.role_template_name
-    } if contains(["Business_Application_Studio_Developer", "Developer", "FeatureFlags_Dashboard_Auditor", "RegistryDeveloper"], role.role_template_name)
+    } if contains(["Business_Application_Studio_Developer", "Developer", "FeatureFlags_Dashboard_Auditor", "RegistryDeveloper", "SDM_User", "Viewer", "Workzone_User", "SDMWeb_User"], role.role_template_name)
   ]
 }
 # Assign users to the role collection "Build Code Developer"
