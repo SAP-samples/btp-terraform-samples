@@ -53,7 +53,6 @@ To deploy the resources you must:
    ```bash
    terraform apply -var-file="sample.tfvars"
    ```
-   ```
 
 ## In the end
 
