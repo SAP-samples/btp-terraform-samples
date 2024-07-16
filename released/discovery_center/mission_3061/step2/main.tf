@@ -92,9 +92,9 @@ resource "cloudfoundry_service_instance" "abap_si" {
     login_attribute          = "email"
   })
   timeouts = {
-    create = "2h"
-    delete = "2h"
-    update = "2h"
+    create = "4h"
+    delete = "4h"
+    update = "4h"
   }
 }
 
