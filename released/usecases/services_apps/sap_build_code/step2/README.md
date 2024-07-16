@@ -10,20 +10,13 @@ To deploy the resources you must:
 
 1. If you did not create a `tfvars` file in step 1 (via the variable `create_tfvars_file_for_step2`) you must manually Take the output of step 1 and transfer it in a `tfvars` file e.g. `sample.tfvars` file to meet your requirements. Of course you can also further adjust the generated `tfvars` file from step 1.
 
-2. Export the variables for user name and password
-
-   ```bash
-   export CF_USER='<Email address of your CF user>'
-   export CF_PASSWORD='<Password of your CF user>'
-   ```
-
-3. If not already done in step 1, initialize your workspace:
+2. If not already done in step 1, initialize your workspace:
 
    ```bash
    terraform init
    ```
 
-4. You can check what Terraform plans to apply based on your configuration. If you use the generated `tfvars` file from step 1 you do not need need to explicitly add the filename to the command:
+3. You can check what Terraform plans to apply based on your configuration. If you use the generated `tfvars` file from step 1 you do not need need to explicitly add the filename to the command:
 
    ```bash
    terraform plan 
@@ -35,7 +28,7 @@ To deploy the resources you must:
    terraform plan -var-file="sample.tfvars" 
    ```
 
-5. According to the variants of step 3. apply your configuration to provision the resources either via:
+4. According to the variants of step 3. apply your configuration to provision the resources either via:
 
    ```bash
    terraform apply
