@@ -136,7 +136,7 @@ data "btp_subaccount_environments" "all" {
 # Take the landscape label from the first CF environment if no environment label is provided
 # (this replaces the previous null_resource)
 # ------------------------------------------------------------------------------------------------------
-resource "terraform_data" "replacement" {
+resource "terraform_data" "cf_landscape_label" {
   input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
 # ------------------------------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  = terraform_data.replacement.output
+  landscape_label  = terraform_data.cf_landscape_label.output
   parameters = jsonencode({
     instance_name = local.subaccount_cf_org
   })
@@ -204,11 +204,12 @@ resource "local_file" "output_vars_step1" {
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
       origin               = "${var.origin}"
       cf_space_name        = "${var.cf_space_name}"
-      cf_org_admins        = ${jsonencode(var.cf_org_admins)}
       cf_org_users         = ${jsonencode(var.cf_org_users)}
+      cf_org_admins        = ${jsonencode(var.cf_org_admins)}
       cf_space_developers  = ${jsonencode(var.cf_space_developers)}
       cf_space_managers    = ${jsonencode(var.cf_space_managers)}
       event_mesh_url       = "${btp_subaccount_subscription.event_mesh_application.subscription_url}"
+      hana_tools_url       = "${btp_subaccount_subscription.hana_cloud_tools.subscription_url}"
       EOT
   filename = "../step2/terraform.tfvars"
 }
