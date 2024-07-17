@@ -46,6 +46,7 @@ resource "btp_subaccount_entitlement" "mobile_services" {
   subaccount_id = var.subaccount_id
   service_name  = "mobile-services"
   plan_name     = "build-code"
+  amount        = 1
 }
 # Create the service instance
 data "cloudfoundry_service" "mobile_services" {
@@ -68,6 +69,93 @@ resource "cloudfoundry_service_credential_binding" "mobile_services" {
 }
 
 # ------------------------------------------------------------------------------------------------------
+# Setup transport (standard)
+# ------------------------------------------------------------------------------------------------------
+# Entitle 
+resource "btp_subaccount_entitlement" "transport_standard" {
+  subaccount_id = var.subaccount_id
+  service_name  = "transport"
+  plan_name     = "standard"
+}
+# Create the service instance
+data "cloudfoundry_service" "transport_standard" {
+  name       = "transport"
+  depends_on = [btp_subaccount_entitlement.transport_standard]
+}
+resource "cloudfoundry_service_instance" "transport_standard" {
+  name         = "default_transport_standard"
+  space        = cloudfoundry_space.dev.id
+  type         = "managed"
+  service_plan = data.cloudfoundry_service.transport_standard.service_plans["standard"]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport_standard]
+}
+# Create service key
+resource "random_uuid" "service_key_transport_standard" {}
+resource "cloudfoundry_service_credential_binding" "transport_standard" {
+  type             = "key"
+  name             = join("_", ["defaultKey", random_uuid.service_key_transport_standard.result])
+  service_instance = cloudfoundry_service_instance.transport_standard.id
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Setup transport (export)
+# ------------------------------------------------------------------------------------------------------
+# Entitle 
+resource "btp_subaccount_entitlement" "transport_export" {
+  subaccount_id = var.subaccount_id
+  service_name  = "transport"
+  plan_name     = "export"
+}
+# Create the service instance
+data "cloudfoundry_service" "transport_export" {
+  name       = "transport"
+  depends_on = [btp_subaccount_entitlement.transport_export]
+}
+resource "cloudfoundry_service_instance" "transport_export" {
+  name         = "default_transport_export"
+  space        = cloudfoundry_space.dev.id
+  type         = "managed"
+  service_plan = data.cloudfoundry_service.transport_export.service_plans["export"]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport_export]
+}
+# Create service key
+resource "random_uuid" "service_key_transport_export" {}
+resource "cloudfoundry_service_credential_binding" "transport_export" {
+  type             = "key"
+  name             = join("_", ["defaultKey", random_uuid.service_key_transport_export.result])
+  service_instance = cloudfoundry_service_instance.transport_export.id
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Setup transport (operator)
+# ------------------------------------------------------------------------------------------------------
+# Entitle 
+resource "btp_subaccount_entitlement" "transport_operator" {
+  subaccount_id = var.subaccount_id
+  service_name  = "transport"
+  plan_name     = "transport_operator"
+}
+# Create the service instance
+data "cloudfoundry_service" "transport_operator" {
+  name       = "transport"
+  depends_on = [btp_subaccount_entitlement.transport_operator]
+}
+resource "cloudfoundry_service_instance" "transport_operator" {
+  name         = "default_transport_operator"
+  space        = cloudfoundry_space.dev.id
+  type         = "managed"
+  service_plan = data.cloudfoundry_service.transport_operator.service_plans["transport_operator"]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport_operator]
+}
+# Create service key
+resource "random_uuid" "service_key_transport_operator" {}
+resource "cloudfoundry_service_credential_binding" "transport_operator" {
+  type             = "key"
+  name             = join("_", ["defaultKey", random_uuid.service_key_transport_operator.result])
+  service_instance = cloudfoundry_service_instance.transport_operator.id
+}
+
+# ------------------------------------------------------------------------------------------------------
 # Setup cloud-logging
 # ------------------------------------------------------------------------------------------------------
 # Entitle 
@@ -75,6 +163,7 @@ resource "btp_subaccount_entitlement" "cloud_logging" {
   subaccount_id = var.subaccount_id
   service_name  = "cloud-logging"
   plan_name     = "build-code"
+  amount        = 1
 }
 # Create the service instance
 data "cloudfoundry_service" "cloud_logging" {
@@ -94,64 +183,6 @@ resource "cloudfoundry_service_credential_binding" "cloud_logging" {
   type             = "key"
   name             = join("_", ["defaultKey", random_uuid.service_key_cloud_logging.result])
   service_instance = cloudfoundry_service_instance.cloud_logging.id
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup alert-notification
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "alert_notification" {
-  subaccount_id = var.subaccount_id
-  service_name  = "alert-notification"
-  plan_name     = "build-code"
-}
-# Create the service instance
-data "cloudfoundry_service" "alert_notification" {
-  name       = "alert-notification"
-  depends_on = [btp_subaccount_entitlement.alert_notification]
-}
-resource "cloudfoundry_service_instance" "alert_notification" {
-  name         = "default_alert-notification"
-  space        = cloudfoundry_space.dev.id
-  type         = "managed"
-  service_plan = data.cloudfoundry_service.alert_notification.service_plans["build-code"]
-  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.alert_notification]
-}
-# Create service key
-resource "random_uuid" "service_key_alert_notification" {}
-resource "cloudfoundry_service_credential_binding" "alert_notification" {
-  type             = "key"
-  name             = join("_", ["defaultKey", random_uuid.service_key_alert_notification.result])
-  service_instance = cloudfoundry_service_instance.alert_notification.id
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup transport
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "transport" {
-  subaccount_id = var.subaccount_id
-  service_name  = "transport"
-  plan_name     = "standard"
-}
-# Create the service instance
-data "cloudfoundry_service" "transport" {
-  name       = "transport"
-  depends_on = [btp_subaccount_entitlement.transport]
-}
-resource "cloudfoundry_service_instance" "transport" {
-  name         = "default_transport"
-  space        = cloudfoundry_space.dev.id
-  type         = "managed"
-  service_plan = data.cloudfoundry_service.transport.service_plans["standard"]
-  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport]
-}
-# Create service key
-resource "random_uuid" "service_key_transport" {}
-resource "cloudfoundry_service_credential_binding" "transport" {
-  type             = "key"
-  name             = join("_", ["defaultKey", random_uuid.service_key_transport.result])
-  service_instance = cloudfoundry_service_instance.transport.id
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -203,6 +234,36 @@ resource "cloudfoundry_service_credential_binding" "feature_flags" {
   type             = "key"
   name             = join("_", ["defaultKey", random_uuid.service_key_feature_flags.result])
   service_instance = cloudfoundry_service_instance.feature_flags.id
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Setup alert-notification
+# ------------------------------------------------------------------------------------------------------
+# Entitle 
+resource "btp_subaccount_entitlement" "alert_notification" {
+  subaccount_id = var.subaccount_id
+  service_name  = "alert-notification"
+  plan_name     = "build-code"
+  amount        = 1
+}
+# Create the service instance
+data "cloudfoundry_service" "alert_notification" {
+  name       = "alert-notification"
+  depends_on = [btp_subaccount_entitlement.alert_notification]
+}
+resource "cloudfoundry_service_instance" "alert_notification" {
+  name         = "default_alert-notification"
+  space        = cloudfoundry_space.dev.id
+  type         = "managed"
+  service_plan = data.cloudfoundry_service.alert_notification.service_plans["build-code"]
+  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.alert_notification]
+}
+# Create service key
+resource "random_uuid" "service_key_alert_notification" {}
+resource "cloudfoundry_service_credential_binding" "alert_notification" {
+  type             = "key"
+  name             = join("_", ["defaultKey", random_uuid.service_key_alert_notification.result])
+  service_instance = cloudfoundry_service_instance.alert_notification.id
 }
 
 # ------------------------------------------------------------------------------------------------------
