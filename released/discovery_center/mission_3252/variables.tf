@@ -16,7 +16,7 @@ variable "subaccount_name" {
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "eu30"
+  default     = "cf-eu10"
 }
 
 # CLI server
@@ -50,7 +50,7 @@ variable "kyma_instance" {
   description = "Your Kyma environment configuration"
   default = {
     name            = "my-kyma-environment"
-    region          = "europe-west3"
+    region          = "eu-central-1"
     machine_type    = "mx5.xlarge"
     auto_scaler_min = 3
     auto_scaler_max = 20

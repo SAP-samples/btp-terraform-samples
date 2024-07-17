@@ -44,7 +44,7 @@ data "btp_regions" "all" {}
 
 #we take the iaas provider for the first region associated with the subaccount 
 locals {
-  subaccount_iaas_provider = [for region in data.btp_regions.all.values : region if region.region == btp_subaccount.project.region][0].iaas_provider
+  subaccount_iaas_provider = [for region in data.btp_regions.all.values : region if region.id == btp_subaccount.project.region][0].iaas_provider
 }
 
 resource "btp_subaccount_entitlement" "kymaruntime" {
