@@ -11,7 +11,7 @@ variable "globalaccount" {
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "UC - Build resilient BTP Apps"
+  default     = "Resilient BTP Apps"
 }
 # Region
 variable "region" {
@@ -27,7 +27,7 @@ variable "cf_environment_label" {
 }
 
 # Cloudfoundry space name
-variable "cf_space_name" {
+variable "space_name" {
   type        = string
   description = "The Cloudfoundry space name"
   default     = "development"
@@ -52,13 +52,18 @@ variable "subaccount_service_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
+variable "cf_org_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are Cloudfoundry org admins"
+
+}
 variable "cf_space_managers" {
   type        = list(string)
   description = "Defines the colleagues who are Cloudfoundry space managers"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "cf_space_developers" {
+variable "cf_space_developers" { 
   type        = list(string)
   description = "Defines the colleagues who are Cloudfoundry space developers"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
@@ -68,6 +73,18 @@ variable "cf_space_auditors" {
   type        = list(string)
   description = "Defines the colleagues who are Cloudfoundry space auditors"
   default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "parameters" {
+  description = "parameters"
+  type        = string
+  default     = null
+}
+
+variable "type" {
+  description = "name"
+  type        = string
+  default     = "managed"
 }
 
 ###

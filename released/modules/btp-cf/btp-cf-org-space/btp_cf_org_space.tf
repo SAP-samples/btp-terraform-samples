@@ -110,7 +110,6 @@ resource "cloudfoundry_space_role" "manager" {
   depends_on = [cloudfoundry_org_role.manager_role]
 }
 
-
 resource "cloudfoundry_space_role" "developer" {
   for_each   = var.cf_space_developers
   username   = each.value
