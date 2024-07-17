@@ -42,9 +42,17 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 ######################################################################
 data "btp_regions" "all" {}
 
+output "region_at_hand" {
+  value = btp_subaccount.project.region
+}
+
+output "all_regions" {
+  value = data.btp_regions.all.values
+}
+
 #we take the iaas provider for the first region associated with the subaccount 
 locals {
-  subaccount_iaas_provider = [for region in data.btp_regions.all.values : region if region.id == btp_subaccount.project.region][0].iaas_provider
+  subaccount_iaas_provider = [for region in data.btp_regions.all.values : region if region.region == btp_subaccount.project.region][0].iaas_provider
 }
 
 resource "btp_subaccount_entitlement" "kymaruntime" {

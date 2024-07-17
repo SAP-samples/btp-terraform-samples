@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
 globalaccount   = "your global account id goes here eg. 0645xxxx-1xxx-4xxx-bxxx-4xxxxxxxxxxx"
-region          = "cf-eu10"
+region          = "eu10"
 subaccount_name = "DC Mission 3252 - Get Started with SAP BTP, Kyma runtime creating a Hello-World Function"
 
 kyma_instance = {
