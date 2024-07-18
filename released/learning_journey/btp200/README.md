@@ -28,7 +28,7 @@ To deploy the resources you must:
    btp_username = "<Email address of your BTP user>"
    btp_password = "<Password of your BTP user>"
    ```
-   as an alternative you can set this credentials also as environment variables
+   As an alternative you can set this credentials also as environment variables. Then you have to set the default values to "" for these variables in variables.tf.
    
    ```bash
    export btp_username ='<Email address of your BTP user>'

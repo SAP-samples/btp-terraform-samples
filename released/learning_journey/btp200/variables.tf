@@ -20,12 +20,6 @@ variable "region" {
   default     = "us10"
 }
 
-variable "org" {
-  type        = string
-  description = "Your SAP BTP org e.g. department or costcenter"
-  default     = "org"
-}
-
 variable "build_workzone_service_plan" {
   type        = string
   description = "The plan for the SAP Build Workzone subscription"
@@ -72,7 +66,8 @@ variable "developers" {
 variable "btp_username" {
   type        = string
   description = "SAP BTP user name"
-  default     = ""
+  ## set default value to "" when using environment values for user and password
+  # default     = ""
 }
 
 
@@ -80,5 +75,6 @@ variable "btp_password" {
   type        = string
   description = "Password for SAP BTP user"
   sensitive   = true
-  default     = ""
+  ## set default value to "" when using environment values for user and password
+  # default     = ""
 }
