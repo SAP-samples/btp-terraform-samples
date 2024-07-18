@@ -35,7 +35,7 @@ Alternativelly set:
 
    > You must at least set a value for `globalaccount` (i.e. the subdomain of the globalaccount to use).
 
-   > ⚠ NOTE: If you change the value of the `region` variable please ensure that you adjust the values for `kyma_instance_parameters` accordingly. Please refer to the documentation about available service plans and cluster regions for Kyma environments, as well as the documentation for parameter values and defaults for the different service plans.
+   > ⚠ NOTE: If you change the value of the `region` variable please ensure that you adjust the values for `kyma_instance_parameters` accordingly, or set it to `null` to use default values for the region. Please refer to the documentation about available service plans and cluster regions for Kyma environments, as well as the documentation for parameter values and defaults for the different service plans.
    > * [Regions for the Kyma Environemnt](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-for-kyma-environment)
    > * [Provisioning and Updating Parameters in the Kyma Environment](https://help.sap.com/docs/btp/sap-business-technology-platform/provisioning-and-update-parameters-in-kyma-environment)
 
