@@ -22,14 +22,16 @@ locals {
   project_subaccount_cf_org = substr(replace("${local.project_subaccount_domain}", "-", ""), 0, 32)
 }
 
-
 ###############################################################################################
 # Creation of subaccount - if subaccount_id = ""
 ###############################################################################################
+# Setup subaccount domain (to ensure uniqueness in BTP global account)
+resource "random_uuid" "uuid" {}
+
 resource "btp_subaccount" "create_subaccount" {
   count     = var.subaccount_id == "" ? 1 : 0
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
+  subdomain = join("-",[local.project_subaccount_domain, random_uuid.uuid.result])
   region    = lower(var.region)
 }
 
