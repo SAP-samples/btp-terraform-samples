@@ -13,19 +13,9 @@ output "cf_api_url" {
   description = "API endpoint of the Cloud Foundry environment."
 }
 
-output "cf_landscape_label" {
-  value       = btp_subaccount_environment_instance.cloudfoundry.landscape_label
-  description = "Landscape label of the Cloud Foundry environment."
-}
-
-output "cf_space_id" {
-  value       = var.cf_space_id
-  description = "The ID of the Cloud Foundry space."
-}
-
-output "cf_space_name" {
-  value       = var.cf_space_name
-  description = "The name of the Cloud Foundry space."
+output "cf_org_managers" {
+  value       = var.cf_org_managers
+  description = "List of managers for the Cloud Foundry org."
 }
 
 output "cf_space_managers" {
@@ -36,4 +26,9 @@ output "cf_space_managers" {
 output "cf_space_developers" {
   value       = var.cf_space_developers
   description = "List of developers for the Cloud Foundry space."
+}
+
+output "abap_admin_email" {
+  value = var.abap_admin_email
+  description = "Email of the ABAP Administrator."
 }

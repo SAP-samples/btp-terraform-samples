@@ -27,16 +27,9 @@ variable "cf_org_name" {
   default     = ""
 }
 
-variable "cf_space_id" {
-  type        = string
-  description = "The ID of an existing Cloud Foundry space for the subaccount."
-  default     = ""
-}
-
-variable "cf_space_name" {
-  type        = string
-  description = "The name of the Cloud Foundry space."
-  default     = "dev"
+variable "cf_org_managers" {
+  type        = list(string)
+  description = "List of managers for the Cloud Foundry org."
 }
 
 variable "cf_space_managers" {
@@ -55,20 +48,8 @@ variable "abap_admin_email" {
   default     = ""
 }
 
-variable "abap_is_development_allowed" {
-  type        = bool
-  description = "Flag to define if development on the ABAP system is allowed."
-  default     = true
-}
-
 variable "create_tfvars_file_for_next_stage" {
   type        = bool
   description = "Switch to enable the creation of the tfvars file for the next step."
   default     = false
-}
-
-variable "qas_abap_admin" {
-  type        = list(string)
-  description = "Email of the ABAP Administrator."
-  default     = []
 }
