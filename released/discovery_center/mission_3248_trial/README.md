@@ -1,4 +1,4 @@
-# Sample Setup of an ABAP Environment on SAP BTP
+# Prepare an Account for ABAP Trial
 
 ## Overview
 
