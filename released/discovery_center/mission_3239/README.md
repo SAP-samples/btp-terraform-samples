@@ -27,14 +27,14 @@ To deploy the resources you must:
 1. Create a file `secret.auto.tfvars` and maintain the credentials for the BTP provider
 
    ```hcl
-   user_email = "<Email address of your BTP user>"
-   password = "<Password of your BTP user>"
+   btp_username = "<Email address of your BTP user>"
+   btp_password = "<Password of your BTP user>"
    ```
    as an alternative you can set this credentials also as environment variables
    
    ```bash
-   export user_email ='<Email address of your BTP user>'
-   export password ='<Password of your BTP user>'
+   export btp_username ='<Email address of your BTP user>'
+   export btp_password ='<Password of your BTP user>'
    ```
 
 3. Change the variables in the `sample.tfvars` file to meet your requirements

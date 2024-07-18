@@ -1,13 +1,8 @@
 # ------------------------------------------------------------------------------------------------------
-# Provider configuration (please adapt!)
-# ------------------------------------------------------------------------------------------------------
-
-# Your global account subdomain
-globalaccount = "your global account id goes here eg. 0645xxxx-1xxx-4xxx-bxxx-4xxxxxxxxxxx"
-
-# ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
+# Your global account subdomain
+globalaccount             = "your global account id goes here eg. 0645xxxx-1xxx-4xxx-bxxx-4xxxxxxxxxxx"
 subaccount_name           = "DC Mission 3252 - Get Started with SAP BTP, Kyma runtime creating a Hello-World Function"
 region                    = "eu10"
 subaccount_admins         = ["your.admin.email.address@your.company.com"]

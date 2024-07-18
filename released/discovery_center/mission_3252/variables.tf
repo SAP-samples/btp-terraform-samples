@@ -16,7 +16,7 @@ variable "subaccount_name" {
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "eu30"
+  default     = "eu10"
 }
 
 # CLI server
