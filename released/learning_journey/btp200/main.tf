@@ -23,7 +23,7 @@ resource "random_uuid" "uuid" {}
 resource "btp_subaccount" "create_subaccount" {
   count     = var.subaccount_id == "" ? 1 : 0
   name      = var.subaccount_name
-  subdomain = join("-",[var.subaccount_name, random_uuid.uuid.result])
+  subdomain = join("-", [var.subaccount_name, random_uuid.uuid.result])
   region    = lower(var.region)
 }
 
