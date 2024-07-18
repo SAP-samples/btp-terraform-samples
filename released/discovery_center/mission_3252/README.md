@@ -24,16 +24,20 @@ To deploy the resources you must:
    export BTP_USERNAME=<your_username>
    export BTP_PASSWORD=<your_password>
    ```
-Alternativelly set:
 
+Alternativelly set:
     
-    ```bash
-    export BTP_ENABLE_SSO=true
-    ```
+   ```bash
+   export BTP_ENABLE_SSO=true
+   ```
 
 2. Change the variables in the `sample.tfvars` file to meet your requirements
 
-   > The minimal set of parameters you should specify (beside user_email and password) is globalaccount (i.e. its subdomain)
+   > You must at least set a value for `globalaccount` (i.e. the subdomain of the globalaccount to use).
+
+   > ⚠ NOTE: If you change the value of the `region` variable please ensure that you adjust the values for `kyma_instance_parameters` accordingly, or set it to `null` to use default values for the region. Please refer to the documentation about available service plans and cluster regions for Kyma environments, as well as the documentation for parameter values and defaults for the different service plans.
+   > * [Regions for the Kyma Environemnt](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-for-kyma-environment)
+   > * [Provisioning and Updating Parameters in the Kyma Environment](https://help.sap.com/docs/btp/sap-business-technology-platform/provisioning-and-update-parameters-in-kyma-environment)
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
 
