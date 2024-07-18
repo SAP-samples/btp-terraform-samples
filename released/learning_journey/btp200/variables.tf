@@ -72,6 +72,7 @@ variable "developers" {
 variable "btp_username" {
   type        = string
   description = "SAP BTP user name"
+  default     = ""
 }
 
 
@@ -79,4 +80,5 @@ variable "btp_password" {
   type        = string
   description = "Password for SAP BTP user"
   sensitive   = true
+  default     = ""
 }
