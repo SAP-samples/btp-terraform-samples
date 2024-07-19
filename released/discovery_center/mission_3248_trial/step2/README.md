@@ -1,20 +1,16 @@
-# Sample Setup of an ABAP Environment on SAP BTP - Step 2
+# Prepare an Account for ABAP Trial - Step 2
 
 ## Overview
 
-This directory contains the setup of an ABAP environment from scratch namely a new subaccount including the relevant entitlements, a Cloud Foundry environment and a Cloud Foundry space. 
-
-This directory contains the configuration for the second step of the setup namely:
-
-- the assignment of Cloud Foundry org roles
-- a new Cloud Foundry space
-- the assignment of Cloud Foundry space roles
-- the ABAP environment (service instance)
-- the service keys for the ABAP environment (ADT, Communication arrangrement `SAP_COM_0193`)   
+The second configuration step finalizes the ABAP Trial setup for the subaccount. The following configurations are applied:
+- Creation a new Cloud Foundry space if no space with the provided name exists
+- Assignment of Cloud Foundry org and space roles
+- Creation of an ABAP Trial service instance in the Cloud Foundry space
+- Creation of a service key for the instance
 
 ## Deploying the resources
 
-To deploy the resources of step 2 execute the following commands:
+To deploy the resources of this step execute the following commands:
 
 1. Initialize your workspace:
 
@@ -37,12 +33,3 @@ To deploy the resources of step 2 execute the following commands:
    ```bash
    terraform apply -var-file="<name of your tfvars file>.tfvars"
    ```
-
-
-## When finished
-
-You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
-
-```bash
-terraform destroy -var-file="<name of your tfvars file>.tfvars"
-```

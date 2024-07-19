@@ -1,20 +1,14 @@
-# Sample Setup of an ABAP Environment on SAP BTP - Step 1
+# Prepare an Account for ABAP Trial - Step 1
 
 ## Overview
 
-This directory contains the setup of an ABAP environment from scratch namely a new subaccount including the relevant entitlements, a Cloud Foundry environment and a Cloud Foundry space. 
-
-This directory contains the configuration the first step of the setup namely:
-
-- a new subaccount
-- the entitlements for the ABAP environment
-- the subscription to the ABAP web access
-- the Cloud Foundry environment
-- The trust setup to the custom IdP 
+The first configuration step prepares your existing Trial subaccount for ABAP Trial. The following configurations are applied:
+- Assignement the `abab-trial` entitlement with plan `shared` to the existing subaccount
+- Creation of a Cloud Foundry environment instance, in case Cloud Foundry is disabled for the subaccount
 
 ## Deploying the resources
 
-To deploy the resources of step 1 execute the following commands:
+To deploy the resources of this step execute the following commands:
 
 1. Initialize your workspace:
 
@@ -36,12 +30,4 @@ To deploy the resources of step 1 execute the following commands:
    terraform apply -var-file="<name of your tfvars file>.tfvars"
    ```
 
-> **Note** - Some variables of the output of the first step are needed as input for the second step.
-
-## When finished
-
-You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
-
-```bash
-terraform destroy -var-file="<name of your tfvars file>.tfvars"
-```
+> **Note** - Some outputs of the first step are needed as input for the second step.
