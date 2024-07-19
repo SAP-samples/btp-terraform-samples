@@ -56,7 +56,7 @@ module "cloudfoundry_environment" {
   cf_space_managers       = var.cf_space_managers
   cf_space_developers     = var.cf_space_developers
   cf_space_auditors       = var.cf_space_auditors
-  origin                  = "sap.ids"
+  origin                  = var.origin
 }
 ######################################################################
 # Entitlement of all services and apps
@@ -84,7 +84,7 @@ resource "time_sleep" "wait_a_few_seconds" {
 ######################################################################
 # connectivitiy
 module "create_cf_service_instance_connectivity" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "connectivity"
@@ -96,7 +96,7 @@ module "create_cf_service_instance_connectivity" {
 
 # destination
 module "create_cf_service_instance_destination" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "destination"
@@ -108,7 +108,7 @@ module "create_cf_service_instance_destination" {
 
 # html5-apps-repo
 module "create_cf_service_instance_html5_repo" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "html5-apps-repo"
@@ -120,7 +120,7 @@ module "create_cf_service_instance_html5_repo" {
 
 # enterprise-messaging
 module "create_cf_service_instance_ems" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "enterprise-messaging"
@@ -131,7 +131,7 @@ module "create_cf_service_instance_ems" {
     {
       "emname" : "tfe",
       "namespace" : "tfe/bpem/em",
-      "version" : "~> 1.4.0",
+      "version" : "1.1.0",
       "resources" : {
         "units" : "10"
       },
@@ -149,7 +149,7 @@ module "create_cf_service_instance_ems" {
 
 #application-logs
 module "create_cf_service_instance_applog" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "application-logs"
@@ -161,7 +161,7 @@ module "create_cf_service_instance_applog" {
 
 # xsuaa
 module "create_cf_service_instance_xsuaa" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "xsuaa"
@@ -173,7 +173,7 @@ module "create_cf_service_instance_xsuaa" {
 
 # hana-cloud
 module "create_cf_service_instance_hana_cloud" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "hana-cloud"
@@ -201,14 +201,11 @@ module "create_cf_service_instance_hana_cloud" {
         "whitelistIPs" : ["0.0.0.0/0"]
       }
   })
-  
-  # parameters            = jsonencode({ "data" : { "memory" : 30, "edition" : "cloud", "systempassword" : "Abcd1234", "whitelistIPs" : ["0.0.0.0/0"] } })
 }
-
 
 # hana
 module "create_cf_service_instance_hdishared" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id, module.create_cf_service_instance_hana_cloud]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment, module.create_cf_service_instance_hana_cloud]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "hana"
@@ -220,7 +217,7 @@ module "create_cf_service_instance_hdishared" {
 
 # autoscaler
 module "create_cf_service_instance_autoscaler" {
-  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on            = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   source                = "../../modules/btp-cf/serviceinstance_btp_cf"
   cf_space_id           = module.cloudfoundry_environment.cf_space_id
   service_name          = "autoscaler"
@@ -247,7 +244,7 @@ resource "btp_subaccount_subscription" "app" {
 
 # # Create service key for Cloudfoundry service instance of enterprise-messaging
 resource "cloudfoundry_service_credential_binding" "key_enterprise-messaging" {
-  depends_on       = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment.cf_space_id]
+  depends_on       = [time_sleep.wait_a_few_seconds, module.cloudfoundry_environment]
   name             = "key_enterprise-messaging"
   type             = "key"
   service_instance = module.create_cf_service_instance_ems.id

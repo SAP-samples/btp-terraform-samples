@@ -14,7 +14,7 @@ variable "plan_name" {
 }
 
 variable "type" {
-  description = "type of the service instance"
+  description = "Type of the service instance"
   type        = string
 }
 

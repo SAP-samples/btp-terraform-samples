@@ -75,16 +75,20 @@ variable "cf_space_auditors" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
+variable "origin" {
+  type        = string
+  description = "The identity provider for the UAA user"
+}
+
 variable "parameters" {
-  description = "parameters"
+  description = "The values for the service instance parameters (JSON string)"
   type        = string
   default     = null
 }
 
 variable "type" {
-  description = "name"
+  description = "The type of the service instance example: managed, user-provided"
   type        = string
-  default     = "managed"
 }
 
 ###
