@@ -4,12 +4,12 @@ output "subaccount_id" {
 }
 
 output "cf_org_id" {
-  value       = btp_subaccount_environment_instance.cloudfoundry.platform_id
+  value       = local.cf_environment_instance.platform_id
   description = "The ID of the Cloud Foundry org connected to the subaccount."
 }
 
 output "cf_api_url" {
-  value       = lookup(jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels), "API Endpoint", "not found")
+  value       = lookup(jsondecode(local.cf_environment_instance.labels), "API Endpoint", "not found")
   description = "API endpoint of the Cloud Foundry environment."
 }
 
@@ -26,6 +26,16 @@ output "cf_space_managers" {
 output "cf_space_developers" {
   value       = var.cf_space_developers
   description = "List of developers for the Cloud Foundry space."
+}
+
+output "cf_space_name" {
+  value       = var.cf_space_name
+  description = "The name of the CF space to use."
+}
+
+output "create_cf_space" {
+  value       = local.create_cf_space
+  description = "Determines whether a new CF space should be created. Must be true if no space with the name cf_space_name exists for the Org, yet, and false otherwise."
 }
 
 output "abap_admin_email" {

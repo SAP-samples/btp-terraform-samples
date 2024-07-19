@@ -15,21 +15,10 @@ variable "cli_server_url" {
   default     = "https://cli.btp.cloud.sap"
 }
 
-variable "cf_org_id" {
-  type        = string
-  description = "The name of the Cloud Foundry space."
-  default     = ""
-}
-
-variable "cf_org_name" {
-  type        = string
-  description = "The name of the Cloud Foundry space."
-  default     = ""
-}
-
 variable "cf_org_managers" {
   type        = list(string)
   description = "List of managers for the Cloud Foundry org."
+  default     = []
 }
 
 variable "cf_space_managers" {
@@ -40,6 +29,17 @@ variable "cf_space_managers" {
 variable "cf_space_developers" {
   type        = list(string)
   description = "List of developers for the Cloud Foundry space."
+}
+
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the CF space to use."
+}
+
+variable "create_cf_space" {
+  type        = bool
+  description = "Determines whether a new CF space should be created. Must be true if no space with the given name exists for the org, false otherwise. If CF isn't enabled for the subaccount a new space will always be created"
+  default     = false
 }
 
 variable "abap_admin_email" {
