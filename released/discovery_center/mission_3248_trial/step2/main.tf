@@ -13,8 +13,8 @@ resource "cloudfoundry_org_role" "org_managers" {
 ###
 data "cloudfoundry_space" "dev" {
   count = var.create_cf_space ? 0 : 1
-  name = var.cf_space_name
-  org  = var.cf_org_id
+  name  = var.cf_space_name
+  org   = var.cf_org_id
 }
 
 resource "cloudfoundry_space" "dev" {
@@ -25,7 +25,7 @@ resource "cloudfoundry_space" "dev" {
 }
 
 locals {
-  space_id = var.create_cf_space ? cloudfoundry_space.dev[0].id : data.cloudfoundry_space.dev[0].id 
+  space_id = var.create_cf_space ? cloudfoundry_space.dev[0].id : data.cloudfoundry_space.dev[0].id
 }
 
 ###

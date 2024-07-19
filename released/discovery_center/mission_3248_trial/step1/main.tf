@@ -23,9 +23,9 @@ data "btp_subaccount_environment_instances" "all" {
 }
 
 locals {
-  cf_org_name = join("_", [var.globalaccount, data.btp_subaccount.trial.subdomain])
-  cf_instances = [for env in data.btp_subaccount_environment_instances.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"]
-  cf_enabled = length(local.cf_instances) > 0
+  cf_org_name     = join("_", [var.globalaccount, data.btp_subaccount.trial.subdomain])
+  cf_instances    = [for env in data.btp_subaccount_environment_instances.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"]
+  cf_enabled      = length(local.cf_instances) > 0
   create_cf_space = var.create_cf_space || !local.cf_enabled
 }
 

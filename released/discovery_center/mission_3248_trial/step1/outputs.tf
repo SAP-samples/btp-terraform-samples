@@ -39,6 +39,6 @@ output "create_cf_space" {
 }
 
 output "abap_admin_email" {
-  value = var.abap_admin_email
+  value       = var.abap_admin_email
   description = "Email of the ABAP Administrator."
 }
