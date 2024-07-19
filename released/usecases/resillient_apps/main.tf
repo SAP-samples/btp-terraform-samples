@@ -127,7 +127,7 @@ module "create_cf_service_instance_ems" {
   service_instance_name = "resapp-enterprise-messaging"
   plan_name             = "default"
   type                  = "managed"
-  parameters            = jsonencode(
+  parameters = jsonencode(
     {
       "emname" : "tfe",
       "namespace" : "tfe/bpem/em",
@@ -180,7 +180,7 @@ module "create_cf_service_instance_hana_cloud" {
   service_instance_name = "resapp-hana-cloud"
   plan_name             = "hana"
   type                  = "managed"
-  parameters            = jsonencode(
+  parameters = jsonencode(
     {
       "data" : {
         "memory" : 32,

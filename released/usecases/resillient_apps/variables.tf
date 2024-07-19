@@ -1,35 +1,39 @@
 ######################################################################
 # Customer account setup
 ######################################################################
+
 # subaccount
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain."
   default     = "yourglobalaccount"
 }
+
 # subaccount
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
   default     = "Resilient BTP Apps"
 }
+
 # Region
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
   default     = "us10"
 }
+
 # Cloudfoundry environment label
 variable "cf_environment_label" {
   type        = string
-  description = "The Cloudfoundry environment label"
+  description = "The Cloudfoundry environment label."
   default     = "cf-us10"
 }
 
 # Cloudfoundry space name
 variable "space_name" {
   type        = string
-  description = "The Cloudfoundry space name"
+  description = "The Cloudfoundry space name."
   default     = "development"
 }
 
@@ -54,41 +58,41 @@ variable "subaccount_service_admins" {
 
 variable "cf_org_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry org admins"
-
+  description = "Defines the colleagues who are Cloudfoundry org admins."
 }
+
 variable "cf_space_managers" {
   type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space managers"
+  description = "Defines the colleagues who are Cloudfoundry space managers."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "cf_space_developers" { 
+variable "cf_space_developers" {
   type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space developers"
+  description = "Defines the colleagues who are Cloudfoundry space developers."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_space_auditors" {
   type        = list(string)
-  description = "Defines the colleagues who are Cloudfoundry space auditors"
+  description = "Defines the colleagues who are Cloudfoundry space auditors."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "origin" {
   type        = string
-  description = "The identity provider for the UAA user"
+  description = "The identity provider for the UAA user."
 }
 
 variable "parameters" {
-  description = "The values for the service instance parameters (JSON string)"
   type        = string
+  description = "The values for the service instance parameters (JSON string)."
   default     = null
 }
 
 variable "type" {
-  description = "The type of the service instance example: managed, user-provided"
   type        = string
+  description = "The type of the service instance example: managed, user-provided."
 }
 
 ###
