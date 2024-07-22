@@ -12,3 +12,8 @@ output "cf_api_endpoint" {
   value       = lookup(jsondecode(btp_subaccount_environment_instance.cf.labels), "API Endpoint", "not found")
   description = "API endpoint of the Cloud Foundry environment."
 }
+
+output "cf_space_id" {
+  value       = cloudfoundry_space.space.id
+  description = "ID of the new space"
+}

@@ -9,7 +9,7 @@ terraform {
     }
     cloudfoundry = {
       source  = "SAP/cloudfoundry"
-      version = "0.2.1-beta"
+      version = "1.0.0-rc1"
     }
   }
 }
@@ -109,7 +109,6 @@ resource "cloudfoundry_space_role" "manager" {
   origin     = var.origin
   depends_on = [cloudfoundry_org_role.manager_role]
 }
-
 
 resource "cloudfoundry_space_role" "developer" {
   for_each   = var.cf_space_developers
