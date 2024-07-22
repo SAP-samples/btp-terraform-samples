@@ -18,6 +18,11 @@ output "cf_org_name" {
   description = "The Cloudfoundry org name."
 }
 
+output "cf_landscape_label" {
+  value       = btp_subaccount_environment_instance.cloudfoundry.landscape_label
+  description = "Landscape label of the Cloud Foundry environment."
+}
+
 output "cf_org_admins" {
   value       = var.cf_org_admins
   description = "The Cloudfoundry org admins."

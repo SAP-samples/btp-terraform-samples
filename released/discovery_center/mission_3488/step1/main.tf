@@ -40,18 +40,18 @@ data "btp_subaccount_environments" "all" {
 }
 
 # Take the landscape label from the first CF environment if no environment label is provided
-resource "terraform_data" "replacement" {
+resource "terraform_data" "cf_landscape_label" {
   input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
 
 # Create the Cloud Foundry environment instance
-resource "btp_subaccount_environment_instance" "cf_sac" {
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = btp_subaccount.dc_mission.id
   name             = local.subaccount_cf_org
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = var.cf_plan_name
-  landscape_label  = terraform_data.replacement.output
+  landscape_label  = terraform_data.cf_landscape_label.output
 
   parameters = jsonencode({
     instance_name = local.subaccount_cf_org
@@ -64,8 +64,8 @@ resource "local_file" "output_vars_step1" {
   content  = <<-EOT
      origin               = "${var.origin}"
 
-     cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cf_sac.labels)["API Endpoint"]}"
-     cf_org_id            = "${btp_subaccount_environment_instance.cf_sac.platform_id}"
+     cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
+     cf_org_id            = "${btp_subaccount_environment_instance.cloudfoundry.platform_id}"
 
      cf_org_auditors             = ${jsonencode(var.cf_org_auditors)}
      cf_org_billing_managers     = ${jsonencode(var.cf_org_billing_managers)}

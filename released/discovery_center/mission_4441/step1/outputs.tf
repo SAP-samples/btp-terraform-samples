@@ -18,9 +18,8 @@ output "cf_api_url" {
   description = "The Cloudfoundry API URL."
 }
 
-
 output "cf_landscape_label" {
-  value       = terraform_data.cf_landscape_label.output
+  value       = btp_subaccount_environment_instance.cloudfoundry.landscape_label
   description = "The Cloudfoundry landscape label."
 }
 

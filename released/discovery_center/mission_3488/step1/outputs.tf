@@ -9,17 +9,17 @@ output "cf_org_name" {
 }
 
 output "cf_org_id" {
-  value       = btp_subaccount_environment_instance.cf_sac.platform_id
+  value       = btp_subaccount_environment_instance.cloudfoundry.platform_id
   description = "The ID of the Cloud Foundry org connected to the subaccount."
 }
 
 output "cf_api_url" {
-  value       = lookup(jsondecode(btp_subaccount_environment_instance.cf_sac.labels), "API Endpoint", "not found")
+  value       = lookup(jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels), "API Endpoint", "not found")
   description = "API endpoint of the Cloud Foundry environment."
 }
 
 output "cf_landscape_label" {
-  value       = btp_subaccount_environment_instance.cf_sac.landscape_label
+  value       = btp_subaccount_environment_instance.cloudfoundry.landscape_label
   description = "Landscape label of the Cloud Foundry environment."
 }
 

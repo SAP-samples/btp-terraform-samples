@@ -28,6 +28,13 @@ variable "cf_org_name" {
   default     = "cloud-foundry"
 }
 
+# cf landscape label
+variable "cf_landscape_label" {
+  type        = string
+  description = "The Cloud Foundry landscape (format example eu10-004)."
+  default     = ""
+}
+
 # Region
 variable "region" {
   type        = string

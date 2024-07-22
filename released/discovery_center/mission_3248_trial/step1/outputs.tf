@@ -13,6 +13,11 @@ output "cf_api_url" {
   description = "API endpoint of the Cloud Foundry environment."
 }
 
+output "cf_landscape_label" {
+  value       = local.cf_environment_instance.landscape_label
+  description = "Landscape label of the Cloud Foundry environment."
+}
+
 output "cf_org_managers" {
   value       = var.cf_org_managers
   description = "List of managers for the Cloud Foundry org."
