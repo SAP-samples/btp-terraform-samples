@@ -14,7 +14,7 @@ The process is done in two steps:
    - The trust setup to the custom IdP 
 
 2. In the directory `step2` the following resources are created:
-   - the assignment of Cloud FOundry org roles
+   - the assignment of Cloud Foundry org roles
    - a new Cloud Foundry space
    - the assignment of Cloud Foundry space roles
    - the ABAP environment (service instance)
