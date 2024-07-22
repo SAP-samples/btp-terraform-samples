@@ -52,13 +52,10 @@ data "btp_subaccount_environments" "all" {
   subaccount_id = data.btp_subaccount.project.id
 }
 
-locals {
-  cf_landscape_labels = [
-    for env in data.btp_subaccount_environments.all.values : env.landscape_label
-    if env.environment_type == "cloudfoundry"
-  ]
+# Take the landscape label from the first CF environment if no environment label is provided
+resource "terraform_data" "cf_landscape_label" {
+  input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
-
 
 ######################################################################
 # Creation of Cloud Foundry environment
@@ -69,7 +66,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  = local.cf_landscape_labels[0]
+  landscape_label  = terraform_data.cf_landscape_label.output
   parameters = jsonencode({
     instance_name = local.project_subaccount_cf_org
   })

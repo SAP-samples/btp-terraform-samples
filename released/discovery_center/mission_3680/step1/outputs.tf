@@ -13,6 +13,11 @@ output "cf_org_id" {
   description = "The Cloudfoundry org id."
 }
 
+output "cf_landscape_label" {
+  value       = btp_subaccount_environment_instance.cloudfoundry.landscape_label
+  description = "Landscape label of the Cloud Foundry environment."
+}
+
 output "event_mesh_url" {
   value       = btp_subaccount_subscription.event_mesh_application.subscription_url
   description = "Event Mesh URL"
