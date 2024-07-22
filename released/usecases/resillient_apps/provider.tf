@@ -6,8 +6,8 @@ terraform {
       version = "~> 1.4.0"
     }
     cloudfoundry = {
-      source  = "cloudfoundry-community/cloudfoundry"
-      version = "~>0.53.1"
+      source  = "SAP/cloudfoundry"
+      version = "1.0.0-rc1"
     }
   }
 }
@@ -26,5 +26,5 @@ module "cloudfoundry_api" {
 
 // Configuration is described in https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs
 provider "cloudfoundry" {
-  api_url = module.cloudfoundry_api.api_url
+  api_url = "https://api.cf.${var.region}.hana.ondemand.com"
 }
