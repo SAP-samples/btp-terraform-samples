@@ -53,7 +53,7 @@ resource "btp_subaccount_environment_instance" "cf" {
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
   plan_name        = "standard"
-  landscape_label  = null_resource.cache_target_environment.triggers.label
+  landscape_label  = terraform_data.cf_landscape_label.output
 
   parameters = jsonencode({
     instance_name = local.project_subaccount_cf_org
