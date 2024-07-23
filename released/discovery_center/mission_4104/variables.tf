@@ -24,12 +24,6 @@ variable "region" {
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.subaccount_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_admins)
-    error_message = "Please enter a valid email address for the subaccount admins."
-  }
 }
 
 variable "custom_idp" {
@@ -38,22 +32,33 @@ variable "custom_idp" {
   default     = "sap.ids"
 }
 
-variable "qas_datasphere_first_name" {
+variable "datasphere_first_name" {
   type        = string
-  description = "The first name of the QAS datasphere user."
+  description = "The first name of the datasphere user."
 }
 
-variable "qas_datasphere_last_name" {
+variable "datasphere_last_name" {
   type        = string
-  description = "The last name of the QAS datasphere user."
+  description = "The last name of the datasphere user."
 }
 
-variable "qas_datasphere_email" {
+variable "datasphere_email" {
   type        = string
-  description = "The email of the QAS datasphere user."
+  description = "The email of the datasphere user."
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.datasphere_email))
+    error_message = "Please enter a valid email address for the Datasphere user."
+  }
 }
 
-variable "qas_datasphere_host_name" {
+variable "datasphere_host_name" {
   type        = string
-  description = "The host name for the SAP Datasphere service instance."
+  description = "The host name for the SAP Datasphere service instance. The host name of the tenant can only contain numbers (0-9), lower case letters (a-z), and hyphens (-). The same host name can't be reused to create other instances."
+  default     = ""
+
+  validation {
+    condition     = length(var.datasphere_host_name) <= 100 && can(regex("^[a-z0-9-]*$", var.datasphere_host_name))
+    error_message = "Please include only lower case letters, numbers and hyphens. White spaces are not allowed."
+  }
 }

@@ -5,8 +5,8 @@
 resource "random_uuid" "subaccount_domain_suffix" {}
 
 locals {
-  random_uuid               = random_uuid.subaccount_domain_suffix.result
-  project_subaccount_domain = lower(replace("dcmission-4104-${local.random_uuid}", "_", "-"))
+  random_uuid          = random_uuid.subaccount_domain_suffix.result
+  subaccount_subdomain = lower(replace("dcmission-4104-${local.random_uuid}", "_", "-"))
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ locals {
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount" "dc_mission" {
   name      = var.subaccount_name
-  subdomain = local.project_subaccount_domain
+  subdomain = local.subaccount_subdomain
   region    = lower(var.region)
 }
 
@@ -46,10 +46,10 @@ resource "btp_subaccount_service_instance" "datasphere" {
   name           = "standard_datasphere-service"
   parameters = jsonencode(
     {
-      "first_name" : "${var.qas_datasphere_first_name}",
-      "last_name" : "${var.qas_datasphere_last_name}",
-      "email" : "${var.qas_datasphere_email}",
-      "host_name" : "${var.qas_datasphere_host_name}",
+      "first_name" : "${var.datasphere_first_name}",
+      "last_name" : "${var.datasphere_last_name}",
+      "email" : "${var.datasphere_email}",
+      "host_name" : "${var.datasphere_host_name}",
     }
   )
   timeouts = {
