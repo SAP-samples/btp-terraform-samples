@@ -102,18 +102,18 @@ resource "cloudfoundry_service_instance" "abap_si" {
 ###
 # Creation of service key for ABAP Development Tools (ADT)
 ###
-resource "cloudfoundry_service_credential_binding" "scb1" {
+resource "cloudfoundry_service_credential_binding" "abap_adt_key" {
   type             = "key"
-  name             = "${var.abap_sid}_adtkey"
+  name             = "${var.abap_sid}_adt_key"
   service_instance = cloudfoundry_service_instance.abap_si.id
 }
 
 ###
 # Creation of service key for COMM Arrangement
 ###
-resource "cloudfoundry_service_credential_binding" "abap_ipskey" {
+resource "cloudfoundry_service_credential_binding" "abap_ips_key" {
   type             = "key"
-  name             = "${var.abap_sid}_ipskey"
+  name             = "${var.abap_sid}_ips_key"
   service_instance = cloudfoundry_service_instance.abap_si.id
   parameters = jsonencode({
     scenario_id = "SAP_COM_0193"
