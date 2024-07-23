@@ -17,9 +17,9 @@ resource "random_id" "suffix" {
 }
 
 resource "cloudfoundry_route" "helloterraform" {
-  domain   = data.cloudfoundry_domain.cfapps.id
-  space    = data.cloudfoundry_space.dev.id
-  hostname = "helloterraform-${random_id.suffix.hex}"
+  domain = data.cloudfoundry_domain.cfapps.id
+  space  = data.cloudfoundry_space.dev.id
+  host   = "helloterraform-${random_id.suffix.hex}"
 }
 
 data "cloudfoundry_service" "xsuaa" {
@@ -30,7 +30,8 @@ resource "cloudfoundry_service_instance" "helloterraform_xsuaa" {
   name         = "helloterraform-xsuaa"
   space        = data.cloudfoundry_space.dev.id
   service_plan = data.cloudfoundry_service.xsuaa.service_plans["application"]
-  json_params = jsonencode({
+  type         = "managed"
+  parameters = jsonencode({
     xsappname   = "helloterraform-${random_id.suffix.hex}"
     tenant-mode = "shared"
     scopes = [
@@ -52,19 +53,22 @@ resource "cloudfoundry_service_instance" "helloterraform_xsuaa" {
 }
 
 resource "cloudfoundry_app" "helloterraform" {
-  space     = data.cloudfoundry_space.dev.id
-  name      = "helloterraform"
-  buildpack = "nodejs_buildpack"
-  memory    = 512
-  path      = data.archive_file.helloterraform.output_path
-
-  routes {
-    route = cloudfoundry_route.helloterraform.id
-  }
-
-  service_binding {
-    service_instance = cloudfoundry_service_instance.helloterraform_xsuaa.id
-  }
+  name       = "helloterraform"
+  org_name   = module.trialaccount.cloudfoundry.org_name
+  space_name = data.cloudfoundry_space.dev.name
+  buildpacks = ["nodejs_buildpack"]
+  memory     = "512M"
+  path       = data.archive_file.helloterraform.output_path
+  service_bindings = [
+    {
+      service_instance = cloudfoundry_service_instance.helloterraform_xsuaa.name
+    }
+  ]
+  routes = [
+    {
+      route = cloudfoundry_route.helloterraform.url
+    }
+  ]
 }
 
 data "archive_file" "helloterraform" {
