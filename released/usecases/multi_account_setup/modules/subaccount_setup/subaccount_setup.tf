@@ -54,7 +54,7 @@ resource "btp_subaccount_subscription" "subscriptions" {
   subaccount_id = btp_subaccount.subaccount.id
   app_name      = each.value.app
   plan_name     = each.value.plan
-  depends_on    = [btp_subaccount_entitlement.entitlements]
+  depends_on    = [btp_subaccount_entitlement.entitlements, module.cloudfoundry_environment]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -90,12 +90,12 @@ module "cloudfoundry_environment" {
 # ------------------------------------------------------------------------------------------------------
 # Create Cloud Foundry space(s) and assign users
 # ------------------------------------------------------------------------------------------------------
-locals {
-  cf_spaces_map = local.cf_env ? { for index, space in var.cf_spaces : index => space } : {}
-}
-
 module "cloudfoundry_space" {
-  for_each = local.cf_spaces_map
+  for_each = {
+    for index, space in var.cf_spaces :
+    index => space
+    if local.cf_env
+  }
 
   source              = "../../../../modules/btp-cf/space-btp-cf"
   cf_org_id           = module.cloudfoundry_environment[0].cf_org_id
