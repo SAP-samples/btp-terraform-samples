@@ -28,17 +28,18 @@ variable "subaccounts" {
     }))
     role_collection_assignments = list(object({
       role_collection_name = string
-      users                = list(string)
+      users                = set(string)
     }))
     cf_environment_instance = optional(object({
-      org_managers         = list(string)
-      org_billing_managers = list(string)
-      org_auditors         = list(string)
+      org_managers         = set(string)
+      org_billing_managers = set(string)
+      org_auditors         = set(string)
+      cf_org_user          = set(string)
       spaces = list(object({
         space_name       = string
-        space_managers   = list(string)
-        space_developers = list(string)
-        space_auditors   = list(string)
+        space_managers   = set(string)
+        space_developers = set(string)
+        space_auditors   = set(string)
       }))
     }), null)
   }))
