@@ -103,6 +103,6 @@ variable "cf_spaces" {
     space_developers = set(string)
     space_auditors   = set(string)
   }))
-  description = "List of Cloud Foundry spaces."
+  description = "List of Cloud Foundry spaces."  
   default     = []
 }
