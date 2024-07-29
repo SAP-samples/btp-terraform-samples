@@ -86,7 +86,7 @@ variable "cf_org_auditors" {
 
 variable "cf_org_user" {
   type        = set(string)
-  description = "List of Cloud Foundry org users (Space users who need to be added as CF org users before assigning space-specific roles)."
+  description = "List of Cloud Foundry org users to be added as space users."
   default     = []
 }
 
@@ -103,6 +103,6 @@ variable "cf_spaces" {
     space_developers = set(string)
     space_auditors   = set(string)
   }))
-  description = "List of Cloud Foundry spaces."  
+  description = "List of Cloud Foundry spaces."
   default     = []
 }
