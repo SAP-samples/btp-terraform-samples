@@ -67,29 +67,41 @@ variable "cf_org_name" {
 }
 
 variable "cf_org_managers" {
-  type        = list(string)
+  type        = set(string)
   description = "List of Cloud Foundry org managers."
   default     = []
 }
 
 variable "cf_org_billing_managers" {
-  type        = list(string)
+  type        = set(string)
   description = "List of Cloud Foundry org billing managers."
   default     = []
 }
 
 variable "cf_org_auditors" {
-  type        = list(string)
+  type        = set(string)
   description = "List of Cloud Foundry org auditors."
   default     = []
+}
+
+variable "cf_org_user" {
+  type        = set(string)
+  description = "List of Cloud Foundry org users."
+  default     = []
+}
+
+variable "origin" {
+  type        = string
+  description = "Origin of the user"
+  default     = "sap.ids"
 }
 
 variable "cf_spaces" {
   type = list(object({
     space_name       = string
-    space_managers   = list(string)
-    space_developers = list(string)
-    space_auditors   = list(string)
+    space_managers   = set(string)
+    space_developers = set(string)
+    space_auditors   = set(string)
   }))
   description = "List of Cloud Foundry spaces."
   default     = []

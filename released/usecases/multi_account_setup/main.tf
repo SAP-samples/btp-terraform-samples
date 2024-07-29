@@ -42,5 +42,6 @@ module "subaccount_setup" {
   cf_org_managers         = each.value.cf_environment_instance != null ? each.value.cf_environment_instance.org_managers : []
   cf_org_billing_managers = each.value.cf_environment_instance != null ? each.value.cf_environment_instance.org_billing_managers : []
   cf_org_auditors         = each.value.cf_environment_instance != null ? each.value.cf_environment_instance.org_auditors : []
+  cf_org_user             = each.value.cf_environment_instance != null ? each.value.cf_environment_instance.cf_org_user : []
   cf_spaces               = each.value.cf_environment_instance != null ? each.value.cf_environment_instance.spaces : []
 }
