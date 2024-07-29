@@ -5,7 +5,7 @@ terraform {
   required_providers {
     btp = {
       source  = "SAP/btp"
-      version = "~> 1.4.0"
+      version = "1.5.0"
     }
   }
 }
@@ -54,7 +54,7 @@ resource "btp_subaccount_subscription" "subscriptions" {
   subaccount_id = btp_subaccount.subaccount.id
   app_name      = each.value.app
   plan_name     = each.value.plan
-  depends_on    = [btp_subaccount_entitlement.entitlements, module.cloudfoundry_environment]
+  depends_on    = [btp_subaccount_entitlement.entitlements]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -77,26 +77,27 @@ resource "btp_subaccount_role_collection_assignment" "role_collection_assignment
 # ------------------------------------------------------------------------------------------------------
 module "cloudfoundry_environment" {
   count                   = local.cf_env ? 1 : 0
-  source                  = "../../../../modules/environment/cloudfoundry/envinstance_cf"
+  source                  = "../../../../modules/btp-cf/btp-cf-env-instance"
   subaccount_id           = btp_subaccount.subaccount.id
   instance_name           = var.cf_env_instance_name
   cf_org_name             = var.cf_org_name
   cf_org_managers         = var.cf_org_managers
   cf_org_billing_managers = var.cf_org_billing_managers
   cf_org_auditors         = var.cf_org_auditors
+  cf_org_user             = var.cf_org_user
 }
 
 # ------------------------------------------------------------------------------------------------------
 # Create Cloud Foundry space(s) and assign users
 # ------------------------------------------------------------------------------------------------------
-module "cloudfoundry_space" {
-  for_each = {
-    for index, space in var.cf_spaces :
-    index => space
-    if local.cf_env
-  }
+locals {
+  cf_spaces_map = local.cf_env ? { for index, space in var.cf_spaces : index => space } : {}
+}
 
-  source              = "../../../../modules/environment/cloudfoundry/space_cf"
+module "cloudfoundry_space" {
+  for_each = local.cf_spaces_map
+
+  source              = "../../../../modules/btp-cf/space-btp-cf"
   cf_org_id           = module.cloudfoundry_environment[0].cf_org_id
   name                = each.value.space_name
   cf_space_managers   = each.value.space_managers

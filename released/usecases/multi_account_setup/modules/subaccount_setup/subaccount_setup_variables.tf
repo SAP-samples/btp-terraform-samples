@@ -1,5 +1,5 @@
 variable "subaccount_name" {
-  description = "Name of the subacccount."
+  description = "Name of the subaccount."
   type        = string
 }
 
@@ -15,14 +15,14 @@ variable "region" {
 
 variable "parent_directory_id" {
   type        = string
-  description = "Id of the parent directory or null for global account as parent."
+  description = "ID of the parent directory or null for global account as parent."
   default     = null
 }
 
 variable "subaccount_labels" {
   description = "Labels for the subaccount."
   type        = map(set(string))
-  default     = null
+  default     = {}
 }
 
 variable "entitlements" {
@@ -67,29 +67,41 @@ variable "cf_org_name" {
 }
 
 variable "cf_org_managers" {
-  type        = list(string)
+  type        = set(string)
   description = "List of Cloud Foundry org managers."
   default     = []
 }
 
 variable "cf_org_billing_managers" {
-  type        = list(string)
+  type        = set(string)
   description = "List of Cloud Foundry org billing managers."
   default     = []
 }
 
 variable "cf_org_auditors" {
-  type        = list(string)
+  type        = set(string)
   description = "List of Cloud Foundry org auditors."
   default     = []
+}
+
+variable "cf_org_user" {
+  type        = set(string)
+  description = "List of Cloud Foundry org users to be added as space users."
+  default     = []
+}
+
+variable "origin" {
+  type        = string
+  description = "Origin of the user."
+  default     = "sap.ids"
 }
 
 variable "cf_spaces" {
   type = list(object({
     space_name       = string
-    space_managers   = list(string)
-    space_developers = list(string)
-    space_auditors   = list(string)
+    space_managers   = set(string)
+    space_developers = set(string)
+    space_auditors   = set(string)
   }))
   description = "List of Cloud Foundry spaces."
   default     = []
