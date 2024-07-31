@@ -2,10 +2,10 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount   = "terraformintprod"
-region          = "eu10"
-subaccount_name = "dcmqas"
-cf_landscape_label = "cf-eu10"
+globalaccount   = "myglobalaccount"
+region          = "us10"
+subaccount_name = "DCM Goldenpath"
+cf_org_name     = "cf-environment"
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
