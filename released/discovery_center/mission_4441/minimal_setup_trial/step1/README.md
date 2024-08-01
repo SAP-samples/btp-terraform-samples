@@ -2,17 +2,16 @@
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission - [Get Started with SAP Build Code and Joule using Generative AI](https://discovery-center.cloud.sap/missiondetail/4441/)
+This sample shows how to create a landscape for the Discovery Center Mission - [Get Started with SAP Build Code and Joule using Generative AI](https://discovery-center.cloud.sap/missiondetail/4441/) for a Trial account.
 
 ## Content of setup
 
 The setup comprises the following resources:
 
-- Creation of the SAP BTP subaccount
 - Entitlements of services
 - Subscriptions to applications
 - Role collection assignments to users
-- Management of users and roles on org and space level
+
 
 ## Deploying the resources
 
@@ -25,13 +24,11 @@ To deploy the resources you must:
    ```bash
    export BTP_USERNAME ='<Email address of your BTP user>'
    export BTP_PASSWORD ='<Password of your BTP user>'
-   export CF_USER ='<Email address of your BTP user>'
-   export CF_PASSWORD ='<Password of your BTP user>'   
    ```
 
 2. Change the variables in the `sample.tfvars` file to meet your requirements
 
-   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
+   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and all user assignments
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
 
