@@ -123,7 +123,7 @@ resource "btp_subaccount_subscription" "sap_launchpad" {
 # Get all available subaccount roles
 data "btp_subaccount_roles" "all" {
   subaccount_id = btp_subaccount.dc_mission.id
-  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_subscription.cicd_app, btp_subaccount_subscription.sap_launchpad, btp_subaccount_subscription.sapappstudio, btp_subaccount_subscription.feature_flags_dashboard, btp_subaccount_subscription.sdm-web]
+  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_subscription.sapappstudio]
 }
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection for Build Code Administrator

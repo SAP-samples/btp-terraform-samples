@@ -52,3 +52,8 @@ output "cf_space_managers" {
   value       = var.cf_space_managers
   description = "List of users to set as Cloudfoundry space managers."
 }
+
+output "build_code_subscription_url" {
+  value       = btp_subaccount_subscription.build_code.subscription_url
+  description = "SAP Build Code subscription URL."
+}
