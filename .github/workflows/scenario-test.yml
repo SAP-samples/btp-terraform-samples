@@ -28,7 +28,7 @@ jobs:
       matrix:
         usecase:
           - name: 'DC mission 4327'
-            folder: 'released/discovery_center/mission_4327/setup_subaccount_cf'
+            folder: 'released/cicd/setup_subaccount_cf'
             var_file: 'testsamples.tfvars'
             use_custom_idp: false    
     steps:
