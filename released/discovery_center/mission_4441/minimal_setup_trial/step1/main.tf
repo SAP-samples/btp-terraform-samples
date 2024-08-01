@@ -24,6 +24,45 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 }
 
 # ------------------------------------------------------------------------------------------------------
+# CLOUDFOUNDRY PREPARATION
+# ------------------------------------------------------------------------------------------------------
+#
+# Fetch all available environments for the subaccount
+data "btp_subaccount_environments" "all" {
+  subaccount_id = btp_subaccount.dc_mission.id
+}
+# ------------------------------------------------------------------------------------------------------
+# Take the landscape label from the first CF environment if no environment label is provided
+# (this replaces the previous null_resource)
+# ------------------------------------------------------------------------------------------------------
+resource "terraform_data" "cf_landscape_label" {
+  input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Create the Cloud Foundry environment instance
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_entitlement" "cloudfoundry" {
+  subaccount_id = btp_subaccount.dc_mission.id
+  service_name  = "cloudfoundry"
+  plan_name     = "trial"
+  amount        = 1
+}
+
+resource "btp_subaccount_environment_instance" "cloudfoundry" {
+  subaccount_id    = btp_subaccount.dc_mission.id
+  name             = "cf-${random_uuid.uuid.result}"
+  environment_type = "cloudfoundry"
+  service_name     = "cloudfoundry"
+  plan_name        = "trial"
+  landscape_label  = terraform_data.cf_landscape_label.output
+
+  parameters = jsonencode({
+    instance_name = "cf-${random_uuid.uuid.result}"
+  })
+}
+
+# ------------------------------------------------------------------------------------------------------
 # APP SUBSCRIPTIONS
 # ------------------------------------------------------------------------------------------------------
 #
@@ -69,7 +108,7 @@ resource "btp_subaccount_subscription" "sapappstudio" {
 # Get all available subaccount roles
 data "btp_subaccount_roles" "all" {
   subaccount_id = btp_subaccount.dc_mission.id
-  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_subscription.cicd_app, btp_subaccount_subscription.sap_launchpad, btp_subaccount_subscription.sapappstudio, btp_subaccount_subscription.feature_flags_dashboard, btp_subaccount_subscription.sdm-web]
+  depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_subscription.sapappstudio]
 }
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection for Build Code Administrator
