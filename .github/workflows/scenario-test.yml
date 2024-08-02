@@ -56,10 +56,10 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
 
           timestamp=$(date +"%Y%m%d%H%M%S")
-          sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
-          sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/discovery_center/mission_4327/setup_subaccount_cf/main.tf
-          sed -i '$a cf_org_user = ["dl_5731d5595f99b74a3c000020@exchange.sap.corp","DL_604F126B654D33027ECBD9B4@global.corp.sap"]' released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
-          sed -i '$a cf_space_manager = ["dl_5731d5595f99b74a3c000020@exchange.sap.corp","DL_604F126B654D33027ECBD9B4@global.corp.sap"]' released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/cicd/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/instance_name = \"my-cf-org-name\"/instance_name = \"cf-instance-$(($RANDOM % 9 + 1))\"/" released/cicd/setup_subaccount_cf/main.tf
+          sed -i '$a cf_org_user = ["dl_5731d5595f99b74a3c000020@exchange.sap.corp","DL_604F126B654D33027ECBD9B4@global.corp.sap"]' released/cicd/setup_subaccount_cf/testsamples.tfvars
+          sed -i '$a cf_space_manager = ["dl_5731d5595f99b74a3c000020@exchange.sap.corp","DL_604F126B654D33027ECBD9B4@global.corp.sap"]' released/cicd/setup_subaccount_cf/testsamples.tfvars
 
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
@@ -126,9 +126,9 @@ jobs:
           export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
 
           timestamp=$(date +"%Y%m%d%H%M%S")
-          sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
-          sed -i '$a cf_org_user = ["dl_5731d5595f99b74a3c000020@exchange.sap.corp","DL_604F126B654D33027ECBD9B4@global.corp.sap"]' released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
-          sed -i '$a cf_space_manager = ["dl_5731d5595f99b74a3c000020@exchange.sap.corp","DL_604F126B654D33027ECBD9B4@global.corp.sap"]' released/discovery_center/mission_4327/setup_subaccount_cf/testsamples.tfvars
+          sed -i "s/\(subaccount_name\s*=\s*\"\)[^\"]*\"/\1dcmtest_${timestamp}\"/" released/cicd/setup_subaccount_cf/testsamples.tfvars
+          sed -i '$a cf_org_user = ["dl_5731d5595f99b74a3c000020@exchange.sap.corp","DL_604F126B654D33027ECBD9B4@global.corp.sap"]' released/cicd/setup_subaccount_cf/testsamples.tfvars
+          sed -i '$a cf_space_manager = ["dl_5731d5595f99b74a3c000020@exchange.sap.corp","DL_604F126B654D33027ECBD9B4@global.corp.sap"]' released/cicd/setup_subaccount_cf/testsamples.tfvars
       
           if [ "${{ matrix.usecase.use_custom_idp }}" = "true" ]
           then 
