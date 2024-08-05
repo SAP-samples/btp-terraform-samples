@@ -2,12 +2,19 @@
 # Generating random ID for subdomain
 ###############################################################################################
 resource "random_uuid" "uuid" {}
+
+locals {
+  random_uuid       = random_uuid.uuid.result
+  subaccount_domain = "btp-gp${local.random_uuid}"
+  subaccount_cf_org = length(var.cf_org_name) > 0 ? var.cf_org_name : substr(replace("${local.subaccount_domain}", "-", ""), 0, 32)
+}
+
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
 resource "btp_subaccount" "project" {
   name      = var.subaccount_name
-  subdomain = "btp-gp${random_uuid.uuid.result}"
+  subdomain = local.subaccount_domain
   region    = lower(var.region)
 }
 data "btp_whoami" "me" {}
@@ -27,7 +34,7 @@ resource "terraform_data" "cf_landscape_label" {
 ###############################################################################################
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = btp_subaccount.project.id
-  name             = btp_subaccount.project.subdomain
+  name             = local.subaccount_cf_org
   landscape_label  = terraform_data.cf_landscape_label.output
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
@@ -36,7 +43,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   # the instance shall be created using the parameter landscape label. 
   # available environments can be looked up using the btp_subaccount_environments datasource
   parameters = jsonencode({
-    instance_name = btp_subaccount.project.subdomain
+    instance_name = local.subaccount_cf_org
   })
   timeouts = {
     create = "1h"
@@ -60,12 +67,12 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
 resource "btp_subaccount_entitlement" "bas" {
   subaccount_id = btp_subaccount.project.id
   service_name  = "sapappstudio"
-  plan_name     = var.bas_plan_name
+  plan_name     = var.service_plan__bas
 }
 resource "btp_subaccount_subscription" "bas-subscribe" {
   subaccount_id = btp_subaccount.project.id
   app_name      = "sapappstudio"
-  plan_name     = var.bas_plan_name
+  plan_name     = var.service_plan__bas
   depends_on    = [btp_subaccount_entitlement.bas]
 }
 resource "btp_subaccount_role_collection_assignment" "Business_Application_Studio_Administrator" {
@@ -88,12 +95,12 @@ resource "btp_subaccount_role_collection_assignment" "Business_Application_Studi
 resource "btp_subaccount_entitlement" "build_workzone" {
   subaccount_id = btp_subaccount.project.id
   service_name  = "SAPLaunchpad"
-  plan_name     = var.build_workzone_plan_name
+  plan_name     = var.service_plan__build_workzone
 }
 resource "btp_subaccount_subscription" "build_workzone_subscribe" {
   subaccount_id = btp_subaccount.project.id
   app_name      = "SAPLaunchpad"
-  plan_name     = var.build_workzone_plan_name
+  plan_name     = var.service_plan__build_workzone
   depends_on    = [btp_subaccount_entitlement.build_workzone]
 }
 resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
@@ -108,7 +115,7 @@ resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
 resource "btp_subaccount_entitlement" "hana-cloud" {
   subaccount_id = btp_subaccount.project.id
   service_name  = "hana-cloud"
-  plan_name     = var.hana-cloud_plan_name
+  plan_name     = var.service_plan__hana_cloud
 }
 # Enable HANA Cloud Tools
 resource "btp_subaccount_entitlement" "hana-cloud-tools" {
@@ -126,4 +133,19 @@ resource "btp_subaccount_entitlement" "hana-hdi-shared" {
   subaccount_id = btp_subaccount.project.id
   service_name  = "hana"
   plan_name     = "hdi-shared"
+}
+
+resource "local_file" "output_vars_step1" {
+  count    = var.create_tfvars_file_for_next_stage ? 1 : 0
+  content  = <<-EOT
+      cf_api_url          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
+      cf_org_id           = "${btp_subaccount_environment_instance.cloudfoundry.platform_id}"
+
+      cf_org_users        = ${jsonencode(var.cf_org_users)}
+      cf_org_admins       = ${jsonencode(var.cf_org_admins)}
+      cf_space_developers = ${jsonencode(var.cf_space_developers)}
+      cf_space_managers   = ${jsonencode(var.cf_space_managers)}
+
+      EOT
+  filename = "../step2_cf/terraform.tfvars"
 }
