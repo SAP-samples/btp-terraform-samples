@@ -46,19 +46,19 @@ variable "subaccount_admins" {
 variable "service_plan__bas" {
   description = "BAS plan"
   type        = string
-  default     = "free-tier"
+  default     = "free"
 }
 
 variable "service_plan__build_workzone" {
   description = "Build Workzone plan"
   type        = string
-  default     = "free-tier"
+  default     = "free"
 }
 
 variable "service_plan__hana_cloud" {
   description = "hana-cloud plan"
   type        = string
-  default     = "free"
+  default     = "hana-free"
 }
 
 ###

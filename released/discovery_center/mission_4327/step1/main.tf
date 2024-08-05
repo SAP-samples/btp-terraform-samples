@@ -96,6 +96,7 @@ resource "btp_subaccount_entitlement" "build_workzone" {
   subaccount_id = btp_subaccount.project.id
   service_name  = "SAPLaunchpad"
   plan_name     = var.service_plan__build_workzone
+  amount        = var.service_plan__build_workzone == "free" ? 1 : null
 }
 resource "btp_subaccount_subscription" "build_workzone_subscribe" {
   subaccount_id = btp_subaccount.project.id
