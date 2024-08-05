@@ -30,7 +30,7 @@ resource "cloudfoundry_space_role" "space_developer" {
   username   = each.value
   type       = "space_developer"
   space      = cloudfoundry_space.dev.id
-  origin   = var.cf_origin
+  origin     = var.cf_origin
   depends_on = [cloudfoundry_org_role.organization_user, cloudfoundry_org_role.organization_manager]
 }
 
@@ -39,6 +39,6 @@ resource "cloudfoundry_space_role" "space_manager" {
   username   = each.value
   type       = "space_manager"
   space      = cloudfoundry_space.dev.id
-  origin   = var.cf_origin
+  origin     = var.cf_origin
   depends_on = [cloudfoundry_org_role.organization_user, cloudfoundry_org_role.organization_manager]
 }
