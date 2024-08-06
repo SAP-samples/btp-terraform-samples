@@ -1,7 +1,7 @@
 ######################################################################
 # Customer account setup
 ######################################################################
-# subaccount
+# global account
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain."
@@ -25,96 +25,84 @@ variable "cli_server_url" {
   default     = "https://cpcli.cf.eu10.hana.ondemand.com"
 }
 
+# Custom IdP
+variable "custom_idp" {
+  type        = string
+  description = "Custom IdP for provider login. Leave empty to use default SAP IdP."
+  default     = ""
+}
+
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  default     = []
 }
 
-#cf_landscape_label
-variable "cf_landscape_label" {
-  type        = string
-  description = "The region where the project account shall be created in."
-  default     = "us10"
-}
 ###
 # Entitlements
 ###
-variable "entitlements" {
-  type = list(object({
-    service_name = string
-    plan_name    = string
-    type         = string
-  }))
-  description = "The list of entitlements that shall be added to the subaccount."
-  default = [
-    {
-      service_name = "connectivity"
-      plan_name    = "lite",
-      type         = "service"
-    },
-    {
-      service_name = "destination"
-      plan_name    = "lite",
-      type         = "service"
-    },
-    {
-      service_name = "html5-apps-repo"
-      plan_name    = "app-host",
-      type         = "service"
-    },
-    {
-      service_name = "sapappstudio"
-      plan_name    = "standard-edition",
-      type         = "app"
-    },
-    {
-      service_name = "enterprise-messaging"
-      plan_name    = "default",
-      type         = "service"
-    },
-    {
-      service_name = "enterprise-messaging-hub"
-      plan_name    = "standard",
-      type         = "app"
-    },
-    {
-      service_name = "privatelink"
-      plan_name    = "standard",
-      type         = "service"
-    },
-    {
-      service_name = "xsuaa"
-      plan_name    = "application",
-      type         = "service"
-    },
-    {
-      service_name = "hana"
-      plan_name    = "hdi-shared",
-      type         = "service"
-    },
-    {
-      service_name = "hana-cloud"
-      plan_name    = "hana",
-      type         = "service"
-    }
-  ]
-}
+
 # Plan_name update
-variable "bas_plan_name" {
+variable "service_plan__bas" {
   description = "BAS plan"
   type        = string
-  default     = "free-tier"
+  default     = "free"
 }
 
-variable "build_workzone_plan_name" {
+variable "service_plan__build_workzone" {
   description = "Build Workzone plan"
   type        = string
-  default     = "free-tier"
+  default     = "free"
 }
 
-variable "hana-cloud_plan_name" {
+variable "service_plan__hana_cloud" {
   description = "hana-cloud plan"
   type        = string
-  default     = "free"
+  default     = "hana-free"
+}
+
+###
+# Cloud Foundry
+###
+
+variable "cf_landscape_label" {
+  type        = string
+  description = "The region where the project account shall be created in."
+  default     = ""
+}
+
+variable "cf_org_name" {
+  type        = string
+  description = "The name for the Cloud Foundry Org."
+  default     = ""
+}
+
+variable "cf_space_developers" {
+  type        = list(string)
+  description = "CF Space developers"
+  default     = []
+}
+
+variable "cf_space_managers" {
+  type        = list(string)
+  description = "CF Space managers"
+  default     = []
+}
+
+variable "cf_org_admins" {
+  type        = list(string)
+  description = "CF Org Admins"
+  default     = []
+}
+
+variable "cf_org_users" {
+  type        = list(string)
+  description = "CF Org Users"
+  default     = []
+}
+
+variable "create_tfvars_file_for_next_stage" {
+  description = "Switch to enable the creation of the tfvars file for the next stage."
+  type        = bool
+  default     = false
 }

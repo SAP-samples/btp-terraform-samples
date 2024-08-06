@@ -1,11 +1,3 @@
-output "subaccount_id" {
-  value = var.subaccount_id
-}
-
-output "cf_landscape_label" {
-  value = var.cf_landscape_label
-}
-
 output "cf_org_id" {
   value = var.cf_org_id
 }
