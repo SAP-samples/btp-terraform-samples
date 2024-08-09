@@ -38,5 +38,6 @@ jobs:
               for file in ${ALL_CHANGED_FILES}; do
                 echo "Checking format of $file with terraform fmt"
                 terraform fmt -check -recursive "$file" || EXIT_CODE=$?
+                echo "Result is $EXIT_CODE"
               done
               exit $EXIT_CODE
