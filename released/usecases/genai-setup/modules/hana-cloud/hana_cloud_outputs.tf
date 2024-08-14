@@ -10,6 +10,7 @@ output "hana_cloud_service_instance_name" {
 }
 
 output "hana_cloud_envs" {
+  sensitive   = true
   value       = <<-EOT
   HANA_DB_ADDRESS=${jsondecode(btp_subaccount_service_binding.hana_cloud.credentials)["host"]}
   HANA_DB_PORT=${jsondecode(btp_subaccount_service_binding.hana_cloud.credentials)["port"]}
