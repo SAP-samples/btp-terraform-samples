@@ -75,7 +75,7 @@ As we are using an additional provider we must make Terraform aware of this in t
 ```terraform
 cloudfoundry = {
       source  = "SAP/cloudfoundry"
-      version = "0.2.1-beta"
+      version = "1.0.0-rc1"
     }
 ```
 
