@@ -48,7 +48,7 @@ resource "btp_subaccount_entitlement" "cloudfoundry" {
 }
 
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
-  depends_on       = [ btp_subaccount_entitlement.build_code ]
+  depends_on       = [btp_subaccount_entitlement.build_code]
   subaccount_id    = btp_subaccount.dc_mission.id
   name             = "cf-${random_uuid.uuid.result}"
   environment_type = "cloudfoundry"
