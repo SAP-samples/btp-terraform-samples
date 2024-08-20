@@ -48,6 +48,7 @@ resource "btp_subaccount_entitlement" "cloudfoundry" {
 }
 
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
+  depends_on       = [ btp_subaccount_entitlement.build_code ]
   subaccount_id    = btp_subaccount.dc_mission.id
   name             = "cf-${random_uuid.uuid.result}"
   environment_type = "cloudfoundry"
@@ -204,7 +205,7 @@ resource "local_file" "output_vars_step1" {
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
 
-      origin               = "${var.origin}"
+      origin_key           = "${var.origin}"
 
       cf_space_name        = "${var.cf_space_name}"
 

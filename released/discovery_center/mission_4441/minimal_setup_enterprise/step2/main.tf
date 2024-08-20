@@ -16,17 +16,25 @@ resource "cloudfoundry_space" "dev" {
 # ------------------------------------------------------------------------------------------------------
 # Assign CF Org roles to the admin users
 # ------------------------------------------------------------------------------------------------------
+# Remove current user from org roles
+data "btp_whoami" "me" {}
+
+locals {
+  cf_org_admins = setsubtract(toset(var.cf_org_admins), [data.btp_whoami.me.email])
+}
+
 # Define Org User role
 resource "cloudfoundry_org_role" "organization_user" {
-  for_each = toset("${var.cf_org_admins}")
+  for_each = toset("${local.cf_org_admins}")
   username = each.value
   type     = "organization_user"
   org      = var.cf_org_id
   origin   = var.origin_key
 }
+
 # Define Org Manager role
 resource "cloudfoundry_org_role" "organization_manager" {
-  for_each   = toset("${var.cf_org_admins}")
+  for_each   = toset("${local.cf_org_admins}")
   username   = each.value
   type       = "organization_manager"
   org        = var.cf_org_id
