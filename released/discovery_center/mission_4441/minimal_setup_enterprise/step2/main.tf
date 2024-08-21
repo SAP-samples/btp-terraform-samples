@@ -25,7 +25,7 @@ locals {
 
 # Define Org User role
 resource "cloudfoundry_org_role" "organization_user" {
-  for_each = toset("${local.cf_org_admins}")
+  for_each = toset(local.cf_org_admins)
   username = each.value
   type     = "organization_user"
   org      = var.cf_org_id
@@ -34,7 +34,7 @@ resource "cloudfoundry_org_role" "organization_user" {
 
 # Define Org Manager role
 resource "cloudfoundry_org_role" "organization_manager" {
-  for_each   = toset("${local.cf_org_admins}")
+  for_each   = toset(local.cf_org_admins)
   username   = each.value
   type       = "organization_manager"
   org        = var.cf_org_id
