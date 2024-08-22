@@ -21,12 +21,6 @@ variable "cli_server_url" {
   default     = "https://cli.btp.cloud.sap"
 }
 
-variable "region" {
-  type        = string
-  description = "The region where the subaccount shall be created in."
-  default     = "us10"
-}
-
 variable "build_code_admins" {
   type        = list(string)
   description = "Defines the colleagues who are admins for SAP Build Code."
