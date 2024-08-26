@@ -13,3 +13,11 @@ output "cf_org_id" {
 output "cf_api_url" {
   value = lookup(jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels), "API Endpoint", "not found")
 }
+
+output "cf_org_users" {
+  value = local.cf_org_users
+}
+
+output "cf_org_admins" {
+  value = local.cf_org_admins
+}
