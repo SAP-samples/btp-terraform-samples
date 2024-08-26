@@ -138,7 +138,7 @@ resource "btp_subaccount_entitlement" "hana-hdi-shared" {
 }
 
 locals {
-  cf_org_users = setsubtract(toset(var.cf_org_users), [data.btp_whoami.me.email])
+  cf_org_users  = setsubtract(toset(var.cf_org_users), [data.btp_whoami.me.email])
   cf_org_admins = setsubtract(toset(var.cf_org_admins), [data.btp_whoami.me.email])
 }
 
