@@ -17,6 +17,7 @@ resource "btp_subaccount" "project" {
   subdomain = local.subaccount_domain
   region    = lower(var.region)
 }
+
 data "btp_whoami" "me" {}
 
 data "btp_subaccount_environments" "all" {
@@ -56,7 +57,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
 # Assignment of users as sub account administrators
 ###############################################################################################
 resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
-  for_each             = toset("${var.subaccount_admins}")
+  for_each             = toset(var.subaccount_admins)
   subaccount_id        = btp_subaccount.project.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
@@ -136,14 +137,19 @@ resource "btp_subaccount_entitlement" "hana-hdi-shared" {
   plan_name     = "hdi-shared"
 }
 
+locals {
+  cf_org_users  = setsubtract(toset(var.cf_org_users), [data.btp_whoami.me.email])
+  cf_org_admins = setsubtract(toset(var.cf_org_admins), [data.btp_whoami.me.email])
+}
+
 resource "local_file" "output_vars_step1" {
   count    = var.create_tfvars_file_for_next_stage ? 1 : 0
   content  = <<-EOT
       cf_api_url          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
       cf_org_id           = "${btp_subaccount_environment_instance.cloudfoundry.platform_id}"
 
-      cf_org_users        = ${jsonencode(var.cf_org_users)}
-      cf_org_admins       = ${jsonencode(var.cf_org_admins)}
+      cf_org_users        = ${jsonencode(local.cf_org_users)}
+      cf_org_admins       = ${jsonencode(local.cf_org_admins)}
       cf_space_developers = ${jsonencode(var.cf_space_developers)}
       cf_space_managers   = ${jsonencode(var.cf_space_managers)}
 
