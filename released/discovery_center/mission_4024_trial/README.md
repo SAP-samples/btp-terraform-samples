@@ -2,16 +2,35 @@
 
 ## Overview
 
-This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Keep the Core Clean Using SAP Build Apps with SAP S/4HANA](https://discovery-center.cloud.sap/index.html#/missiondetail/4024/) for your Enterprise BTP Account.
+This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Keep the Core Clean Using SAP Build Apps with SAP S/4HANA](https://discovery-center.cloud.sap/index.html#/missiondetail/4024/) for your trial account.
 
-The respective setup of a trial account is described in [SAP-samples/btp-terraform-samples/tree/main/released/discovery_center/mission_4024_trial/README.md](https://github.com/SAP-samples/btp-terraform-samples/tree/main/released/discovery_center/mission_4024_trial/README.md)
+The respective setup of an Enterprise account is described in [SAP-samples/btp-terraform-samples/tree/main/released/discovery_center/mission_4024/README.md](https://github.com/SAP-samples/btp-terraform-samples/tree/main/released/discovery_center/mission_4024/README.md)
+
+## Important: Trial Account Prerequisites
+
+Contrary to an Enterprise account (where the setup will happen in a newly created subaccount, where entitlements are added), we make the assumption that in your trial account there is already a subaccount (by default named 'trial') with all the required service entitlements and not already in use!
+
+In a newly created trial account this is already true and you are good to go immediately with this setup. 
+
+But if you have already used services and/or setup subscriptions in your trial account, you have to make sure that you free up these resources to start with this setup here (i.e. delete the corresponding services/subscriptions used for this Discover Center Mission setup). Otherwise the setup would fail!
+
+For this mission setup the following resources (services, subscriptions, etc.) are used: 
+
+- SAP Build Apps (Subscription)
+- SAP Build Work Zone, standard edition (Subscription)
+- SAP-Build-Apps-Runtime (Instance)
+- SAP-Build-Apps-Runtime (Destination)
+- Custom IAS Tenant (Custom Identity Provider for Applications)
+
+You could delete these resources in your [BTP Trial Cockpit](https://cockpit.btp.cloud.sap/trial) on the corresponding trial subaccount pages
+- Services > Instances and Subscriptions
+- Connectivity > Destinations
+- Security > Trust Configuration
 
 ## Content of setup (step1)
 
 The setup comprises the following resources:
 
-- Creation of the SAP BTP subaccount
-- Entitlements of services
 - Subscriptions to applications
 - Role collection assignments to users
 
@@ -34,7 +53,7 @@ To deploy the resources you must:
 
 2. Go into folder `step1` and change the variables in the `sample.tfvars` file to meet your requirements
 
-   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
+   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and all user assignments
    
    > Keep the setting `create_tfvars_file_for_step2 = true` so that a `terraform.tfvars` file is created which contains your needed variables to execute setup `step2` without specifying them again in sample.tfvars there.
 
