@@ -5,11 +5,11 @@ locals {
   subaccount_domain = "dcmission4024${local.random_uuid}"
 
   # used (mandatory) services
-  service_name__sap_build_apps                    = "sap-build-apps"
-  service_name__sap_launchpad                     = "SAPLaunchpad"
-  service_name__destination                       = "destination"
+  service_name__sap_build_apps = "sap-build-apps"
+  service_name__sap_launchpad  = "SAPLaunchpad"
+  service_name__destination    = "destination"
   # optional, if custom idp is used
-  service_name__sap_identity_services_onboarding  = "sap-identity-services-onboarding"
+  service_name__sap_identity_services_onboarding = "sap-identity-services-onboarding"
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ data "btp_subaccount" "subaccount" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "sap_identity_services_onboarding" {
-  count         = var.custom_idp == "" ? 1 : 0
+  count = var.custom_idp == "" ? 1 : 0
 
   subaccount_id = data.btp_subaccount.dc_mission.id
   service_name  = local.service_name__sap_identity_services_onboarding
