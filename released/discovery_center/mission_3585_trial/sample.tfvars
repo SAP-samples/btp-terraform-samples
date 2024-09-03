@@ -2,23 +2,16 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount = "xxxxxxxx-xxxxxxx-xxxxxxx-xxxxxxxx-xxxxxx"
+globalaccount = "<your-globalaccount-subdomain>" // <xxxxxxxx>trial-ga
 
-# Region for your subaccount
+# Region for your trial subaccount
 region = "us10"
 
 # Name of your sub account
-subaccount_name = "SAP Discovery Center Mission 3585"
+subaccount_id = "<your trial Subaccount ID>"
 
 # ------------------------------------------------------------------------------------------------------
 # USER ROLES
 # ------------------------------------------------------------------------------------------------------
 subaccount_admins = ["another.user@test.com"]
-
-bas_admins     = ["another.user@test.com", "you@test.com"]
-bas_developers = ["another.user@test.com", "you@test.com"]
-
-launchpad_admins = ["another.user@test.com", "you@test.com"]
-
-cicd_admins     = ["another.user@test.com", "you@test.com"]
-cicd_developers = ["another.user@test.com", "you@test.com"]
+launchpad_admins  = ["another.user@test.com", "you@test.com"]
