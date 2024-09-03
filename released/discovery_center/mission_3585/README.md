@@ -1,19 +1,17 @@
-# Discovery Center mission - Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App
+# Discovery Center Mission: Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App
 
 ## Overview
 
-This sample shows how to set up your SAP BTP account for the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/missiondetail/3585/)
+This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/protected/index.html#/missiondetail/3585) for your Enterprise BTP Account.
+
+The respective setup of a trial account is described in [SAP-samples/btp-terraform-samples/tree/main/released/discovery_center/mission_3585_trial/README.md](https://github.com/SAP-samples/btp-terraform-samples/tree/main/released/discovery_center/mission_3585_trial/README.md)
 
 ## Content of setup
 
 The setup comprises the following resources:
 
 - Creation of the SAP BTP subaccount
-- Enablement of Cloudfoundry Environment - [see available regions and endpoints](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-available-for-cloud-foundry-environment)
 - Entitlements of services
-   * SAP Business Application Studio
-   * SAP Build Work Zone, standard edition
-   * Continous Integration & Delivery - Optional
 - Subscriptions to applications
 - Role collection assignments to users
 
@@ -23,21 +21,18 @@ Make sure that you are familiar with SAP BTP and know both the [Get Started with
 
 To deploy the resources you must:
 
-1. Set the environment variables BTP_USERNAME and BTP_PASSWORD to pass credentials to the BTP provider to authenticate and interact with your BTP environments. 
-
+1. Set your credentials as environment variables
+   
    ```bash
-   export BTP_USERNAME=<your_username>
-   export BTP_PASSWORD=<your_password>
+   export BTP_USERNAME ='<Email address of your BTP user>'
+   export BTP_PASSWORD ='<Password of your BTP user>'
    ```
 
 2. Change the variables in the `sample.tfvars` file to meet your requirements
 
-   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
-
-   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
-
-
-3. Initialize your workspace:
+   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and all user assignments
+   
+3. Then initialize your workspace:
 
    ```bash
    terraform init
@@ -49,13 +44,17 @@ To deploy the resources you must:
    terraform plan -var-file="sample.tfvars"
    ```
 
-6. Apply your configuration to provision the resources:
+5. Apply your configuration to provision the resources:
 
    ```bash
    terraform apply -var-file="sample.tfvars"
    ```
 
-## When finished
+6. Verify e.g., in [BTP Cockpit](https://cockpit.btp.cloud.sap) that a new subaccount with a SAP Business Application Studio subscription has been created and respective users were assigned to role collections
+
+With this you have completed the quick account setup as described in the Discovery Center Mission - [Get Started on SAP BTP with SAPUI5/Fiori - Create a Hello World App](https://discovery-center.cloud.sap/protected/index.html#/missiondetail/3585).
+
+## In the end
 
 You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
 
