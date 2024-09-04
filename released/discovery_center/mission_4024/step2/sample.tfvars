@@ -1,5 +1,6 @@
 # ------------------------------------------------------------------------------------------------------
 # Account settings
 # ------------------------------------------------------------------------------------------------------
-globalaccount = "<<your-global-account-subdomain>>"
-subaccount_id = "<<subaccount id from step 1>>"
+globalaccount = "<your-global-account-subdomain>"
+
+subaccount_id = "<subaccount id from step 1>>"

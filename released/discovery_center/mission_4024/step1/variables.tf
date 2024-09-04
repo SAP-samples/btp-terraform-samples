@@ -9,25 +9,25 @@ variable "globalaccount" {
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
+  default     = "https://cli.btp.cloud.sap"
 }
 
 variable "custom_idp" {
   type        = string
-  description = "Defines the custom IDP to be used for the subaccount"
+  description = "The custom identity provider for the subaccount."
   default     = ""
 }
 
 variable "region" {
   type        = string
-  description = "The region where the sub account shall be created in."
+  description = "The region where the subaccount shall be created in."
   default     = "us10"
 }
 
 variable "subaccount_name" {
   type        = string
   description = "The subaccount name."
-  default     = "My SAP Build Apps subaccount"
+  default     = "My SAP DC mission subaccount."
 }
 
 variable "subaccount_id" {
@@ -39,6 +39,29 @@ variable "subaccount_id" {
 # ------------------------------------------------------------------------------------------------------
 # service plans
 # ------------------------------------------------------------------------------------------------------
+variable "service_plan__destination" {
+  type        = string
+  description = "The plan for service 'Destination Service' with technical name 'destination'"
+  default     = "lite"
+  validation {
+    condition     = contains(["lite"], var.service_plan__destination)
+    error_message = "Invalid value for service_plan__destination. Only 'lite' is allowed."
+  }
+}
+
+# ------------------------------------------------------------------------------------------------------
+# app subscription plans
+# ------------------------------------------------------------------------------------------------------
+variable "service_plan__sap_identity_services_onboarding" {
+  type        = string
+  description = "The plan for service 'Cloud Identity Services' with technical name 'sap-identity-services-onboarding'"
+  default     = "default"
+  validation {
+    condition     = contains(["default"], var.service_plan__sap_identity_services_onboarding)
+    error_message = "Invalid value for service_plan__sap_identity_services_onboarding. Only 'default' is allowed."
+  }
+}
+
 variable "service_plan__sap_build_apps" {
   type        = string
   description = "The plan for SAP Build Apps subscription"
@@ -56,26 +79,6 @@ variable "service_plan__sap_launchpad" {
   validation {
     condition     = contains(["free", "standard"], var.service_plan__sap_launchpad)
     error_message = "Invalid value for service_plan__sap_launchpad. Only 'free' and 'standard' are allowed."
-  }
-}
-
-variable "service_plan__destination" {
-  type        = string
-  description = "The plan for service 'Destination Service' with technical name 'destination'"
-  default     = "lite"
-  validation {
-    condition     = contains(["lite"], var.service_plan__destination)
-    error_message = "Invalid value for service_plan__destination. Only 'lite' is allowed."
-  }
-}
-
-variable "service_plan__sap_identity_services_onboarding" {
-  type        = string
-  description = "The plan for service 'Cloud Identity Services' with technical name 'sap-identity-services-onboarding'"
-  default     = "default"
-  validation {
-    condition     = contains(["default"], var.service_plan__sap_identity_services_onboarding)
-    error_message = "Invalid value for service_plan__sap_identity_services_onboarding. Only 'default' is allowed."
   }
 }
 
