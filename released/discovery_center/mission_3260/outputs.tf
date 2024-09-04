@@ -1,9 +1,9 @@
 output "subaccount_id" {
   value       = data.btp_subaccount.dc_mission.id
-  description = "The ID of the subaccount."
+  description = "The ID of the dc mission subaccount."
 }
 
-output "bpa_url" {
+output "process_automation_subscription_url" {
   value       = btp_subaccount_subscription.build_process_automation.subscription_url
-  description = "Subscription URL for SAP Business Process Automation"
+  description = "Subscription URL for SAP Build Process Automation"
 }
