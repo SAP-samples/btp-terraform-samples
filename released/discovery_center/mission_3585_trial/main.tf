@@ -29,7 +29,7 @@ data "btp_subaccount" "dc_mission" {
 locals {
   service_name__sap_launchpad = "SAPLaunchpad"
   # optional
-  service_name__cicd_app      = "cicd-app"
+  service_name__cicd_app = "cicd-app"
 }
 
 # ------------------------------------------------------------------------------------------------------
