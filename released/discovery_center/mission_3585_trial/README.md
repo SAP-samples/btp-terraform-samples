@@ -14,9 +14,10 @@ In a newly created trial account this is already true and you are good to go imm
 
 But if you have already used services and/or setup subscriptions in your trial account, you have to make sure that you free up these resources to start with this setup here (i.e. delete the corresponding services/subscriptions used for this Discover Center Mission setup). Otherwise the setup would fail!
 
-For this mission setup the following resource (app subscription) is used: 
+For this mission setup the following resources (app subscriptions) is used: 
 
-- SAP Build Work Zone, standard edition (Subscription)
+- SAP Build Work Zone, standard edition
+- Continuous Integration & Delivery 
 
 You could delete these resources in your [BTP Trial Cockpit](https://cockpit.btp.cloud.sap/trial) on the corresponding trial subaccount pages
 - Services > Instances and Subscriptions

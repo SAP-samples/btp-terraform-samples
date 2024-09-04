@@ -11,7 +11,9 @@ region = "us10"
 subaccount_id = "<your trial Subaccount ID>"
 
 # ------------------------------------------------------------------------------------------------------
-# USER ROLES
+# Use case specific configuration (please adapt!)
 # ------------------------------------------------------------------------------------------------------
 subaccount_admins = ["another.user@test.com"]
 launchpad_admins  = ["another.user@test.com", "you@test.com"]
+cicd_admins       = ["another.user@test.com", "you@test.com"]
+cicd_developers   = ["another.user@test.com", "you@test.com"]
