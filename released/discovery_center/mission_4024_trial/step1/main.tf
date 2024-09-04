@@ -1,15 +1,12 @@
+# ------------------------------------------------------------------------------------------------------
+# Subaccount setup for DC mission 4024 (trial)
+# ------------------------------------------------------------------------------------------------------
+# Setup subaccount domain (to ensure uniqueness in BTP global account)
 resource "random_uuid" "uuid" {}
 
 locals {
   random_uuid       = random_uuid.uuid.result
   subaccount_domain = "dcmission4024${local.random_uuid}"
-
-  # used (mandatory) services
-  service_name__sap_build_apps = "sap-build-apps"
-  service_name__sap_launchpad  = "SAPLaunchpad"
-  service_name__destination    = "destination"
-  # optional, if custom idp is used
-  service_name__sap_identity_services_onboarding = "sap-identity-services-onboarding"
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -31,70 +28,14 @@ data "btp_subaccount" "subaccount" {
   id = data.btp_subaccount.dc_mission.id
 }
 # ------------------------------------------------------------------------------------------------------
-# SERVICES/SUBSCRIPTIONS
+# SERVICES
 # ------------------------------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------------------------------
-# Setup sap-identity-services-onboarding (Cloud Identity Services)
-# ------------------------------------------------------------------------------------------------------
-# Entitle
-resource "btp_subaccount_entitlement" "sap_identity_services_onboarding" {
-  count = var.custom_idp == "" ? 1 : 0
-
-  subaccount_id = data.btp_subaccount.dc_mission.id
-  service_name  = local.service_name__sap_identity_services_onboarding
-  plan_name     = var.service_plan__sap_identity_services_onboarding
+#
+locals {
+  service_name__destination = "destination"
+  # optional
+  service_name__application_runtime = "APPLICATION_RUNTIME"
 }
-# Subscribe
-resource "btp_subaccount_subscription" "sap_identity_services_onboarding" {
-  count = var.custom_idp == "" ? 1 : 0
-
-  subaccount_id = data.btp_subaccount.dc_mission.id
-  app_name      = local.service_name__sap_identity_services_onboarding
-  plan_name     = var.service_plan__sap_identity_services_onboarding
-}
-# IdP trust configuration
-resource "btp_subaccount_trust_configuration" "fully_customized" {
-  subaccount_id     = data.btp_subaccount.dc_mission.id
-  identity_provider = var.custom_idp != "" ? var.custom_idp : element(split("/", btp_subaccount_subscription.sap_identity_services_onboarding[0].subscription_url), 2)
-}
-# ------------------------------------------------------------------------------------------------------
-# Setup sap-build-apps (SAP Build Apps)
-# ------------------------------------------------------------------------------------------------------
-# Entitle
-resource "btp_subaccount_entitlement" "sap_build_apps" {
-  subaccount_id = data.btp_subaccount.dc_mission.id
-  service_name  = local.service_name__sap_build_apps
-  plan_name     = var.service_plan__sap_build_apps
-  amount        = 1
-  depends_on    = [btp_subaccount_trust_configuration.fully_customized]
-}
-# Subscribe
-resource "btp_subaccount_subscription" "sap-build-apps" {
-  subaccount_id = data.btp_subaccount.dc_mission.id
-  app_name      = "sap-appgyver-ee"
-  plan_name     = var.service_plan__sap_build_apps
-  depends_on    = [btp_subaccount_entitlement.sap_build_apps]
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Setup SAPLaunchpad (SAP Build Work Zone, standard edition)
-# ------------------------------------------------------------------------------------------------------
-# Entitle
-resource "btp_subaccount_entitlement" "sap_launchpad" {
-  subaccount_id = data.btp_subaccount.dc_mission.id
-  service_name  = local.service_name__sap_launchpad
-  plan_name     = var.service_plan__sap_launchpad
-  #amount        = var.service_plan__sap_launchpad == "free" ? 1 : null
-}
-
-# Subscribe
-resource "btp_subaccount_subscription" "sap_launchpad" {
-  subaccount_id = data.btp_subaccount.dc_mission.id
-  app_name      = local.service_name__sap_launchpad
-  plan_name     = var.service_plan__sap_launchpad
-  depends_on    = [btp_subaccount_entitlement.sap_launchpad]
-}
-
 # ------------------------------------------------------------------------------------------------------
 # Setup destination (Destination Service)
 # ------------------------------------------------------------------------------------------------------
@@ -140,13 +81,96 @@ resource "btp_subaccount_service_instance" "vcf_destination" {
 }
 
 # ------------------------------------------------------------------------------------------------------
+# Setup APPLICATION_RUNTIME (Cloud Foundry Runtime)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "application_runtime" {
+  count         = var.use_optional_resources ? 1 : 0
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__application_runtime
+  plan_name     = var.service_plan__application_runtime
+  amount        = 1
+}
+
+# ------------------------------------------------------------------------------------------------------
+# APP SUBSCRIPTIONS
+# ------------------------------------------------------------------------------------------------------
+#
+locals {
+  service_name__sap_build_apps = "sap-build-apps"
+  service_name__sap_launchpad  = "SAPLaunchpad"
+  # optional, if custom idp is used
+  service_name__sap_identity_services_onboarding = "sap-identity-services-onboarding"
+}
+# ------------------------------------------------------------------------------------------------------
+# Setup sap-identity-services-onboarding (Cloud Identity Services)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "sap_identity_services_onboarding" {
+  count = var.custom_idp == "" ? 1 : 0
+
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sap_identity_services_onboarding
+  plan_name     = var.service_plan__sap_identity_services_onboarding
+}
+# Subscribe
+resource "btp_subaccount_subscription" "sap_identity_services_onboarding" {
+  count = var.custom_idp == "" ? 1 : 0
+
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  app_name      = local.service_name__sap_identity_services_onboarding
+  plan_name     = var.service_plan__sap_identity_services_onboarding
+}
+# IdP trust configuration
+resource "btp_subaccount_trust_configuration" "fully_customized" {
+  subaccount_id     = data.btp_subaccount.dc_mission.id
+  identity_provider = var.custom_idp != "" ? var.custom_idp : element(split("/", btp_subaccount_subscription.sap_identity_services_onboarding[0].subscription_url), 2)
+}
+# ------------------------------------------------------------------------------------------------------
+# Setup sap-build-apps (SAP Build Apps)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "sap_build_apps" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sap_build_apps
+  plan_name     = var.service_plan__sap_build_apps
+  amount        = 1
+  depends_on    = [btp_subaccount_trust_configuration.fully_customized]
+}
+# Subscribe
+resource "btp_subaccount_subscription" "sap_build_apps" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  app_name      = "sap-appgyver-ee"
+  plan_name     = var.service_plan__sap_build_apps
+  depends_on    = [btp_subaccount_entitlement.sap_build_apps]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Setup SAPLaunchpad (SAP Build Work Zone, standard edition)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "sap_launchpad" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sap_launchpad
+  plan_name     = var.service_plan__sap_launchpad
+}
+
+# Subscribe
+resource "btp_subaccount_subscription" "sap_launchpad" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  app_name      = local.service_name__sap_launchpad
+  plan_name     = var.service_plan__sap_launchpad
+  depends_on    = [btp_subaccount_entitlement.sap_launchpad]
+}
+
+# ------------------------------------------------------------------------------------------------------
 #  USERS AND ROLES
 # ------------------------------------------------------------------------------------------------------
 #
 # Get all roles in the subaccount
 data "btp_subaccount_roles" "all" {
   subaccount_id = data.btp_subaccount.dc_mission.id
-  depends_on    = [btp_subaccount_subscription.sap-build-apps]
+  depends_on    = [btp_subaccount_subscription.sap_build_apps]
 }
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection "Subaccount Administrator"
@@ -263,12 +287,16 @@ resource "btp_subaccount_role_collection_assignment" "build_apps_registry_develo
   depends_on           = [btp_subaccount_role_collection.build_apps_registry_developer]
 }
 
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "Launchpad_Admin"
+# ------------------------------------------------------------------------------------------------------
 # Assign users
 resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
   for_each             = toset("${var.launchpad_admins}")
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Launchpad_Admin"
   user_name            = each.value
+  origin               = btp_subaccount_trust_configuration.fully_customized.origin
   depends_on           = [btp_subaccount_subscription.sap_launchpad]
 }
 

@@ -1,11 +1,16 @@
 # ------------------------------------------------------------------------------------------------------
 # Account settings
 # ------------------------------------------------------------------------------------------------------
-globalaccount = "your-globalaccount-subdomain"
-region        = "us10"
+# Your global account subdomain
+globalaccount = "<your-globalaccount-subdomain>" // <xxxxxxxx>trial-ga
+
+# Region for your trial subaccount
+region = "us10"
+
+subaccount_id = "<your trial Subaccount ID>"
 
 # ------------------------------------------------------------------------------------------------------
-# Use case specific configuration
+# Use case specific role assignments
 # ------------------------------------------------------------------------------------------------------
 subaccount_admins             = ["jane.doe@test.com"]
 launchpad_admins              = ["jane.doe@test.com"]
