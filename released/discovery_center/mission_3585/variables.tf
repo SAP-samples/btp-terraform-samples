@@ -37,19 +37,6 @@ variable "use_optional_resources" {
 }
 
 # ------------------------------------------------------------------------------------------------------
-# service plans
-# ------------------------------------------------------------------------------------------------------
-variable "service_plan__cicd_service" {
-  type        = string
-  description = "The plan for service 'SAP Continuous Integration and Delivery' with technical name 'cicd-service'"
-  default     = "default"
-  validation {
-    condition     = contains(["default"], var.service_plan__cicd_service)
-    error_message = "Invalid value for service_plan__cicd_service. Only 'default' is allowed."
-  }
-}
-
-# ------------------------------------------------------------------------------------------------------
 # app subscription plans
 # ------------------------------------------------------------------------------------------------------
 variable "service_plan__sapappstudio" {

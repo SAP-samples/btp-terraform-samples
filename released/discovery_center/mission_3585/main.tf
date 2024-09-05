@@ -14,43 +14,6 @@ resource "btp_subaccount" "dc_mission" {
 }
 
 # ------------------------------------------------------------------------------------------------------
-# SERVICES
-# ------------------------------------------------------------------------------------------------------
-#
-locals {
-  # optional
-  service_name__cicd_service = "cicd-service"
-}
-# ------------------------------------------------------------------------------------------------------
-# Setup cicd-service (SAP Continuous Integration and Delivery), (not running in CF environment)
-# ------------------------------------------------------------------------------------------------------
-# Entitle 
-resource "btp_subaccount_entitlement" "cicd_service" {
-  count         = var.use_optional_resources ? 1 : 0
-  subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = local.service_name__cicd_service
-  plan_name     = var.service_plan__cicd_service
-}
-# Get serviceplan_id for cicd-service with plan_name "default"
-data "btp_subaccount_service_plan" "cicd_service" {
-  count         = var.use_optional_resources ? 1 : 0
-  subaccount_id = btp_subaccount.dc_mission.id
-  offering_name = local.service_name__cicd_service
-  name          = var.service_plan__cicd_service
-  depends_on    = [btp_subaccount_entitlement.cicd_service]
-}
-# Create service instance
-resource "btp_subaccount_service_instance" "cicd_service" {
-  count          = var.use_optional_resources ? 1 : 0
-  subaccount_id  = btp_subaccount.dc_mission.id
-  serviceplan_id = data.btp_subaccount_service_plan.cicd_service[0].id
-  name           = "default_cicd-service"
-  # Subscription to the cicd-app subscription is required for creating the service instance
-  # See as well https://help.sap.com/docs/continuous-integration-and-delivery/sap-continuous-integration-and-delivery/optional-enabling-api-usage?language=en-US
-  depends_on = [btp_subaccount_subscription.cicd_app]
-}
-
-# ------------------------------------------------------------------------------------------------------
 # APP SUBSCRIPTIONS
 # ------------------------------------------------------------------------------------------------------
 #
