@@ -36,6 +36,11 @@ variable "subaccount_id" {
   default     = ""
 }
 
+variable "use_optional_resources" {
+  type        = bool
+  description = "optional resources are ignored if value is false"
+  default     = true
+}
 
 # ------------------------------------------------------------------------------------------------------
 # app subscription plans
@@ -47,6 +52,16 @@ variable "service_plan__sap_launchpad" {
   validation {
     condition     = contains(["standard"], var.service_plan__sap_launchpad)
     error_message = "Invalid value for service_plan__sap_launchpad. Only 'standard' is allowed."
+  }
+}
+
+variable "service_plan__cicd_app" {
+  type        = string
+  description = "The plan for app subscription 'SAP Continuous Integration and Delivery' with technical name 'cicd-app'"
+  default     = "trial"
+  validation {
+    condition     = contains(["trial"], var.service_plan__cicd_app)
+    error_message = "Invalid value for service_plan__cicd_app. Only 'trial' are allowed."
   }
 }
 
@@ -74,3 +89,26 @@ variable "launchpad_admins" {
     error_message = "Please enter a valid email address."
   }
 }
+
+variable "cicd_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are administrators for the CI/CD service."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cicd_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cicd_admins)
+    error_message = "Please enter a valid email address."
+  }
+}
+
+variable "cicd_developers" {
+  type        = list(string)
+  description = "Defines the colleagues who are developers for the CI/CD service."
+
+  # add validation to check if admins contains a list of valid email addresses
+  validation {
+    condition     = length([for email in var.cicd_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cicd_developers)
+    error_message = "Please enter a valid email address."
+  }
+}
+

@@ -28,7 +28,10 @@ data "btp_subaccount" "dc_mission" {
 #
 locals {
   service_name__sap_launchpad = "SAPLaunchpad"
+  # optional
+  service_name__cicd_app = "cicd-app"
 }
+
 # ------------------------------------------------------------------------------------------------------
 # Setup SAPLaunchpad (SAP Build Work Zone, standard edition)
 # ------------------------------------------------------------------------------------------------------
@@ -51,6 +54,26 @@ data "btp_subaccount_subscription" "sap_launchpad" {
   app_name      = local.service_name__sap_launchpad
   plan_name     = var.service_plan__sap_launchpad
   depends_on    = [btp_subaccount_subscription.sap_launchpad]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Setup cicd-app (Continuous Integration & Delivery)
+# ------------------------------------------------------------------------------------------------------
+# Entitle
+resource "btp_subaccount_entitlement" "cicd_app" {
+  count         = var.use_optional_resources ? 1 : 0
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__cicd_app
+  plan_name     = var.service_plan__cicd_app
+  amount        = var.service_plan__cicd_app == "free" ? 1 : null
+}
+# Subscribe
+resource "btp_subaccount_subscription" "cicd_app" {
+  count         = var.use_optional_resources ? 1 : 0
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  app_name      = local.service_name__cicd_app
+  plan_name     = var.service_plan__cicd_app
+  depends_on    = [btp_subaccount_entitlement.cicd_app]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -77,4 +100,29 @@ resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
   role_collection_name = "Launchpad_Admin"
   user_name            = each.value
   depends_on           = [btp_subaccount_subscription.sap_launchpad]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "CICD Service Administrator"
+# ------------------------------------------------------------------------------------------------------
+# optional app subscription
+
+resource "btp_subaccount_role_collection_assignment" "cicd_admins" {
+  for_each             = toset(var.use_optional_resources == true ? var.cicd_admins : [])
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "CICD Service Administrator"
+  user_name            = each.value
+  depends_on           = [btp_subaccount_subscription.cicd_app]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "CICD Service Developer"
+# ------------------------------------------------------------------------------------------------------
+# optional app subscription
+resource "btp_subaccount_role_collection_assignment" "cicd_developers" {
+  for_each             = toset(var.use_optional_resources == true ? var.cicd_developers : [])
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "CICD Service Developer"
+  user_name            = each.value
+  depends_on           = [btp_subaccount_subscription.cicd_app]
 }
