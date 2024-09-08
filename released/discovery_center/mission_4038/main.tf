@@ -124,3 +124,4 @@ resource "btp_subaccount_role_collection_assignment" "int_prov" {
   role_collection_name = "Integration_Provisioner"
   user_name            = each.value
 }
+
