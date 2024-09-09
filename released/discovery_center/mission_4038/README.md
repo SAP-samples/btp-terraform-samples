@@ -50,3 +50,4 @@ You probably want to remove the assets after trying them out to avoid unnecessar
 ```bash
 terraform destroy
 ```
+
