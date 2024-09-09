@@ -5,5 +5,5 @@ output "subaccount_id" {
 
 output "integrationsuite_url" {
   value       = btp_subaccount_subscription.sap_integration_suite.subscription_url
-  description = "Subscription URL for SAP Business Process Automation"
+  description = "Subscription URL for SAP Integration Suite."
 }
