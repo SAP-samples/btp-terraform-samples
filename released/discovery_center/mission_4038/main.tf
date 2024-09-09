@@ -98,6 +98,7 @@ resource "btp_subaccount_entitlement" "sap_integration_suite" {
   subaccount_id = data.btp_subaccount.dc_mission.id
   service_name  = local.service_name__sap_integration_suite
   plan_name     = var.service_plan__sap_integration_suite
+  amount        = var.service_plan__sap_integration_suite == "free" ? 1 : null
 }
 
 data "btp_subaccount_subscriptions" "all" {
@@ -123,3 +124,4 @@ resource "btp_subaccount_role_collection_assignment" "int_prov" {
   role_collection_name = "Integration_Provisioner"
   user_name            = each.value
 }
+

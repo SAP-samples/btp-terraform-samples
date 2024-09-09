@@ -1,3 +1,13 @@
+output "globalaccount" {
+  value       = var.globalaccount
+  description = "The globalaccount subdomain."
+}
+
+output "cli_server_url" {
+  value       = var.cli_server_url
+  description = "The BTP CLI server URL."
+}
+
 output "subaccount_id" {
   value       = data.btp_subaccount.dc_mission.id
   description = "The ID of the subaccount."
