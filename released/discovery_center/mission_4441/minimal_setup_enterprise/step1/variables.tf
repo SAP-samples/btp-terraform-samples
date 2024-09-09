@@ -135,66 +135,30 @@ variable "service_plan__sap_launchpad" {
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.subaccount_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_admins)
-    error_message = "Please enter a valid email address for the subaccount admins."
-  }
 }
 
 variable "build_code_admins" {
   type        = list(string)
   description = "Defines the colleagues who are admins for SAP Build Code."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.build_code_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.build_code_admins)
-    error_message = "Please enter a valid email address for the Build Code admins."
-  }
 }
 variable "build_code_developers" {
   type        = list(string)
   description = "Defines the colleagues who are developers for SAP Build Code."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.build_code_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.build_code_developers)
-    error_message = "Please enter a valid email address for the Build Code developers."
-  }
 }
 
 variable "cf_org_admins" {
   type        = list(string)
   description = "List of users to set as Cloudfoundry org administrators."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.cf_org_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_org_admins)
-    error_message = "Please enter a valid email address for the CF Org admins."
-  }
 }
 
 variable "cf_space_managers" {
   type        = list(string)
   description = "Defines the colleagues who are added to a CF space as space manager."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.cf_space_managers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_managers)
-    error_message = "Please enter a valid email address for the CF space managers."
-  }
 }
 
 variable "cf_space_developers" {
   type        = list(string)
   description = "Defines the colleagues who are added to a CF space as space developer."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.cf_space_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.cf_space_developers)
-    error_message = "Please enter a valid email address for the CF space developers."
-  }
 }
 
 # ------------------------------------------------------------------------------------------------------
