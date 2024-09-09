@@ -1,16 +1,31 @@
 # ------------------------------------------------------------------------------------------------------
-# SUBACCOUNT SETUP
+# Subaccount setup for DC mission 4441
 # ------------------------------------------------------------------------------------------------------
 # Setup subaccount domain (to ensure uniqueness in BTP global account)
 resource "random_uuid" "uuid" {}
+
+locals {
+  random_uuid       = random_uuid.uuid.result
+  subaccount_domain = "dcmission4441${local.random_uuid}"
+}
 
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount" "dc_mission" {
+  count = var.subaccount_id == "" ? 1 : 0
+
   name      = var.subaccount_name
-  subdomain = join("-", ["dc-mission-4441", random_uuid.uuid.result])
-  region    = lower(var.region)
+  subdomain = local.subaccount_domain
+  region    = var.region
+}
+
+data "btp_subaccount" "dc_mission" {
+  id = var.subaccount_id != "" ? var.subaccount_id : btp_subaccount.dc_mission[0].id
+}
+
+data "btp_subaccount" "subaccount" {
+  id = data.btp_subaccount.dc_mission.id
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -19,41 +34,46 @@ resource "btp_subaccount" "dc_mission" {
 resource "btp_subaccount_trust_configuration" "fully_customized" {
   # Only create trust configuration if custom_idp has been set 
   count             = var.custom_idp == "" ? 0 : 1
-  subaccount_id     = btp_subaccount.dc_mission.id
+  subaccount_id     = data.btp_subaccount.dc_mission.id
   identity_provider = var.custom_idp
 }
+
 # ------------------------------------------------------------------------------------------------------
-# CLOUDFOUNDRY PREPARATION
+# SERVICES
+# ------------------------------------------------------------------------------------------------------
+#
+locals {
+  service_name__cloudfoundry = "cloudfoundry"
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Setup cloudfoundry (Cloud Foundry Environment)
 # ------------------------------------------------------------------------------------------------------
 #
 # Fetch all available environments for the subaccount
 data "btp_subaccount_environments" "all" {
-  subaccount_id = btp_subaccount.dc_mission.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
 }
-# ------------------------------------------------------------------------------------------------------
-# Take the landscape label from the first CF environment if no environment label is provided
-# (this replaces the previous null_resource)
-# ------------------------------------------------------------------------------------------------------
+# Take the landscape label from the first CF environment if no environment label is provided (this replaces the previous null_resource)
 resource "terraform_data" "cf_landscape_label" {
   input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
-# ------------------------------------------------------------------------------------------------------
-# Create the Cloud Foundry environment instance
-# ------------------------------------------------------------------------------------------------------
+# Entitle
 resource "btp_subaccount_entitlement" "cloudfoundry" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = "cloudfoundry"
-  plan_name     = "build-code"
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__cloudfoundry
+  plan_name     = var.service_plan__cloudfoundry
   amount        = 1
 }
 
+# Create instance
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
   depends_on       = [btp_subaccount_entitlement.build_code]
-  subaccount_id    = btp_subaccount.dc_mission.id
+  subaccount_id    = data.btp_subaccount.dc_mission.id
   name             = "cf-${random_uuid.uuid.result}"
   environment_type = "cloudfoundry"
-  service_name     = "cloudfoundry"
-  plan_name        = "build-code"
+  service_name     = local.service_name__cloudfoundry
+  plan_name        = var.service_plan__cloudfoundry
   landscape_label  = terraform_data.cf_landscape_label.output
 
   parameters = jsonencode({
@@ -65,38 +85,43 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
 # APP SUBSCRIPTIONS
 # ------------------------------------------------------------------------------------------------------
 #
+locals {
+  service_name__build_code    = "build-code"
+  service_name__sapappstudio  = "sapappstudio"
+  service_name__sap_launchpad = "SAPLaunchpad"
+}
 # ------------------------------------------------------------------------------------------------------
-# Setup build-code
+# Setup build-code (SAP Build Code)
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "build_code" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = "build-code"
-  plan_name     = "standard"
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__build_code
+  plan_name     = var.service_plan__build_code
   amount        = 1
 }
 # Subscribe
 resource "btp_subaccount_subscription" "build_code" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  app_name      = "build-code"
-  plan_name     = "standard"
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  app_name      = local.service_name__build_code
+  plan_name     = var.service_plan__build_code
   depends_on    = [btp_subaccount_entitlement.build_code]
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Setup sapappstudio
+# Setup sapappstudio (SAP Business Application Studio)
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "sapappstudio" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = "sapappstudio"
-  plan_name     = "build-code"
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sapappstudio
+  plan_name     = var.service_plan__sapappstudio
 }
-# Subscribe (depends on subscription of build-code)
+# Subscribe
 resource "btp_subaccount_subscription" "sapappstudio" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  app_name      = "sapappstudio"
-  plan_name     = "build-code"
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  app_name      = local.service_name__sapappstudio
+  plan_name     = var.service_plan__sapappstudio
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_entitlement.sapappstudio]
 }
 
@@ -105,15 +130,15 @@ resource "btp_subaccount_subscription" "sapappstudio" {
 # ------------------------------------------------------------------------------------------------------
 # Entitle
 resource "btp_subaccount_entitlement" "sap_launchpad" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  service_name  = "SAPLaunchpad"
-  plan_name     = "foundation"
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sap_launchpad
+  plan_name     = var.service_plan__sap_launchpad
 }
 # Subscribe
 resource "btp_subaccount_subscription" "sap_launchpad" {
-  subaccount_id = btp_subaccount.dc_mission.id
-  app_name      = "SAPLaunchpad"
-  plan_name     = "foundation"
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  app_name      = local.service_name__sap_launchpad
+  plan_name     = var.service_plan__sap_launchpad
   depends_on    = [btp_subaccount_entitlement.sap_launchpad]
 }
 
@@ -121,17 +146,35 @@ resource "btp_subaccount_subscription" "sap_launchpad" {
 #  USERS AND ROLES
 # ------------------------------------------------------------------------------------------------------
 #
-# Get all available subaccount roles
+locals {
+  subaccount_admins     = var.subaccount_admins
+  build_code_admins     = var.build_code_admins
+  build_code_developers = var.build_code_developers
+}
+
+# Get all roles in the subaccount
 data "btp_subaccount_roles" "all" {
-  subaccount_id = btp_subaccount.dc_mission.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   depends_on    = [btp_subaccount_subscription.build_code, btp_subaccount_subscription.sapappstudio]
 }
+
+# ------------------------------------------------------------------------------------------------------
+# Assign role collection "Subaccount Administrator"
+# ------------------------------------------------------------------------------------------------------
+resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
+  for_each             = toset("${local.subaccount_admins}")
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "Subaccount Administrator"
+  user_name            = each.value
+  depends_on           = [btp_subaccount.dc_mission]
+}
+
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection for Build Code Administrator
 # ------------------------------------------------------------------------------------------------------
 # Assign roles to the role collection "Build Code Administrator"
 resource "btp_subaccount_role_collection" "build_code_administrator" {
-  subaccount_id = btp_subaccount.dc_mission.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   name          = "Build Code Administrator"
   description   = "The role collection for an administrator on SAP Build Code"
 
@@ -145,8 +188,8 @@ resource "btp_subaccount_role_collection" "build_code_administrator" {
 }
 # Assign users to the role collection "Build Code Administrator"
 resource "btp_subaccount_role_collection_assignment" "build_code_administrator" {
-  for_each             = toset("${var.build_code_admins}")
-  subaccount_id        = btp_subaccount.dc_mission.id
+  for_each             = toset("${local.build_code_admins}")
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Build Code Administrator"
   user_name            = each.value
   depends_on           = [btp_subaccount_role_collection.build_code_administrator]
@@ -157,7 +200,7 @@ resource "btp_subaccount_role_collection_assignment" "build_code_administrator" 
 # ------------------------------------------------------------------------------------------------------
 # Create role collection "Build Code Developer"  
 resource "btp_subaccount_role_collection" "build_code_developer" {
-  subaccount_id = btp_subaccount.dc_mission.id
+  subaccount_id = data.btp_subaccount.dc_mission.id
   name          = "Build Code Developer"
   description   = "The role collection for a developer on SAP Build Code"
 
@@ -171,22 +214,11 @@ resource "btp_subaccount_role_collection" "build_code_developer" {
 }
 # Assign users to the role collection "Build Code Developer"
 resource "btp_subaccount_role_collection_assignment" "build_code_developer" {
-  for_each             = toset("${var.build_code_developers}")
-  subaccount_id        = btp_subaccount.dc_mission.id
+  for_each             = toset("${local.build_code_developers}")
+  subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Build Code Developer"
   user_name            = each.value
   depends_on           = [btp_subaccount_role_collection.build_code_developer]
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Assign role collection "Subaccount Administrator"
-# ------------------------------------------------------------------------------------------------------
-resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
-  for_each             = toset("${var.subaccount_admins}")
-  subaccount_id        = btp_subaccount.dc_mission.id
-  role_collection_name = "Subaccount Administrator"
-  user_name            = each.value
-  depends_on           = [btp_subaccount.dc_mission]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -198,7 +230,7 @@ resource "local_file" "output_vars_step1" {
       globalaccount        = "${var.globalaccount}"
       cli_server_url       = ${jsonencode(var.cli_server_url)}
 
-      subaccount_id        = "${btp_subaccount.dc_mission.id}"
+      subaccount_id        = "${data.btp_subaccount.dc_mission.id}"
 
       cf_api_url           = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["API Endpoint"]}"
 

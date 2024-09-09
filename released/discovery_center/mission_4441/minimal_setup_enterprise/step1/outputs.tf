@@ -1,3 +1,4 @@
+/*
 output "globalaccount" {
   value       = var.globalaccount
   description = "The Global Account subdomain."
@@ -7,10 +8,21 @@ output "cli_server_url" {
   value       = var.cli_server_url
   description = "The BTP CLI server URL."
 }
+*/
 
 output "subaccount_id" {
-  value       = btp_subaccount.dc_mission.id
-  description = "The Global Account subdomain id."
+  value       = data.btp_subaccount.dc_mission.id
+  description = "The ID of the subaccount."
+}
+
+output "build_code_subscription_url" {
+  value       = btp_subaccount_subscription.build_code.subscription_url
+  description = "SAP Build Code subscription URL."
+}
+
+output "custom_idp" {
+  value       = var.custom_idp
+  description = "The custom identity provider."
 }
 
 output "cf_api_url" {
@@ -33,11 +45,6 @@ output "cf_org_name" {
   description = "The Cloudfoundry org name."
 }
 
-output "custom_idp" {
-  value       = var.custom_idp
-  description = "The custom identity provider."
-}
-
 output "cf_org_admins" {
   value       = var.cf_org_admins
   description = "List of users to set as Cloudfoundry org administrators."
@@ -51,9 +58,4 @@ output "cf_space_developers" {
 output "cf_space_managers" {
   value       = var.cf_space_managers
   description = "List of users to set as Cloudfoundry space managers."
-}
-
-output "build_code_subscription_url" {
-  value       = btp_subaccount_subscription.build_code.subscription_url
-  description = "SAP Build Code subscription URL."
 }
