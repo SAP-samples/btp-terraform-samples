@@ -101,8 +101,8 @@ variable "service_plan__sap_integration_suite" {
   description = "The plan for SAP Integration Suite"
   default     = "enterprise_agreement"
   validation {
-    condition     = contains(["enterprise_agreement"], var.service_plan__sap_integration_suite)
-    error_message = "Invalid value for service_plan__sap_integration_suite. Only 'enterprise_agreement' is allowed."
+    condition     = contains(["free", "enterprise_agreement"], var.service_plan__sap_integration_suite)
+    error_message = "Invalid value for service_plan__sap_integration_suite. Only 'free' and 'enterprise_agreement' are allowed."
   }
 }
 
@@ -205,5 +205,5 @@ variable "cf_space_developers" {
 variable "create_tfvars_file_for_step2" {
   type        = bool
   description = "Switch to enable the creation of the tfvars file for step 2."
-  default     = false
+  default     = true
 }
