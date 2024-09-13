@@ -19,6 +19,18 @@ variable "cli_server_url" {
   default     = "https://cli.btp.cloud.sap"
 }
 
+variable "custom_idp" {
+  type        = string
+  description = "Defines the custom IDP to be used for the subaccount"
+  default     = ""
+}
+
+variable "custom_idp_tenant" {
+  type        = string
+  description = "workaround"
+  default     = ""
+}
+
 variable "cf_api_url" {
   type        = string
   description = "The Cloud Foundry API endpoint from the Cloud Foundry environment instance."

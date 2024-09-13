@@ -150,7 +150,12 @@ locals {
   subaccount_admins     = var.subaccount_admins
   build_code_admins     = var.build_code_admins
   build_code_developers = var.build_code_developers
+
+  custom_idp_tenant = var.custom_idp != "" ? element(split(".", var.custom_idp), 0) : ""
+  origin_key = local.custom_idp_tenant != "" ? "${local.custom_idp_tenant}-platform" : ""
 }
+
+data "btp_whoami" "me" {}
 
 # Get all roles in the subaccount
 data "btp_subaccount_roles" "all" {
@@ -166,6 +171,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
+  origin               = local.origin_key
   depends_on           = [btp_subaccount.dc_mission]
 }
 
@@ -192,6 +198,16 @@ resource "btp_subaccount_role_collection_assignment" "build_code_administrator" 
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Build Code Administrator"
   user_name            = each.value
+  origin               = var.custom_idp_apps_origin_key
+  depends_on           = [btp_subaccount_role_collection.build_code_administrator]
+}
+# Assign logged in user to the role collection "Build Code Administrator" if not custom idp user
+resource "btp_subaccount_role_collection_assignment" "build_code_administrator_default" {
+  count                = data.btp_whoami.me.issuer != var.custom_idp ? 1 : 0
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "Build Code Administrator"
+  user_name            = data.btp_whoami.me.email
+  origin               = "sap.default"
   depends_on           = [btp_subaccount_role_collection.build_code_administrator]
 }
 
@@ -218,6 +234,17 @@ resource "btp_subaccount_role_collection_assignment" "build_code_developer" {
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Build Code Developer"
   user_name            = each.value
+  origin               = var.custom_idp_apps_origin_key
+  depends_on           = [btp_subaccount_role_collection.build_code_developer]
+}
+
+# Assign logged in user to the role collection "Build Code Developer" if not custom idp user
+resource "btp_subaccount_role_collection_assignment" "build_code_developer_default" {
+  count                = data.btp_whoami.me.issuer != var.custom_idp ? 1 : 0
+  subaccount_id        = data.btp_subaccount.dc_mission.id
+  role_collection_name = "Build Code Developer"
+  user_name            = data.btp_whoami.me.email
+  origin               = "sap.default"
   depends_on           = [btp_subaccount_role_collection.build_code_developer]
 }
 
@@ -229,6 +256,7 @@ resource "local_file" "output_vars_step1" {
   content  = <<-EOT
       globalaccount        = "${var.globalaccount}"
       cli_server_url       = ${jsonencode(var.cli_server_url)}
+      custom_idp           = ${jsonencode(var.custom_idp)}
 
       subaccount_id        = "${data.btp_subaccount.dc_mission.id}"
 
@@ -237,7 +265,7 @@ resource "local_file" "output_vars_step1" {
       cf_org_id            = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]}"
       cf_org_name          = "${jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]}"
 
-      origin_key           = "${var.origin}"
+      origin_key           = "${local.origin_key}"
 
       cf_space_name        = "${var.cf_space_name}"
 
