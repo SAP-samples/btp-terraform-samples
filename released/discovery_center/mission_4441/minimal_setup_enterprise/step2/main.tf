@@ -2,7 +2,7 @@
 # Import custom trust config and disable for user login
 # ------------------------------------------------------------------------------------------------------
 locals {
-  available_for_user_logon = data.btp_whoami.me.issuer != var.custom_idp ? true : false 
+  available_for_user_logon = data.btp_whoami.me.issuer != var.custom_idp ? true : false
 }
 
 import {
@@ -42,7 +42,7 @@ locals {
 
   # get origin_key from custom.idp 
   custom_idp_tenant = var.custom_idp != "" ? element(split(".", var.custom_idp), 0) : ""
-  origin_key = local.custom_idp_tenant != "" ? "${local.custom_idp_tenant}-platform" : "sap.ids"
+  origin_key        = local.custom_idp_tenant != "" ? "${local.custom_idp_tenant}-platform" : "sap.ids"
 }
 
 # ------------------------------------------------------------------------------------------------------

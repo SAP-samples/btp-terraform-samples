@@ -152,7 +152,7 @@ locals {
   build_code_developers = var.build_code_developers
 
   custom_idp_tenant = var.custom_idp != "" ? element(split(".", var.custom_idp), 0) : ""
-  origin_key = local.custom_idp_tenant != "" ? "${local.custom_idp_tenant}-platform" : ""
+  origin_key        = local.custom_idp_tenant != "" ? "${local.custom_idp_tenant}-platform" : ""
 }
 
 data "btp_whoami" "me" {}
