@@ -2,7 +2,23 @@
 
 ## Overview
 
-This sample shows how to create a landscape for the Discovery Center Mission - [Get Started with SAP Build Code and Joule using Generative AI](https://discovery-center.cloud.sap/missiondetail/4441/) for a Trial account.
+This sample shows how to setup your SAP BTP account for the Discovery Center Mission - [Get Started with SAP Build Code and Joule using Generative AI](https://discovery-center.cloud.sap/missiondetail/4441/) for your trial account.
+
+The respective setup of an Enterprise account is described in [SAP-samples/btp-terraform-samples/tree/main/released/discovery_center/mission_4441/README.md](https://github.com/SAP-samples/btp-terraform-samples/blob/main/released/discovery_center/mission_4441/full_setup_enterprise/step1/README.md)
+
+## Important: Trial Account Prerequisites
+Contrary to an Enterprise account (where the setup will happen in a newly created subaccount, where entitlements are added), we make the assumption that in your trial account there is already a subaccount (by default named 'trial') with all the required service entitlements and not already in use!
+
+In a newly created trial account this is already true and you are good to go immediately with this setup. 
+
+But if you have already used services and/or setup subscriptions in your trial account, you have to make sure that you free up these resources to start with this setup here (i.e. delete the corresponding services/subscriptions used for this Discover Center Mission setup). Otherwise the setup would fail!
+
+For this mission setup the following resources (services, subscriptions, etc.) are used: 
+
+- SAP Build Code (Subscription)
+
+You could delete these resources in your [BTP Trial Cockpit](https://cockpit.btp.cloud.sap/trial) on the corresponding trial subaccount pages
+- Services > Instances and Subscriptions
 
 ## Content of setup
 
@@ -15,7 +31,7 @@ The setup comprises the following resources:
 
 ## Deploying the resources
 
-Make sure that you are familiar with SAP BTP and know both the [Get Started with btp-terraform-samples](https://github.com/SAP-samples/btp-terraform-samples/blob/main/GET_STARTED.md) and the [Get Started with the Terraform Provider for BTP](https://developers.sap.com/tutorials/btp-terraform-get-started.html)
+Make sure that (1.) your trial account fulfills the above described important trial prerequisites and (2.) you are familiar with SAP BTP and know both the [Get Started with btp-terraform-samples](https://github.com/SAP-samples/btp-terraform-samples/blob/main/GET_STARTED.md) and the [Get Started with the Terraform Provider for BTP](https://developers.sap.com/tutorials/btp-terraform-get-started.html)
 
 To deploy the resources you must:
 
