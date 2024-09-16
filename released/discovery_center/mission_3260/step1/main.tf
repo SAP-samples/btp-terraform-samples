@@ -38,7 +38,7 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
 # ------------------------------------------------------------------------------------------------------
 #
 locals {
-  service_name__cloudfoundry    = "cloudfoundry"
+  service_name__cloudfoundry = "cloudfoundry"
 }
 
 # ------------------------------------------------------------------------------------------------------

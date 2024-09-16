@@ -97,12 +97,3 @@ variable "cf_space_developers" {
   type        = list(string)
   description = "Defines the colleagues who are added to a CF space as space developer."
 }
-
-/*
-# The CF Org name from the Cloud Foundry environment instance
-variable "cf_org_name" {
-  type        = string
-  description = "The Cloud Foundry Org name from the Cloud Foundry environment instance."
-
-}
-*/
