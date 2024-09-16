@@ -231,7 +231,7 @@ After the application you will find a new file called `terraform.tfstate` in you
 <img width="200px" src="assets/ex2_5.png" alt="terraform state in the file system">
 
 > [!IMPORTANT]
-> In real life you would not store this file locally but use a [remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/configuration) that is capable of storing the state in a secure and consistent way. For the purpose of this exercise we will use the local backend.
+> In real life you would not store this file locally but use a [remote backend](https://developer.hashicorp.com/terraform/language/backend) that is capable of storing the state in a secure and consistent way. For the purpose of this exercise we will use the local backend.
 
 > [!NOTE]
 > In case you are getting an error that the subdomain already exists, you need change the project name in the `variables.tf` file.
@@ -251,6 +251,6 @@ Here you find additional information on the used Terraform features and function
 
 ## Summary
 
-You've now successfully created a subaccount.  
+You've now successfully created a subaccount.
 
 Continue to - [Exercise 3 - Assignment of subaccount emergency administrators](../EXERCISE3/README.md).
