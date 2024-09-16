@@ -1,14 +1,16 @@
 # ------------------------------------------------------------------------------------------------------
-# Provider configuration
+# Account settings
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount = "xxxxxxxxtrial-ga"
+globalaccount = "<your-globalaccount-subdomain>" // <xxxxxxxx>trial-ga
 
-# The CLI server URL (needs to be set to null if you are using the default CLI server)
-cli_server_url = null
+# Region for your trial subaccount
+region = "us10"
+
+subaccount_id = "<your trial Subaccount ID>"
 
 # ------------------------------------------------------------------------------------------------------
-# USER ROLES
+# Use case specific role assignments
 # ------------------------------------------------------------------------------------------------------
 build_code_admins     = ["another.user@test.com", "you@test.com"]
 build_code_developers = ["another.user@test.com", "you@test.com"]

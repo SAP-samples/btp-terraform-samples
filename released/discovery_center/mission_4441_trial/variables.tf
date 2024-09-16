@@ -1,18 +1,9 @@
+# ------------------------------------------------------------------------------------------------------
+# Account variables
+# ------------------------------------------------------------------------------------------------------
 variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain where the sub account shall be created."
-}
-
-variable "subaccount_id" {
-  type        = string
-  description = "The subaccount ID."
-  default     = ""
-}
-
-variable "subaccount_name" {
-  type        = string
-  description = "The subaccount name."
-  default     = "My SAP Build Code subaccount."
 }
 
 variable "cli_server_url" {
@@ -21,23 +12,45 @@ variable "cli_server_url" {
   default     = "https://cli.btp.cloud.sap"
 }
 
+variable "region" {
+  type        = string
+  description = "The region where the subaccount shall be created in."
+  default     = "us10"
+}
+
+variable "subaccount_name" {
+  type        = string
+  description = "The subaccount name."
+  default     = "My SAP DC mission subaccount."
+}
+
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
+}
+
+# ------------------------------------------------------------------------------------------------------
+# app subscription plans
+# ------------------------------------------------------------------------------------------------------
+variable "service_plan__build_code" {
+  type        = string
+  description = "The plan for service 'SAP Build Code' with technical name 'build-code'"
+  default     = "free"
+  validation {
+    condition     = contains(["free"], var.service_plan__build_code)
+    error_message = "Invalid value for service_plan__build_code. Only 'free' is allowed."
+  }
+}
+
+# ------------------------------------------------------------------------------------------------------
+# User lists
+# ------------------------------------------------------------------------------------------------------
 variable "build_code_admins" {
   type        = list(string)
   description = "Defines the colleagues who are admins for SAP Build Code."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.build_code_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.build_code_admins)
-    error_message = "Please enter a valid email address for the Build Code admins."
-  }
 }
 variable "build_code_developers" {
   type        = list(string)
   description = "Defines the colleagues who are developers for SAP Build Code."
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.build_code_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.build_code_developers)
-    error_message = "Please enter a valid email address for the Build Code developers."
-  }
 }
