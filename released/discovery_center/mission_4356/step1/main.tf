@@ -171,6 +171,7 @@ resource "btp_subaccount_subscription" "sapappstudio" {
 # ------------------------------------------------------------------------------------------------------
 #  USERS AND ROLES
 # ------------------------------------------------------------------------------------------------------
+data "btp_whoami" "me" {}
 #
 locals {
   subaccount_admins         = var.subaccount_admins
@@ -187,7 +188,6 @@ locals {
   origin_key        = local.custom_idp_tenant != "" ? "${local.custom_idp_tenant}-platform" : ""
 }
 
-data "btp_whoami" "me" {}
 # ------------------------------------------------------------------------------------------------------
 # Assign role collection "Subaccount Administrator"
 # ------------------------------------------------------------------------------------------------------
@@ -220,7 +220,7 @@ resource "btp_subaccount_role_collection_assignment" "integration_provisioner" {
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Integration_Provisioner"
   user_name            = each.value
-  origin               = local.origin_key
+  origin               = var.custom_idp_apps_origin_key
   depends_on           = [btp_subaccount_subscription.integrationsuite]
 }
 
