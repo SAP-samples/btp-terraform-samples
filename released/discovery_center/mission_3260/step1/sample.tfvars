@@ -9,7 +9,7 @@ custom_idp = "<<tenant-id>>.accounts.ondemand.com"
 globalaccount = "<your-global-account-subdomain>"
 region        = "us10"
 
-subaccount_name = "Your Mission 3260 Subaccount Name" 
+subaccount_name = "Your Mission 3260 Subaccount Name"
 
 # ------------------------------------------------------------------------------------------------------
 # Use case specific configuration
