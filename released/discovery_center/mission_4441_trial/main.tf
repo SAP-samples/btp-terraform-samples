@@ -30,7 +30,7 @@ data "btp_subaccount" "dc_mission" {
 # ------------------------------------------------------------------------------------------------------
 #
 locals {
-  service_name__build_code    = "build-code"
+  service_name__build_code = "build-code"
 }
 # ------------------------------------------------------------------------------------------------------
 # Setup build-code (SAP Build Code)
