@@ -1,47 +1,44 @@
-######################################################################
-# Customer account setup
-######################################################################
-# subaccount
+# ------------------------------------------------------------------------------------------------------
+# Account variables
+# ------------------------------------------------------------------------------------------------------
 variable "globalaccount" {
   type        = string
-  description = "The globalaccount subdomain."
-}
-# subaccount
-variable "subaccount_name" {
-  type        = string
-  description = "The subaccount name."
-  default     = "DC Mission 3252 - Get Started with SAP BTP, Kyma runtime creating a Hello-World Function"
-}
-# Region
-variable "region" {
-  type        = string
-  description = "The region where the project account shall be created in."
-  default     = "eu10"
+  description = "The globalaccount subdomain where the sub account shall be created."
 }
 
-# CLI server
 variable "cli_server_url" {
   type        = string
   description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
+  default     = "https://cli.btp.cloud.sap"
 }
 
 variable "custom_idp" {
   type        = string
-  description = "Defines the custom IDP to be used for the subaccount."
+  description = "The custom identity provider for the subaccount."
   default     = ""
 }
 
-variable "subaccount_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
+variable "region" {
+  type        = string
+  description = "The region where the subaccount shall be created in."
+  default     = "eu10"
 }
 
-variable "subaccount_service_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
+variable "subaccount_name" {
+  type        = string
+  description = "The subaccount name."
+  default     = "My SAP DC mission subaccount."
 }
 
+variable "subaccount_id" {
+  type        = string
+  description = "The subaccount ID."
+  default     = ""
+}
+
+# ------------------------------------------------------------------------------------------------------
+# service parameters
+# ------------------------------------------------------------------------------------------------------
 variable "kyma_instance_parameters" {
   type = object({
     name            = string
@@ -74,4 +71,17 @@ variable "kyma_instance_timeouts" {
     update = "35m"
     delete = "1h"
   }
+}
+
+# ------------------------------------------------------------------------------------------------------
+# User lists
+# ------------------------------------------------------------------------------------------------------
+variable "subaccount_admins" {
+  type        = list(string)
+  description = "Defines the users who are added to subaccount as administrators."
+}
+
+variable "subaccount_service_admins" {
+  type        = list(string)
+  description = "Defines the users who are added to subaccount as service administrators."
 }

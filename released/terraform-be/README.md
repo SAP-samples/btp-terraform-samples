@@ -1,6 +1,6 @@
 # Terraform Remote Backend Configuration
 
-In Terraform, a *backend* determines where the state data files are stored. This state data is crucial for tracking the resources managed by Terraform. There are different configuration options to define these backends. They are described in the [Terraform documentation](https://developer.hashicorp.com/terraform/language/settings/backends/configuration).
+In Terraform, a *backend* determines where the state data files are stored. This state data is crucial for tracking the resources managed by Terraform. There are different configuration options to define these backends. They are described in the [Terraform documentation](https://developer.hashicorp.com/terraform/language/backend).
 
 The default configuration is the [local backend](https://developer.hashicorp.com/terraform/language/settings/backends/local) namely the local file system. However, this is not recommended for productive usage due to the lack of options to collaborate and securely store the state. Hence, it is common to use a remote backend.
 
