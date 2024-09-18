@@ -1,11 +1,39 @@
-######################################################################
-# Customer account setup
-######################################################################
-# subaccount
+# ------------------------------------------------------------------------------------------------------
+# Account variables
+# ------------------------------------------------------------------------------------------------------
 variable "globalaccount" {
   type        = string
-  description = "The globalaccount subdomain."
-  default     = "yourglobalaccount"
+  description = "The globalaccount subdomain where the sub account shall be created."
+}
+
+variable "cli_server_url" {
+  type        = string
+  description = "The BTP CLI server URL."
+  default     = "https://cli.btp.cloud.sap"
+}
+
+variable "custom_idp" {
+  type        = string
+  description = "The custom identity provider for the subaccount."
+  default     = ""
+}
+
+variable "custom_idp_apps_origin_key" {
+  type        = string
+  description = "The custom identity provider for the subaccount."
+  default     = "sap.custom"
+}
+
+variable "region" {
+  type        = string
+  description = "The region where the subaccount shall be created in."
+  default     = "us10"
+}
+
+variable "subaccount_name" {
+  type        = string
+  description = "The subaccount name."
+  default     = "My SAP Build Code subaccount."
 }
 
 variable "subaccount_id" {
@@ -14,25 +42,39 @@ variable "subaccount_id" {
   default     = ""
 }
 
-# subaccount
-variable "subaccount_name" {
+# ------------------------------------------------------------------------------------------------------
+# cf related variables
+# ------------------------------------------------------------------------------------------------------
+variable "origin" {
   type        = string
-  description = "The subaccount name."
-  default     = "UC - Deliver Connected Experiences with a single view of Material Availability"
+  description = "Defines the origin key of the identity provider"
+  default     = "sap.ids"
+  # The value for the origin_key can be defined
+  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
 }
 
-variable "custom_idp" {
+variable "origin_key" {
   type        = string
-  description = "Defines the custom IdP"
+  description = "Defines the origin key of the identity provider"
+  default     = ""
+  # The value for the origin_key can be defined, set to "sap.ids", "sap.default" or "sap.custom"
+}
+
+variable "cf_landscape_label" {
+  type        = string
+  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
   default     = ""
 }
 
-variable "origin" {
+variable "cf_org_name" {
   type        = string
-  description = "Defines the origin of the identity provider"
-  default     = "sap.ids"
-  # The value for the origin can be defined
-  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
+  description = "Name of the Cloud Foundry org."
+  default     = "mission-4441-sap-build-code"
+
+  validation {
+    condition     = can(regex("^.{1,255}$", var.cf_org_name))
+    error_message = "The Cloud Foundry org name must not be emtpy and not exceed 255 characters."
+  }
 }
 
 variable "cf_space_name" {
@@ -46,150 +88,121 @@ variable "cf_space_name" {
   }
 }
 
-variable "cf_landscape_label" {
-  type        = string
-  description = "In case there are multiple environments available for a subaccount, you can use this label to choose with which one you want to go. If nothing is given, we take by default the first available."
-  default     = ""
-}
-
-variable "cf_org_name" {
-  type        = string
-  description = "Name of the Cloud Foundry org."
-  default     = "mission-4356"
-
-  validation {
-    condition     = can(regex("^.{1,255}$", var.cf_org_name))
-    error_message = "The Cloud Foundry org name must not be emtpy and not exceed 255 characters."
-  }
-}
-# Region
-variable "region" {
-  type        = string
-  description = "The region where the project account shall be created in."
-  default     = "us10"
-}
-
+/*
 # hana password
 variable "hana_cloud_system_password" {
   type        = string
   description = "The system password for the hana_cloud service instance."
   default     = "Abcd1234"
 }
+*/
 
-# CLI server
-variable "cli_server_url" {
+# ------------------------------------------------------------------------------------------------------
+# services plans
+# ------------------------------------------------------------------------------------------------------
+variable "service_plan__cloudfoundry" {
   type        = string
-  description = "The BTP CLI server URL."
-  default     = "https://cpcli.cf.eu10.hana.ondemand.com"
+  description = "The plan for service 'Destination Service' with technical name 'destination'"
+  default     = "standard"
+  validation {
+    condition     = contains(["standard"], var.service_plan__cloudfoundry)
+    error_message = "Invalid value for service_plan__cloudfoundry. Only 'standard' is allowed."
+  }
 }
 
-# subaccount variables
+variable "service_plan__connectivity" {
+  type        = string
+  description = "The plan for service 'Connectivity Service' with technical name 'connectivity'"
+  default     = "lite"
+}
+
+variable "service_plan__destination" {
+  type        = string
+  description = "The plan for service 'Destination Service' with technical name 'destination'"
+  default     = "lite"
+}
+
+variable "service_plan__html5_apps_repo" {
+  type        = string
+  description = "The plan for service 'HTML5 Application Repository Service' with technical name 'html5-apps-repo'"
+  default     = "app-host"
+}
+
+variable "service_plan__xsuaa" {
+  type        = string
+  description = "The plan for service 'Authorization and Trust Management Service' with technical name 'xsuaa'"
+  default     = "application"
+}
+
+# ------------------------------------------------------------------------------------------------------
+# app subscription plans
+# ------------------------------------------------------------------------------------------------------
+variable "service_plan__integrationsuite" {
+  type        = string
+  description = "The plan for service 'Integration Suite' with technical name 'integrationsuite'"
+  default     = "enterprise_agreement"
+  validation {
+    condition     = contains(["enterprise_agreement", "free"], var.service_plan__integrationsuite)
+    error_message = "Invalid value for service_plan__integrationsuite. Only 'enterprise_agreement' and 'free' are allowed."
+  }
+}
+
+variable "service_plan__sapappstudio" {
+  type        = string
+  description = "The plan for service 'SAP Business Application Studio' with technical name 'sapappstudio'"
+  default     = "standard-edition"
+  validation {
+    condition     = contains(["standard-edition"], var.service_plan__sapappstudio)
+    error_message = "Invalid value for service_plan__sapappstudio. Only 'standard-edition' is allowed."
+  }
+}
+
+# ------------------------------------------------------------------------------------------------------
+# User lists
+# ------------------------------------------------------------------------------------------------------
 variable "subaccount_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  description = "Defines the colleagues who are added to subaccount as administrator"
 }
 
 variable "subaccount_service_admins" {
   type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  description = "Defines the colleagues who are added to subaccount as service administrator"
 }
 
-variable "service_plan__sap_integration_suite" {
-  type        = string
-  description = "The plan for SAP Integration Suite"
-  default     = "enterprise_agreement"
-  validation {
-    condition     = contains(["free", "enterprise_agreement"], var.service_plan__sap_integration_suite)
-    error_message = "Invalid value for service_plan__sap_integration_suite. Only 'free' and 'enterprise_agreement' are allowed."
-  }
-}
-
-variable "service_plan__sap_business_app_studio" {
-  type        = string
-  description = "The plan for SAP Business Application Studio"
-  default     = "standard-edition"
-  validation {
-    condition     = contains(["standard-edition"], var.service_plan__sap_business_app_studio)
-    error_message = "Invalid value for service_plan__sap_business_app_studio. Only 'standard-edition' is allowed."
-  }
-}
-
-# ------------------------------------------------------------------------------------------------------
-# Entitlements
-# ------------------------------------------------------------------------------------------------------
-variable "entitlements" {
-  type = list(object({
-    service_name = string
-    plan_name    = string
-    type         = string
-  }))
-  description = "The list of entitlements that shall be added to the subaccount."
-  default = [
-    {
-      service_name = "connectivity"
-      plan_name    = "lite",
-      type         = "service"
-    },
-    {
-      service_name = "destination"
-      plan_name    = "lite",
-      type         = "service"
-    },
-    {
-      service_name = "html5-apps-repo"
-      plan_name    = "app-host",
-      type         = "service"
-    },
-    {
-      service_name = "xsuaa"
-      plan_name    = "application",
-      type         = "service"
-    }
-  ]
-}
-
-variable "appstudio_developers" {
-  type        = list(string)
-  description = "Business Application Studio Developer"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "appstudio_admins" {
-  type        = list(string)
-  description = "Business Application Studio Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cloudconnector_admins" {
-  type        = list(string)
-  description = "Cloud Connector Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "conn_dest_admins" {
-  type        = list(string)
-  description = "Connectivity and Destination Administrator"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "int_provisioners" {
+variable "integration_provisioners" {
   type        = list(string)
   description = "Integration Provisioner"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-
-variable "cf_org_users" {
+variable "sapappstudio_admins" {
   type        = list(string)
-  description = "CF Org Users"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
+  description = "Defines the colleagues who are administrators for SAP Business Application Studio."
+}
+
+variable "sapappstudio_developers" {
+  type        = list(string)
+  description = "Defines the colleagues who are developers for SAP Business Application Studio."
+}
+
+variable "cloud_connector_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are administrators for Cloud Connector"
+}
+
+variable "connectivity_destination_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are administrators for Connectivity and Destinations"
 }
 
 variable "cf_org_admins" {
   type        = list(string)
-  description = "List of users to set as Cloudfoundry org administrators."
+  description = "Defines the colleagues who are added to a Cloudfoundry as org administrators."
+}
+
+variable "cf_org_users" {
+  type        = list(string)
+  description = "Defines the colleagues who are added to a Cloudfoundry as org users."
 }
 
 variable "cf_space_managers" {
@@ -202,6 +215,9 @@ variable "cf_space_developers" {
   description = "Defines the colleagues who are added to a CF space as space developer."
 }
 
+# ------------------------------------------------------------------------------------------------------
+# Switch for creating tfvars for step 2
+# ------------------------------------------------------------------------------------------------------
 variable "create_tfvars_file_for_step2" {
   type        = bool
   description = "Switch to enable the creation of the tfvars file for step 2."
