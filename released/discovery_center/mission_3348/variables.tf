@@ -41,6 +41,12 @@ variable "custom_idp" {
   default     = ""
 }
 
+variable "custom_idp_apps_origin_key" {
+  type        = string
+  description = "The custom identity provider for the subaccount."
+  default     = "sap.custom"
+}
+
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."

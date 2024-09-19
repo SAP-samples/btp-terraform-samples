@@ -34,13 +34,13 @@ To deploy the resources you must:
 4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
-   terraform plan -var-file="samples.tfvars"
+   terraform plan -var-file="sample.tfvars"
    ```
 
 5. Apply your configuration to provision the resources:
 
    ```bash
-   terraform apply -var-file="samples.tfvars"
+   terraform apply -var-file="sample.tfvars"
    ```
 
 ## In the end
