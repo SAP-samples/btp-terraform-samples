@@ -8,6 +8,10 @@ locals {
   subaccount_domain = lower(replace("mission-3945-${local.random_uuid}", "_", "-"))
 }
 
+locals {
+  service_name__sap_analytics_cloud = "analytics-planning-osb"
+}
+
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
 # ------------------------------------------------------------------------------------------------------
@@ -33,6 +37,11 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
   identity_provider = var.custom_idp
 }
 
+locals {
+  custom_idp_tenant    = var.custom_idp != "" ? element(split(".", var.custom_idp), 0) : ""
+  origin_key           = local.custom_idp_tenant != "" ? "${local.custom_idp_tenant}-platform" : "sap.default"
+  origin_key_app_users = var.custom_idp != "" ? var.custom_idp_apps_origin_key : "sap.default"
+}
 
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account administrators
@@ -41,6 +50,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
   for_each             = toset(var.subaccount_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
+  origin               = local.origin_key
   user_name            = each.value
 }
 
@@ -51,6 +61,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
   for_each             = toset(var.subaccount_service_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Service Administrator"
+  origin               = local.origin_key
   user_name            = each.value
 }
 
@@ -71,26 +82,26 @@ data "btp_subaccount_service_plan" "sac" {
   depends_on    = [btp_subaccount_entitlement.sac]
 }
 
-# Create service instance
-resource "btp_subaccount_service_instance" "sac" {
-  subaccount_id  = data.btp_subaccount.dc_mission.id
-  serviceplan_id = data.btp_subaccount_service_plan.sac.id
-  name           = "sac_instance"
-  parameters = jsonencode(
-    {
-      "first_name" : "${var.sac_admin_first_name}",
-      "last_name" : "${var.sac_admin_last_name}",
-      "email" : "${var.sac_admin_email}",
-      "confirm_email" : "${var.sac_admin_email}",
-      "host_name" : "${var.sac_admin_host_name}",
-      "number_of_business_intelligence_licenses" : var.sac_number_of_business_intelligence_licenses,
-      "number_of_planning_professional_licenses" : var.sac_number_of_professional_licenses,
-      "number_of_planning_standard_licenses" : var.sac_number_of_business_standard_licenses
-    }
-  )
-  timeouts = {
-    create = "90m"
-    update = "90m"
-    delete = "90m"
-  }
-}
+# # Create service instance
+# resource "btp_subaccount_service_instance" "sac" {
+#   subaccount_id  = data.btp_subaccount.dc_mission.id
+#   serviceplan_id = data.btp_subaccount_service_plan.sac.id
+#   name           = "sac_instance"
+#   parameters = jsonencode(
+#     {
+#       "first_name" : "${var.sac_admin_first_name}",
+#       "last_name" : "${var.sac_admin_last_name}",
+#       "email" : "${var.sac_admin_email}",
+#       "confirm_email" : "${var.sac_admin_email}",
+#       "host_name" : "${var.sac_admin_host_name}",
+#       "number_of_business_intelligence_licenses" : var.sac_number_of_business_intelligence_licenses,
+#       "number_of_planning_professional_licenses" : var.sac_number_of_professional_licenses,
+#       "number_of_planning_standard_licenses" : var.sac_number_of_business_standard_licenses
+#     }
+#   )
+#   timeouts = {
+#     create = "90m"
+#     update = "90m"
+#     delete = "90m"
+#   }
+# }
