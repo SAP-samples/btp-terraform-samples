@@ -82,26 +82,26 @@ data "btp_subaccount_service_plan" "sac" {
   depends_on    = [btp_subaccount_entitlement.sac]
 }
 
-# # Create service instance
-# resource "btp_subaccount_service_instance" "sac" {
-#   subaccount_id  = data.btp_subaccount.dc_mission.id
-#   serviceplan_id = data.btp_subaccount_service_plan.sac.id
-#   name           = "sac_instance"
-#   parameters = jsonencode(
-#     {
-#       "first_name" : "${var.sac_admin_first_name}",
-#       "last_name" : "${var.sac_admin_last_name}",
-#       "email" : "${var.sac_admin_email}",
-#       "confirm_email" : "${var.sac_admin_email}",
-#       "host_name" : "${var.sac_admin_host_name}",
-#       "number_of_business_intelligence_licenses" : var.sac_number_of_business_intelligence_licenses,
-#       "number_of_planning_professional_licenses" : var.sac_number_of_professional_licenses,
-#       "number_of_planning_standard_licenses" : var.sac_number_of_business_standard_licenses
-#     }
-#   )
-#   timeouts = {
-#     create = "90m"
-#     update = "90m"
-#     delete = "90m"
-#   }
-# }
+# Create service instance
+resource "btp_subaccount_service_instance" "sac" {
+  subaccount_id  = data.btp_subaccount.dc_mission.id
+  serviceplan_id = data.btp_subaccount_service_plan.sac.id
+  name           = "sac_instance"
+  parameters = jsonencode(
+    {
+      "first_name" : "${var.sac_admin_first_name}",
+      "last_name" : "${var.sac_admin_last_name}",
+      "email" : "${var.sac_admin_email}",
+      "confirm_email" : "${var.sac_admin_email}",
+      "host_name" : "${var.sac_admin_host_name}",
+      "number_of_business_intelligence_licenses" : var.sac_number_of_business_intelligence_licenses,
+      "number_of_planning_professional_licenses" : var.sac_number_of_professional_licenses,
+      "number_of_planning_standard_licenses" : var.sac_number_of_business_standard_licenses
+    }
+  )
+  timeouts = {
+    create = "90m"
+    update = "90m"
+    delete = "90m"
+  }
+}
