@@ -175,46 +175,46 @@ data "btp_subaccount_service_plan" "hana_cloud" {
   depends_on    = [btp_subaccount_entitlement.hana_cloud]
 }
 
-resource "btp_subaccount_service_instance" "hana_cloud" {
-  subaccount_id  = data.btp_subaccount.dc_mission.id
-  serviceplan_id = data.btp_subaccount_service_plan.hana_cloud.id
-  name           = "my-hana-cloud-instance"
-  depends_on     = [btp_subaccount_entitlement.hana_cloud]
-  parameters = jsonencode(
-    {
-      "data" : {
-        "memory" : 32,
-        "edition" : "cloud",
-        "systempassword" : "${var.hana_system_password}",
-        "additionalWorkers" : 0,
-        "disasterRecoveryMode" : "no_disaster_recovery",
-        "enabledservices" : {
-          "docstore" : false,
-          "dpserver" : true,
-          "scriptserver" : false
-        },
-        "requestedOperation" : {},
-        "serviceStopped" : false,
-        "slaLevel" : "standard",
-        "storage" : 120,
-        "vcpu" : 2,
-        "whitelistIPs" : ["0.0.0.0/0"]
-      }
-  })
+# resource "btp_subaccount_service_instance" "hana_cloud" {
+#   subaccount_id  = data.btp_subaccount.dc_mission.id
+#   serviceplan_id = data.btp_subaccount_service_plan.hana_cloud.id
+#   name           = "my-hana-cloud-instance"
+#   depends_on     = [btp_subaccount_entitlement.hana_cloud]
+#   parameters = jsonencode(
+#     {
+#       "data" : {
+#         "memory" : 32,
+#         "edition" : "cloud",
+#         "systempassword" : "${var.hana_system_password}",
+#         "additionalWorkers" : 0,
+#         "disasterRecoveryMode" : "no_disaster_recovery",
+#         "enabledservices" : {
+#           "docstore" : false,
+#           "dpserver" : true,
+#           "scriptserver" : false
+#         },
+#         "requestedOperation" : {},
+#         "serviceStopped" : false,
+#         "slaLevel" : "standard",
+#         "storage" : 120,
+#         "vcpu" : 2,
+#         "whitelistIPs" : ["0.0.0.0/0"]
+#       }
+#   })
 
-  timeouts = {
-    create = "45m"
-    update = "45m"
-    delete = "45m"
-  }
-}
+#   timeouts = {
+#     create = "45m"
+#     update = "45m"
+#     delete = "45m"
+#   }
+# }
 
-# Create service binding to SAP HANA Cloud service 
-resource "btp_subaccount_service_binding" "hana_cloud" {
-  subaccount_id       = data.btp_subaccount.dc_mission.id
-  service_instance_id = btp_subaccount_service_instance.hana_cloud.id
-  name                = "hana-cloud-key"
-}
+# # Create service binding to SAP HANA Cloud service 
+# resource "btp_subaccount_service_binding" "hana_cloud" {
+#   subaccount_id       = data.btp_subaccount.dc_mission.id
+#   service_instance_id = btp_subaccount_service_instance.hana_cloud.id
+#   name                = "hana-cloud-key"
+# }
 
 # # ------------------------------------------------------------------------------------------------------
 # # Create app subscription to SAP Build Process Automation 
@@ -284,7 +284,7 @@ resource "btp_subaccount_subscription" "event_mesh_application" {
 }
 
 resource "btp_subaccount_role_collection_assignment" "event_mesh_admin" {
-  depends_on           = [btp_subaccount_entitlement.event_mesh_application]
+  depends_on           = [btp_subaccount_subscription.event_mesh_application]
   for_each             = toset(var.event_mesh_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Enterprise Messaging Administrator"
@@ -293,7 +293,7 @@ resource "btp_subaccount_role_collection_assignment" "event_mesh_admin" {
 }
 
 resource "btp_subaccount_role_collection_assignment" "event_mesh_developer" {
-  depends_on           = [btp_subaccount_entitlement.event_mesh_application]
+  depends_on           = [btp_subaccount_subscription.event_mesh_application]
   for_each             = toset(var.event_mesh_developers)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Enterprise Messaging Developer"
@@ -321,6 +321,7 @@ resource "local_file" "output_vars_step1" {
 
       cf_space_name        = "${var.cf_space_name}"
 
+      cf_org_users         = ${jsonencode(var.cf_org_users)}
       cf_org_admins        = ${jsonencode(var.cf_org_admins)}
       cf_space_developers  = ${jsonencode(var.cf_space_developers)}
       cf_space_managers    = ${jsonencode(var.cf_space_managers)}

@@ -80,23 +80,11 @@ variable "origin_key" {
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.subaccount_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_admins)
-    error_message = "Please enter a valid email address for the Subaccount Admins."
-  }
 }
 
 variable "subaccount_service_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.subaccount_service_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.subaccount_service_admins)
-    error_message = "Please enter a valid email address for the Subaccount service Admins."
-  }
 }
 
 variable "service_plan__sap_business_app_studio" {
@@ -112,35 +100,16 @@ variable "service_plan__sap_business_app_studio" {
 variable "appstudio_developers" {
   type        = list(string)
   description = "Business Application Studio Developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if Business Application Studio Developers contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.appstudio_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.appstudio_developers)
-    error_message = "Please enter a valid email address for the Business Application Studio Developers"
-  }
 }
 
 variable "appstudio_admins" {
   type        = list(string)
   description = "Business Application Studio Administrators"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if Business Application Studio Administrators contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.appstudio_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.appstudio_admins)
-    error_message = "Please enter a valid email address for the Business Application Studio Administrators."
-  }
 }
 
 variable "hana_cloud_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added as admins to access the instance of SAP HANA Cloud."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.hana_cloud_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.hana_cloud_admins)
-    error_message = "Please enter a valid email address for the admins of SAP HANA Cloud instance."
-  }
 }
 
 
@@ -195,56 +164,26 @@ variable "service_plan__sap_process_automation" {
 variable "process_automation_admins" {
   type        = list(string)
   description = "SAP Build Process Automation Administrators"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if SAP Build Process Automation Administrators contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.process_automation_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_admins)
-    error_message = "Please enter a valid email address for the SAP Build Process Automation Administrators."
-  }
 }
 
 variable "process_automation_developers" {
   type        = list(string)
   description = "SAP Build Process Automation Developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if SAP Build Process Automation Developers contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.process_automation_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_developers)
-    error_message = "Please enter a valid email address for the SAP Build Process Automation Developers."
-  }
 }
 
 variable "process_automation_participants" {
   type        = list(string)
   description = "SAP Build Process Automation Participants"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if SAP Build Process Automation Participants contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.process_automation_participants : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.process_automation_participants)
-    error_message = "Please enter a valid email address for the SAP Build Process Automation Participants."
-  }
 }
 
 variable "event_mesh_admins" {
   type        = list(string)
   description = "Enterprise Messaging Administrators"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.event_mesh_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.event_mesh_admins)
-    error_message = "Please enter a valid email address for the Enterprise Messaging Administrators."
-  }
 }
 
 variable "event_mesh_developers" {
   type        = list(string)
   description = "Enterprise Messaging Developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-  # add validation to check if Enterprise Messaging Developers contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.event_mesh_developers : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.event_mesh_developers)
-    error_message = "Please enter a valid email address for the Enterprise Messaging Developers."
-  }
 }
 
 # ------------------------------------------------------------------------------------------------------
