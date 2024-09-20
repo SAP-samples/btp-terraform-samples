@@ -1,15 +1,13 @@
 globalaccount   = "myglobalaccount"
 region          = "us10"
 subaccount_name = "Discovery Center mission - 3501"
-cf_org_name     = "cf-environment"
+custom_idp      = "<<tenant-id>>.accounts.ondemand.com"
 
 subaccount_admins         = ["john.doe@sap.com"]
 subaccount_service_admins = ["john.doe@sap.com"]
 
-appstudio_developers  = ["john.doe@sap.com"]
-appstudio_admins      = ["john.doe@sap.com"]
-cloudconnector_admins = ["john.doe@sap.com"]
-conn_dest_admins      = ["john.doe@sap.com"]
+appstudio_developers = ["john.doe@sap.com"]
+appstudio_admins     = ["john.doe@sap.com"]
 
 cf_space_developers = ["john.doe@sap.com"]
 cf_space_managers   = ["john.doe@sap.com"]
