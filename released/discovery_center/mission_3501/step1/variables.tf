@@ -122,6 +122,11 @@ variable "cf_space_developers" {
 variable "service_plan__sap_business_app_studio" {
   type        = string
   description = "The plan for SAP Business Application Studio"
+  default     = "standard-edition"
+  validation {
+    condition     = contains(["standard-edition"], var.service_plan__sap_business_app_studio)
+    error_message = "Invalid value for service_plan__sap_business_app_studio. Only 'standard-edition' is allowed."
+  }
 }
 
 variable "appstudio_developers" {
