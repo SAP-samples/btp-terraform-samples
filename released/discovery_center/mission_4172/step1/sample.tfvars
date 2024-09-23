@@ -15,7 +15,7 @@ cf_org_admins       = ["john.doe@sap.com"]
 cf_org_users        = ["john.doe@sap.com"]
 
 hana_system_password = "Abc12345"
-hana_cloud_admins    = ["john.doe@sap.com"]
+hana_system_admin    = "john.doe@sap.com"
 
 process_automation_admins       = ["john.doe@sap.com"]
 process_automation_developers   = ["john.doe@sap.com"]

@@ -129,6 +129,7 @@ resource "btp_subaccount_role_collection_assignment" "bas_admn" {
   for_each             = toset(var.appstudio_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Business_Application_Studio_Administrator"
+  origin               = local.origin_key_app_users
   user_name            = each.value
 }
 
@@ -150,10 +151,9 @@ resource "btp_subaccount_subscription" "hana_cloud_tools" {
 
 # Assign users to Role Collection: SAP HANA Cloud Administrator
 resource "btp_subaccount_role_collection_assignment" "hana_cloud_admin" {
-  for_each             = toset(var.hana_cloud_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "SAP HANA Cloud Administrator"
-  user_name            = each.value
+  user_name            = var.hana_system_admin
   origin               = local.origin_key_app_users
   depends_on           = [btp_subaccount_subscription.hana_cloud_tools]
 }
@@ -175,46 +175,46 @@ data "btp_subaccount_service_plan" "hana_cloud" {
   depends_on    = [btp_subaccount_entitlement.hana_cloud]
 }
 
-# resource "btp_subaccount_service_instance" "hana_cloud" {
-#   subaccount_id  = data.btp_subaccount.dc_mission.id
-#   serviceplan_id = data.btp_subaccount_service_plan.hana_cloud.id
-#   name           = "my-hana-cloud-instance"
-#   depends_on     = [btp_subaccount_entitlement.hana_cloud]
-#   parameters = jsonencode(
-#     {
-#       "data" : {
-#         "memory" : 32,
-#         "edition" : "cloud",
-#         "systempassword" : "${var.hana_system_password}",
-#         "additionalWorkers" : 0,
-#         "disasterRecoveryMode" : "no_disaster_recovery",
-#         "enabledservices" : {
-#           "docstore" : false,
-#           "dpserver" : true,
-#           "scriptserver" : false
-#         },
-#         "requestedOperation" : {},
-#         "serviceStopped" : false,
-#         "slaLevel" : "standard",
-#         "storage" : 120,
-#         "vcpu" : 2,
-#         "whitelistIPs" : ["0.0.0.0/0"]
-#       }
-#   })
+resource "btp_subaccount_service_instance" "hana_cloud" {
+  subaccount_id  = data.btp_subaccount.dc_mission.id
+  serviceplan_id = data.btp_subaccount_service_plan.hana_cloud.id
+  name           = "my-hana-cloud-instance"
+  depends_on     = [btp_subaccount_entitlement.hana_cloud]
+  parameters = jsonencode(
+    {
+      "data" : {
+        "memory" : 32,
+        "edition" : "cloud",
+        "systempassword" : "${var.hana_system_password}",
+        "additionalWorkers" : 0,
+        "disasterRecoveryMode" : "no_disaster_recovery",
+        "enabledservices" : {
+          "docstore" : false,
+          "dpserver" : true,
+          "scriptserver" : false
+        },
+        "requestedOperation" : {},
+        "serviceStopped" : false,
+        "slaLevel" : "standard",
+        "storage" : 120,
+        "vcpu" : 2,
+        "whitelistIPs" : ["0.0.0.0/0"]
+      }
+  })
 
-#   timeouts = {
-#     create = "45m"
-#     update = "45m"
-#     delete = "45m"
-#   }
-# }
+  timeouts = {
+    create = "45m"
+    update = "45m"
+    delete = "45m"
+  }
+}
 
-# # Create service binding to SAP HANA Cloud service 
-# resource "btp_subaccount_service_binding" "hana_cloud" {
-#   subaccount_id       = data.btp_subaccount.dc_mission.id
-#   service_instance_id = btp_subaccount_service_instance.hana_cloud.id
-#   name                = "hana-cloud-key"
-# }
+# Create service binding to SAP HANA Cloud service 
+resource "btp_subaccount_service_binding" "hana_cloud" {
+  subaccount_id       = data.btp_subaccount.dc_mission.id
+  service_instance_id = btp_subaccount_service_instance.hana_cloud.id
+  name                = "hana-cloud-key"
+}
 
 # # ------------------------------------------------------------------------------------------------------
 # # Create app subscription to SAP Build Process Automation 

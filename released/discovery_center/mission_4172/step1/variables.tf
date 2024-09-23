@@ -107,9 +107,9 @@ variable "appstudio_admins" {
   description = "Business Application Studio Administrators"
 }
 
-variable "hana_cloud_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added as admins to access the instance of SAP HANA Cloud."
+variable "hana_system_admin" {
+  type        = string
+  description = "Defines the colleague who is added as an admin to access the instance of SAP HANA Cloud."
 }
 
 
