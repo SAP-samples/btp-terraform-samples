@@ -5,7 +5,7 @@
 globalaccount   = "yourglobalaccount"
 region          = "us10"
 subaccount_name = "SAP Discovery Center Mission 4371"
-custom_idp      = "sap.ids"
+custom_idp      = "<your_idp>.accounts.ondemand.com"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)
@@ -15,7 +15,7 @@ custom_idp      = "sap.ids"
 subaccount_admins         = ["another.user@test.com"]
 subaccount_service_admins = ["another.user@test.com"]
 
-hana_cloud_admins    = ["another.user@test.com"]
+hana_system_admin    = "another.user@test.com"
 hana_system_password = "Abc12345"
 
 # Don't add the user, that is executing the TF script to cf_org_admins or cf_org_users!
