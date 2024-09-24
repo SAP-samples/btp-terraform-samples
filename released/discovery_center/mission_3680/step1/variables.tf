@@ -51,16 +51,9 @@ variable "region" {
 }
 
 
-variable "hana_cloud_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added as admins to access the instance of SAP HANA Cloud."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-
-  # add validation to check if admins contains a list of valid email addresses
-  validation {
-    condition     = length([for email in var.hana_cloud_admins : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))]) == length(var.hana_cloud_admins)
-    error_message = "Please enter a valid email address for the admins of SAP HANA Cloud instance."
-  }
+variable "hana_system_admin" {
+  type        = string
+  description = "Defines the colleague who is added as admin to access the instance of SAP HANA Cloud."
 }
 
 variable "custom_idp" {
@@ -72,7 +65,7 @@ variable "custom_idp" {
 variable "create_tfvars_file_for_step2" {
   type        = bool
   description = "Switch to enable the creation of the tfvars file for step 2."
-  default     = false
+  default     = true
 }
 
 variable "hana_system_password" {
@@ -178,4 +171,49 @@ variable "event_mesh_developers" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
+variable "custom_idp_apps_origin_key" {
+  type        = string
+  description = "The custom identity provider for the subaccount."
+  default     = "sap.custom"
+}
+
+variable "service_plan__sap_identity_services_onboarding" {
+  type        = string
+  description = "The plan for service 'Cloud Identity Services' with technical name 'sap-identity-services-onboarding'"
+  default     = "default"
+  validation {
+    condition     = contains(["default"], var.service_plan__sap_identity_services_onboarding)
+    error_message = "Invalid value for service_plan__sap_identity_services_onboarding. Only 'default' is allowed."
+  }
+}
+
+variable "users_buildApps_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who have the role of 'BuildAppsAdmin' in SAP Build Apps."
+}
+
+variable "users_buildApps_developers" {
+  type        = list(string)
+  description = "Defines the colleagues who have the role of 'BuildAppsDeveloper' in SAP Build Apps."
+}
+
+variable "users_registry_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who have the role of 'RegistryAdmin' in SAP Build Apps."
+}
+
+variable "users_registry_developers" {
+  type        = list(string)
+  description = "Defines the colleagues who have the role of RegistryDeveloper' in SAP Build Apps."
+}
+
+variable "service_plan__sap_build_apps" {
+  type        = string
+  description = "The plan for SAP Build Apps subscription"
+  default     = "free"
+  validation {
+    condition     = contains(["free", "standard", "partner"], var.service_plan__sap_build_apps)
+    error_message = "Invalid value for service_plan__sap_build_apps. Only 'free', 'standard' and 'partner' are allowed."
+  }
+}
 

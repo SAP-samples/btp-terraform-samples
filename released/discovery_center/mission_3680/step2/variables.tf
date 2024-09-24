@@ -1,12 +1,16 @@
+variable "globalaccount" {
+  type        = string
+  description = "Defines the global account"
+  default     = "yourglobalaccount"
+}
+
+variable "cli_server_url" {
+  type        = string
+  description = "Defines the CLI server URL"
+  default     = "https://cli.btp.cloud.sap"
+}
+
 variable "cf_api_url" {
-  type = string
-}
-
-variable "hana_tools_url" {
-  type = string
-}
-
-variable "event_mesh_url" {
   type = string
 }
 
@@ -53,10 +57,9 @@ variable "cf_org_users" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
-variable "origin" {
+
+variable "custom_idp" {
   type        = string
-  description = "Defines the origin key of the identity provider"
-  default     = "sap.ids"
-  # The value for the origin_key can be defined
-  # but are normally set to "sap.ids", "sap.default" or "sap.custom"
+  description = "Defines the custom IdP"
+  default     = ""
 }

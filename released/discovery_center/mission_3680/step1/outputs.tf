@@ -1,5 +1,5 @@
 output "subaccount_id" {
-  value       = btp_subaccount.dc_mission.id
+  value       = data.btp_subaccount.dc_mission.id
   description = "The ID of the subaccount."
 }
 
@@ -27,38 +27,12 @@ output "hana_tools_url" {
   value       = btp_subaccount_subscription.hana_cloud_tools.subscription_url
   description = "HANA Tools URL"
 }
+output "build_apps_url" {
+  value       = btp_subaccount_subscription.sap-build-apps_standard.subscription_url
+  description = "SAP Build Apps URL"
+}
 
 output "cf_org_name" {
   value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org Name"]
   description = "The Cloudfoundry org name."
-}
-
-output "cf_org_admins" {
-  value       = var.cf_org_admins
-  description = "The Cloudfoundry org admins."
-}
-
-output "cf_org_users" {
-  value       = var.cf_org_users
-  description = "The Cloudfoundry org users."
-}
-
-output "cf_space_developers" {
-  value       = var.cf_space_developers
-  description = "The Cloudfoundry space developers."
-}
-
-output "cf_space_managers" {
-  value       = var.cf_space_managers
-  description = "The Cloudfoundry space managers."
-}
-
-output "cf_space_name" {
-  value       = var.cf_space_name
-  description = "The Cloudfoundry space name."
-}
-
-output "origin" {
-  value       = var.origin
-  description = "The origin of the identity provider."
 }

@@ -1,4 +1,4 @@
-# Discovery Center Mission: Create a custom mobile app to extend HR capabilities (3680)
+# Discovery Center Mission: Create a custom mobile app to extend HR capabilities (3680) - Step 1
 
 ## Overview
 
@@ -18,27 +18,31 @@ The setup comprises the following resources:
 
 To deploy the resources you must:
 
-1. Export environment variables BTP_USERNAME, BTP_PASSWORD, CF_USER, and CF_PASSWORD with your username and password for the custom IdP of your global account.
+1. Set the environment variables BTP_USERNAME and BTP_PASSWORD to pass credentials to the BTP provider to authenticate and interact with your BTP environments. 
 
-2. Change the variables in the `samples.tfvars` file in the main folder to meet your requirements
+   ```bash
+   export BTP_USERNAME=<your_username>
+   export BTP_PASSWORD=<your_password>
+   ```
+
+2. Change the variables in the `sample.tfvars` file to meet your requirements
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
 
-3. Execute the apply.sh script.
 
-4. Verify e.g., in BTP cockpit that a new subaccount with a integration suite, SAP Business Application Studio, CF environment instance and a CF space have been created.
+3. Initialize your workspace:
 
    ```bash
    terraform init
    ```
 
-5. You can check what Terraform plans to apply based on your configuration:
+4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
-   terraform plan -var-file="samples.tfvars"
+   terraform plan -var-file="sample.tfvars"
    ```
 
-6. Apply your configuration to provision the resources:
+5. Apply your configuration to provision the resources:
 
    ```bash
    terraform apply -var-file="samples.tfvars"
