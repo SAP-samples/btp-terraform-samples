@@ -9,9 +9,10 @@ locals {
 }
 
 locals {
-  service_name__sap_build_apps         = "sap-build-apps"
-  service_name__sap_process_automation = "process-automation"
-  service_name__sap_integration_suite  = "integrationsuite"
+  service_name__sap_build_apps                 = "sap-build-apps"
+  service_name__sap_process_automation         = "process-automation"
+  service_name__sap_process_automation_service = "process-automation-service"
+  service_name__sap_integration_suite          = "integrationsuite"
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -216,6 +217,40 @@ resource "btp_subaccount_role_collection_assignment" "sbpa_part" {
   role_collection_name = "ProcessAutomationParticipant"
   user_name            = each.value
   origin               = local.origin_key_app_users
+}
+
+# # ------------------------------------------------------------------------------------------------------
+# # Create service instance to SAP Build Process Automation 
+# # ------------------------------------------------------------------------------------------------------
+
+resource "btp_subaccount_entitlement" "process_automation_service" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  service_name  = local.service_name__sap_process_automation_service
+  plan_name     = var.service_plan__sap_process_automation_service
+  depends_on    = [btp_subaccount_subscription.build_process_automation]
+}
+
+# Get plan for SAP AI Core service
+data "btp_subaccount_service_plan" "process_automation_service" {
+  subaccount_id = data.btp_subaccount.dc_mission.id
+  offering_name = local.service_name__sap_process_automation_service
+  name          = var.service_plan__sap_process_automation_service
+  depends_on    = [btp_subaccount_entitlement.process_automation_service]
+}
+
+# Create service instance for SAP Build Process Automation Service
+resource "btp_subaccount_service_instance" "process_automation_service_instance" {
+  subaccount_id  = data.btp_subaccount.dc_mission.id
+  serviceplan_id = data.btp_subaccount_service_plan.process_automation_service.id
+  name           = "build-process-automation-service-instance"
+  depends_on     = [btp_subaccount_entitlement.process_automation_service]
+}
+
+# Create service binding to SAP Build Process Automation Service (exposed for a specific user group)
+resource "btp_subaccount_service_binding" "process_automation_service_instance_binding" {
+  subaccount_id       = data.btp_subaccount.dc_mission.id
+  service_instance_id = btp_subaccount_service_instance.process_automation_service_instance.id
+  name                = "build-process-automation-service-instance-key"
 }
 
 # ------------------------------------------------------------------------------------------------------

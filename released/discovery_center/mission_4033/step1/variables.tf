@@ -60,6 +60,13 @@ variable "service_plan__sap_process_automation" {
   default     = "standard"
 }
 
+variable "service_plan__sap_process_automation_service" {
+  type        = string
+  description = "The plan for SAP Build Process Automation Service"
+  default     = "standard"
+}
+
+
 variable "service_plan__sap_integration_suite" {
   type        = string
   description = "The plan for SAP Integration Suite"
