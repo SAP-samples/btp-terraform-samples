@@ -36,25 +36,21 @@ variable "cf_space_name" {
 variable "cf_space_developers" {
   type        = list(string)
   description = "CF Space developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_space_managers" {
   type        = list(string)
   description = "CF Space managers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_org_admins" {
   type        = list(string)
   description = "CF Org Admins"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_org_users" {
   type        = list(string)
   description = "CF Org Users"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 

@@ -28,13 +28,11 @@ variable "subaccount_id" {
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "subaccount_service_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount service administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "region" {
@@ -119,25 +117,21 @@ variable "cf_space_name" {
 variable "cf_space_developers" {
   type        = list(string)
   description = "CF Space developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_space_managers" {
   type        = list(string)
   description = "CF Space managers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_org_admins" {
   type        = list(string)
   description = "CF Org Admins"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "cf_org_users" {
   type        = list(string)
   description = "CF Org Users"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "origin" {
@@ -162,13 +156,11 @@ variable "cf_org_name" {
 variable "event_mesh_admins" {
   type        = list(string)
   description = "Enterprise Messaging Administrators"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "event_mesh_developers" {
   type        = list(string)
   description = "Enterprise Messaging Developers"
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
 variable "custom_idp_apps_origin_key" {

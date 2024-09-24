@@ -29,7 +29,7 @@ event_mesh_admins     = ["another.user@test.com"]
 event_mesh_developers = ["another.user@test.com"]
 
 # Build Apps
-users_buildApps_admins          = ["another.user@test.com"]
-users_registry_admins           = ["another.user@test.com"]
-users_buildApps_developers      = ["another.user@test.com"]
-users_registry_developers       = ["another.user@test.com"]
+users_buildApps_admins     = ["another.user@test.com"]
+users_registry_admins      = ["another.user@test.com"]
+users_buildApps_developers = ["another.user@test.com"]
+users_registry_developers  = ["another.user@test.com"]
