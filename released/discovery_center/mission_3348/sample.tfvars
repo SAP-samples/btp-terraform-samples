@@ -2,11 +2,10 @@
 # Provider configuration
 # ------------------------------------------------------------------------------------------------------
 # Your global account subdomain
-globalaccount        = "youraccount"
-region               = "us10"
-subaccount_name      = "SAP Discovery Center Mission 3348"
-cf_environment_label = "cf-us10"
-cf_space_name        = "dev"
+globalaccount   = "youraccount"
+region          = "us10"
+subaccount_name = "SAP Discovery Center Mission 3348"
+custom_idp      = "<your-idp>.accounts.ondemand.com"
 
 # ------------------------------------------------------------------------------------------------------
 # Project specific configuration (please adapt!)

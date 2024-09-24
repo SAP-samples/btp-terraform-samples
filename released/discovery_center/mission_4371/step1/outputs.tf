@@ -17,3 +17,7 @@ output "cf_org_id" {
   value       = jsondecode(btp_subaccount_environment_instance.cloudfoundry.labels)["Org ID"]
   description = "The Cloudfoundry org id."
 }
+
+output "hana_cloud_tools_url" {
+  value = btp_subaccount_subscription.hana_cloud_tools.subscription_url
+}
