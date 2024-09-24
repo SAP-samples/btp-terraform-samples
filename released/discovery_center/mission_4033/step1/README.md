@@ -1,4 +1,4 @@
-# Discovery Center mission - Create simple, connected digital experiences with API-based integration
+# Discovery Center mission - Create simple, connected digital experiences with API-based integration - Step 1
 
 ## Overview
 
@@ -25,7 +25,7 @@ To deploy the resources you must:
    export BTP_PASSWORD=<your_password>
    ```
 
-2. Change the variables in the `samples.tfvars` file to meet your requirements
+2. Change the variables in the `sample.tfvars` file to meet your requirements
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
 
@@ -53,5 +53,5 @@ To deploy the resources you must:
 You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
 
 ```bash
-terraform destroy
+terraform destroy -var-file="samples.tfvars"
 ```
