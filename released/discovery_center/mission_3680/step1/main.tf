@@ -76,6 +76,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
+  origin               = local.origin_key
 }
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account service administrators
@@ -85,8 +86,8 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
+  origin               = local.origin_key
 }
-
 
 # ------------------------------------------------------------------------------------------------------
 # Entitle subaccount for usage of SAP HANA Cloud tools
@@ -110,6 +111,7 @@ resource "btp_subaccount_role_collection_assignment" "hana_cloud_admin" {
   role_collection_name = "SAP HANA Cloud Administrator"
   user_name            = var.hana_system_admin
   depends_on           = [btp_subaccount_subscription.hana_cloud_tools]
+  origin               = local.origin_key_app_users
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -230,6 +232,7 @@ resource "btp_subaccount_role_collection_assignment" "event_mesh_admin" {
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Enterprise Messaging Administrator"
   user_name            = each.value
+  origin               = local.origin_key_app_users
 }
 
 resource "btp_subaccount_role_collection_assignment" "event_mesh_developer" {
@@ -238,6 +241,7 @@ resource "btp_subaccount_role_collection_assignment" "event_mesh_developer" {
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Enterprise Messaging Developer"
   user_name            = each.value
+  origin               = local.origin_key_app_users
 }
 
 # ------------------------------------------------------------------------------------------------------
