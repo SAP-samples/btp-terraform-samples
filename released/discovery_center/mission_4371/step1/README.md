@@ -1,4 +1,4 @@
-# Discovery Center Mission: Develop a CAP-based (multitenant) application using GenAI and RAG (4371)
+# Discovery Center Mission: Develop a CAP-based (multitenant) application using GenAI and RAG (4371) - Step 1
 
 ## Overview
 
@@ -18,27 +18,35 @@ The setup comprises the following resources:
 
 To deploy the resources you must:
 
-1. Export environment variables BTP_USERNAME, BTP_PASSWORD, CF_USER, and CF_PASSWORD with your username and password for the custom IdP of your global account.
+1. Set your credentials as environment variables
+   
+   ```bash
+   export BTP_USERNAME ='<Email address of your BTP user>'
+   export BTP_PASSWORD ='<Password of your BTP user>'
+   export CF_USER ='<Email address of your BTP user>'
+   export CF_PASSWORD ='<Password of your BTP user>'   
+   ```
 
-2. Change the variables in the `samples.tfvars` file in the main folder to meet your requirements
+2. Change the variables in the `sample.tfvars` file in the main folder to meet your requirements
 
-   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
+   > The minimal set of parameters you should specify (besides user_email and password) is global account (i.e. its subdomain) and the used custom_idp and all user assignments
 
-3. Execute the apply.sh script.
+   > ⚠ NOTE: You should pay attention **specifically** to the users defined in the sample.tfvars whether they already exist in your SAP BTP accounts. Otherwise, you might get error messages like, e.g., `Error: The user could not be found: jane.doe@test.com`.
 
-4. Verify e.g., in BTP cockpit that a new subaccount with a integration suite, SAP Business Application Studio, CF environment instance and a CF space have been created.
+
+3. Initialize your workspace:
 
    ```bash
    terraform init
    ```
 
-5. You can check what Terraform plans to apply based on your configuration:
+4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
    terraform plan -var-file="sample.tfvars"
    ```
 
-6. Apply your configuration to provision the resources:
+5. Apply your configuration to provision the resources:
 
    ```bash
    terraform apply -var-file="sample.tfvars"
