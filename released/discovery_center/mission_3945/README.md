@@ -20,7 +20,7 @@ To deploy the resources you must:
         $env:BTP_PASSWORD=<your_password>
     ```
 
-2. Change the variables in the `samples.tfvars` file to meet your requirements
+2. Change the variables in the `sample.tfvars` file to meet your requirements
 
    > ⚠ NOTE: You should pay attention **specifically** to the users defined in the samples.tfvars whether they already exist in your SAP BTP accounts. Otherwise you might get error messages like e.g. `Error: The user could not be found: jane.doe@test.com`.
 
@@ -34,13 +34,13 @@ To deploy the resources you must:
 4. You can check what Terraform plans to apply based on your configuration:
 
    ```bash
-   terraform plan -var-file="samples.tfvars"
+   terraform plan -var-file="sample.tfvars"
    ```
 
 5. Apply your configuration to provision the resources:
 
    ```bash
-   terraform apply -var-file="samples.tfvars"
+   terraform apply -var-file="sample.tfvars"
    ```
 
 ## In the end
