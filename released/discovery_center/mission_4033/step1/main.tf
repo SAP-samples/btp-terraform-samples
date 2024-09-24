@@ -77,7 +77,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount_admin" {
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
   user_name            = each.value
-  origin = local.origin_key
+  origin               = local.origin_key
 }
 
 resource "btp_subaccount_role_collection_assignment" "subaccount_service_admin" {
@@ -85,7 +85,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount_service_admin" 
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Service Administrator"
   user_name            = each.value
-  origin = local.origin_key
+  origin               = local.origin_key
 }
 
 
