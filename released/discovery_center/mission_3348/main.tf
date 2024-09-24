@@ -8,6 +8,10 @@ locals {
   subaccount_domain = lower(replace("mission-3348-${local.random_uuid}", "_", "-"))
 }
 
+locals {
+  service_name__sap_analytics_cloud = "analytics-planning-osb"
+}
+
 # ------------------------------------------------------------------------------------------------------
 # Creation of subaccount
 # ------------------------------------------------------------------------------------------------------
@@ -33,6 +37,14 @@ resource "btp_subaccount_trust_configuration" "fully_customized" {
   identity_provider = var.custom_idp
 }
 
+locals {
+  custom_idp_tenant    = var.custom_idp != "" ? element(split(".", var.custom_idp), 0) : ""
+  origin_key           = local.custom_idp_tenant != "" ? "${local.custom_idp_tenant}-platform" : "sap.default"
+  origin_key_app_users = var.custom_idp != "" ? var.custom_idp_apps_origin_key : "sap.default"
+}
+
+# -
+
 
 # ------------------------------------------------------------------------------------------------------
 # Assignment of users as sub account administrators
@@ -41,6 +53,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
   for_each             = toset(var.subaccount_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Administrator"
+  origin               = local.origin_key
   user_name            = each.value
 }
 
@@ -51,6 +64,7 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
   for_each             = toset(var.subaccount_service_admins)
   subaccount_id        = data.btp_subaccount.dc_mission.id
   role_collection_name = "Subaccount Service Administrator"
+  origin               = local.origin_key
   user_name            = each.value
 }
 
