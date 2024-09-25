@@ -34,6 +34,20 @@ variable "cli_server_url" {
   default     = "https://cli.btp.cloud.sap"
 }
 
+# cf org name
+variable "cf_org_name" {
+  type        = string
+  description = "Cloud Foundry Org Name"
+  default     = "cloud-foundry"
+}
+
+# cf landscape label
+variable "cf_landscape_label" {
+  type        = string
+  description = "The Cloud Foundry landscape (format example eu10-004)."
+  default     = ""
+}
+
 variable "subaccount_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as Subaccount administrators."
@@ -190,4 +204,15 @@ variable "create_tfvars_file_for_step2" {
   type        = bool
   description = "Switch to enable the creation of the tfvars file for step 2."
   default     = true
+}
+
+variable "cf_space_name" {
+  type        = string
+  description = "Name of the Cloud Foundry space."
+  default     = "dev"
+
+  validation {
+    condition     = can(regex("^.{1,255}$", var.cf_space_name))
+    error_message = "The Cloud Foundry space name must not be emtpy and not exceed 255 characters."
+  }
 }

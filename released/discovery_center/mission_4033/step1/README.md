@@ -45,7 +45,7 @@ To deploy the resources you must:
 5. Apply your configuration to provision the resources:
 
    ```bash
-   terraform apply -var-file="samples.tfvars"
+   terraform apply -var-file="sample.tfvars"
    ```
 
 ## In the end
@@ -53,5 +53,5 @@ To deploy the resources you must:
 You probably want to remove the assets after trying them out to avoid unnecessary costs. To do so execute the following command:
 
 ```bash
-terraform destroy -var-file="samples.tfvars"
+terraform destroy -var-file="sample.tfvars"
 ```
