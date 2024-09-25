@@ -55,6 +55,7 @@ resource "btp_subaccount_subscription" "sap_identity_services_onboarding" {
   subaccount_id = data.btp_subaccount.dc_mission.id
   app_name      = local.service_name__sap_identity_services_onboarding
   plan_name     = var.service_plan__sap_identity_services_onboarding
+  depends_on    = [btp_subaccount_entitlement.sap_identity_services_onboarding]
 }
 
 # IdP trust configuration
