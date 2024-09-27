@@ -5,7 +5,7 @@
 globalaccount   = "yourglobalaccount"
 region          = "us10"
 subaccount_name = "DC Mission 4033 - Create simple, connected digital experiences with API-based integration 1"
-custom_idp      = "xxxxxxxxxxxxx.accounts.ondemand.com"
+custom_idp      = "<your_idp>.accounts.ondemand.com"
 
 kyma_instance = {
   name            = "my-kyma-environment"
@@ -23,7 +23,6 @@ kyma_instance = {
 # ------------------------------------------------------------------------------------------------------
 subaccount_admins               = ["another.user@test.com"]
 subaccount_service_admins       = ["another.user@test.com"]
-conn_dest_admins                = ["another.user@test.com"]
 int_provisioners                = ["another.user@test.com"]
 users_buildApps_admins          = ["another.user@test.com"]
 users_registry_admins           = ["another.user@test.com"]
