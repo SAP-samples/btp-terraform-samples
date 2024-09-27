@@ -15,18 +15,22 @@ subaccount_admins = ["joe.do@sap.com", "jane.do@sap.com"]
 # Entitlements plan update
 #------------------------------------------------------------------------------------------------------
 # For production use of Business Application Studio, upgrade the plan from the `free-tier` to the appropriate plan e.g standard-edition
-service_plan__bas = "standard-edition"
+# service_plan__bas = "standard-edition"
 #-------------------------------------------------------------------------------------------------------
 # For production use of Build Workzone, upgrade the plan from the `free-tier` to the appropriate plan e.g standard
 service_plan__build_workzone = "standard"
 #--------------------------------------------------------------------------------------------------------
 # For production use of HANA, upgrade the plan from the `free-tier` to the appropriate plan e.g hana
 service_plan__hana_cloud = "hana"
+# cicd service plan
+cicd_service_plan = "default"
 #------------------------------------------------------------------------------------------------------
 # Cloud Foundry
 #------------------------------------------------------------------------------------------------------
 # Choose a unique organization name e.g., based on the global account subdomain and subaccount name
-cf_org_name = "<unique_org_name>"
+cf_org_name = "<unique org name>"
+# hana cloud admin users
+hana_cloud_admins = ["john.doe@sap.com"]
 # Additional Cloud Foundry users
 cf_space_developers = ["john.doe@sap.com"]
 cf_space_managers   = ["john.doe@sap.com"]
