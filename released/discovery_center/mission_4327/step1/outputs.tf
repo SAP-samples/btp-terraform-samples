@@ -22,14 +22,6 @@ output "cf_org_admins" {
   value = local.cf_org_admins
 }
 
-output "bas_subscription_url" {
-  value = btp_subaccount_subscription.bas-subscribe.subscription_url
-}
-
-output "build_workzone_subscription_url" {
-  value = btp_subaccount_subscription.build_workzone_subscribe.subscription_url
-}
-
 output "hana_cloud_tools_subscription_url" {
   value = btp_subaccount_subscription.hana-cloud-tools.subscription_url
 }
