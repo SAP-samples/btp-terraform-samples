@@ -43,11 +43,6 @@ variable "subaccount_admins" {
 ###
 
 # Plan_name update
-variable "service_plan__bas" {
-  description = "BAS plan"
-  type        = string
-  default     = "free"
-}
 
 variable "service_plan__build_workzone" {
   description = "Build Workzone plan"
@@ -61,6 +56,20 @@ variable "service_plan__hana_cloud" {
   default     = "hana-free"
 }
 
+variable "hana_cloud_admins" {
+  type        = list(string)
+  description = "Defines the colleagues who are added as admins to access the instance of SAP HANA Cloud."
+}
+# CICD service plan
+variable "cicd_service_plan" {
+  type        = string
+  description = "The plan for Continous Integration & Delivery subscription"
+  default     = "free"
+  validation {
+    condition     = contains(["free", "default"], var.cicd_service_plan)
+    error_message = "Invalid value for Continous Integraion & Delivery. Only 'free' and 'default' are allowed."
+  }
+}
 ###
 # Cloud Foundry
 ###
