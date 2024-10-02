@@ -30,16 +30,28 @@ data "btp_subaccount_environments" "all" {
 resource "terraform_data" "cf_landscape_label" {
   input = length(var.cf_landscape_label) > 0 ? var.cf_landscape_label : [for env in data.btp_subaccount_environments.all.values : env if env.service_name == "cloudfoundry" && env.environment_type == "cloudfoundry"][0].landscape_label
 }
+resource "btp_subaccount_entitlement" "cf_free"{
+  subaccount_id   = btp_subaccount.project.id
+  service_name    = "cloudfoundry"
+  plan_name       = "free"
+  amount          = 1
+}
+
+data "btp_subaccount_environments" "available_environments" {
+  subaccount_id = btp_subaccount.project.id
+}
+
 ###############################################################################################
 # Creation of Cloud Foundry environment
 ###############################################################################################
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
+  depends_on       = [ btp_subaccount_entitlement.cf_free ]
   subaccount_id    = btp_subaccount.project.id
   name             = local.subaccount_cf_org
   landscape_label  = terraform_data.cf_landscape_label.output
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
-  plan_name        = "standard"
+  plan_name        = "free"
   # ATTENTION: some regions offer multiple environments of a kind and you must explicitly select the target environment in which
   # the instance shall be created using the parameter landscape label. 
   # available environments can be looked up using the btp_subaccount_environments datasource
@@ -113,6 +125,7 @@ resource "btp_subaccount_entitlement" "cicd_app" {
   subaccount_id = btp_subaccount.project.id
   service_name  = "cicd-app"
   plan_name     = var.cicd_service_plan
+  amount        = 1
 }
 
 locals {
