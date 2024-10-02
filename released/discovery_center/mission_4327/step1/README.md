@@ -1,78 +1,91 @@
 # Set Up SAP BTP Account using Terraform – Cloud Foundry
 
-The Terraform provider for SAP Business Technology Platform (BTP) enables you to automate the provisioning, management, and configuration of resources on SAP BTP. By leveraging this provider, you can simplify and streamline the deployment and maintenance of SAP BTP services and applications.
+The Terraform provider for SAP Business Technology Platform (BTP) enables you to automate the provisioning, management, and configuration of resources on&nbsp;SAP BTP. By leveraging this provider, you can simplify and streamline the deployment and maintenance of SAP BTP services and applications.
 
 Currently, the SAP BTP provider is available in beta for non productive usage: [SAP BTP Terraform](https://registry.terraform.io/providers/SAP/btp/latest).
 
-The Terraform script documented here automates the setup of an SAP BTP subaccount based on a predefined template. The scripts can be used create SAP BTP subaccount with Cloud Foundry or Kyma runtime. The Terraform script does the below configuration after creating a SAP BTP subaccount:
+The Terraform script documented here automates the setup of an SAP BTP subaccount based on a predefined template. The Terraform script performs the following steps:
 
-1. Configures the SAP BTP entitlements required to complete the mission. See [Setup SAP BTP Account using Terraform](https://github.com/SAP-samples/btp-terraform-samples/blob/main/released/discovery_center/mission_4327/step1/README.md#entitlements).
-2. Enables the SAP BTP runtime (Cloud Foundry or Kyma).
-3. Creates the neccessary subscription to applications: SAP Business Application Studio (BAS), SAP Build Work Zone, standard edition, etc.
-4. Assigns users the neccessary roles required to access the applications, such as SAP Business Application Studio.
-5. Adds additional users to the subaccount.
+1. Creates a new subaccount in your enterprise global account in SAP BTP.
+1. Configures the SAP BTP entitlements listed in section [Entitlements](#entitlements) below in your subaccount.
+2. Enables the SAP BTP, Cloud Foundry runtime and adds your SAP BTP user to the Cloud Foundry org.
+3. Subscribes to SAP HANA Cloud administration tools and assigns the role collection **SAP HANA Cloud Administrator** to your SAP BTP user.
+5. Adds additional dummy users to the subaccount.
+
 ### [Entitlements ](https://github.tools.sap/refapps/incidents-mgmt/blob/main/documentation/administrate/Prepare-BTP/Configure-BTP-CF.md)
 
 | Service     |      Plan      |  Quota required |
 | ------------- | :-----------: | ----: |
-| Cloud Foundry Runtime     | MEMORY | 1 |
-| SAP Build Work Zone, standard edition    |  Standard    |   1 |
-| SAP HANA Cloud |   hana    |    1 |
-| SAP HANA Cloud |   tools   |    1 |
+| Cloud Foundry Runtime     | free (Environment) | 1 |
+| SAP Build Work Zone, standard edition    |  free (Application)    |   1 |
+| SAP HANA Cloud |   hana-free    |    1 |
+| SAP HANA Cloud |   tools (Application)   |    1 |
 | SAP HANA Schemas & HDI Containers |   hdi-shared   |    1 |
+| SAP Continuous Integration and Delivery |	free (Application)   |    1 |
 
 ## Deploy the resources
 
-To deploy the resources you must:
-1. Clone repository `git clone https://github.com/SAP-samples/btp-terraform-samples.git`
-2. Navigate to `released/discovery_center/mission_4327/setup_subaccount_cf`
-3. You will be seeing these files named `main.tf`,`provider.tf`,`samples.tfvars`,`variables.tf`.
-4. Create a file named `terraform.tfvars` and copy `samples.tfvars` content to `terraform.tfvars`. Update the variables to meet your requirements (By default free-tier plans are used, if you want to use it for production update in the `terraform.tfvars` accordingly)
-Follow these steps to use the script:
-5. Set `BTP_USERNAME`,`BTP_PASSWORD`,`CF_USER` and `CF_PASSWORD` as ENV variables.
+> **Prerequisites**
+>
+> - You have installed Terraform. See [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) for detailed instructions.
+> - You have an enterprise global account in SAP BTP. To use services for free, you can sign up for an SAP BTPEA (SAP BTP Enterprise Agreement) or a Pay-As-You-Go for SAP BTP global account and make use of the free tier services only. See [Using Free Service Plans](https://help.sap.com/docs/btp/sap-business-technology-platform/using-free-service-plans?version=Cloud).
+
+
+1. Clone the repository `git clone https://github.com/SAP-samples/btp-terraform-samples.git` to a directory on your machine. This will create a folder **btp-terraform-samples** in your directory.
+2. Open the **btp-terraform-samples/released/discovery_center/mission_4327/step1** directory.
+4. Create a new file named **terraform.tfvars** and copy the content of the **samples.tfvars** file to the **terraform.tfvars** file. 
+5. Make changes to the **terraform.tfvars** file:
+    1. In line 5, replace `<your-global-account-subdomain>` with the subdomain of your global account. 
+    2. In line 10, replace `<subaccount-region>` with the region where you want to create a subaccount.
+    3. In line 11, replace `<your-subacccunt-name>` with a name that is unique within your global account.
+  
+  > The script uses free tier service plans by default. If you want to use it for production, you have to update the service plans in the **terraform.tfvars**  file accordingly.
+  > The name of your Cloud Foundry org will be generated by appending `CF-Org` to your subaccount's name. This ensures that your Cloud Foundry org name will be unique within your global account.
+
+6. Configure your SAP BTP credentials as environment variables. Copy the commands relevant for the shell you're using:
    
-Windows PowerShell:
-```Powershell
-  $env:BTP_USERNAME="<your email address>"
-  $env:BTP_PASSWORD="<your password>"
-  $env:CF_USER="<your email address>"
-  $env:CF_PASSWORD="<your password>"
-```
-Linux, macOS:
-```mac OS
-  export BTP_USERNAME="<your email address>"
-  export BTP_PASSWORD="<your password>"
-  export CF_USER="<your email address>"
-  export CF_PASSWORD="<your password>"
-```
-6. **Install Terraform Plugins**: Open a terminal and navigate to the directory containing your Terraform configuration files. Run the following command to initialize and upgrade Terraform plugins:
+    Windows PowerShell:
+    ```Powershell
+      $env:BTP_USERNAME="<your email address>"
+      $env:BTP_PASSWORD="<your password>"
+    ```
+    Linux, macOS:
+    ```mac OS
+      export BTP_USERNAME="<your-email-address>"
+      export BTP_PASSWORD="<your-password>"
+    ```
+6. In the terminal, navigate to the directory containing your Terraform configuration files. 
+
+7. Run the following command to initialize and upgrade Terraform plugins:
 
     ```shell
     terraform init
     ```
 
-7. **Review Changes**: Generate an execution plan to review the changes that will be made to your SAP BTP account. Run:
+7. Run the following command to generate an execution plan to review the changes that will be made to your SAP BTP account:
 
     ```shell
     terraform plan
     ```
 
-8. **Apply Configuration**: Apply the Terraform configuration to create the SAP BTP subaccount and entitlements. Run:
+8. Run the following command to apply the Terraform configuration to create the SAP BTP subaccount and entitlements:
 
     ```shell
     terraform apply
     ```
 
-    Confirm the changes by typing "yes."
+    When prompted, type `yes` to confirm the changes.
 
-9. **Cleanup**: After your session or project is complete, you can delete the SAP BTP subaccount and associated resources to avoid charges:
+9. (Optional) Run the following command to delete the SAP BTP subaccount and associated resources after your session or project is complete:
 
     ```shell
     terraform destroy
     ```
 
-    Confirm the resource destruction by typing "yes."
+    When prompted, type `yes` to confirm the resources' destruction.
+
+    > By cleaning up, you ensure that no unwanted charges are accumulated by your SAP BTP enterprise account:
    
-11. **Optional**: You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
+> You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
 
 Please exercise caution when using this script, especially in production environments, and ensure you understand the resources that will be created or modified.
