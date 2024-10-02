@@ -46,13 +46,17 @@ The Terraform script documented here automates the setup of an SAP BTP subaccoun
    
     Windows PowerShell:
     ```Powershell
-      $env:BTP_USERNAME="<your email address>"
-      $env:BTP_PASSWORD="<your password>"
+      $env:BTP_USERNAME="<your-email-address>"
+      $env:BTP_PASSWORD="<your-password>"
+      $env:CF_USER="<your-email-address>"
+      $env:CF_PASSWORD="<your-password>"
     ```
     Linux, macOS:
     ```mac OS
       export BTP_USERNAME="<your-email-address>"
       export BTP_PASSWORD="<your-password>"
+      export CF_USER="<your-email-address>"
+      export CF_PASSWORD="<your-password>"
     ```
 6. In the terminal, navigate to the directory containing your Terraform configuration files. 
 
