@@ -88,8 +88,6 @@ The Terraform script documented here automates the setup of an SAP BTP subaccoun
 
     When prompted, type `yes` to confirm the resources' destruction.
 
-    > By cleaning up, you ensure that no unwanted charges are accumulated by your SAP BTP enterprise account:
-   
-> You can remove the Terraform state file (`terraform.tfstate`) manually if needed.
+    > By cleaning up, you ensure that no unwanted charges are accumulated by your SAP BTP enterprise account.
 
 Please exercise caution when using this script, especially in production environments, and ensure you understand the resources that will be created or modified.
