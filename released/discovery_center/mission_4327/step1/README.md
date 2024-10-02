@@ -10,7 +10,7 @@ The Terraform script documented here automates the setup of an SAP BTP subaccoun
 1. Configures the SAP BTP entitlements listed in section [Entitlements](#entitlements) below in your subaccount.
 2. Enables the SAP BTP, Cloud Foundry runtime and adds your SAP BTP user to the Cloud Foundry org.
 3. Subscribes to SAP HANA Cloud administration tools and assigns the role collection **SAP HANA Cloud Administrator** to your SAP BTP user.
-5. Adds additional dummy users to the subaccount.
+5. Adds additional users to the subaccount.
 
 ### [Entitlements ](https://github.tools.sap/refapps/incidents-mgmt/blob/main/documentation/administrate/Prepare-BTP/Configure-BTP-CF.md)
 
