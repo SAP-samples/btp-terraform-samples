@@ -72,7 +72,7 @@ variable "btp_username" {
   type        = string
   description = "SAP BTP user name"
   ## set default value to "" when using environment values for user and password
-#   default     = ""
+  #   default     = ""
 }
 
 
@@ -81,5 +81,5 @@ variable "btp_password" {
   description = "Password for SAP BTP user"
   sensitive   = true
   ## set default value to "" when using environment values for user and password
-#   default     = ""
+  #   default     = ""
 }
