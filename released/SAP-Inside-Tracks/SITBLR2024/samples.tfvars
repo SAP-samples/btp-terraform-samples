@@ -1,9 +1,10 @@
 ########################################################################
 # Account settings
 ########################################################################
-globalaccount   = "myglobalaccount"
+globalaccount   = "inside-track-2023"
 region          = "us10"
 subaccount_name = "learningjourney"
+idp             = "<name of the custom identity provider>"   
 
 
 # Set the subaccount_id ro run the script in an existing subaccount, 

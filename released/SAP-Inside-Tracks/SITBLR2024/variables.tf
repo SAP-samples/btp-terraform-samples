@@ -2,10 +2,10 @@ variable "globalaccount" {
   type        = string
   description = "The globalaccount subdomain where the sub account shall be created."
 }
-variable "custom_idp" {
+variable "idp" {
   type        = string
   description = "The custom identity provider for the subaccount."
-  default     = "aviss4yru-platform.accounts.ondemand.com"
+  default     = "aviss4yru.accounts.ondemand.com"
 }
 
 variable "subaccount_name" {

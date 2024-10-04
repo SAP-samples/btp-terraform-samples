@@ -1,7 +1,7 @@
 
 
 ###############################################################################################
-# This is the Terraform script for the BTP_200 Learning Journey. In this script you will create
+# This is the Terraform script for the SAP Insidetrack event. In this script you will create
 # the infrastructure for the development of an SAP extension project  
 # The script will do the following
 #   - create a new subaccount (if the subaccount id is not set)
