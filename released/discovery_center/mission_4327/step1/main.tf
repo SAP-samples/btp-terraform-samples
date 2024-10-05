@@ -90,7 +90,7 @@ resource "terraform_data" "cf_landscape_label" {
 
 # Create instance
 locals {
-  cf_org_name   = var.cf_org_name == "" ? "cf_org_name_dcmission_4327_${local.random_uuid}" : var.cf_org_name
+  cf_org_name = var.cf_org_name == "" ? "cf_org_name_dcmission_4327_${local.random_uuid}" : var.cf_org_name
 }
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = data.btp_subaccount.dc_mission.id
@@ -103,7 +103,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   parameters = jsonencode({
     instance_name = local.cf_org_name
   })
-  depends_on    = [btp_subaccount_entitlement.cloudfoundry]
+  depends_on = [btp_subaccount_entitlement.cloudfoundry]
 }
 
 # ------------------------------------------------------------------------------------------------------
