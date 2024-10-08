@@ -1,16 +1,23 @@
 terraform {
   required_providers {
+    btp = {
+      source  = "SAP/btp"
+      version = "~> 1.7.0"
+    }
     cloudfoundry = {
-      source  = "sap/cloudfoundry"
+      source  = "SAP/cloudfoundry"
       version = "1.0.0-rc1"
     }
   }
 }
 
-# This will only work if we know the region in advance
+provider "btp" {
+  #idp = var.custom_idp
+  globalaccount  = var.globalaccount
+  cli_server_url = var.cli_server_url
+}
+
 provider "cloudfoundry" {
-  # Comment out the origin in case you need it to connect to your CF environment
-  # ----------------------------------------------------------------------------
-  # origin  = var.origin
+  #origin = "${element(split(".", var.custom_idp), 0)}-platform"
   api_url = var.cf_api_url
 }

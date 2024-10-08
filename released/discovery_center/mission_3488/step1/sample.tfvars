@@ -1,30 +1,29 @@
 # ------------------------------------------------------------------------------------------------------
-# Provider configuration
+# Account settings
 # ------------------------------------------------------------------------------------------------------
-# Your global account subdomain
-globalaccount   = "yourglobalaccount"
-region          = "datacenter"
-subaccount_name = "SAP Discovery Center Mission 3488"
+custom_idp    = "<<tenant-id>>.accounts.ondemand.com"
+globalaccount = "<<your-global-account-subdomain>>"
+
+subaccount_admins         = ["you@acme.com", "other.user@acme.com"]
+subaccount_service_admins = ["you@acme.com", "other.user@acme.com"]
 
 # ------------------------------------------------------------------------------------------------------
-# Project specific configuration (please adapt!)
+# Use case specific configuration
 # ------------------------------------------------------------------------------------------------------
+cf_org_managers     = ["you@acme.com", "other.user@acme.com"]
+cf_org_users        = ["you@acme.com", "other.user@acme.com"]
+cf_space_managers   = ["you@acme.com", "other.user@acme.com"]
+cf_space_developers = ["you@acme.com", "other.user@acme.com"]
 
-subaccount_admins         = ["another.user@test.com"]
-subaccount_service_admins = ["another.user@test.com"]
+sac_admin_email      = "<<sac.admin@acme.com>>"
+sac_admin_first_name = "First Name"
+sac_admin_last_name  = "Last Name"
+sac_admin_host_name  = "<<sac-hostname>>"
 
-cf_org_admins       = ["another.user@test.com"]
-cf_space_managers   = ["another.user@test.com", "you@test.com"]
-cf_space_developers = ["another.user@test.com", "you@test.com"]
+# ------------------------------------------------------------------------------------------------------
+# additional configuration (dev & testing)
+# ------------------------------------------------------------------------------------------------------
+create_tfvars_file_for_step2 = true
 
-custom_idp = ""
-
-create_tfvars_file_for_next_stage = true
-
-sac_param_first_name = "John"
-sac_param_last_name  = "Doe"
-sac_param_email      = "john.doe@test.com"
-sac_param_host_name  = "johndoetestsac"
-
-
-
+# (optional) test enable/disable service setups
+#enable_service_setup__sac = false
