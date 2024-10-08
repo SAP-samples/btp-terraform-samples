@@ -33,11 +33,11 @@ resource "cloudfoundry_space" "space_name" {
 locals {
   # origin_key is default (sap.ids) if issuer (idp) of logged in user is not custom_idp, otherwise calculated from custom_idp (<<tenant-id>>-platform)
   custom_idp_tenant_id = var.custom_idp != "" ? element(split(".", var.custom_idp), 0) : ""
-  origin_key        = data.btp_whoami.me.issuer != var.custom_idp ? "sap.ids" : "${local.custom_idp_tenant_id}-platform"
+  origin_key           = data.btp_whoami.me.issuer != var.custom_idp ? "sap.ids" : "${local.custom_idp_tenant_id}-platform"
 
   # Remove logged in user (which was already added before when cf env was created) 
   cf_org_managers = setsubtract(toset(var.cf_org_managers), [data.btp_whoami.me.email])
-  cf_org_users  = setsubtract(toset(var.cf_org_users), [data.btp_whoami.me.email])
+  cf_org_users    = setsubtract(toset(var.cf_org_users), [data.btp_whoami.me.email])
 }
 
 # cf_org_users: Assign organization_user role
@@ -118,5 +118,5 @@ resource "cloudfoundry_service_instance" "sac_si" {
     delete = "2h"
     update = "2h"
   }
-  depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer]
+  depends_on = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer]
 }
