@@ -8,10 +8,10 @@ This sample shows how to create subaaccount and cloudfoundry environment instanc
 
 The setup comprises the following resources:
 
-- Creation of three SAP BTP subaccount
+- Creation of a SAP BTP subaccount.
 - Add entitlement for cf_application_runtime with memory of 1024 MB (Change the memory limit according to your       requirement, You can find it in main.tf)
-- Enable cloudfoundry
-- Assign Subaccount Administrator role to the users
+- Enable cloudfoundry runtime.
+- Assign Subaccount Administrator role to the users.
 
 ## Deploying the resources
 
