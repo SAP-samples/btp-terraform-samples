@@ -2,7 +2,7 @@
 
 ## Overview
 
-This sample shows how to create subaaccount and cloudfoundry environment instance with [Application Runtime](https://help.sap.com/docs/btp/sap-business-technology-platform/cloud-foundry-environment?q=cloudfoundry+application+runtime#commercial-information-for-cloud-foundry-runtime).
+This sample shows how to create subaaccount and cloudfoundry environment instance with [Application Runtime](https://help.sap.com/docs/btp/sap-business-technology-platform/cloud-foundry-environment?q=cloudfoundry+application+runtime#commercial-information-for-cloud-foundry-runtime). To create cloudfoundry environment with free plan refer to this [Terraform Sample](https://github.com/SAP-samples/btp-terraform-samples/blob/main/released/discovery_center/mission_4327/step1/main.tf#L95).
 
 ## Content of setup
 
@@ -10,7 +10,7 @@ The setup comprises the following resources:
 
 - Creation of a SAP BTP subaccount.
 - Add entitlement for cf_application_runtime with memory of 1024 MB (Change the memory limit according to your       requirement, You can find it in main.tf)
-- Enable cloudfoundry runtime.
+- Enable cloudfoundry runtime with standard plan.
 - Assign Subaccount Administrator role to the users.
 
 ## Deploying the resources
