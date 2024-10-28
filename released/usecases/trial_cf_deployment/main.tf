@@ -22,14 +22,15 @@ resource "cloudfoundry_route" "helloterraform" {
   host   = "helloterraform-${random_id.suffix.hex}"
 }
 
-data "cloudfoundry_service" "xsuaa" {
-  name = "xsuaa"
+data "cloudfoundry_service_instance" "xsuaa" {
+  name  = "xsuaa"
+  space = data.cloudfoundry_space.dev
 }
 
 resource "cloudfoundry_service_instance" "helloterraform_xsuaa" {
   name         = "helloterraform-xsuaa"
   space        = data.cloudfoundry_space.dev.id
-  service_plan = data.cloudfoundry_service.xsuaa.service_plans["application"]
+  service_plan = data.cloudfoundry_service_instance.xsuaa.service_plan
   type         = "managed"
   parameters = jsonencode({
     xsappname   = "helloterraform-${random_id.suffix.hex}"
