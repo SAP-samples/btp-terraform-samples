@@ -44,7 +44,7 @@ For this hands-on we will focus on the *second case*.
 
 Terraform offers dedicated commands in order to adjust the state We will use the `terraform plan -refresh-only` and `terraform apply -refresh-only` commands to detect the drift and adjust the state in Terraform to match the actual state in the SAP BTP cockpit.
 
-First we check the drift with `terraform plan` and add the `--refresh-only` flag to trigger the planning mode for [state replacement](https://developer.hashicorp.com/terraform/cli/commands/plan#planning-modes):
+First we check the drift with `terraform plan` and add the `-refresh-only` flag to trigger the planning mode for [state replacement](https://developer.hashicorp.com/terraform/cli/commands/plan#planning-modes):
 
 ```bash
 terraform plan -refresh-only

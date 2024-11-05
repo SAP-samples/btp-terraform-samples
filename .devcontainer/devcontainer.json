@@ -10,7 +10,8 @@
 		"vscode": {
 			"settings": {},
 			"extensions": [
-				"HashiCorp.terraform"
+				"HashiCorp.terraform",
+				"Github.copilot"
 			]
 		},
 		"codespaces": {}

@@ -8,16 +8,12 @@ In this *optional* exercise you will earn how to create a Cloud Foundry environm
 
 We want to create a Cloud Foundry environment in the subaccount. We will not directly use the resources of the Terraform provider for SAP BTP, but leverage a concept called [modules](https://developer.hashicorp.com/terraform/language/modules).
 
-Modules are a way to organize Terraform configurations into reusable components. We have a fitting module for the task at hand in this repository. Navigate to the `modules` folder in the root of this repo and you will find the fitting module at [environments/cloudfoundry/envinstance_cf](../../modules/environment/cloudfoundry/envinstance_cf/README.md).
+Modules are a way to organize Terraform configurations into reusable components. We have a fitting module for the task at hand in this repository. Navigate to the `modules` folder in the root of this repo and you will find the fitting module at [environments/cloudfoundry/envinstance_cf](../../modules/environment/cloudfoundry/envinstance_cf/envinstance_cf.tf).
 
 Inspect the folder and you will see a known file structure:
 
 - `envinstance_cf_variables.tf`: The file contains the input variables for the module.
-- `envinstance_cf.tf`: The file contains the main configuration of the module comprising the resource [`btp_subaccount_environment_instance`](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_environment_instance) of the Terraform Provider for SAP BTP and the resource [`cloudfoundry_org_users`](https://registry.terraform.io/providers/cloudfoundry-community/cloudfoundry/latest/docs/resources/org_users) from the Terraform Provider for Cloud Foundry. It corresponds to the `main.tf` file of a Terraform configuration and also contains the required providers.
-
-> [!NOTE]
-> The Terraform provider for Cloud Foundry is a community provider and not maintained by SAP.
-
+- `envinstance_cf.tf`: The file contains the main configuration of the module comprising the resource [`btp_subaccount_environment_instance`](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_environment_instance) of the Terraform Provider for SAP BTP and the resource [`cloudfoundry_org_role`](https://registry.terraform.io/providers/cloudfoundry/cloudfoundry/latest/docs/resources/org_role) from the Terraform Provider for Cloud Foundry. It corresponds to the `main.tf` file of a Terraform configuration and also contains the required providers.
 - `envinstance_cf_outputs.tf`: The file contains the output variables for the module.
 
 When taking a closer look at the `envinstance_cf.tf` file, we see that we do not want to implement these steps again. We will re-use the module to create the Cloud Foundry environment.
@@ -232,6 +228,6 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 
 ## Summary
 
-You've now successfully created a Cloud Foundry environment instance as well as a Cloud Foundry space in SAP BTP.  
+You've now successfully created a Cloud Foundry environment instance as well as a Cloud Foundry space in SAP BTP.
 
 Continue to - [Exercise 8 - Cleanup](../EXERCISE8/README.md).

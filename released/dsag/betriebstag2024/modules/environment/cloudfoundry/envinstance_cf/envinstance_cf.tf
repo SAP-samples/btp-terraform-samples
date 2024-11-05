@@ -7,7 +7,7 @@ terraform {
       source = "sap/btp"
     }
     cloudfoundry = {
-      source = "SAP/cloudfoundry"
+      source = "cloudfoundry/cloudfoundry"
     }
   }
 }
