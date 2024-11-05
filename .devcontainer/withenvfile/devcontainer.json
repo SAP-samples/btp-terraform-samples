@@ -5,32 +5,15 @@
 	"features": {
 		"ghcr.io/devcontainers/features/terraform:1": {},
 		"ghcr.io/devcontainers/features/github-cli:1": {},
-		"ghcr.io/devcontainers/features/python:1": {},
-		"ghcr.io/devcontainers/features/go:1": {}		
 	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-python.vscode-pylance",
-				"ms-python.python",
-				"charliermarsh.ruff",
 				"Github.copilot",
 				"HashiCorp.terraform"
 			],
 			// Set *default* container specific settings.json values on container create.
-			"settings": {
-				"python.defaultInterpreterPath": "/usr/local/bin/python",
-				"python.linting.enabled": true,
-				"python.testing.unittestEnabled": false,
-				"python.testing.pytestEnabled": true,
-				"[python]": {
-					"editor.formatOnSave": true,
-					"editor.codeActionsOnSave": {
-						"source.fixAll": "always"
-					}
-				},
-				"python.formatting.provider": "black"
-			}
+			"settings": {}
 		},
 		"codespaces": {}
 	},
@@ -49,5 +32,4 @@
 		".devcontainer/devcontainer.env"
 	],
 	"postStartCommand": "go install github.com/hashicorp/terraform-config-inspect@latest"
-	
 }
