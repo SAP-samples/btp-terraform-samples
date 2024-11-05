@@ -27,7 +27,7 @@ terraform {
   required_providers {
     btp = {
       source  = "sap/btp"
-      version = "~> 1.5.0"
+      version = "~> 1.8.0"
     }
   }
 }
@@ -63,6 +63,6 @@ globalaccount = "<YOUR GLOBAL ACCOUNT SUBDOMAIN>"
 
 ## Summary
 
-You've now created a basic setup of the Terraform provider including its configuration.  
+You've now created a basic setup of the Terraform provider including its configuration.
 
 Continue to - [Exercise 2 - Setup of a subaccount](../EXERCISE2/README.md).
