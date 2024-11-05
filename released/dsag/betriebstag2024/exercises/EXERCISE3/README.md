@@ -76,6 +76,6 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 
 ## Summary
 
-You've now successfully assigned emergency administrators to the subaccount.  
+You've now successfully assigned emergency administrators to the subaccount.
 
 Continue to - [# Exercise 4 - Assign entitlements to a subaccount](../EXERCISE4/README.md).
