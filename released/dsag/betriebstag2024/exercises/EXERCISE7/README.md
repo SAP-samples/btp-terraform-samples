@@ -70,8 +70,8 @@ As we are using an additional provider we must make Terraform aware of this in t
 
 ```terraform
 cloudfoundry = {
-      source  = "SAP/cloudfoundry"
-      version = "1.0.0-rc1"
+      source  = "cloudfoundry/cloudfoundry"
+      version = "~> 1.0.0"
     }
 ```
 

@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     cloudfoundry = {
-      source  = "sap/cloudfoundry"
-      version = "1.0.0-rc1"
+      source  = "cloudfoundry/cloudfoundry"
+      version = "~> 1.0.0"
     }
   }
 }

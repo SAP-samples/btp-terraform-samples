@@ -4,7 +4,7 @@
 # BTP Provider
 PROVIDER_BTP = "btp"
 PROVIDER_BTP_REQUIRED_SOURCE = "sap/btp"
-PROVIDER_BTP_REQUIRED_version = "~> 1.5.0"
+PROVIDER_BTP_REQUIRED_version = "~> 1.8.0"
 
 # Cloudfoundry Provider
 PROVIDER_CLOUDFOUNDRY = "cloudfoundry"
