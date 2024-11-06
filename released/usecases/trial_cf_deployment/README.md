@@ -8,9 +8,16 @@ This sample shows how to deploy a Cloud Foundry application to SAP BTP trial.
 
 The setup comprises the following resources:
 
-- Creation of a Cloud Foundry space, domain and route
+- Creation of a Cloud Foundry domain and route
 - Creation of XSUAA service instance
 - Deployment of "Hello World" application
+
+## Pre-requisite for the setup
+
+- You must have an SAP BTP trial account with a subaccount created named trial.
+- The BTP subaccount should be enabled for Cloud Foundry, specifically with the Application Runtime is added.
+- Ensure that you have created a space named Dev within the Cloud Foundry environment of your subaccount.
+- Verify that the XSUAA service is available in your Cloud Foundry environment.
 
 ## Deploying the resources
 
