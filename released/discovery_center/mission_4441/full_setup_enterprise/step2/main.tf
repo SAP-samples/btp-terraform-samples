@@ -19,7 +19,7 @@ resource "btp_subaccount_entitlement" "sdm" {
   plan_name     = "build-code"
 }
 # Create the service instance
-data "cloudfoundry_service" "sdm" {
+data "cloudfoundry_service_plans" "sdm" {
   name       = "sdm"
   depends_on = [btp_subaccount_entitlement.sdm]
 }
@@ -27,7 +27,7 @@ resource "cloudfoundry_service_instance" "sdm" {
   name         = "default_sdm"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.sdm.service_plans["build-code"]
+  service_plan = data.cloudfoundry_service_plans.sdm.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.sdm]
 }
 # Create service key
@@ -49,7 +49,7 @@ resource "btp_subaccount_entitlement" "mobile_services" {
   amount        = 1
 }
 # Create the service instance
-data "cloudfoundry_service" "mobile_services" {
+data "cloudfoundry_service_plans" "mobile_services" {
   name       = "mobile-services"
   depends_on = [btp_subaccount_entitlement.mobile_services]
 }
@@ -57,7 +57,7 @@ resource "cloudfoundry_service_instance" "mobile_services" {
   name         = "default_mobile-services"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.mobile_services.service_plans["build-code"]
+  service_plan = data.cloudfoundry_service_plans.mobile_services.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.mobile_services]
 }
 # Create service key
@@ -78,7 +78,7 @@ resource "btp_subaccount_entitlement" "transport_standard" {
   plan_name     = "standard"
 }
 # Create the service instance
-data "cloudfoundry_service" "transport_standard" {
+data "cloudfoundry_service_plans" "transport_standard" {
   name       = "transport"
   depends_on = [btp_subaccount_entitlement.transport_standard]
 }
@@ -86,7 +86,7 @@ resource "cloudfoundry_service_instance" "transport_standard" {
   name         = "default_transport_standard"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.transport_standard.service_plans["standard"]
+  service_plan = data.cloudfoundry_service_plans.transport_standard.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport_standard]
 }
 # Create service key
@@ -107,7 +107,7 @@ resource "btp_subaccount_entitlement" "transport_export" {
   plan_name     = "export"
 }
 # Create the service instance
-data "cloudfoundry_service" "transport_export" {
+data "cloudfoundry_service_plans" "transport_export" {
   name       = "transport"
   depends_on = [btp_subaccount_entitlement.transport_export]
 }
@@ -115,7 +115,7 @@ resource "cloudfoundry_service_instance" "transport_export" {
   name         = "default_transport_export"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.transport_export.service_plans["export"]
+  service_plan = data.cloudfoundry_service_plans.transport_export.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport_export]
 }
 # Create service key
@@ -136,7 +136,7 @@ resource "btp_subaccount_entitlement" "transport_operator" {
   plan_name     = "transport_operator"
 }
 # Create the service instance
-data "cloudfoundry_service" "transport_operator" {
+data "cloudfoundry_service_plans" "transport_operator" {
   name       = "transport"
   depends_on = [btp_subaccount_entitlement.transport_operator]
 }
@@ -144,7 +144,7 @@ resource "cloudfoundry_service_instance" "transport_operator" {
   name         = "default_transport_operator"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.transport_operator.service_plans["transport_operator"]
+  service_plan = data.cloudfoundry_service_plans.transport_operator.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.transport_operator]
 }
 # Create service key
@@ -166,7 +166,7 @@ resource "btp_subaccount_entitlement" "cloud_logging" {
   amount        = 1
 }
 # Create the service instance
-data "cloudfoundry_service" "cloud_logging" {
+data "cloudfoundry_service_plans" "cloud_logging" {
   name       = "cloud-logging"
   depends_on = [btp_subaccount_entitlement.cloud_logging]
 }
@@ -174,7 +174,7 @@ resource "cloudfoundry_service_instance" "cloud_logging" {
   name         = "default_cloud-logging"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.cloud_logging.service_plans["build-code"]
+  service_plan = data.cloudfoundry_service_plans.cloud_logging.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.cloud_logging]
 }
 # Create service key
@@ -194,7 +194,7 @@ resource "btp_subaccount_entitlement" "autoscaler" {
   service_name  = "autoscaler"
   plan_name     = "standard"
 }
-data "cloudfoundry_service" "autoscaler" {
+data "cloudfoundry_service_plans" "autoscaler" {
   name       = "autoscaler"
   depends_on = [btp_subaccount_entitlement.autoscaler]
 }
@@ -203,7 +203,7 @@ resource "cloudfoundry_service_instance" "autoscaler" {
   name         = "default_autoscaler"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.autoscaler.service_plans["standard"]
+  service_plan = data.cloudfoundry_service_plans.autoscaler.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.autoscaler]
 }
 
@@ -217,7 +217,7 @@ resource "btp_subaccount_entitlement" "feature_flags" {
   plan_name     = "standard"
 }
 # Create the service instance
-data "cloudfoundry_service" "feature_flags" {
+data "cloudfoundry_service_plans" "feature_flags" {
   name       = "feature-flags"
   depends_on = [btp_subaccount_entitlement.feature_flags]
 }
@@ -225,7 +225,7 @@ resource "cloudfoundry_service_instance" "feature_flags" {
   name         = "default_feature-flags"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.feature_flags.service_plans["standard"]
+  service_plan = data.cloudfoundry_service_plans.feature_flags.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.feature_flags]
 }
 # Create service key
@@ -247,7 +247,7 @@ resource "btp_subaccount_entitlement" "alert_notification" {
   amount        = 1
 }
 # Create the service instance
-data "cloudfoundry_service" "alert_notification" {
+data "cloudfoundry_service_plans" "alert_notification" {
   name       = "alert-notification"
   depends_on = [btp_subaccount_entitlement.alert_notification]
 }
@@ -255,7 +255,7 @@ resource "cloudfoundry_service_instance" "alert_notification" {
   name         = "default_alert-notification"
   space        = cloudfoundry_space.dev.id
   type         = "managed"
-  service_plan = data.cloudfoundry_service.alert_notification.service_plans["build-code"]
+  service_plan = data.cloudfoundry_service_plans.alert_notification.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_manager, cloudfoundry_space_role.space_developer, cloudfoundry_org_role.organization_manager, btp_subaccount_entitlement.alert_notification]
 }
 # Create service key
