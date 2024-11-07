@@ -51,7 +51,7 @@ resource "btp_subaccount_entitlement" "mobile_services" {
   plan_name     = "build-code"
 }
 # Create the service instance
-data cloudfoundry_service_plans "mobile_services" {
+data "cloudfoundry_service_plans" "mobile_services" {
   name       = "mobile-services"
   depends_on = [btp_subaccount_entitlement.mobile_services]
 }
@@ -82,7 +82,7 @@ resource "btp_subaccount_entitlement" "cloud_logging" {
   plan_name     = "build-code"
 }
 # Create the service instance
-data cloudfoundry_service_plans "cloud_logging" {
+data "cloudfoundry_service_plans" "cloud_logging" {
   name       = "cloud-logging"
   depends_on = [btp_subaccount_entitlement.cloud_logging]
 }
@@ -113,7 +113,7 @@ resource "btp_subaccount_entitlement" "alert_notification" {
   plan_name     = "build-code"
 }
 # Create the service instance
-data cloudfoundry_service_plans "alert_notification" {
+data "cloudfoundry_service_plans" "alert_notification" {
   name       = "alert-notification"
   depends_on = [btp_subaccount_entitlement.alert_notification]
 }
@@ -144,7 +144,7 @@ resource "btp_subaccount_entitlement" "transport" {
   plan_name     = "standard"
 }
 # Create the service instance
-data cloudfoundry_service_plans "transport" {
+data "cloudfoundry_service_plans" "transport" {
   name       = "transport"
   depends_on = [btp_subaccount_entitlement.transport]
 }
@@ -175,7 +175,7 @@ resource "btp_subaccount_entitlement" "autoscaler" {
   plan_name     = "standard"
 }
 # Create the service instance
-data cloudfoundry_service_plans "autoscaler" {
+data "cloudfoundry_service_plans" "autoscaler" {
   name       = "autoscaler"
   depends_on = [btp_subaccount_entitlement.autoscaler]
 }
@@ -197,7 +197,7 @@ resource "btp_subaccount_entitlement" "feature_flags" {
   plan_name     = "standard"
 }
 # Create the service instance
-data cloudfoundry_service_plans "feature_flags" {
+data "cloudfoundry_service_plans" "feature_flags" {
   name       = "feature-flags"
   depends_on = [btp_subaccount_entitlement.feature_flags]
 }

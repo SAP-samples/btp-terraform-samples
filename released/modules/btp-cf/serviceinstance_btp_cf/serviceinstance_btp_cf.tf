@@ -13,7 +13,7 @@ terraform {
 # ------------------------------------------------------------------------------------------------------
 # Fetch the technical ID of the service plan
 # ------------------------------------------------------------------------------------------------------
-data "cloudfoundry_service" "service" {
+data "cloudfoundry_service_plans" "service" {
   name = var.service_name
 }
 
@@ -24,7 +24,7 @@ data "cloudfoundry_service" "service" {
 resource "cloudfoundry_service_instance" "service" {
   name         = var.service_name
   space        = var.cf_space_id
-  service_plan = data.cloudfoundry_service.service.service_plans["${var.plan_name}"]
+  service_plan = data.cloudfoundry_service_plans.service.service_plans[0].id
   type         = var.type
   parameters   = var.parameters
 }
