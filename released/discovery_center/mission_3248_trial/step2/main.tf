@@ -21,7 +21,7 @@ resource "cloudfoundry_space" "dev" {
 # Setup abap-trial (ABAP environment)
 # ------------------------------------------------------------------------------------------------------
 #
-data "cloudfoundry_service" "abap_service_plans" {
+data "cloudfoundry_service_plans" "abap_service_plans" {
   name = "abap-trial"
 }
 
@@ -30,7 +30,7 @@ resource "cloudfoundry_service_instance" "abap_trial" {
   depends_on   = [cloudfoundry_space_role.space_managers, cloudfoundry_space_role.space_developers]
   name         = "abap-trial"
   space        = local.space_id
-  service_plan = data.cloudfoundry_service.abap_service_plans.service_plans["shared"]
+  service_plan = data.cloudfoundry_service_plans.abap_service_plans.service_plans[0].id
   type         = "managed"
   parameters = jsonencode({
     email = "${var.abap_admin_email}"

@@ -72,7 +72,7 @@ resource "cloudfoundry_space_role" "space_auditors" {
 ###
 # Creation of service instance for ABAP
 ###
-data "cloudfoundry_service" "abap_service_plans" {
+data "cloudfoundry_service_plans" "abap_service_plans" {
   name = "abap"
 }
 
@@ -80,7 +80,7 @@ resource "cloudfoundry_service_instance" "abap_si" {
   depends_on   = [cloudfoundry_space_role.space_managers, cloudfoundry_space_role.space_developers]
   name         = local.abap_service_instance_name
   space        = cloudfoundry_space.abap_space.id
-  service_plan = data.cloudfoundry_service.abap_service_plans.service_plans[var.service_plan__abap]
+  service_plan = data.cloudfoundry_service_plans.abap_service_plans.service_plans[0].id
   type         = "managed"
   parameters = jsonencode({
     admin_email              = "${var.abap_admin_email}"

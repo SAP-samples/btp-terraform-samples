@@ -66,7 +66,7 @@ resource "time_sleep" "wait_a_few_seconds" {
 ###
 # Creation of service instance for ABAP
 ###
-data "cloudfoundry_service" "abap_service_plans" {
+data "cloudfoundry_service_plans" "abap_service_plans" {
   name       = "abap"
   depends_on = [time_sleep.wait_a_few_seconds]
 }
@@ -75,7 +75,7 @@ data "cloudfoundry_service" "abap_service_plans" {
 resource "cloudfoundry_service_instance" "abap_si" {
   name         = local.abap_service_instance_name
   space        = data.cloudfoundry_space.cf_space_data.id
-  service_plan = data.cloudfoundry_service.abap_service_plans.service_plans[var.abap_si_plan]
+  service_plan = data.cloudfoundry_service_plans.abap_service_plans.service_plans[0].id
   json_params = jsonencode({
     admin_email              = "${var.abap_admin_email}"
     is_development_allowed   = "${var.abap_is_development_allowed}"
