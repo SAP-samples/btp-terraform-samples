@@ -56,14 +56,15 @@ resource "cloudfoundry_space_role" "space_developers" {
 # ------------------------------------------------------------------------------------------------------
 # Create service instance for taskcenter (one-inbox-service)
 # ------------------------------------------------------------------------------------------------------
-data "cloudfoundry_service" "sapcloudalmapis" {
-  name = "SAPCloudALMAPIs"
+data "cloudfoundry_service_plans" "sapcloudalmapis" {
+  service_offering_name = "SAPCloudALMAPIs"
+  name                  = "standard"
 }
 
 resource "cloudfoundry_service_instance" "sapcloudalmapis" {
   name         = "SAPCloudALMAPIs"
   type         = "managed"
   space        = cloudfoundry_space.space.id
-  service_plan = data.cloudfoundry_service.sapcloudalmapis.service_plans["standard"]
+  service_plan = data.cloudfoundry_service_plans.sapcloudalmapis.service_plans[0].id
   depends_on   = [cloudfoundry_space_role.space_managers, cloudfoundry_space_role.space_developers]
 }
