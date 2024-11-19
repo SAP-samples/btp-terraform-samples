@@ -88,7 +88,7 @@ resource "btp_subaccount_entitlement" "entitlements" {
 }
 ```
 
-We iterate through the list of entitlements and create a resource for each entitlement. We use the `for_each` meta-argument to achieve this. The `for_each` argument works on a map, so we must transform our list of entitlements into a map leveraging Terraform's automatic type conversion via the [`for` expression](https://developer.hashicorp.com/terraform/language/expressions/for#result-types) for setting up the map. As for the subaccount administrators we access the value of the current iteration via `each.value` and reference the corresponding attributes of the object. The `subaccount_id` is set to the id of the subaccount we created in the previous exercise. Save the changes.
+We iterate through the list of entitlements and create a resource for each entitlement. We use the[`for_each` meta-argument](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each) to achieve this. The `for_each` argument works on a map, so we must transform our list of entitlements into a map leveraging Terraform's automatic type conversion via the [`for` expression](https://developer.hashicorp.com/terraform/language/expressions/for#result-types) for setting up the map. As for the subaccount administrators we access the value of the current iteration via `each.value` and reference the corresponding attributes of the object. The `subaccount_id` is set to the id of the subaccount we created in the previous exercise. Save the changes.
 
 ## Step 4: Apply the changes
 
@@ -121,6 +121,6 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 
 ## Summary
 
-You've now successfully entitled services and applications to the subaccount.  
+You've now successfully entitled services and applications to the subaccount.
 
 Continue to - [Exercise 5 - Create service instances and app subscriptions](../EXERCISE5/README.md).
