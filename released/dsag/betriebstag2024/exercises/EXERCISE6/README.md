@@ -101,5 +101,5 @@ You've now successfully handled a configuration drift with Terraform.
 
 You have two options now or you can do both:
 
-- If you want to also setup a cloud foundry environment, move on to [Exercise 7 - Setup a Cloud Foundry environment (optional)](../EXERCISE7/README.md).
+- If you want to also setup a Cloud Foundry environment, move on to [Exercise 7 - Setup a Cloud Foundry environment (optional)](../EXERCISE7/README.md).
 - If you want to cleanup your environment, move on to [Exercise 8 - Cleanup](../EXERCISE8/README.md).
