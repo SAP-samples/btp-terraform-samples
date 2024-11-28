@@ -1,0 +1,23 @@
+globalaccount = "terraformintprod"
+
+entitlements = [
+  {
+    name   = "sapappstudiotrial"
+    plan   = "trial"
+    amount = null
+  },
+  {
+    name   = "application_runtime"
+    plan   = "memory"
+    amount = "null"
+  }
+]
+
+subscriptions = [
+  {
+    app_name = "sapappstudiotrial"
+    plan     = "trial"
+  }
+]
+
+costcenter = "9876543210"
