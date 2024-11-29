@@ -27,14 +27,13 @@ resource "btp_subaccount" "project" {
 
 resource "btp_subaccount_entitlement" "bas" {
   subaccount_id = btp_subaccount.project.id
-  service_name  = "sapappstudio"
+  service_name  = var.bas_service_name
   plan_name     = var.bas_plan
-  amount        = 1
 }
 
 resource "btp_subaccount_subscription" "bas" {
   subaccount_id = btp_subaccount.project.id
-  app_name      = "sapappstudio"
+  app_name      = var.bas_service_name
   plan_name     = var.bas_plan
   depends_on    = [btp_subaccount_entitlement.bas]
 }

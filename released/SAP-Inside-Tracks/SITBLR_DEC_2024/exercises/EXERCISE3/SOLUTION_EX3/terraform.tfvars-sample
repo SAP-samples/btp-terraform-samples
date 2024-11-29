@@ -1,6 +1,5 @@
 globalaccount = "<YOUR GLOBAL ACCOUT SUBDOMAIN>"
-
+bas_service_name = "sapappstudiotrial"
 bas_plan = "trial"
-
 bas_admins = ["admin1@example.com", "admin2@example.com"]
 bas_developers = ["dev1@example.com", "dev2@example.com"]
