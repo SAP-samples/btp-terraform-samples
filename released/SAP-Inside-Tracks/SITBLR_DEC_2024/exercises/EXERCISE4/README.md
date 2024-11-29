@@ -8,7 +8,7 @@ In this section, we will create a Cloud Foundry environment in the subaccount us
 
 The Cloud Foundry Application Runtime service needs to be entitled to the subaccount. To achieve this, add the following resource to your Terraform configuration:
 
-### Step 1: Add the module to the Terraform configuration
+### Step 1: Add the resources to the Terraform configuration for cloudfoundry setup
 
 First we need to add one more local variable in the `main.tf` file. Open the `main.tf` file and add the following code to the `locals` block:
 
@@ -47,7 +47,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
 
 ### Step 2: Adjust the output variables
 
-As we are using the output variables of the module, we need to adjust the output variables in the `outputs.tf` file. Open the `outputs.tf` file and add the following code:
+As we are using the output variables, we need to adjust the output variables in the `outputs.tf` file. Open the `outputs.tf` file and add the following code:
 
 ```terraform
 output "cloudfoundry_org_name" {
@@ -55,8 +55,6 @@ output "cloudfoundry_org_name" {
   description = "The name of the cloudfoundry org connected to the project account."
 }
 ```
-
-We reference the output variables of the module via the `module` keyword. Save the changes.
 
 ### Step 4: Adjust the provider configuration
 
@@ -76,7 +74,6 @@ provider "cloudfoundry" {
   api_url = "https://api.cf.${var.region}-001.hana.ondemand.com"
 }
 ```
-
 Save your changes.
 
 > [!WARNING]
@@ -103,7 +100,7 @@ To fulfill all requirements for the authentication against the Cloud Foundry env
 
 ### Step 3: Apply the changes
 
-As we have a new provider and a new module in place, we need to re-initialize the setup to download the required provider and module. Run the following command:
+As we have a new provider in place, we need to re-initialize the setup to download the required provider and module. Run the following command:
 
 ```bash
 terraform init
@@ -146,9 +143,9 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 
 ## Creation of a Cloud Foundry space
 
-As a last task we also want to add a Cloud Foundry space to the Cloud Foundry environment. We will use the same concept as before and leverage a module. Navigate to the `modules` folder in the root of this repo and you will find the fitting module at [environments/cloudfoundry/space_cf](../../modules/environment/cloudfoundry/space_cf/README.md).
+As a last task we also want to add a Cloud Foundry space to the Cloud Foundry environment. 
 
-### Step 1: Add the space name variable to the configuration
+### Step 1: Add the variable to the configuration for Space creation
 
 First we need to add more variable in the `variables.tf` file. Open the `variables.tf` file and add the following code:
 
@@ -198,9 +195,9 @@ variable "cf_space_auditors" {
 
 This allows us to specify the name of the Cloud Foundry space. We also define a default value (`dev`) for the variable. Save the changes.
 
-### Step 2: Add the module to the Terraform configuration
+### Step 2: Cloudfoundry Space Creation and Role Assignments
 
-To trigger the creation of a Cloud Foundry space and space roles, we add the module to the `main.tf` file. Open the `main.tf` file and add the following code:
+To trigger the creation of a Cloud Foundry space and space roles, Open the `main.tf` file and add the following code:
 
 ```terraform
 resource "cloudfoundry_org_role" "my_role" {
@@ -240,21 +237,19 @@ resource "cloudfoundry_space_role" "cf_space_auditors" {
 }
 ```
 
+### Step 3: Add the variables to tfvar file
+
+Now we can add `space developers` and `space managers` to the space we created, Add following variables to your `tfvars` file.
+
+```terraform
+cf_org_user   = ["john.doe@test.com"]     
+cf_space_developers = ["john.doe@test.com"]
+```
 Save the changes.
 
-### Step 3: Apply the changes
+### Step 4: Apply the changes
 
-As we have all prerequisites already in place when it comes to provider configuration and authentication. However, we need to reinitialize the module that we use. To achieve that run the following command:
-
-```bash
-terraform init
-```
-
-The output should look like this:
-
-<img width="600px" src="assets/ex7_5.png" alt="executing terraform init with cloud foundry provider">
-
-Once we have initialized the module we can proceed with the creation of the Cloud Foundry space. As before we execute the following commands:
+As we have all prerequisites already in place when it comes to provider configuration and authentication, we can proceed with applying the changes.
 
 1. Plan the Terraform configuration to see what will be created:
 

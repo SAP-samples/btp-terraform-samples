@@ -2,41 +2,8 @@ globalaccount = "<YOUR GLOBAL ACCOUT SUBDOMAIN>"
 
 region        = "us10"
 
-costcenter = "9876543210"
-
-entitlements = [
-  {
-    name   = "alert-notification"
-    plan   = "standard"
-    amount = null
-  },
-  {
-    name   = "SAPLaunchpad"
-    plan   = "standard"
-    amount = null
-  },
-  {
-    name   = "hana-cloud-trial"
-    plan   = "hana"
-    amount = null
-  },
-  {
-    name   = "hana"
-    plan   = "hdi-shared"
-    amount = null
-  },
-  {
-    name   = "sapappstudiotrial"
-    plan   = "trial"
-    amount = null
-  }
-]
-
-subscriptions = [
-  {
-    app_name = "sapappstudiotrial"
-    plan     = "trial"
-  }
-]
-
 costcenter = "<YOUR NEW VALUE>"
+
+bas_plan_name = "trial"
+bas_admins     = ["john.doe@test.com"]
+bas_developers = ["john.doe@test.com"]

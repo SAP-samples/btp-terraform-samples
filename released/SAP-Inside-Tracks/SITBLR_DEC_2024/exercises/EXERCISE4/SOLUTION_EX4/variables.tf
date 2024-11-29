@@ -66,15 +66,6 @@ variable "org_name" {
   }
 }
 
-###
-# Emergency admin setup
-###
-variable "emergency_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as emergency administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
 variable "bas_plan_name" {
   description = "BAS plan"
   type        = string

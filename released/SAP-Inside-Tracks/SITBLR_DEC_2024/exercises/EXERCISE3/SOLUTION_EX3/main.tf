@@ -22,25 +22,35 @@ resource "btp_subaccount" "project" {
 }
 
 ###
-# Assignment of emergency admins to subaccount
+# Entitlement Subscription and Role Assignment for BAS
 ###
-resource "btp_subaccount_role_collection_assignment" "subaccount_users" {
-  for_each             = toset(var.emergency_admins)
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Subaccount Administrator"
-  user_name            = each.value
+
+resource "btp_subaccount_entitlement" "bas" {
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "sapappstudio"
+  plan_name     = var.bas_plan
+  amount        = 1
 }
 
-###
-# Assignment of entitlements
-###
-resource "btp_subaccount_entitlement" "entitlements" {
-  for_each = {
-    for index, entitlement in var.entitlements :
-    index => entitlement
-  }
-
+resource "btp_subaccount_subscription" "bas" {
   subaccount_id = btp_subaccount.project.id
-  service_name  = each.value.name
-  plan_name     = each.value.plan
+  app_name      = "sapappstudio"
+  plan_name     = var.bas_plan
+  depends_on    = [btp_subaccount_entitlement.bas]
+}
+
+resource "btp_subaccount_role_collection_assignment" "bas_admin" {
+  for_each             = toset(var.bas_admins)
+  subaccount_id        = btp_subaccount.project.id
+  role_collection_name = "Business_Application_Studio_Administrator"
+  user_name            = each.value
+  depends_on           = [btp_subaccount_subscription.bas]
+}
+
+resource "btp_subaccount_role_collection_assignment" "bas_developer" {
+  for_each             = toset(var.bas_developers)
+  subaccount_id        = btp_subaccount.project.id
+  role_collection_name = "Business_Application_Studio_Developer"
+  user_name            = each.value
+  depends_on           = [btp_subaccount_subscription.bas]
 }
