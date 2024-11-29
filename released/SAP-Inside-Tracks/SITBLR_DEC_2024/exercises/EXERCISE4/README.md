@@ -286,4 +286,4 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 
 You've now successfully created a Cloud Foundry environment instance as well as a Cloud Foundry space in SAP BTP.
 
-Continue to - [Exercise 5 - Cleanup](../EXERCISE8/README.md).
+Continue to - [Exercise 5 - Adding Emergency Administrators](../EXERCISE5/README.md).

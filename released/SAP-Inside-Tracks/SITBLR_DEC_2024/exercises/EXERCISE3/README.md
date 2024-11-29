@@ -120,4 +120,4 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 
 You've now successfully entitled services and applications to the subaccount.
 
-Continue to - [Exercise 4 - Create service instances and app subscriptions](../EXERCISE5/README.md).
+Continue to - [Exercise 4 - Setup a Cloud Foundry environment](../EXERCISE4/README.md).
