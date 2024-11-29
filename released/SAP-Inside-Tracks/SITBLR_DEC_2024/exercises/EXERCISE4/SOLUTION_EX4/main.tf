@@ -59,7 +59,7 @@ resource "cloudfoundry_org_role" "my_role" {
 }
 
 resource "cloudfoundry_space" "space" {
-  name = var.name
+  name = var.cf_space_name
   org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
 }
 
