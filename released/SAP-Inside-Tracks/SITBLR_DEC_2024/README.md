@@ -71,8 +71,8 @@ In this HandsOn we want to make you familiar with the Terraform Provider for SAP
 1. [Exercise 1 - Configure the Terraform Provider for SAP BTP](exercises/EXERCISE1/README.md)
 1. [Exercise 2 - Setup of a subaccount](exercises/EXERCISE2/README.md)
 1. [Exercise 3 - Assign entitlement,Subscription and its role assignments to a subaccount](exercises/EXERCISE3/README.md)
-1. [Exercise 4 - Setup a Cloud Foundry environment and a space (optional)](exercises/EXERCISE4/README.md)
-1. [Exercise 5 - Exercise 5 - Assignment of subaccount emergency administrators](exercises/EXERCISE5/README.md)
+1. [Exercise 4 - Setup a Cloud Foundry environment](exercises/EXERCISE4/README.md)
+1. [Exercise 5 - Create a CloudFoundry Space](exercises/EXERCISE5/README.md)
 1. [Exercise 6 - Cleanup](exercises/EXERCISE6/README.md)
 
 

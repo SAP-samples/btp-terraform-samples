@@ -1,54 +1,67 @@
-# Exercise 5 - Assignment of subaccount emergency administrators
+# Exercise 5 - Create a CloudFoundry Space
 
 ## Goal of this Exercise 🎯
 
-In this exercise you will learn how to assign users to role collections in the subaccount. We assume that for each subaccount we want to add emergency administrators to the role collection `Subacount Administrator`.
+In this exercise you will learn how to use the Terrafomr Provider for CloudFoundry and create a space.
 
-## Assign role collection to users
+### Step 3: Adjust the provider configuration
 
-### Step 1: Enhance the variables
-
-First we need to enhance the `variables.tf` file to add the new variable `emergency_admins`. This variable will be used to define the list of users that will be assigned to the role collection `Subaccount Administrator`. Open the `variables.tf` file and add the following code:
+As we are using an additional provider we must make Terraform aware of this in the `provider.tf` file. Open the `provider.tf` file and add the following code to the `required_provider` block:
 
 ```terraform
-variable "emergency_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as emergency administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
+cloudfoundry = {
+      source  = "cloudfoundry/cloudfoundry"
+      version = "1.1.0"
+    }
 ```
 
-As you can see, the variable type can be a complex one. In this case, it is a list of strings. We define a default value for the variable, which is a list of dummy two email addresses.
-
-This variable will be used in the next step to assign the users to the role collection. Save the changes.
-
-### Step 2: Add the role collection configuration
-
-Now we need to add the configuration to assign the users to the role collection. We use the resource [btp_subaccount_role_collection_assignment](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_role_collection_assignment) to achieve this.
-In addition we must iterate through the list of names and assign each user to the role collection. Open the `main.tf` file and add the following code:
+To configure the Cloud Foundry provider add the following lines at the end of the file:
 
 ```terraform
-resource "btp_subaccount_role_collection_assignment" "subaccount_users" {
-  for_each             = toset(var.emergency_admins)
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Subaccount Administrator"
-  user_name            = each.value
+provider "cloudfoundry" {
+  api_url = "https://api.cf.${var.region}-001.hana.ondemand.com"
 }
 ```
+Save your changes.
 
-To create a resource for our user we make use of the [`for_each`](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each) meta-argument provided by Terraform. This allows us to create a resource for each element in the list of users. The `for_each` argument works on a map or a set, so we must transform our list of strings into a set via the [`toset`](https://www.terraform.io/docs/language/functions/toset.html) function. We access the value of the current iteration via `each.value`. The `subaccount_id` is set to the id of the subaccount we created in the previous exercise.
+> [!WARNING]
+> We assume that the Cloud Foundry environment is deployed to the extension landscape 001. If this is not the case the authentication might fail. In a real-world scenario you would probably have a different boundary of content to the module.
+
+To fulfill all requirements for the authentication against the Cloud Foundry environment you must export the following environment variables:
+
+- Windows:
+
+    ```pwsh
+    $env:CF_USER=<your SAP BTP username>
+    $env:CF_PASSWORD='<your SAP BTP password>'
+    ```
+
+- Linux/MacOS/GitHub Codespaces:
+
+    ```bash
+    export CF_USER=<your SAP BTP username>
+    export CF_PASSWORD='<your SAP BTP password>'
+    ```
 
 > [!NOTE]
-> How does Terraform know that it first needs to create the subaccount and then assign the users to the role collection? Terraform automatically detects this dependency as we are using the output of the subaccount creation namely the `btp_subaccount.project.id` as parameter for the role collection assignment. Due to this Terraform knows that the role collection assignment can only be created after the subaccount has been created and creates a corresponding execution plan. Sometimes you must explicitly model this dependency and we will see how to that in [exercise 5](../EXERCISE5/README.md).
-
-That is already all we need to do. Save the changes.
+> Although we do not use the Cloud Foundry part of the module namely the assignment of users to the organization, Terraform will initialize the Cloud Foundry provider and try to authenticate against the Cloud Foundry environment. This is why we need to define the configuration and provide the credentials.
 
 ### Step 3: Apply the changes
 
-Now we can apply the changes to our subaccount. Run the following commands:
+As we have a new provider in place, we need to re-initialize the setup to download the required provider and module. Run the following command:
+
+```bash
+terraform init
+```
+
+The output should look like this:
+
+<img width="600px" src="assets/ex7_1.png" alt="executing terraform init with cloud foundry provider">
 
 > [!NOTE]
-> As we did not change the configuration of the provider or add any Terraform [modules](https://developer.hashicorp.com/terraform/language/modules), we do not need to run `terraform init` again.
+> There is also a command parameter called `--upgrade` for the `terraform init` command. This parameter will *upgrade* the provider to the latest version. As we are adding new providers, we do not need to use this parameter.
+
+You know the drill by now:
 
 1. Plan the Terraform configuration to see what will be created:
 
@@ -56,26 +69,164 @@ Now we can apply the changes to our subaccount. Run the following commands:
     terraform plan
     ```
 
-    You should see the following output:
+    The output should look like this:
 
-    <img width="600px" src="assets/ex3_1.png" alt="terraform plan output for role collection assignment">
+    <img width="600px" src="assets/ex7_2.png" alt="executing terraform plan with cloud foundry">
 
-2. Apply the Terraform configuration to create the assignment of the role collections:
+2. Apply the Terraform configuration to create the environment:
 
     ```bash
     terraform apply
     ```
 
-    You will be prompted to confirm the creation the assignment of the role collections. Type `yes` and press `Enter` to continue. You should see the following output:
+    You will be prompted to confirm the creation of the environment. Type `yes` and press `Enter` to continue.
 
-    <img width="600px" src="assets/ex3_2.png" alt="terraform apply output for role collection assignment">
+The result should look like this:
 
-You can also check that everything is in place via the SAP BTP cockpit. You should see the assigned users in the role collection `Subaccount Administrator`:
+<img width="600px" src="assets/ex7_3.png" alt="executing terraform apply with cloud foundry provider">
 
-<img width="600px" src="assets/ex3_3.png" alt="role collection assignment in SAP BTP">
+You can also check that everything is in place via the SAP BTP cockpit. You should see the Cloud Foundry environment in the subaccount:
+
+ <img width="600px" src="assets/ex7_4.png" alt="SAP BTP Cockpit with Cloud Foundry environment">
+
+## Creation of a Cloud Foundry space
+
+As a last task we also want to add a Cloud Foundry space to the Cloud Foundry environment. 
+
+### Step 1: Add the variable to the configuration for Space creation
+
+First we need to add more variable in the `variables.tf` file. Open the `variables.tf` file and add the following code:
+
+```terraform
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
+}
+
+variable "cf_landscape_label" {
+  type        = string
+  description = "The region where the project account shall be created in."
+  default     = "cf-us10-001"
+}
+
+variable "cf_org_name" {
+  type        = string
+  description = "The name for the Cloud Foundry Org."
+  default     = ""
+}
+
+variable "cf_org_user" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cf_space_managers" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space managers."
+  default     = []
+}
+
+variable "cf_space_developers" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space developers."
+  default     = []
+}
+
+variable "cf_space_auditors" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space auditors."
+  default     = []
+}
+```
+
+This allows us to specify the name of the Cloud Foundry space. We also define a default value (`dev`) for the variable. Save the changes.
+
+### Step 2: Cloudfoundry Space Creation and Role Assignments
+
+To trigger the creation of a Cloud Foundry space and space roles, Open the `main.tf` file and add the following code:
+
+```terraform
+resource "cloudfoundry_org_role" "my_role" {
+  for_each = var.cf_org_user
+  username = each.value
+  type     = "organization_user"
+  org      = btp_subaccount_environment_instance.cloudfoundry.platform_id
+}
+
+resource "cloudfoundry_space" "space" {
+  name = var.name
+  org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
+}
+
+resource "cloudfoundry_space_role" "cf_space_managers" {
+  for_each = toset(var.cf_space_managers)
+  username = each.value
+  type     = "space_manager"
+  space    = cloudfoundry_space.space.id
+  depends_on = [ cloudfoundry_org_role.my_role ]
+}
+
+resource "cloudfoundry_space_role" "cf_space_developers" {
+  for_each = toset(var.cf_space_developers)
+  username = each.value
+  type     = "space_developer"
+  space    = cloudfoundry_space.space.id
+  depends_on = [ cloudfoundry_org_role.my_role ]
+}
+
+resource "cloudfoundry_space_role" "cf_space_auditors" {
+  for_each = toset(var.cf_space_auditors)
+  username = each.value
+  type     = "space_auditor"
+  space    = cloudfoundry_space.space.id
+  depends_on = [ cloudfoundry_org_role.my_role ]
+}
+```
+
+### Step 3: Add the variables to tfvar file
+
+Now we can add `space developers` and `space managers` to the space we created, Add following variables to your `tfvars` file.
+
+```terraform
+cf_org_user   = ["john.doe@test.com"]     
+cf_space_developers = ["john.doe@test.com"]
+```
+Save the changes.
+
+### Step 4: Apply the changes
+
+As we have all prerequisites already in place when it comes to provider configuration and authentication, we can proceed with applying the changes.
+
+1. Plan the Terraform configuration to see what will be created:
+
+    ```bash
+    terraform plan
+    ```
+
+    The output should look like this:
+
+    <img width="600px" src="assets/ex7_6.png" alt="executing terraform plan for cloud foundry space creation">
+
+2. Apply the Terraform configuration to create the space:
+
+    ```bash
+    terraform apply
+    ```
+
+    You will be prompted to confirm the creation of the space. Type `yes` and press `Enter` to continue.
+
+The result should look like this:
+
+<img width="600px" src="assets/ex7_7.png" alt="executing terraform apply for cloud foundry space creation">
+
+You can also check that everything is in place via the SAP BTP cockpit. You should see the Cloud Foundry space in the subaccount:
+
+ <img width="600px" src="assets/ex7_8.png" alt="SAP BTP Cockpit with Cloud Foundry space">
 
 ## Summary
 
-You've now successfully assigned emergency administrators to the subaccount.
+You've now successfully created a Cloud Foundry environment instance as well as a Cloud Foundry space in SAP BTP.
 
-Continue to - [# Exercise 6 - clean up](../EXERCISE6/README.md).
+Continue to - [Exercise 6 - Cleanup](../EXERCISE6/README.md).
