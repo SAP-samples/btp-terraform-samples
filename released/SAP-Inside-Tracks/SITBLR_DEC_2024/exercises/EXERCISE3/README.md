@@ -23,6 +23,12 @@ variable "bas_developers" {
   type        = list(string)
   description = "List of users to assign the Developer role."
 }
+variable "bas_service_name" {
+  type        =  string
+  description = "Service name for Business Application Studio."
+  default     = "sapappstudio"
+
+}
 variable "bas_plan" {
   type        = string
   description = "Plan name for Business Application Studio."
@@ -43,8 +49,8 @@ We want to add the following entitlements to the subaccount:
 Open the `terraform.tfvars` file and add the following code:
 
 ```terraform
+bas_service_name = "sapappstudiotrial"
 bas_plan = "trial"
-
 bas_admins = ["admin1@example.com", "admin2@example.com"]
 bas_developers = ["dev1@example.com", "dev2@example.com"]
 ```
@@ -56,14 +62,14 @@ As we have the variable and the values for the `BAS` in place, we can now add th
 ```terraform
 resource "btp_subaccount_entitlement" "bas" {
   subaccount_id = btp_subaccount.project.id
-  service_name  = "sapappstudio"
+  service_name  = var.bas_service_name
   plan_name     = var.bas_plan
   amount        = 1
 }
 
 resource "btp_subaccount_subscription" "bas" {
   subaccount_id = btp_subaccount.project.id
-  app_name      = "sapappstudio"
+  app_name      = var.bas_service_name
   plan_name     = var.bas_plan
   depends_on    = [btp_subaccount_entitlement.bas]
 }
@@ -102,7 +108,7 @@ Now we can apply the changes to our subaccount. Run the following commands:
 
     You should see the following output:
 
-    <img width="600px" src="assets/ex4_1.png" alt="terraform plan output for entitlements">
+    <img width="600px" src="assets/ex3_1.png" alt="terraform plan output for entitlements">
 
 2. Apply the Terraform configuration to add the entitlements:
 
@@ -112,7 +118,7 @@ Now we can apply the changes to our subaccount. Run the following commands:
 
     You will be prompted to confirm the creation of the entitlements. Type `yes` and press `Enter` to continue. You should see the following output:
 
-    <img width="600px" src="assets/ex4_2.png" alt="terraform apply output for entitlements">
+    <img width="600px" src="assets/ex3_2.png" alt="terraform apply output for entitlements">
 
 You can also check that everything is in place via the SAP BTP cockpit. You should see the assigned entitlements in the subaccount.
 
