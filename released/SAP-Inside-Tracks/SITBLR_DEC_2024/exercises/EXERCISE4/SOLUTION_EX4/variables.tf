@@ -75,29 +75,65 @@ variable "emergency_admins" {
   default     = ["jane.doe@test.com", "john.doe@test.com"]
 }
 
+variable "bas_plan_name" {
+  description = "BAS plan"
+  type        = string
+  default     = "free"
+}
+
+variable "bas_developers" {
+  description = "BAS developers"
+  type        = list(string)
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "bas_admins" {
+  description = "BAS Admininstrators"
+  type        = list(string)
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
 
 ###
-# Entitlements for Subaccount
+# Cloud Foundry space setup
 ###
-variable "entitlements" {
-  type = list(object({
-    name   = string
-    plan   = string
-    amount = number
-  }))
-  description = "List of entitlements for the subaccount."
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
+}
+
+variable "cf_landscape_label" {
+  type        = string
+  description = "The region where the project account shall be created in."
+  default     = "cf-us10-001"
+}
+
+variable "cf_org_name" {
+  type        = string
+  description = "The name for the Cloud Foundry Org."
+  default     = ""
+}
+
+variable "cf_org_user" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "cf_space_managers" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space managers."
   default     = []
 }
 
+variable "cf_space_developers" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space developers."
+  default     = []
+}
 
-###
-# Subscriptions to apps
-###
-variable "subscriptions" {
-  type = list(object({
-    app_name = string
-    plan     = string
-  }))
-  description = "List of app subscriptions to be subscribed to in the subaccount."
+variable "cf_space_auditors" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space auditors."
   default     = []
 }

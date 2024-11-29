@@ -1,29 +1,6 @@
 globalaccount = "<YOUR GLOBAL ACCOUT SUBDOMAIN>"
 
-entitlements = [
-  {
-    name   = "alert-notification"
-    plan   = "standard"
-    amount = null
-  },
-  {
-    name   = "SAPLaunchpad"
-    plan   = "standard"
-    amount = null
-  },
-  {
-    name   = "hana-cloud-trial"
-    plan   = "hana"
-    amount = null
-  },
-  {
-    name   = "hana"
-    plan   = "hdi-shared"
-    amount = null
-  },
-  {
-    name   = "sapappstudiotrial"
-    plan   = "trial"
-    amount = null
-  }
-]
+bas_plan = "trial"
+
+bas_admins = ["admin1@example.com", "admin2@example.com"]
+bas_developers = ["dev1@example.com", "dev2@example.com"]

@@ -77,14 +77,19 @@ variable "emergency_admins" {
 
 
 ###
-# Entitlements for Subaccount
+# Entitlement for BAS
 ###
-variable "entitlements" {
-  type = list(object({
-    name   = string
-    plan   = string
-    amount = number
-  }))
-  description = "List of entitlements for the subaccount."
-  default     = []
+variable "bas_admins" {
+  type        = list(string)
+  description = "List of users to assign the Administrator role."
+
+}
+variable "bas_developers" {
+  type        = list(string)
+  description = "List of users to assign the Developer role."
+}
+variable "bas_plan" {
+  type        = string
+  description = "Plan name for Business Application Studio."
+  default     = "standard"
 }

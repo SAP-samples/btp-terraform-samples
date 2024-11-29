@@ -1,23 +1,8 @@
-globalaccount = "terraformintprod"
+globalaccount = "<YOUR GLOBAL ACCOUNT>"
 
-entitlements = [
-  {
-    name   = "sapappstudiotrial"
-    plan   = "trial"
-    amount = null
-  },
-  {
-    name   = "application_runtime"
-    plan   = "memory"
-    amount = "null"
-  }
-]
+bas_plan_name = "trial"
+bas_admins     = ["john.doe@test.com"]
+bas_developers = ["john.doe@test.com"]
 
-subscriptions = [
-  {
-    app_name = "sapappstudiotrial"
-    plan     = "trial"
-  }
-]
-
-costcenter = "9876543210"
+cf_org_user   = ["john.doe@test.com"]     
+cf_space_developers = ["john.doe@test.com"]
