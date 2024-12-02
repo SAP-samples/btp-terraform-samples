@@ -79,7 +79,7 @@ variable "bas_developers" {
   description = "List of users to assign the Developer role."
 }
 variable "bas_service_name" {
-  type        =  string
+  type        = string
   description = "Service name for Business Application Studio."
   default     = "sapappstudio"
 

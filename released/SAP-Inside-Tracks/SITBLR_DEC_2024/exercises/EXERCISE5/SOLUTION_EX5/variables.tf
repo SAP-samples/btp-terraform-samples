@@ -1,6 +1,3 @@
-###
-# Provider configuration
-###
 variable "globalaccount" {
   type        = string
   description = "The subdomain of the SAP BTP global account."
@@ -12,13 +9,10 @@ variable "region" {
   default     = "us10"
 }
 
-###
-# Subaccount setup
-###
 variable "project_name" {
   type        = string
   description = "The subaccount name."
-  default     = "proj-1234"
+  default     = "myproj-1234"
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_\\-]{1,200}", var.project_name))
@@ -48,29 +42,74 @@ variable "costcenter" {
   }
 }
 
+variable "bas_plan_name" {
+  description = "BAS plan"
+  type        = string
+  default     = "free"
+}
+
+variable "bas_developers" {
+  description = "BAS developers"
+  type        = list(string)
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "bas_admins" {
+  description = "BAS Admininstrators"
+  type        = list(string)
+  default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
 variable "org_name" {
   type        = string
   description = "Defines to which organisation the project account shall belong to."
   default     = "B2C"
-
-  validation {
-    condition = contains(concat(
-      // Cross Development
-      ["B2B", "B2C", "ECOMMERCE"],
-      // Internal IT
-      ["PLATFORMDEV", "INTIT"],
-      // Financial Services
-      ["FSIT"],
-    ), var.org_name)
-    error_message = "Please select a valid org name for the project account."
-  }
 }
 
-###
-# Emergency admin setup
-###
-variable "emergency_admins" {
-  type        = list(string)
-  description = "Defines the colleagues who are added to each subaccount as emergency administrators."
+variable "cf_space_name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
+}
+
+variable "cf_landscape_label" {
+  type        = string
+  description = "The region where the project account shall be created in."
+  default     = "cf-us10-001"
+}
+
+variable "cf_org_name" {
+  type        = string
+  description = "The name for the Cloud Foundry Org."
+  default     = ""
+}
+
+variable "cf_org_user" {
+  type        = set(string)
+  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
+}
+
+variable "name" {
+  type        = string
+  description = "The name of the Cloud Foundry space."
+  default     = "dev"
+}
+
+variable "cf_space_managers" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space managers."
+  default     = []
+}
+
+variable "cf_space_developers" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space developers."
+  default     = []
+}
+
+variable "cf_space_auditors" {
+  type        = list(string)
+  description = "The list of Cloud Foundry space auditors."
+  default     = []
 }

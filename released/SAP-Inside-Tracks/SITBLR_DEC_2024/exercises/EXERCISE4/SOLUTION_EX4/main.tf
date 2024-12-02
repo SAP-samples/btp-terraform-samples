@@ -18,7 +18,6 @@ resource "btp_subaccount" "project" {
     "stage"      = ["${var.stage}"],
     "costcenter" = ["${var.costcenter}"]
   }
-  usage = "NOT_USED_FOR_PRODUCTION"
 }
 
 
@@ -29,7 +28,6 @@ resource "btp_subaccount_entitlement" "cf_application_runtime" {
   subaccount_id = btp_subaccount.project.id
   service_name  = "APPLICATION_RUNTIME"
   plan_name     = "MEMORY"
-  amount        = 1
 }
 
 resource "btp_subaccount_environment_instance" "cloudfoundry" {

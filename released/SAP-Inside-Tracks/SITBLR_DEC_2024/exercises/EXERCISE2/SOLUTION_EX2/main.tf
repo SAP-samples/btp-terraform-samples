@@ -17,5 +17,4 @@ resource "btp_subaccount" "project" {
     "stage"      = ["${var.stage}"],
     "costcenter" = ["${var.costcenter}"]
   }
-  usage = "NOT_USED_FOR_PRODUCTION"
 }

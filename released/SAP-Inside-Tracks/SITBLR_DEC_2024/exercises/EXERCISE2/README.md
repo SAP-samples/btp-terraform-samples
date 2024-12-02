@@ -72,6 +72,7 @@ variable "stage" {
 
 You can see a different type of validation here. We use the [`contains` function](https://developer.hashicorp.com/terraform/language/functions/contains) to check if the input is part of the list of valid stages.
 
+
 #### Input variable *costcenter*
 
 Let us move on to the *cost center* variable. Add the following code to the `variables.tf` file:
@@ -91,6 +92,9 @@ variable "costcenter" {
 
 Nothing new here that we have not seen before. We use the `can` expression to check if the input is valid when compared to a specific regular expression leveraging the `regex` function.
 
+> [!NOTE]
+> You can also use functions inside of functions to express more complex conditions such as [concat function](https://developer.hashicorp.com/terraform/language/functions/concat) to combine multiple lists into one list and then use the `contains` function to check if the input is part of that list.
+
 #### Input variable *org_name*
 
 And last but not least we want to add and validate the *organization name* variable. Add the following code to the `variables.tf` file:
@@ -100,22 +104,8 @@ variable "org_name" {
   type        = string
   description = "Defines to which organization the project account shall belong to."
   default     = "B2C"
-
-  validation {
-    condition = contains(concat(
-      // Cross Development
-      ["B2B", "B2C", "ECOMMERCE"],
-      // Internal IT
-      ["PLATFORMDEV", "INTIT"],
-      // Financial Services
-      ["FSIT"],
-    ), var.org_name)
-    error_message = "Please select a valid org name for the project account."
-  }
 }
 ```
-
-As you can see you can also use functions inside of functions to express more complex conditions. In this case we use the [`concat` function](https://developer.hashicorp.com/terraform/language/functions/concat) to combine multiple lists into one list and then use the `contains` function to check if the input is part of the list of valid organization names.
 
 As we have all variables in place, you should save the changes now.
 
@@ -157,11 +147,10 @@ resource "btp_subaccount" "project" {
     "stage"      = ["${var.stage}"],
     "costcenter" = ["${var.costcenter}"]
   }
-  usage = "NOT_USED_FOR_PRODUCTION"
 }
 ```
 
-We used the resource [`btp_subaccount`](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount) to create the subaccount. We referenced the local values to set the name and domain. We added labels to the subaccount to display the stage and cost center. The usage of the subaccount is hardcoded to `NOT_USED_FOR_PRODUCTION`.
+We used the resource [`btp_subaccount`](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount) to create the subaccount. We referenced the local values to set the name and domain. We added labels to the subaccount to display the stage and cost center.
 
 As we have the configuration in place, you should save the changes now.
 

@@ -8,6 +8,10 @@ resource "btp_subaccount" "project" {
   name      = local.project_subaccount_name
   subdomain = local.project_subaccount_domain
   region    = lower(var.region)
+  labels = {
+    "stage"      = ["${var.stage}"],
+    "costcenter" = ["${var.costcenter}"]
+  }
 }
 
 resource "btp_subaccount_role_collection_assignment" "subaccount_users" {

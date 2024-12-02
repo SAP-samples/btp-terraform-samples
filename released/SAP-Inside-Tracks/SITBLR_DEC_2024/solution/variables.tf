@@ -64,43 +64,12 @@ variable "org_name" {
   type        = string
   description = "Defines to which organisation the project account shall belong to."
   default     = "B2C"
-
-  validation {
-    condition = contains(concat(
-      // Cross Development
-      ["B2B", "B2C", "ECOMMERCE"],
-      // Internal IT
-      ["PLATFORMDEV", "INTIT"],
-      // Financial Services
-      ["FSIT"],
-    ), var.org_name)
-    error_message = "Please select a valid org name for the project account."
-  }
 }
 
 variable "emergency_admins" {
   type        = list(string)
   description = "Defines the colleagues who are added to each subaccount as emergency administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "entitlements" {
-  type = list(object({
-    name   = string
-    plan   = string
-    amount = number
-  }))
-  description = "List of entitlements for the subaccount."
-  default     = []
-}
-
-variable "subscriptions" {
-  type = list(object({
-    app_name = string
-    plan     = string
-  }))
-  description = "List of app subscriptions to be subscribed to in the subaccount."
-  default     = []
 }
 
 variable "cf_space_name" {
