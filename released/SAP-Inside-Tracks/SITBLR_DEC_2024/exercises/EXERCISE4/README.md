@@ -29,14 +29,7 @@ variable "cf_landscape_label" {
 Then add the following code to the `main.tf`
 
 ```terraform
-resource "btp_subaccount_entitlement" "cf_application_runtime" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "APPLICATION_RUNTIME"
-  plan_name     = "MEMORY"
-}
-
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
-  depends_on       = [btp_subaccount_entitlement.cf_application_runtime]
   subaccount_id    = btp_subaccount.project.id
   name             = local.project_subaccount_cf_org
   landscape_label  = var.cf_landscape_label

@@ -4,5 +4,5 @@ bas_plan_name = "trial"
 bas_admins     = ["john.doe@test.com"]
 bas_developers = ["john.doe@test.com"]
 
-cf_org_user   = ["john.doe@test.com"]     
+cf_org_user   = ["john.doe@test.com"]  
 cf_space_developers = ["john.doe@test.com"]

@@ -41,14 +41,7 @@ resource "btp_subaccount_role_collection_assignment" "Business_Application_Studi
   depends_on           = [btp_subaccount_subscription.bas-subscribe]
 }
 
-resource "btp_subaccount_entitlement" "cf_application_runtime" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "APPLICATION_RUNTIME"
-  plan_name     = "MEMORY"
-}
-
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
-  depends_on       = [btp_subaccount_entitlement.cf_application_runtime]
   subaccount_id    = btp_subaccount.project.id
   name             = local.project_subaccount_cf_org
   landscape_label  = var.cf_landscape_label
@@ -73,7 +66,7 @@ resource "cloudfoundry_org_role" "my_role" {
 }
 
 resource "cloudfoundry_space" "space" {
-  name = var.name
+  name = var.cf_space_name
   org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
 }
 

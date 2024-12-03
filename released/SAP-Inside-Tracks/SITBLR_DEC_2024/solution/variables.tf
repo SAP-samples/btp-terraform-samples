@@ -84,22 +84,10 @@ variable "cf_landscape_label" {
   default     = "cf-us10-001"
 }
 
-variable "cf_org_name" {
-  type        = string
-  description = "The name for the Cloud Foundry Org."
-  default     = ""
-}
-
 variable "cf_org_user" {
   type        = set(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
   default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "name" {
-  type        = string
-  description = "The name of the Cloud Foundry space."
-  default     = "dev"
 }
 
 variable "cf_space_managers" {

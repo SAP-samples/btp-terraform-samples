@@ -110,12 +110,6 @@ variable "cf_landscape_label" {
   default     = "cf-us10-001"
 }
 
-variable "cf_org_name" {
-  type        = string
-  description = "The name for the Cloud Foundry Org."
-  default     = ""
-}
-
 variable "cf_org_user" {
   type        = set(string)
   description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
@@ -156,7 +150,7 @@ resource "cloudfoundry_org_role" "my_role" {
 }
 
 resource "cloudfoundry_space" "space" {
-  name = var.name
+  name = var.cf_space_name
   org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
 }
 
