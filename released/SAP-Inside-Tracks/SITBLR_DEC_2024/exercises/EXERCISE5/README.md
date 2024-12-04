@@ -2,7 +2,7 @@
 
 ## Goal of this Exercise 🎯
 
-In this exercise you will learn how to use the Terrafomr Provider for CloudFoundry and create a space.
+In this exercise you will learn how to use the [Terraform Provider for CloudFoundry](https://registry.terraform.io/providers/cloudfoundry/cloudfoundry/latest/docs) and create a space.
 
 ### Step 3: Adjust the provider configuration
 
@@ -102,12 +102,6 @@ variable "cf_space_name" {
   type        = string
   description = "The name of the Cloud Foundry space."
   default     = "dev"
-}
-
-variable "cf_landscape_label" {
-  type        = string
-  description = "The region where the project account shall be created in."
-  default     = "cf-us10-001"
 }
 
 variable "cf_org_user" {
