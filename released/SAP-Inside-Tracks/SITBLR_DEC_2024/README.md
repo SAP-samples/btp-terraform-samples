@@ -2,7 +2,7 @@
 
 ## Goal of this HandsOn 🎯
 
-In this HandsOn you will learn how to use the [Terraform Provider for SAP BTP](https://registry.terraform.io/providers/SAP/cp/latest/docs) to provision and manage resources in SAP BTP. The level of the exercises is beginner. You don't need any prior knowledge about Terraform or the Terraform Provider for SAP BTP. We will guide you through the exercises step by step.
+In this HandsOn you will learn how to use the [Terraform Provider for SAP BTP](https://registry.terraform.io/providers/SAP/btp/latest/docs) to provision and manage resources in SAP BTP. The level of the exercises is beginner. You don't need any prior knowledge about Terraform or the Terraform Provider for SAP BTP. We will guide you through the exercises step by step.
 
 ## Prerequisites 📝
 
@@ -25,7 +25,7 @@ You can then clone the repository via the following command:
 git clone https://github.com/SAP-samples/btp-terraform-samples.git
 ```
 
-you find the exercises in the folder `released/SAP-Inside-Tracks/SITBLR_DEC_2024/exercises`.
+you can find the exercises in the folder `released/SAP-Inside-Tracks/SITBLR_DEC_2024/exercises`.
 
 
 You can install the required tools locally on your machine. The following tools are required:
@@ -36,7 +36,7 @@ You can install the required tools locally on your machine. The following tools 
 
 ## Exporting environment variables
 
-The last step in the setup is the export of the environment variables that are required to authenticate against the Terraform provider for SAP BTP. Fo that export the following environment variables:
+The last step in the setup is the export of the environment variables that are required to authenticate against the Terraform provider for SAP BTP. For that export the following environment variables:
 
 - Windows:
 
