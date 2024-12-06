@@ -24,6 +24,11 @@ variable "cf_landscape_label" {
   description = "The region where the project account shall be created in."
   default     = "cf-us10-001"
 }
+variable "cf_plan" {
+  type        = string
+  description = "Plan name for Cloud Foundry Runtime."
+  default     = "standard"
+}
 ```
 
 Then add the following code to the `main.tf`
@@ -35,7 +40,7 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   landscape_label  = var.cf_landscape_label
   environment_type = "cloudfoundry"
   service_name     = "cloudfoundry"
-  plan_name        = "trial"
+  plan_name        = var.cf_plan
   parameters = jsonencode({
     instance_name = local.project_subaccount_cf_org
   })
@@ -46,8 +51,15 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
   }
 }
 ```
+### Step 2: Add the variables to tfvar file
 
-### Step 2: Adjust the output variables
+Add following variables to your `tfvars` file to configure the CloudFoundry Plan.
+
+```terraform
+cf_plan = "trial"
+```
+Save the changes.
+### Step 3: Adjust the output variables
 
 As we are using the output variables, we need to adjust the output variables in the `outputs.tf` file. Open the `outputs.tf` file and add the following code:
 
@@ -57,7 +69,7 @@ output "cloudfoundry_org_name" {
   description = "The name of the cloudfoundry org connected to the project account."
 }
 ```
-### Step 3: Apply the changes
+### Step 4: Apply the changes
 
 1. Plan the Terraform configuration to see what will be created:
 

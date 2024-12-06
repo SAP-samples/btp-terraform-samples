@@ -37,9 +37,12 @@ To configure the Cloud Foundry provider add the following lines at the end of th
 ```terraform
 provider "cloudfoundry" {
   api_url = "https://api.cf.${var.region}-001.hana.ondemand.com"
+  origin = var.idp
 }
 ```
-Save your changes.
+Save your changes after editing the file.
+The `origin` (Identity Provider Orgin Key ) is set to null. If a [Custom Identity Provider](https://help.sap.com/docs/btp/sap-business-technology-platform/log-on-with-custom-identity-provider-to-cloud-foundry-environment-using-cloud-foundry-command-line-interface) is used to login to SAP BTP CloudFoundry Environment,  this value is set to Orgin Key of the Custom Identity Provider. The `api_url ` is the API URL of SAP BTP CloudFoundry Environment.
+
 
 > [!WARNING]
 > We assume that the Cloud Foundry environment is deployed to the extension landscape 001. If this is not the case the authentication might fail. In a real-world scenario you would probably have a different boundary of content to the module.

@@ -34,10 +34,11 @@ terraform {
 
 provider "btp" {
   globalaccount = var.globalaccount
+  idp = var.idp
 }
 ```
 
-What have we done? First we defined which provider we want to use and which version of the provider we want to use. In this case we want to use the provider `sap/btp` in version `1.8.0` (including potential patch versions). Then we defined the provider configuration. In this case we only need to provide the `globalaccount` parameter where we reference a variable. We will define this variable in the next step.
+What have we done? First we defined which provider we want to use and which version of the provider we want to use. In this case we want to use the provider `sap/btp` in version `1.8.0` (including potential patch versions). Then we defined the provider configuration. In this case we need to provide the `globalaccount` and `idp` parameters where we reference a variable. We will define this variable in the next step.
 
  > [!NOTE]
  > We do not need any authentication information in this file. We provided the authentication information via environment variables.
@@ -49,17 +50,25 @@ variable "globalaccount" {
   type        = string
   description = "The subdomain of the SAP BTP global account."
 }
+variable "idp" {
+  type        = string
+  description = "Orgin key of Identity Provider"
+  default     = null
+}
 ```
 
-We have now defined the variable `globalaccount` which is required for the provider configuration. We will provide the value for this variable via the `terraform.tfvars` file. Open
+We have now defined the variable `globalaccount` and `idp` which is required for the provider configuration. We will provide the value for this variable via the `terraform.tfvars` file. Open
 the file `terraform.tfvars` and add the following content:
 
 ```terraform
 globalaccount = "<YOUR GLOBAL ACCOUNT SUBDOMAIN>"
+idp = null
 ```
 
 The SAP BTP Global Account Subdomain can be found in the SAP BTP Cockpit as shown below
 <img width="600px" src="assets/trial-account.png" alt="SAP BTP Global Account Subdomain">
+
+The `idp`  (Identity Provider Orgin Key ) is set to null. If a [Custom Identity Provider](https://help.sap.com/docs/btp/sap-business-technology-platform/log-on-with-custom-identity-provider-to-sap-btp-cockpit) is used to login to SAP BTP this value is set to Orgin Key of the Custom Identity Provider`
 
  > [!NOTE]
  > We are using here a naming convention of Terraform to define the variable values. The file `terraform.tfvars` is used to define the variable values. The file is not checked into the source code repository. This is important to keep sensitive information out of the source code repository. When you run Terraform, it will automatically load the variable values from this file.
