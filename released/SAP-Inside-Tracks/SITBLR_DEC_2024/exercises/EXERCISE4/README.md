@@ -76,6 +76,13 @@ output "cloudfoundry_org_name" {
     ```
 
     You will be prompted to confirm the creation of the environment. Type `yes` and press `Enter` to continue.
+   The output should look like this:
+    
+    <img width="600px" src="assets/ex7_3.png" alt="executing terraform apply with cloud foundry provider">
+    
+    You can also check that everything is in place via the SAP BTP cockpit. You should see the Cloud Foundry environment in the subaccount:
+    
+     <img width="600px" src="assets/ex7_4.png" alt="SAP BTP Cockpit with Cloud Foundry environment">
 ## Summary
 
 You've now successfully created a Cloud Foundry environment instance as well as a Cloud Foundry space in SAP BTP.

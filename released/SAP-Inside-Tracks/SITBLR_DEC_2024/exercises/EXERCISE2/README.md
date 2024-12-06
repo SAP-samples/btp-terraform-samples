@@ -112,6 +112,13 @@ As we have all variables in place, you should save the changes now.
 > [!NOTE]
 > As you can see you have a lot of possibilities to validate the user input in Terraform in this way ensure that the input is correct and meets your corporate requirements.
 
+We have defined the  `project_name` which is required for the subaccount creation. We will provide the value for this variable via the `terraform.tfvars` file. Open
+the file `terraform.tfvars` and append the following content to the end of the file:
+
+```terraform
+project_name  = "<YOUR LAST NAME>"
+```
+
 ### Step 2: Local values
 
 Now we want to leverage the input variables to create a subaccount name that follows a specific naming convention. Here are the conditions:
