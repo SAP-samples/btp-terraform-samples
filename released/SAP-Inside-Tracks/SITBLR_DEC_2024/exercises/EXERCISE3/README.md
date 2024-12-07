@@ -36,7 +36,7 @@ variable "bas_plan" {
 }
 ```
 
-We define a complex variable type, which is a [list](https://developer.hashicorp.com/terraform/language/expressions/types#lists-tuples) of [objects](https://developer.hashicorp.com/terraform/language/expressions/types#maps-objects). Each object has three attributes: `name`, `plan`, and `amount`. The `name` and `plan` attributes are strings, and the `amount` attribute is a number. We define a default value for the variable, which is an empty list.We will provide values for this parameter via the file `terraform.tfvars` in the next step. Save the changes.
+We define a complex variable type, which is a [list](https://developer.hashicorp.com/terraform/language/expressions/types#lists-tuples) of [objects](https://developer.hashicorp.com/terraform/language/expressions/types#maps-objects). Each object has three attributes: `name` and `plan`. The `name` and `plan` attributes are strings. We define a default value for the variable, which is an empty list.We will provide values for this parameter via the file `terraform.tfvars` in the next step. Save the changes.
 
 ## Step 2: Add the variable to the tfvars file
 
