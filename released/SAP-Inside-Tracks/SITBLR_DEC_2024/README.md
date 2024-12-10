@@ -60,9 +60,7 @@ Validate that the values are set via:
 
 ## Summary
 
-You've now prepared your development environment and have all information to finally start using Terraform provider for SAP BTP.  
-
-
+Your development environment is now ready, and you have all the necessary information to start using the Terraform provider to create and manage an SAP BTP subaccount with Cloud Foundry (CF) resources. This setup provisions the subaccount with a name, subdomain, labels, and user roles. It also enables services like SAP Business Application Studio (BAS) and configures a CF environment with an organization and space. Additionally, user roles, such as space managers and space developers, are assigned to the CF space.
 
 ## Exercises 📚
 
