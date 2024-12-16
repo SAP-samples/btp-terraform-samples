@@ -7,11 +7,11 @@ You can get started by going through this learning journey : https://learning.sa
 This will give you a quick overview about the specifics of Terraform and also some insight into the BTP Provider. At the end there is a short exercise you may try out
 <img width="939" alt="Create a Terraform Configuration for SAP BTP" src="https://github.com/user-attachments/assets/cd9e8c52-a4bd-4097-bbae-9c0ce51bfb4e">
 
-This will open a simulated VSCode environment where you can get first hand experience with the Provider by going through an interactive tutorial. This will help you get familiar with the CLI, configuration scripts and the general flow of Terraform. 
+This will open a simulated VSCode environment where you can get first hand experience with the Provider by going through an interactive tutorial. This will help you get familiar with the CLI, configuration scripts and the general flow of Terraform.
 
 Now you are ready to try play around with the provider yourself!
 
-Use the code provided here : https://github.com/SAP-samples/btp-terraform-samples/tree/main/released/SAP-Inside-Tracks/SITBLR2024
+Use the code provided here : https://github.com/SAP-samples/btp-terraform-samples/tree/main/released/SAP-Inside-Tracks/SITBLR_OCT_2024
 
 You can revisit the interactive tutorial and follow the on-screen instructions and execute them on your local system using VSCode. The BTP global account and user details have already been give to you.
 
