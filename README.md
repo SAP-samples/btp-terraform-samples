@@ -30,10 +30,6 @@ For more information about how to contribute, the project structure, and additio
 
 Members, contributors, and leaders pledge to make participation in our community a harassment-free experience. By participating in this project, you agree to always abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md).
 
-## Licensing
-
-Copyright 2024 SAP SE or an SAP affiliate company and `btp-terraform-samples` contributors. See our [LICENSE](LICENSE) for copyright and license information. Detailed information, including third-party components and their licensing/copyright information, is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP-samples/btp-terraform-samples).
-
 ## How to obtain support
 
 [Create an issue](https://github.com/SAP-samples/btp-terraform-samples/issues) in this repository if you find a bug or have questions about the content.
@@ -44,6 +40,6 @@ For additional support, [ask a question in SAP Community](https://answers.sap.co
 
 If you wish to contribute code, offer fixes or improvements, please send a pull request. Due to legal reasons, contributors will be asked to accept a DCO when they create the first pull request to this project. This happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
 
-## License
+## Licensing
 
-Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
+Copyright (c) 2025 SAP SE or an SAP affiliate company and `btp-terraform-samples` contributors. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file. Detailed information, including third-party components and their licensing/copyright information, is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP-samples/btp-terraform-samples).
