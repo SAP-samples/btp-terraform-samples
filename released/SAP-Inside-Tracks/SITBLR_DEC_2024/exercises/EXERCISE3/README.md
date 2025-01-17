@@ -42,7 +42,7 @@ We define a complex variable type, which is a [list](https://developer.hashicorp
 
 Now we need to specify the entitlements we want to create to the `terraform.tfvars` file.
 
-We want to add the following entitlements to the subaccount:
+We want to add the following entitlements to the subaccount in SAP BTP Trial landscape:
 
 - `sapappstudiotrial` application with the `trial` plan
 
@@ -55,7 +55,7 @@ bas_admins = ["admin1@example.com", "admin2@example.com"]
 bas_developers = ["dev1@example.com", "dev2@example.com"]
 ```
 
-If you are using factory landscapes such as `eu10`, `us10`, `ap10` ensure following entitlement is added to the subaccount.
+If you are creating Subaccount in Live or Production landscapes such as `EU10`, `US10`, `AP10` etc ensure following entitlement is added to the subaccount.
 
 - `sapappstudio` application with `standard-edition` plan
 
