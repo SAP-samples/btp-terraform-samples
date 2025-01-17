@@ -55,6 +55,11 @@ bas_admins = ["admin1@example.com", "admin2@example.com"]
 bas_developers = ["dev1@example.com", "dev2@example.com"]
 ```
 
+If you are using factory landscapes such as `eu10`, `us10`, `ap10` ensure following entitlement is added to the subaccount.
+
+- `sapappstudio` application with `standard-edition` plan
+
+
 ## Step 3: Add the entitlements configuration
 
 As we have the variable and the values for the `BAS` in place, we can now add the configuration to assign the entitlement to the subaccount. We use the resource [btp_subaccount_entitlement](https://registry.terraform.io/providers/SAP/btp/latest/docs/resources/subaccount_entitlement) to achieve this. Open the `main.tf` file and add the following code:

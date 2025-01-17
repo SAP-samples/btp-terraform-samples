@@ -58,7 +58,10 @@ Add following variables to your `tfvars` file to configure the CloudFoundry Plan
 ```terraform
 cf_plan = "trial"
 ```
+**note:** For factory landscapes such as eu10, us10, or ap10, ensure `cf_plan` is `standard` instead of trial.
+
 Save the changes.
+
 ### Step 3: Adjust the output variables
 
 As we are using the output variables, we need to adjust the output variables in the `outputs.tf` file. Open the `outputs.tf` file and add the following code:
