@@ -9,13 +9,13 @@ terraform {
       version = "~> 1.1.0"
     }
   }
-
 }
 
 provider "btp" {
   globalaccount = var.globalaccount
+  idp           = var.idp
 }
-
 provider "cloudfoundry" {
   api_url = "https://api.cf.${var.region}-001.hana.ondemand.com"
+  origin  = var.idp
 }

@@ -53,12 +53,20 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
 ```
 ### Step 2: Add the variables to tfvar file
 
-Add following variables to your `tfvars` file to configure the CloudFoundry Plan.
+If you are creating subaccount in **SAP BTP Trial landscape**, open the `terraform.tfvars` file and add the following variable:
 
 ```terraform
 cf_plan = "trial"
 ```
+**OR**
+
+If you are creating subaccount in **Live or Production landscapes** such as `EU10`, `US10`, `AP10` etc, open the `terraform.tfvars` file and add the following variable:
+
+```terraform
+cf_plan = "standard"
+```
 Save the changes.
+
 ### Step 3: Adjust the output variables
 
 As we are using the output variables, we need to adjust the output variables in the `outputs.tf` file. Open the `outputs.tf` file and add the following code:

@@ -40,17 +40,23 @@ We define a complex variable type, which is a [list](https://developer.hashicorp
 
 ## Step 2: Add the variable to the tfvars file
 
-Now we need to specify the entitlements we want to create to the `terraform.tfvars` file.
+Now we need to specify the entitlements we want to create to the `terraform.tfvars` file. 
 
-We want to add the following entitlements to the subaccount:
-
-- `sapappstudiotrial` application with the `trial` plan
-
-Open the `terraform.tfvars` file and add the following code:
+If you are creating subaccount in **SAP BTP Trial landscape**, open the `terraform.tfvars` file and add the following code:
 
 ```terraform
 bas_service_name = "sapappstudiotrial"
 bas_plan = "trial"
+bas_admins = ["admin1@example.com", "admin2@example.com"]
+bas_developers = ["dev1@example.com", "dev2@example.com"]
+```
+OR
+
+If you are creating Subaccount in **Live or Production landscapes** such as `EU10`, `US10`, `AP10` etc, open the `terraform.tfvars` file and add the following code:
+
+```terraform
+bas_service_name = "sapappstudio"
+bas_plan = "standard-edition"
 bas_admins = ["admin1@example.com", "admin2@example.com"]
 bas_developers = ["dev1@example.com", "dev2@example.com"]
 ```

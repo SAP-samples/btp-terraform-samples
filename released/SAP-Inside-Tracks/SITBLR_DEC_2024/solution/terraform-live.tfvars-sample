@@ -1,0 +1,12 @@
+globalaccount = "<YOUR GLOBAL ACCOUNT SUBDOMAIN>"
+idp = null
+project_name  = "<YOUR LAST NAME>"
+
+bas_service_name = "sapappstudio" 
+bas_plan = "standard-edition"
+bas_admins = ["admin1@example.com", "admin2@example.com"]
+bas_developers = ["dev1@example.com", "dev2@example.com"]
+
+cf_plan = "standard" 
+cf_org_user   = ["john.doe@test.com"]     
+cf_space_developers = ["john.doe@test.com"]

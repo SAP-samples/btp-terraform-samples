@@ -65,10 +65,11 @@ globalaccount = "<YOUR GLOBAL ACCOUNT SUBDOMAIN>"
 idp = null
 ```
 
+
 The SAP BTP Global Account Subdomain can be found in the SAP BTP Cockpit as shown below
 <img width="600px" src="assets/trial-account.png" alt="SAP BTP Global Account Subdomain">
 
-The `idp`  (Identity Provider Orgin Key ) is set to null. If a [Custom Identity Provider](https://help.sap.com/docs/btp/sap-business-technology-platform/log-on-with-custom-identity-provider-to-sap-btp-cockpit) is used to login to SAP BTP this value is set to Orgin Key of the Custom Identity Provider`
+The `idp`  (Identity Provider Orgin Key ) value  is set to null. If a [SAP Cloud Identity Services tenant (Custom Identity Provider)](https://help.sap.com/docs/btp/sap-business-technology-platform/log-on-with-custom-identity-provider-to-sap-btp-cockpit) is used to login to SAP BTP Cockpit this value is set to Orgin Key of the Custom Identity Provider`.  The orgin key of the SAP Cloud Identity Services tenant can be found in SAP BTP Cockpit. Go to the Global Account where teh Subaccount is being created. Navigate to Security -> Trust Configuration and the orgin key can be found under the Trust Configuration of the Identity Provider.
 
  > [!NOTE]
  > We are using here a naming convention of Terraform to define the variable values. The file `terraform.tfvars` is used to define the variable values. The file is not checked into the source code repository. This is important to keep sensitive information out of the source code repository. When you run Terraform, it will automatically load the variable values from this file.
