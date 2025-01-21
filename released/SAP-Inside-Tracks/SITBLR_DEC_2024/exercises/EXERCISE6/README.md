@@ -44,4 +44,12 @@ After the deletion of the resources, check the Terraform state. Walk through the
 
 Congrats - you've successfully completed the HandsOn. You've now learned how to use Terraform to manage resources in SAP BTP, how to deal with drift and also how to delete the resources again.
 
+If you'd like to review some Terraform sample scripts, we've published them in the following repository for your reference.
+
+```bash
+git clone https://github.com/SAP-samples/btp-terraform-samples.git
+```
+
+you can find the exercises in the folder `released`.
+
 Happy Terraforming!
