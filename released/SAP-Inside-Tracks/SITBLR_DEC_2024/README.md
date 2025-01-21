@@ -15,19 +15,6 @@ Make sure that the following prerequisites are met:
 
 ## Tools 🛠️
 
-To execute the exercises you have the following options concerning the required tools installed:
-
-In general you must clone this GitHub repository. You must have the Git client installed on your machine. You can find the installation instructions [here](https://git-scm.com/downloads).
-
-You can then clone the repository via the following command:
-
-```bash
-git clone https://github.com/SAP-samples/btp-terraform-samples.git
-```
-
-you can find the exercises in the folder `released/SAP-Inside-Tracks/SITBLR_DEC_2024/exercises`.
-
-
 You can install the required tools locally on your machine. The following tools are required:
 
 - [Terraform CLI](https://developer.hashicorp.com/terraform/install?product_intent=terraform)
