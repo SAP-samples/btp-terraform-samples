@@ -77,7 +77,29 @@ output "cloudfoundry_org_name" {
   description = "The name of the cloudfoundry org connected to the project account."
 }
 ```
-### Step 4: Apply the changes
+
+### Step 4: Adjust the provider configuration
+
+As we are using an additional provider we must make Terraform aware of this in the `provider.tf` file. Open the `provider.tf` file and add the following code to the `required_provider` block:
+
+```terraform
+cloudfoundry = {
+      source  = "cloudfoundry/cloudfoundry"
+      version = "1.2.0"
+    }
+```
+
+To configure the Cloud Foundry provider add the following lines at the end of the file:
+
+```terraform
+provider "cloudfoundry" {
+  api_url = "https://api.cf.${var.region}-001.hana.ondemand.com"
+}
+```
+
+Save your changes.
+
+### Step 5: Apply the changes
 
 1. Plan the Terraform configuration to see what will be created:
 
