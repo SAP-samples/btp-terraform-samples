@@ -1,0 +1,12 @@
+globalaccount = "b010d6bbtrial-ga"
+idp = null
+project_name  = "Terramate"
+
+bas_service_name = "sapappstudiotrial" 
+bas_plan = "trial"
+bas_admins = ["admin1@example.com", "admin2@example.com"]
+bas_developers = ["dev1@example.com", "dev2@example.com"]
+
+cf_plan = "trial" 
+cf_org_user   = ["prajin.ollekkatt.prakasan@sap.com"]     
+cf_space_developers = ["prajin.ollekkatt.prakasan@sap.com"]

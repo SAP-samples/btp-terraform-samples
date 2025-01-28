@@ -1,0 +1,12 @@
+globalaccount = "terraformintprod"
+idp = null
+project_name  = "TerramateDemo"
+
+bas_service_name = "sapappstudio" 
+bas_plan = "standard-edition"
+bas_admins = ["admin1@example.com", "admin2@example.com","admin3@exaample.com"]
+bas_developers = ["dev1@example.com", "dev2@example.com","admin3@example.com"]
+
+cf_plan = "standard" 
+cf_org_user   = ["prajin.ollekkatt.prakasan@sap.com"]     
+cf_space_developers = ["prajin.ollekkatt.prakasan@sap.com"]
