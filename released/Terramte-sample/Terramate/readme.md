@@ -182,6 +182,7 @@ resource "cloudfoundry_space_role" "cf_space_developers" {
 ```
 
 `provider.tf`
+
 ```hcl
 terraform {
   required_providers {
