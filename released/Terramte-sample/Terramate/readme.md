@@ -42,7 +42,7 @@ terramate_project/
 
 ## Enable git integration within Terramate
 
-Create a directory named `Terraform_Demo` and add below config for git integration.
+Create a directory named `Terraform_Demo` and add below config for git integration, and create `terramate.tm.hcl` to start with Terramate.
 
 ```hcl
 # terramate.tm.hcl
@@ -60,7 +60,7 @@ terramate {
 
 Each stack (e.g., `dev`, `production`) uses the shared modules with stack-specific variable overrides.
 
-### **Stack: Dev**
+### **Stack: Dev and Prod**
 ```bash
 terramate create stacks/dev
 terramate create stacks/prod
