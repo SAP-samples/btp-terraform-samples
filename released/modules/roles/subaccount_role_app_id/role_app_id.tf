@@ -15,6 +15,6 @@ data "btp_subaccount_roles" "all_roles" {
 locals {
   selected_role = [
     for role in data.btp_subaccount_roles.all_roles.values : role
-    if role.name == var.role_name && role.role_template_name == var.var.role_template_name
+    if role.name == var.role_name && role.role_template_name == var.role_template_name
   ]
 }
