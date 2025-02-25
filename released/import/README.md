@@ -12,6 +12,10 @@ In a nutshell we will:
 
 We will now walk through this process in detail in the following sections.
 
+> [!NOTE]
+> The following description covers the *manual* process of an import using [import blocks](https://developer.hashicorp.com/terraform/language/import). Terraform as well as OpenTofu offer an [experimental feature](https://developer.hashicorp.com/terraform/language/import/generating-configuration) to generate the resource configuration. While this removes the burden of manually crafting the configuration code, manual rework is required to introduce dependencies between resources as well as making the code more reusable via variables or local values.
+
+
 ## Prerequisites
 
 To have resources that need to be imported we first need to create a subaccount and a service entitlement on SAP BTP using the SAP BTP Cockpit.
@@ -203,7 +207,7 @@ terraform plan
 
 The result should display that two resources get imported. No additions, changes or deletions should be planned. The output should look like this:
 
-```bash	
+```bash
 btp_subaccount.my_imported_subaccount: Preparing import... [id=XYZ]
 btp_subaccount.my_imported_subaccount: Refreshing state... [id=XYZ]
 btp_subaccount_entitlement.my_imported_entitlement: Preparing import... [id=XYZ,alert-notification,standard]
@@ -256,7 +260,7 @@ To execute the import, we run:
 terraform apply
 ```
 
-As a result we see a `terraform.tfstate` file in our filesystem. 
+As a result we see a `terraform.tfstate` file in our filesystem.
 
 To validate that we have brought the manually created resources under the control of Terraform we execute a `terraform plan` which should state that:
 
@@ -271,3 +275,6 @@ The import was successful, and you can manage the imported resources via Terrafo
 ## Additional Information
 
 You find more information about the Teraform import functionality in the [Terraform documentation](https://www.terraform.io/docs/cli/import/index.html).
+
+> [!TIP]
+> To simplify the state import, we offer a SAP BTP specific CLI called [Terraform Exporter for SAP BTP](https://sap.github.io/terraform-exporter-btp/). This CLI streamlines the process of the import so that you can e.g., import one subaccount via one single command. For details please check the [documentation](https://sap.github.io/terraform-exporter-btp/).
