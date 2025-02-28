@@ -14,7 +14,7 @@ Pre-requisites:
  ```
  You should see below output.
 
- <img width="600px" src="assets/btptfhelp.png" alt="btptf help">
+ <img width="800px" src="assets/btptfhelp.png" alt="btptf help">
 
 - If exporter is not avaialble, Go to [Setup Terraform Exporter](https://sap.github.io/terraform-exporter-btp/install/)
 
@@ -29,13 +29,13 @@ This command will create a file named `btp_resource_<subaccount_id>.json`
 
  You should see the following output:
 
- <img width="600px" src="assets/createJson.png" alt="btptf create-json">
+ <img width="800px" src="assets/createJson.png" alt="btptf create-json">
 
 If you want any of the resources (Entitlements, Role collections, Roles, etc) to be excluded from the Subaccount that you are going to export, Remove them from the `btp_resources_<subaccount_id>.json`.
 
 You should see the `btp_resource_<subaccount_id>.json` like below:
 
-<img width="600px" src="assets/btp_resourcesJson.png" alt="Json file lists all the resources">
+<img width="800px" src="assets/btp_resourcesJson.png" alt="Json file lists all the resources">
  
 ## Generate configuration for Export
 
@@ -49,7 +49,7 @@ You have generated the terraform scripts now, you could see the scripts under `g
 
 You should see the following output:
 
-<img width="600px" src="assets/exportbyjson.png" alt="export by json output">
+<img width="800px" src="assets/exportbyjson.png" alt="export by json output">
 
 ## Export the BTP resources
 
@@ -62,7 +62,7 @@ terraform apply
 ```
 You should see the below output:
 
-<img width="600px" src="assets/tfapply.png" alt="terraform apply output">
+<img width="800px" src="assets/tfapply.png" alt="terraform apply output">
 
 Now all the resources are exported and you can see the state file under the folder `generated_configurations_<subaccount_id>`
 
@@ -80,7 +80,7 @@ Now all the resources are exported and you can see the state file under the fold
   ```
   You should see the below output:
 
-<img width="600px" src="assets/exportcforg.png" alt="terraform export cf org">
+<img width="800px" src="assets/exportcforg.png" alt="terraform export cf org">
 
 This command will generate the configuration files under `generated_configurations_<organization_ID>`.
 
