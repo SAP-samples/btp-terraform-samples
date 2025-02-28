@@ -23,7 +23,7 @@ Pre-requisites:
 - Copy the subaccount ID you have created, And run the below command
 
 ```bash
-btptf create-json --subaccount <Your Subaccount ID>
+btptf create-json --subaccount < Your Subaccount ID >
 ```
 This command will create a file named `btp_resource_<subaccount_id>.json`
 
@@ -31,7 +31,7 @@ This command will create a file named `btp_resource_<subaccount_id>.json`
 
  <img width="600px" src="assets/createJson.png" alt="btptf create-json">
 
-If you want any of the resources (Entitlements, Role collections, Roles, etc) to be excluded from the Subaccount that you are going to export, Remove them from the `btp_resource_<subaccount_id>.json`.
+If you want any of the resources (Entitlements, Role collections, Roles, etc) to be excluded from the Subaccount that you are going to export, Remove them from the `btp_resources_<subaccount_id>.json`.
 
 You should see the `btp_resource_<subaccount_id>.json` like below:
 
@@ -51,7 +51,7 @@ You should see the following output:
 
 <img width="600px" src="assets/exportbyjson.png" alt="export by json output">
 
-## Export the resources
+## Export the BTP resources
 
 You can go the the `generated_configurations` folder, There you will see all the generated scripts.
 
@@ -64,20 +64,40 @@ You should see the below output:
 
 <img width="600px" src="assets/tfapply.png" alt="terraform apply output">
 
-Now all the resources are exported and you can see the stae file under the folder `generated_configurations_<subaccount_id>`
+Now all the resources are exported and you can see the state file under the folder `generated_configurations_<subaccount_id>`
 
 > [!TIP]
 > If you do not want to use Json file input, You can also use the `btptf export -S <subaccount_id>` command to export all the resources under one Subaccount.
+
+## Export Cloudfoundry resources
+
+  To export Cloud Foundry resources, we use the Organization's ID.
+
+  As we did in the previous BTP export, we will first create the JSON file. However, this time, we only want to export the spaces. To do this, run the following command:
+
+  ```bash
+  btptf export --organization < Organization ID >  --resources spaces
+  ```
+  You should see the below output:
+
+<img width="600px" src="assets/exportcforg.png" alt="terraform export cf org">
+
+This command will generate the configuration files under `generated_configurations_<organization_ID>`.
+
+In this case, we are exporting all spaces from the Cloud Foundry organization, and we do not need to provide a JSON file as input.
+
 
 ### Summary
 
 Congratulations! You have successfully completed the hands-on exercise.
 
-This demonstrates how the BTP Terraform Exporter can be used to bring an existing BTP Subaccount under Terraform management. Without this tool, these tasks would be cumbersome and prone to errors.
+This demonstrates how the BTP Terraform Exporter can be used to bring an existing BTP Subaccount under Terraform management. Without this tool, managing these tasks would be cumbersome and more susceptible to errors.
 
 ### For Further References
 
 Vist below links
+
+- https://github.com/SAP/terraform-exporter-btp.git
 
 - https://learning.sap.com/learning-journeys/getting-started-with-terraform-on-sap-btp
 

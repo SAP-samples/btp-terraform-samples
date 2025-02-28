@@ -97,7 +97,7 @@ variable "costcenter" {
 variable "org_name" {
   type        = string
   description = "Defines to which organization the project account shall belong to."
-  default     = "HandsOn"
+  default     = "Exporter"
 }
 variable "bas_admins" {
   type        = list(string)
@@ -310,6 +310,6 @@ terraform apply
 
 ## Summary
 
-You've now successfully created a SAP BTP Subaccount with active resources, We will export this Subaccount using BTP Terraform exporter.
+You have successfully created an SAP BTP Subaccount with active resources using Terraform. Now, imagine you already have an existing subaccount and want to bring it under Terraform's management. This exercise will guide you through that process.
 
 Continue to - [Exercise 2 - Export BTP Subaccount Using BTP Terraform Exporter](../EXERCISE2/README.md).
