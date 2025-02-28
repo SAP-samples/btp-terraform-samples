@@ -62,7 +62,7 @@ variable "idp" {
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "eu10"
+  default     = "ap10"
 }
 variable "project_name" {
   type        = string
@@ -123,7 +123,7 @@ variable "bas_plan" {
 variable "cf_landscape_label" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "cf-eu10"
+  default     = "cf-ap10"
 }
 variable "cf_plan" {
   type        = string
@@ -178,9 +178,7 @@ cf_plan = "standard"
 cf_org_user   = ["john.doe@test.com"]     
 cf_space_developers = ["john.doe@test.com"]
 ```
-The SAP BTP Global Account Subdomain can be found in the SAP BTP Cockpit.
-
-As all bits and pieces are in place we can now create the subaccount configuration.
+The SAP BTP Global Account Subdomain can be found in the [SAP BTP Cockpit](https://apac.cockpit.btp.cloud.sap/cockpit/?idp=aviss4yru.accounts.ondemand.com#/globalaccount/6378f0c6-1b1e-4b10-8517-171cbec05c3e). Update fields with your user details.
 
 - Open `main.tf` file and add the following content
 

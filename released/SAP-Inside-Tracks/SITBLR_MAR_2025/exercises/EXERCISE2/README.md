@@ -14,6 +14,26 @@ Pre-requisites:
  ```
  You should see below output.
 
+ ## Exporting environment variables
+
+The last step in the setup is the export of the environment variables that are required to function BTP Terraform Exporter. For that export the following environment variables:
+
+- Windows:
+
+    ```pwsh
+    $env:BTP_GLOBALACCOUNT=<your SAP BTP Global Account subdomain>
+    $env:BTP_CLI_SERVER_URL="https://cpcli.cf.eu10.hana.ondemand.com"
+    $env:CF_API_URL="https://api.cf.ap10.hana.ondemand.com"
+    ```
+
+- Linux/MacOS/GitHub Codespaces:
+
+    ```bash
+    export BTP_GLOBALACCOUNT=<your SAP BTP Global Account subdomain>
+    export BTP_CLI_SERVER_URL="https://cpcli.cf.eu10.hana.ondemand.com"
+    export CF_API_URL="https://api.cf.ap10.hana.ondemand.com"
+    ```
+
  <img width="800px" src="assets/btptfhelp.png" alt="btptf help">
 
 - If exporter is not avaialble, Go to [Setup Terraform Exporter](https://sap.github.io/terraform-exporter-btp/install/)
