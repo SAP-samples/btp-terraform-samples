@@ -4,7 +4,7 @@ In this exercise you will learn how to use the [Terraform Provider for SAP BTP](
 
 ## Step 1: Create a new directory
 
-To make use of Terraform you must create several configuration files using the [Terraform configuration language](https://developer.hashicorp.com/terraform/language). Create a new directory named `my-tf-handson` under the folder `SITBLR2025`.
+To make use of Terraform you must create several configuration files using the [Terraform configuration language](https://developer.hashicorp.com/terraform/language). Create a new directory named `my-tf-handson`.
 
 Terraform expects a specific file layout for its configurations. Create the following empty files in the directory `my-tf-handson`:
 
@@ -136,29 +136,6 @@ variable "cf_space_name" {
   default     = "dev"
 }
 
-variable "cf_org_user" {
-  type        = set(string)
-  description = "Defines the colleagues who are added to each subaccount as subaccount administrators."
-  default     = ["jane.doe@test.com", "john.doe@test.com"]
-}
-
-variable "cf_space_managers" {
-  type        = list(string)
-  description = "The list of Cloud Foundry space managers."
-  default     = []
-}
-
-variable "cf_space_developers" {
-  type        = list(string)
-  description = "The list of Cloud Foundry space developers."
-  default     = []
-}
-
-variable "cf_space_auditors" {
-  type        = list(string)
-  description = "The list of Cloud Foundry space auditors."
-  default     = []
-}
 ```
 We have now defined the variables which will be required for the provider configuration. We will provide the value for this variable via the `terraform.tfvars` file. 
 
@@ -175,8 +152,6 @@ bas_admins = ["admin1@example.com", "admin2@example.com"]
 bas_developers = ["dev1@example.com", "dev2@example.com"]
 
 cf_plan = "standard" 
-cf_org_user   = ["john.doe@test.com"]     
-cf_space_developers = ["john.doe@test.com"]
 ```
 The SAP BTP Global Account Subdomain can be found in the [SAP BTP Cockpit](https://apac.cockpit.btp.cloud.sap/cockpit/?idp=aviss4yru.accounts.ondemand.com#/globalaccount/6378f0c6-1b1e-4b10-8517-171cbec05c3e). Update fields with your user details.
 
@@ -253,29 +228,6 @@ resource "cloudfoundry_space" "space" {
   org  = btp_subaccount_environment_instance.cloudfoundry.platform_id
 }
 
-resource "cloudfoundry_space_role" "cf_space_managers" {
-  for_each   = toset(var.cf_space_managers)
-  username   = each.value
-  type       = "space_manager"
-  space      = cloudfoundry_space.space.id
-  depends_on = [cloudfoundry_org_role.my_role]
-}
-
-resource "cloudfoundry_space_role" "cf_space_developers" {
-  for_each   = toset(var.cf_space_developers)
-  username   = each.value
-  type       = "space_developer"
-  space      = cloudfoundry_space.space.id
-  depends_on = [cloudfoundry_org_role.my_role]
-}
-
-resource "cloudfoundry_space_role" "cf_space_auditors" {
-  for_each   = toset(var.cf_space_auditors)
-  username   = each.value
-  type       = "space_auditor"
-  space      = cloudfoundry_space.space.id
-  depends_on = [cloudfoundry_org_role.my_role]
-}
 ```
 ### Apply the Terraform configuration
 
