@@ -216,12 +216,6 @@ resource "btp_subaccount_environment_instance" "cloudfoundry" {
     delete = "30m"
   }
 }
-resource "cloudfoundry_org_role" "my_role" {
-  for_each = var.cf_org_user
-  username = each.value
-  type     = "organization_user"
-  org      = btp_subaccount_environment_instance.cloudfoundry.platform_id
-}
 
 resource "cloudfoundry_space" "space" {
   name = var.cf_space_name
