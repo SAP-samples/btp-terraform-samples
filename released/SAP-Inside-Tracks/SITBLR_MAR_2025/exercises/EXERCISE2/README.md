@@ -24,6 +24,8 @@ The last step in the setup is the export of the environment variables that are r
     $env:BTP_GLOBALACCOUNT=<your SAP BTP Global Account subdomain>
     $env:BTP_CLI_SERVER_URL="https://cpcli.cf.eu10.hana.ondemand.com"
     $env:CF_API_URL="https://api.cf.ap10.hana.ondemand.com"
+    $env:BTP_IDP= "<YOUR IDP>"
+    $env:CF_ORIGIN = <"YOUR IDP">
     ```
 
 - Linux/MacOS/GitHub Codespaces:
@@ -32,6 +34,8 @@ The last step in the setup is the export of the environment variables that are r
     export BTP_GLOBALACCOUNT=<your SAP BTP Global Account subdomain>
     export BTP_CLI_SERVER_URL="https://cpcli.cf.eu10.hana.ondemand.com"
     export CF_API_URL="https://api.cf.ap10.hana.ondemand.com"
+    export BTP_IDP= "<YOUR IDP>"
+    export CF_ORIGIN = <"YOUR IDP">
     ```
 
  <img width="800px" src="assets/btptfhelp.png" alt="btptf help">

@@ -143,7 +143,7 @@ We have now defined the variables which will be required for the provider config
 
 ```terraform
 globalaccount = "<YOUR GLOBAL ACCOUNT SUBDOMAIN>"
-idp = null
+idp = "<YOUR IDP>"
 project_name  = "<YOUR LAST NAME>"
 
 bas_service_name = "sapappstudio" 
@@ -153,7 +153,9 @@ bas_developers = ["dev1@example.com", "dev2@example.com"]
 
 cf_plan = "standard" 
 ```
-The SAP BTP Global Account Subdomain can be found in the [SAP BTP Cockpit](https://apac.cockpit.btp.cloud.sap/cockpit/?idp=aviss4yru.accounts.ondemand.com#/globalaccount/6378f0c6-1b1e-4b10-8517-171cbec05c3e). Update fields with your user details.
+- Update fields with your user details.
+
+The SAP BTP Global Account Subdomain can be found in the [SAP BTP Cockpit](https://apac.cockpit.btp.cloud.sap/cockpit/?idp=aviss4yru.accounts.ondemand.com#/globalaccount/6378f0c6-1b1e-4b10-8517-171cbec05c3e).
 
 - Open `main.tf` file and add the following content
 
