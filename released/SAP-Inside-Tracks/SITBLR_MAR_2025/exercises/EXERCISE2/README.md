@@ -7,7 +7,7 @@ The Terraform Exporter for SAP BTP (btptf CLI) is a convenient tool that simplif
 Pre-requisites:
 
 - you need one existing BTP subaccount with resources in it (You already have one now).
-- [Terraform Exporter Binaries](https://github.com/SAP/terraform-exporter-btp), Run the below command in your cli to check the exporter binaries have setup.
+- [Terraform Exporter Binaries](https://github.com/SAP/terraform-exporter-btp/releases), Run the below command in your cli to check the exporter binaries have setup.
 
 ```bash
   btptf --help
@@ -93,7 +93,7 @@ Now all the resources are exported and you can see the state file under the fold
 
   To export Cloud Foundry resources, we use the Organization's ID.
 
-  As we did in the previous BTP export, we will first create the JSON file. However, this time, we only want to export the spaces. To do this, run the following command:
+  As we did in the previous BTP export, we will first create the JSON file. However, this time, we only want to export the spaces. To achieve this, run the following command:
 
   ```bash
   btptf export --organization < Organization ID >  --resources spaces
@@ -104,7 +104,7 @@ Now all the resources are exported and you can see the state file under the fold
 
 This command will generate the configuration files under `generated_configurations_<organization_ID>`.
 
-In this case, we are exporting all spaces from the Cloud Foundry organization, and we do not need to provide a JSON file as input.
+In this case, we are exporting all spaces from the Cloud Foundry organization without needing to provide a JSON file as input.
 
 
 ### Summary

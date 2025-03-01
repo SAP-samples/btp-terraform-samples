@@ -41,7 +41,7 @@ provider "cloudfoundry" {
 }
 ```
 
-What have we done? First we defined which provider we want to use and which version of the provider we want to use. In this case we want to use the provider `sap/btp` in version `1.10.0` and cloudfoundry provider `cloudfoundry/cloudfoundry` in version `1.3.0`. Then we defined the provider configuration. In this case we need to provide the `globalaccount` and `idp` parameters where we reference a variable. We will define this variable in the next step.
+What have we done? First we defined which provider we want to use and which version of the provider we want to use. In this case we want to use the provider `sap/btp` in version `1.10.0` and cloudfoundry provider `cloudfoundry/cloudfoundry` in version `1.3.0`. Then we defined the provider configuration. In this case we need to provide the `globalaccount` and `idp` parameters where we reference a variable. We will define this variable in the next steps.
 
  > [!NOTE]
  > We do not need any authentication information in this file. We provided the authentication information via environment variables.
