@@ -16,7 +16,7 @@ variable "directory_description" {
 }
 
 variable "features" {
-  description = "Stage of the subaccount"
+  description = "Directory features to be activated"
   type        = list(string)
   default     = ["DEFAULT"]
   validation {

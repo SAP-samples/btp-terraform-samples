@@ -73,16 +73,16 @@ resource "btp_subaccount_entitlement" "subaccount_pi_api_entitlement" {
 }
 
 //We need to wait until the entitlements are propagated to the CF marketplace to create service instances
-/*resource "time_sleep" "wait_30_seconds" {
+resource "time_sleep" "wait_30_seconds" {
   depends_on = [btp_subaccount_entitlement.subaccount_pi_api_entitlement, btp_subaccount_entitlement.subaccount_pi_if_entitlement]
 
   create_duration = "30s"
 }
-*/
+
 data "cloudfoundry_service_plans" "integration_flow" {
   name                  = local.it_if_plan
   service_offering_name = local.it_service
-  //depends_on            = [wait_30_seconds]
+  depends_on            = [wait_30_seconds]
 }
 
 resource "cloudfoundry_service_instance" "integration_flow" {
@@ -141,7 +141,7 @@ resource "cloudfoundry_service_credential_binding" "api_binding" {
   service_instance = cloudfoundry_service_instance.it_api.id
 }
 
-// The details of the binding cannot be fetched "This service does not support fetching service binding parameters.."
+// The details of the binding cannot be fetched due to error "This service does not support fetching service binding parameters.."
 /*data "cloudfoundry_service_credential_binding" "integration_flow_binding_data" {
   service_instance = cloudfoundry_service_instance.integration_flow.id
   name             = local.it_if_binding_name

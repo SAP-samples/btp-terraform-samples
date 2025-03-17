@@ -9,7 +9,7 @@ variable "subaccount_id" {
 }
 
 variable "integration_provisioners" {
-  description = "List of integration provisioners"
+  description = "List of user that should be assigned as integration provisioners"
   type        = list(string)
   default     = []
 }

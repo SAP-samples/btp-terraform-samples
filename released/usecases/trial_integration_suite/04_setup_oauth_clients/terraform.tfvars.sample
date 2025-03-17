@@ -1,0 +1,6 @@
+globalaccount             = "<Subdomain of your Global Account>"
+directory_id              = "outout directory_id of step 1"
+subaccount_id             = "Output subaccount_id of step 2"
+space_id                  = "Output of cf_space_id step 2"
+pi_admins                 = ["john.doe@sap.com"]
+pi_integration_developers = ["john.doe@sap.com"]

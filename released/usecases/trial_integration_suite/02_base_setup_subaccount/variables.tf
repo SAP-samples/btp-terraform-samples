@@ -41,7 +41,7 @@ variable "cf_landscape_label" {
   default     = "us10-001"
   validation {
     condition     = contains(["us10-001", "ap21"], var.cf_landscape_label)
-    error_message = "Landscape must be one of us10-001 or ap21"
+    error_message = "Trial landscape must be one of us10-001 or ap21"
   }
 }
 
@@ -70,5 +70,4 @@ variable "space_developers" {
   description = "List of space developers"
   type        = list(string)
   default     = []
-
 }

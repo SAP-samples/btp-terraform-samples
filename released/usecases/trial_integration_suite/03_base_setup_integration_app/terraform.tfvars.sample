@@ -1,0 +1,3 @@
+globalaccount            = "<Subdomain of your Global Account>"
+subaccount_id            = "Output subaccount_id of step 2"
+integration_provisioners = ["john.doe@sap.com"]

@@ -5,7 +5,6 @@ terraform {
       version = "~> 1.10.0"
     }
   }
-
 }
 
 provider "btp" {

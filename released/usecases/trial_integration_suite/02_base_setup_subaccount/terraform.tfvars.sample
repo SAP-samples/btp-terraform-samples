@@ -1,0 +1,6 @@
+globalaccount      = "<Subdomain of your Global Account>"
+parent_id          = "outout directory_id of step 1"
+project_costcenter = "54321"
+emergency_admins   = ["john.doe@sap.com"]
+space_managers     = ["john.doe@sap.com"]
+space_developers   = ["john.doe@sap.com"]

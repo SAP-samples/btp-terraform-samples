@@ -1,0 +1,31 @@
+globalaccount      = "<Subdomain of your Global Account>"
+features           = ["DEFAULT", "ENTITLEMENTS", "AUTHORIZATIONS"]
+project_costcenter = "54321"
+entitlement_assignments = [
+  {
+    name        = "integrationsuite-trial"
+    plan        = "trial"
+    amount      = 1
+    distribute  = false
+    auto_assign = false
+  },
+  // can be added only after fix of https://github.com/SAP/terraform-provider-btp/issues/930
+  /*  {
+    name        = "APPLICATION_RUNTIME"
+    plan        = "MEMORY"
+    amount      = 2
+    distribute  = false
+    auto_assign = false
+  },*/
+]
+// The user executing the script gets automatically added to the directory
+role_collection_assignments = [
+  {
+    role_collection_name = "Directory Administrator"
+    users                = ["john.doe@sap.com"]
+  },
+  {
+    role_collection_name = "Directory Viewer"
+    users                = ["john.doe@sap.com"]
+  }
+]
