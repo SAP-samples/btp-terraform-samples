@@ -82,7 +82,7 @@ resource "time_sleep" "wait_30_seconds" {
 data "cloudfoundry_service_plans" "integration_flow" {
   name                  = local.it_if_plan
   service_offering_name = local.it_service
-  depends_on            = [wait_30_seconds]
+  depends_on            = [time_sleep.wait_30_seconds]
 }
 
 resource "cloudfoundry_service_instance" "integration_flow" {
@@ -113,7 +113,7 @@ resource "cloudfoundry_service_credential_binding" "integration_flow_binding" {
 data "cloudfoundry_service_plans" "it_api" {
   name                  = local.it_api_plan
   service_offering_name = local.it_service
-  //depends_on            = [wait_30_seconds]
+  depends_on            = [time_sleep.wait_30_seconds]
 }
 
 resource "cloudfoundry_service_instance" "it_api" {
