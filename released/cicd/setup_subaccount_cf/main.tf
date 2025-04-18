@@ -11,15 +11,89 @@ resource "btp_subaccount" "project" {
   region    = lower(var.region)
 }
 data "btp_whoami" "me" {}
+
 ###############################################################################################
-# Assignment of users as sub account administrators
+# Trust enablement
 ###############################################################################################
-resource "btp_subaccount_role_collection_assignment" "subaccount-admins" {
-  for_each             = toset("${var.subaccount_admins}")
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Subaccount Administrator"
-  user_name            = each.value
+resource "btp_subaccount_trust_configuration" "ias" {
+  subaccount_id     = btp_subaccount.project.id
+  identity_provider = "terraformeds.accounts.ondemand.com"
 }
+######################################################################
+# Add entitlement for BAS, Subscribe BAS and add roles
+######################################################################
+resource "btp_subaccount_entitlement" "bas" {
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "sapappstudio"
+  plan_name     = var.bas_plan_name
+}
+resource "btp_subaccount_subscription" "bas-subscribe" {
+  subaccount_id = btp_subaccount.project.id
+  app_name      = "sapappstudio"
+  plan_name     = var.bas_plan_name
+  depends_on    = [btp_subaccount_entitlement.bas]
+}
+resource "btp_subaccount_role_collection_assignment" "Business_Application_Studio_Administrator" {
+  subaccount_id        = btp_subaccount.project.id
+  role_collection_name = "Business_Application_Studio_Administrator"
+  user_name            = data.btp_whoami.me.email
+  depends_on           = [btp_subaccount_subscription.bas-subscribe]
+}
+
+
+resource "btp_subaccount_role_collection_assignment" "Business_Application_Studio_Developer" {
+  subaccount_id        = btp_subaccount.project.id
+  role_collection_name = "Business_Application_Studio_Developer"
+  user_name            = data.btp_whoami.me.email
+  depends_on           = [btp_subaccount_subscription.bas-subscribe]
+}
+######################################################################
+# Add Build Workzone entitlement subscription and role Assignment
+######################################################################
+resource "btp_subaccount_entitlement" "build_workzone" {
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "SAPLaunchpad"
+  plan_name     = var.build_workzone_plan_name
+}
+resource "btp_subaccount_subscription" "build_workzone_subscribe" {
+  subaccount_id = btp_subaccount.project.id
+  app_name      = "SAPLaunchpadSMS"
+  plan_name     = var.build_workzone_plan_name
+  depends_on    = [btp_subaccount_entitlement.build_workzone, btp_subaccount_trust_configuration.ias]
+}
+resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
+  subaccount_id        = btp_subaccount.project.id
+  role_collection_name = "Launchpad_Admin"
+  user_name            = data.btp_whoami.me.email
+  depends_on           = [btp_subaccount_subscription.build_workzone_subscribe]
+}
+######################################################################
+# Create HANA entitlement subscription
+######################################################################
+resource "btp_subaccount_entitlement" "hana-cloud" {
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana-cloud"
+  plan_name     = var.hana-cloud_plan_name
+}
+# Enable HANA Cloud Tools
+resource "btp_subaccount_entitlement" "hana-cloud-tools" {
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana-cloud-tools"
+  plan_name     = "tools"
+}
+resource "btp_subaccount_subscription" "hana-cloud-tools" {
+  subaccount_id = btp_subaccount.project.id
+  app_name      = "hana-cloud-tools"
+  plan_name     = "tools"
+  depends_on    = [btp_subaccount_entitlement.hana-cloud-tools]
+}
+resource "btp_subaccount_entitlement" "hana-hdi-shared" {
+  subaccount_id = btp_subaccount.project.id
+  service_name  = "hana"
+  plan_name     = "hdi-shared"
+}
+
+
 ######################################################################
 # Creation of Cloud Foundry environment
 ######################################################################
@@ -79,78 +153,4 @@ resource "cloudfoundry_space_role" "space_role" {
   username   = each.value
   type       = "space_manager"
   space      = cloudfoundry_space.team_space.id
-}
-
-######################################################################
-# Add entitlement for BAS, Subscribe BAS and add roles
-######################################################################
-resource "btp_subaccount_entitlement" "bas" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "sapappstudio"
-  plan_name     = var.bas_plan_name
-}
-resource "btp_subaccount_subscription" "bas-subscribe" {
-  subaccount_id = btp_subaccount.project.id
-  app_name      = "sapappstudio"
-  plan_name     = var.bas_plan_name
-  depends_on    = [btp_subaccount_entitlement.bas]
-}
-resource "btp_subaccount_role_collection_assignment" "Business_Application_Studio_Administrator" {
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Business_Application_Studio_Administrator"
-  user_name            = data.btp_whoami.me.email
-  depends_on           = [btp_subaccount_subscription.bas-subscribe]
-}
-
-
-resource "btp_subaccount_role_collection_assignment" "Business_Application_Studio_Developer" {
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Business_Application_Studio_Developer"
-  user_name            = data.btp_whoami.me.email
-  depends_on           = [btp_subaccount_subscription.bas-subscribe]
-}
-######################################################################
-# Add Build Workzone entitlement subscription and role Assignment
-######################################################################
-resource "btp_subaccount_entitlement" "build_workzone" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "SAPLaunchpad"
-  plan_name     = var.build_workzone_plan_name
-}
-resource "btp_subaccount_subscription" "build_workzone_subscribe" {
-  subaccount_id = btp_subaccount.project.id
-  app_name      = "SAPLaunchpad"
-  plan_name     = var.build_workzone_plan_name
-  depends_on    = [btp_subaccount_entitlement.build_workzone]
-}
-resource "btp_subaccount_role_collection_assignment" "launchpad_admin" {
-  subaccount_id        = btp_subaccount.project.id
-  role_collection_name = "Launchpad_Admin"
-  user_name            = data.btp_whoami.me.email
-  depends_on           = [btp_subaccount_subscription.build_workzone_subscribe]
-}
-######################################################################
-# Create HANA entitlement subscription
-######################################################################
-resource "btp_subaccount_entitlement" "hana-cloud" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "hana-cloud"
-  plan_name     = var.hana-cloud_plan_name
-}
-# Enable HANA Cloud Tools
-resource "btp_subaccount_entitlement" "hana-cloud-tools" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "hana-cloud-tools"
-  plan_name     = "tools"
-}
-resource "btp_subaccount_subscription" "hana-cloud-tools" {
-  subaccount_id = btp_subaccount.project.id
-  app_name      = "hana-cloud-tools"
-  plan_name     = "tools"
-  depends_on    = [btp_subaccount_entitlement.hana-cloud-tools]
-}
-resource "btp_subaccount_entitlement" "hana-hdi-shared" {
-  subaccount_id = btp_subaccount.project.id
-  service_name  = "hana"
-  plan_name     = "hdi-shared"
 }
