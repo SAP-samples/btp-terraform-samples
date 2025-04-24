@@ -2,6 +2,7 @@
 # Generating random ID for subdomain
 ###############################################################################################
 resource "random_uuid" "uuid" {}
+
 ###############################################################################################
 # Creation of subaccount
 ###############################################################################################
@@ -9,6 +10,10 @@ resource "btp_subaccount" "project" {
   name      = var.subaccount_name
   subdomain = "btp-gp${random_uuid.uuid.result}"
   region    = lower(var.region)
+  labels = {
+    "scenario"  = ["automated-test-pipeline"]
+    "timestamp" = ["${formatdate("DD-MMM-YYYY|hh-mm", timestamp())}"]
+  }
 }
 data "btp_whoami" "me" {}
 
