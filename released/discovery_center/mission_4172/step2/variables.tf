@@ -49,7 +49,6 @@ variable "cf_org_users" {
   description = "CF Org Users"
 }
 
-
 variable "custom_idp" {
   type        = string
   description = "Defines the custom IDP to be used for the subaccount"
