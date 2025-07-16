@@ -18,4 +18,3 @@ sac_admin_email = "another.user@test.com"
 sac_admin_host_name = "values.sacadminhost.com"
 sac_admin_first_name = "valuesacadminfirstname"
 sac_admin_last_name = "valuesacadminlastname"
-sa
