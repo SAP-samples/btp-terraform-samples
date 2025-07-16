@@ -14,7 +14,7 @@ cf_org_users        = ["another.user@test.com", "you@test.com"]
 cf_space_managers   = ["another.user@test.com", "you@test.com"]
 cf_space_developers = ["another.user@test.com", "you@test.com"]
 
-sac_admin_email = "another.user@test.com"
-sac_admin_host_name = "values.sacadminhost.com"
+sac_admin_email      = "another.user@test.com"
+sac_admin_host_name  = "values.sacadminhost.com"
 sac_admin_first_name = "valuesacadminfirstname"
-sac_admin_last_name = "valuesacadminlastname"
+sac_admin_last_name  = "valuesacadminlastname"
