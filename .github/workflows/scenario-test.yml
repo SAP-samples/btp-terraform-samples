@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Check out Git repository
         id: checkout_repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Terraform
         id : setup_terraform
         uses: hashicorp/setup-terraform@v3
@@ -83,7 +83,7 @@ jobs:
           fi
       - name: Check out provider repository
         id: checkout_provider_repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: SAP/terraform-provider-btp
 
@@ -106,7 +106,7 @@ jobs:
 
       - name: Check out Github repository
         id: checkout_github_repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Terraform Init
         id: init_terraform
