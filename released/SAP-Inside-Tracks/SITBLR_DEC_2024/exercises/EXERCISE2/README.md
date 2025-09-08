@@ -241,7 +241,7 @@ You can also check that everything is in place via the SAP BTP cockpit. You shou
 Here you find additional information on the used Terraform features and functions:
 
 - Terraform documentation on [input variables](https://developer.hashicorp.com/terraform/language/values/variables)
-- Terraform documentation on [validation](https://developer.hashicorp.com/terraform/language/expressions/custom-conditions#input-variable-validation)
+- Terraform documentation on [validation](https://developer.hashicorp.com/terraform/language/validate#input-variable-validation)
 - Terraform documentation on [output values](https://developer.hashicorp.com/terraform/language/values/outputs)
 - Terraform documentation on [local values](https://developer.hashicorp.com/terraform/language/values/locals)
 
