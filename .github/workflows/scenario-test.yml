@@ -157,7 +157,7 @@ jobs:
     if: ${{ always() && (needs.setup_infrastructure.result == 'failure') }}
     steps:
       - name: Create issue
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const issueTitle = `Automated Issue Alert: DC Missions Scenario Tests Failure`;
