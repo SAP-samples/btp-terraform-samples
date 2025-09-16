@@ -8,6 +8,6 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@sap/approuter": "^19.0.4"
+    "@sap/approuter": "^20.7.1"
   }
 }
