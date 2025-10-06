@@ -2,7 +2,7 @@
 
 Thank you for showing interest in trying out our very own Terraform Provider for SAP BTP. If you are keen on learning about Terraform, how the provider for BTP works and how you can make use of it for your own automation use cases, then you are at the right place!
 
-You can get started by going through this learning journey : https://learning.sap.com/learning-journeys/administrating-sap-business-technology-platform/managing-sap-btp-with-terraform
+You can get started by going through this learning journey : https://learning.sap.com/courses/operating-sap-business-technology-platform/managing-sap-btp-with-terraform
 
 This will give you a quick overview about the specifics of Terraform and also some insight into the BTP Provider. At the end there is a short exercise you may try out
 <img width="939" alt="Create a Terraform Configuration for SAP BTP" src="https://github.com/user-attachments/assets/cd9e8c52-a4bd-4097-bbae-9c0ce51bfb4e">
