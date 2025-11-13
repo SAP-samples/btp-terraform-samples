@@ -68,7 +68,7 @@ resource "btp_subaccount_entitlement" "cloudfoundry" {
 
 # Create instance
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
-  depends_on       = [btp_subaccount_entitlement.build_code]
+  depends_on       = [btp_subaccount_subscription.build_code]
   subaccount_id    = data.btp_subaccount.dc_mission.id
   name             = "cf-${random_uuid.uuid.result}"
   environment_type = "cloudfoundry"
@@ -98,7 +98,6 @@ resource "btp_subaccount_entitlement" "build_code" {
   subaccount_id = data.btp_subaccount.dc_mission.id
   service_name  = local.service_name__build_code
   plan_name     = var.service_plan__build_code
-  amount        = 1
 }
 # Subscribe
 resource "btp_subaccount_subscription" "build_code" {
