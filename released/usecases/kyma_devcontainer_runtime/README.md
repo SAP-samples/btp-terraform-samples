@@ -1,6 +1,6 @@
 # Terraform Module - Devcontainer Runtime
 
-This Terraform module is used to provision a devcontainer runtime based on [Kyma](https://kyma-project.io/) on [SAP Business Technology Platform (BTP)](https://account.hanatrial.ondemand.com/). It creates a subaccount, sets up entitlements, and deploys a Kyma runtime environment.
+This Terraform module is used to provision a devcontainer runtime based on [Kyma](https://github.com/kyma-project/kyma) on [SAP Business Technology Platform (BTP)](https://account.hanatrial.ondemand.com/). It creates a subaccount, sets up entitlements, and deploys a Kyma runtime environment.
 
 ## Prerequisites
 
