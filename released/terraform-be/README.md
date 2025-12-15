@@ -6,7 +6,7 @@ The default configuration is the [local backend](https://developer.hashicorp.com
 
 ## Available Backends
 
-In general, Terraform supports a lot of generic and vendor-specific backends out of the box. You find an overview of the available backends in the [Terraform documentation](https://developer.hashicorp.com/terraform/language/settings#configuring-a-terraform-backend).
+In general, Terraform supports a lot of generic and vendor-specific backends out of the box. You find an overview of the available backends in the [Terraform documentation](https://developer.hashicorp.com/terraform/language/backend).
 
 These built-in backends serve different purposes, from acting as remote disks for state files to supporting state locking, which helps prevent conflicts and ensures consistency during operations. It is important to note that you cannot load additional backends as plugins; only the listed built-in backends are available.
 
