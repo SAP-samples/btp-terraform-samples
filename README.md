@@ -42,4 +42,4 @@ If you wish to contribute code, offer fixes or improvements, please send a pull 
 
 ## Licensing
 
-Copyright (c) 2025 SAP SE or an SAP affiliate company and `btp-terraform-samples` contributors. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file. Detailed information, including third-party components and their licensing/copyright information, is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP-samples/btp-terraform-samples).
+Copyright (c) 2026 SAP SE or an SAP affiliate company and `btp-terraform-samples` contributors. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file. Detailed information, including third-party components and their licensing/copyright information, is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP-samples/btp-terraform-samples).
