@@ -4,9 +4,9 @@ This terraform backend configuration utilizes [Artifactory](https://jfrog.com/ar
 
 ## Prerequisite
 
-Setup Jfrog Artifactory as a [Terraform backend](https://jfrog.com/help/r/jfrog-artifactory-documentation/set-up-terraform-backend-repository-to-work-with-artifactory)
+Setup Jfrog Artifactory as a [Terraform backend](https://docs.jfrog.com/artifactory/docs/terraform-opentofu-and-terraform-backend-repositories#configure-your-terraform-client-for-terraform-backend)
 
-Generate an [Access Token](https://jfrog.com/help/r/jfrog-artifactory-documentation/generate-an-access-token-for-terraform?tocId=tR8lXeO2OmLkW06RPIY1IQ) for Terraform
+Generate an [Access Token](https://docs.jfrog.com/administration/docs/configure-workers-for-custom-flows#step-1-configure-jfrog-credential-for-terraform-provider) for Terraform
 
 ## Example Configuration
 
