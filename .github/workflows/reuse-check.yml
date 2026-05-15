@@ -4,6 +4,9 @@ name: REUSE Compliance Check
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   compliance-check:
     runs-on: ubuntu-latest
