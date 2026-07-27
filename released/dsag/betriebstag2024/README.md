@@ -79,7 +79,7 @@ The dev container will automatically start and you are ready to go
 
 ### GitHub Codespaces
 
-To use [Codespaces](https://docs.github.com/codespaces/overview) you must have a GitHub account. If you don't have one so far, please [sign-up on GitHub](https://github.com/signup) before going through the exercises.
+To use [Codespaces](https://docs.github.com/codespaces/overview) you must have a GitHub account. If you don't have one so far, please [sign-up on GitHub](https://github.com/) before going through the exercises.
 
 You can then access the Codespace following these steps:
 
@@ -135,12 +135,12 @@ Validate that the values are set via:
 You find all exercises of this tutorial in the folder `released/dsag/betriebstag2024/exercises`. Each exercise is contained in a dedicated folder containing:
 
 - A `README.md` file with the instructions for the exercise
-- A folder `SOLUTION_EX<number>` which contains the solution for the exercise if needed including the file `terraform.tfvars-sample` contains the definition of the local variables. In case you get stuck you can check the content of this folder.  
+- A folder `SOLUTION_EX<number>` which contains the solution for the exercise if needed including the file `terraform.tfvars-sample` contains the definition of the local variables. In case you get stuck you can check the content of this folder.
 
 In addition the folder `solution` contains the final configuration setup if you have gone through all exercises.
 
 ## Summary
 
-You've now prepared your development environment and have all information to finally start using Terraform provider for SAP BTP.  
+You've now prepared your development environment and have all information to finally start using Terraform provider for SAP BTP.
 
 Continue to - [Exercise 1 - Configure the Terraform Provider for SAP BTP](exercises/EXERCISE1/README.md).
