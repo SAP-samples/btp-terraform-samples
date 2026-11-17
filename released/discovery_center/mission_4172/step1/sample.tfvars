@@ -14,6 +14,8 @@ cf_space_managers   = ["john.doe@sap.com"]
 cf_org_admins       = ["john.doe@sap.com"]
 cf_org_users        = ["john.doe@sap.com"]
 
+// Use a secure password for real deployments - This is just a sample
+// Alternative use the parameter "generateSystemPassword" as an alternative
 hana_system_password = "Abc12345"
 hana_system_admin    = "john.doe@sap.com"
 

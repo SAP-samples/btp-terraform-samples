@@ -155,6 +155,8 @@ resource "btp_subaccount_service_instance" "hana_cloud" {
         "slaLevel" : "standard",
         "storage" : 120,
         "vcpu" : 2,
+        // This is just a sample IP whitelist for demonstration purposes
+        // Adjust this to your specific IP whitelist requirements
         "whitelistIPs" : ["0.0.0.0/0"]
       }
   })
@@ -166,7 +168,7 @@ resource "btp_subaccount_service_instance" "hana_cloud" {
   }
 }
 
-# Create service binding to SAP HANA Cloud service 
+# Create service binding to SAP HANA Cloud service
 resource "btp_subaccount_service_binding" "hana_cloud" {
   subaccount_id       = data.btp_subaccount.dc_mission.id
   service_instance_id = btp_subaccount_service_instance.hana_cloud.id

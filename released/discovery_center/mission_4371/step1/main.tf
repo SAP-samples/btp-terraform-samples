@@ -23,7 +23,7 @@ resource "btp_subaccount" "dc_mission" {
 # Assign custom IDP to sub account (if custom_idp is set)
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_trust_configuration" "fully_customized" {
-  # Only create trust configuration if custom_idp has been set 
+  # Only create trust configuration if custom_idp has been set
   count             = var.custom_idp == "" ? 0 : 1
   subaccount_id     = btp_subaccount.dc_mission.id
   identity_provider = var.custom_idp
@@ -63,8 +63,8 @@ resource "btp_subaccount_role_collection_assignment" "subaccount-service-admins"
 
 # Entitle subaccount for usage of SAP AI Core service
 # ------------------------------------------------------------------------------------------------------
-# Checkout https://github.com/SAP-samples/btp-service-metadata/blob/main/v0/developer/aicore.json for 
-# available plans and their region availability 
+# Checkout https://github.com/SAP-samples/btp-service-metadata/blob/main/v0/developer/aicore.json for
+# available plans and their region availability
 resource "btp_subaccount_entitlement" "ai_core" {
   subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "aicore"
@@ -97,7 +97,7 @@ resource "btp_subaccount_service_binding" "ai_core_binding" {
 # ------------------------------------------------------------------------------------------------------
 # Setup destination
 # ------------------------------------------------------------------------------------------------------
-# Entitle 
+# Entitle
 resource "btp_subaccount_entitlement" "destination" {
   subaccount_id = btp_subaccount.dc_mission.id
   service_name  = "destination"
@@ -210,6 +210,8 @@ resource "btp_subaccount_service_instance" "hana_cloud" {
         "slaLevel" : "standard",
         "storage" : 120,
         "vcpu" : 2,
+        // This is just a sample IP whitelist for demonstration purposes
+        // Adjust this to your specific IP whitelist requirements
         "whitelistIPs" : ["0.0.0.0/0"]
       }
   })
@@ -221,7 +223,7 @@ resource "btp_subaccount_service_instance" "hana_cloud" {
   }
 }
 
-# Create service binding to SAP HANA Cloud service 
+# Create service binding to SAP HANA Cloud service
 resource "btp_subaccount_service_binding" "hana_cloud" {
   subaccount_id       = btp_subaccount.dc_mission.id
   service_instance_id = btp_subaccount_service_instance.hana_cloud.id

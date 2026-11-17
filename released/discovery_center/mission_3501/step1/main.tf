@@ -39,7 +39,7 @@ data "btp_subaccount" "dc_mission" {
 # Assign custom IDP to sub account (if custom_idp is set)
 # ------------------------------------------------------------------------------------------------------
 resource "btp_subaccount_trust_configuration" "fully_customized" {
-  # Only create trust configuration if custom_idp has been set 
+  # Only create trust configuration if custom_idp has been set
   count             = var.custom_idp == "" ? 0 : 1
   subaccount_id     = data.btp_subaccount.dc_mission.id
   identity_provider = var.custom_idp
@@ -201,6 +201,8 @@ resource "btp_subaccount_service_instance" "hana_cloud" {
         "slaLevel" : "standard",
         "storage" : 120,
         "vcpu" : 2,
+        // This is just a sample IP whitelist for demonstration purposes
+        // Adjust this to your specific IP whitelist requirements
         "whitelistIPs" : ["0.0.0.0/0"]
       }
   })
@@ -212,7 +214,7 @@ resource "btp_subaccount_service_instance" "hana_cloud" {
   }
 }
 
-# Create service binding to SAP HANA Cloud service 
+# Create service binding to SAP HANA Cloud service
 resource "btp_subaccount_service_binding" "hana_cloud" {
   subaccount_id       = data.btp_subaccount.dc_mission.id
   service_instance_id = btp_subaccount_service_instance.hana_cloud.id
@@ -438,5 +440,3 @@ resource "local_file" "output_vars_step1" {
       EOT
   filename = "../step2/terraform.tfvars"
 }
-
-

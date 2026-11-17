@@ -63,11 +63,16 @@ resource "btp_subaccount_environment_instance" "kymaruntime" {
   }
 }
 
-data "http" "kubeconfig" {
-  url = jsondecode(btp_subaccount_environment_instance.kymaruntime.labels)["KubeconfigURL"]
+/*
+//This block shows an option how to doenload the Kubeconfig for the Kyma environment instance
+//And stores it in your local file system
+
+locals {
+  kyma_kubeconfig_url = provider::btp::extract_kyma_kubeconfig_url(btp_subaccount_environment_instance.kymaruntime.labels)
 }
 
 resource "local_sensitive_file" "kubeconfig" {
   filename = ".${var.subaccount_id}-${var.name}.kubeconfig"
-  content  = data.http.kubeconfig.response_body
+  content  = provider::btp::download_kyma_kubeconfig(local.kyma_kubeconfig_url)
 }
+*/
