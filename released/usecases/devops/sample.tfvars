@@ -12,7 +12,7 @@ directory_labels  = { CostCenter = ["123456"], Department = ["ABCD"] }
 subaccount_labels = { Owner = ["Bla Bla"] }
 
 ##############################################
-# IAS configuration for application users 
+# IAS configuration for application users
 # if not set the default would be taken
 ##############################################
 #custom_idp = "your IAS for application users"
@@ -33,7 +33,8 @@ developers = ["developer@mail.com"]
 #################################
 # SAP HANA Cloud configuration
 #################################
-
+// Use a secure password for real deployments - This is just a sample
+// Alternative use the parameter "generateSystemPassword" as an alternative
 hana_system_password = "<password>"
 hana_db_name         = "HANADB"
 

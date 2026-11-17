@@ -198,6 +198,8 @@ module "create_cf_service_instance_hana_cloud" {
         "slaLevel" : "standard",
         "storage" : 120,
         "vcpu" : 2,
+        // This is just a sample IP whitelist for demonstration purposes
+        // Adjust this to your specific IP whitelist requirements
         "whitelistIPs" : ["0.0.0.0/0"]
       }
   })

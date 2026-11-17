@@ -288,7 +288,7 @@ resource "btp_subaccount_role_collection_assignment" "bas_admin" {
 
 
 ########################################################################
-# HANA Cloud 
+# HANA Cloud
 ########################################################################
 resource "btp_subaccount_entitlement" "hana-cloud-tools" {
   subaccount_id = data.btp_subaccount.project.id
@@ -346,38 +346,3 @@ data "btp_subaccount_service_plan" "hana_cloud" {
   name          = "hana"
   depends_on    = [btp_subaccount_entitlement.hana_cloud]
 }
-
-# # Create service instance for SAP HANA Cloud
-# resource "btp_subaccount_service_instance" "hana_cloud"{
-#   subaccount_id  = data.btp_subaccount.project.id
-#   serviceplan_id = data.btp_subaccount_service_plan.hana_cloud.id
-#   name           = var.hana_db_name
-#   depends_on     = [btp_subaccount_entitlement.hana_cloud]
-#   parameters     = jsonencode(
-#     { "data" : { 
-#         "memory":16,
-#         "edition":"cloud",
-#         "systempassword": "${var.hana_system_password}",
-#         "additionalWorkers":0,
-#         "dataEncryption":{"mode":"DEDICATED_KEY"},
-#         "disasterRecoveryMode":"no_disaster_recovery",
-#         "enabledservices":{
-#           "docstore":false,
-#           "dpserver":true,
-#           "scriptserver":false
-#         },
-#         "productVersion":{
-#           "releaseCycle":"pre-release-quarterly",
-#           "track":"2024.2"
-#         },
-#         "requestedOperation":{},
-#         "serviceStopped":false,
-#         "slaLevel":"standard",
-#         "storage":80,
-#         "updateStrategy":"withRestart",
-#         "vcpu":1,
-#         "whitelistIPs":["0.0.0.0/0"]
-#       }
-#   }) 
-#  }
-

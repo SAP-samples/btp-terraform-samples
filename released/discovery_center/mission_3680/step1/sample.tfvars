@@ -16,6 +16,8 @@ subaccount_admins         = ["another.user@test.com"]
 subaccount_service_admins = ["another.user@test.com"]
 
 hana_system_admin    = "another.user@test.com"
+// Use a secure password for real deployments - This is just a sample
+// Alternative use the parameter "generateSystemPassword" as an alternative
 hana_system_password = "Abc12345"
 
 # Don't add the user, that is executing the TF script to cf_org_admins or cf_org_users!
