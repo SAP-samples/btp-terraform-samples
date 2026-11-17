@@ -2,6 +2,8 @@ output "dashboard_url" {
   value = btp_subaccount_environment_instance.kymaruntime.dashboard_url
 }
 
+/* Uncomment if you use the code block in main.tf  for download
 output "kubeconfig" {
   value = local_sensitive_file.kubeconfig.filename
 }
+*/

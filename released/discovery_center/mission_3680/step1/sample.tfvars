@@ -15,7 +15,7 @@ custom_idp      = "<your_idp>.accounts.ondemand.com"
 subaccount_admins         = ["another.user@test.com"]
 subaccount_service_admins = ["another.user@test.com"]
 
-hana_system_admin    = "another.user@test.com"
+hana_system_admin = "another.user@test.com"
 // Use a secure password for real deployments - This is just a sample
 // Alternative use the parameter "generateSystemPassword" as an alternative
 hana_system_password = "Abc12345"
