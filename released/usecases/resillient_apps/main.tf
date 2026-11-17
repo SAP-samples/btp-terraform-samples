@@ -185,7 +185,7 @@ module "create_cf_service_instance_hana_cloud" {
       "data" : {
         "memory" : 32,
         "edition" : "cloud",
-        "systempassword" : "Abcd1234",
+        "generateSystemPassword" : true,
         "additionalWorkers" : 0,
         "disasterRecoveryMode" : "no_disaster_recovery",
         "enabledservices" : {
