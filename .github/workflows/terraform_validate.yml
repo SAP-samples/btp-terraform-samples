@@ -12,38 +12,41 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   terraform-validate:
     name: Validate Syntax of Terraform Files
+    # init downloads PR-selected dependencies; validate can execute provider binaries.
+    # Skip the job (not the workflow) so the required check is still reported.
+    # External-contributor workflow approval remains a repository-level control.
+    if: >-
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.head.repo.full_name == github.repository) ||
+      (github.event_name == 'workflow_dispatch' &&
+       github.ref == format('refs/heads/{0}', github.event.repository.default_branch))
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v4
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4
         with:
           terraform_wrapper: false
 
-      - name: Get changed directories
-        id: changed-files
-        uses: tj-actions/changed-files@v47
-        with:
-          dir_names: "true"
-
-      - name: Validate Terraform sytnax
-        if: steps.changed-files.outputs.any_changed == 'true'
+      - name: Validate changed Terraform directories
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
-        shell: bash
-        run: |
-          EXIT_CODE=0
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "Validating Terraform files in $file with terraform fmt"
-            cd $file
-            terraform init -backend=false || EXIT_CODE=$?
-            terraform validate || EXIT_CODE=$?
-            rm -rf .terraform/
-            cd ${{ github.workspace }}
-          done
-          exit $EXIT_CODE
+          TF_IN_AUTOMATION: "true"
+          TF_INPUT: "false"
+        with:
+          script: |
+            const validate = require('./.github/scripts/terraform_validate.cjs');
+            await validate({ github, context, core, exec });
